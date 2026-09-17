@@ -1,0 +1,310 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "help-center",
+    "pageId": "help-center",
+    "nodes": [
+      {
+        "id": "annotation-5",
+        "index": 5,
+        "locator": {
+          "selectors": [
+            ".help-center-video-poster"
+          ],
+          "fingerprint": "div",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "main",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "section",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "pageId": "product-list",
+        "createdAt": 1789550288299,
+        "updatedAt": 1789550288299
+      },
+      {
+        "id": "annotation-6",
+        "index": 6,
+        "locator": {
+          "selectors": [
+            "div > main > div > section > div > div > div:nth-of-type(3) > button:nth-of-type(1)"
+          ],
+          "fingerprint": "button",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "main",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "section",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 2
+            },
+            {
+              "tag": "button",
+              "index": 0
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "pageId": "product-list",
+        "createdAt": 1789551325985,
+        "updatedAt": 1789551325985
+      },
+      {
+        "id": "annotation-7",
+        "index": 7,
+        "locator": {
+          "selectors": [
+            ".help-center-nav-btn-next",
+            "div > main > div > section > div > div > div:nth-of-type(3) > button:nth-of-type(2)"
+          ],
+          "fingerprint": "button",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "main",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "section",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 2
+            },
+            {
+              "tag": "button",
+              "index": 1
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "pageId": "product-list",
+        "createdAt": 1789551334368,
+        "updatedAt": 1789551334368
+      },
+      {
+        "id": "annotation-4",
+        "index": 8,
+        "locator": {
+          "selectors": [
+            "div > main > div > section > div > div:nth-of-type(1) > div:nth-of-type(1) > h1"
+          ],
+          "fingerprint": "h1",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "main",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "section",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "h1",
+              "index": 0
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "pageId": "product-add",
+        "createdAt": 1789610580415,
+        "updatedAt": 1789613848718
+      },
+      {
+        "id": "annotation-8",
+        "index": 9,
+        "locator": {
+          "selectors": [
+            ".is-active",
+            "div > main > div > aside > nav > div:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(1)"
+          ],
+          "fingerprint": "button",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "main",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "aside",
+              "index": 0
+            },
+            {
+              "tag": "nav",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "button",
+              "index": 0
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "pageId": "product-add",
+        "createdAt": 1789610739756,
+        "updatedAt": 1789623175963
+      }
+    ],
+    "updatedAt": 1789623175963
+  },
+  "markdownMap": {
+    "annotation-5": "视频控件采用16:9宽屏比例，最大尺寸960×540px，居中显示。设计原则：尽可能大以保证观看体验，同时通过max-height约束确保不溢出视口。当后台配置为视频类型时，直接渲染此视频组件，不显示其他文字内容。",
+    "annotation-6": "当前导航下的第一份说明不显示此按钮",
+    "annotation-7": "当前导航下的最后一份说明不显示此按钮",
+    "annotation-4": "左侧标题显示的是当前节点的名称；\n右侧显示的是当前节点的父节点名称；\n上下滑动页面时：\n1.当前章节内容滑动到顶部，继续上滑进入上一章节；\n2.当前章节内容滑动到底部，继续下滑进入下一章节；\n3.无论是上滑进入上一章节，还是下滑进入下一章节，进入章节时，始终通过scroll-snap吸附章节标题，前端实际感知的效果就是每次进入一个新章节，标题位于最顶上",
+    "annotation-8": "点击节点可联动右侧切换到对应章节\n右侧滑动章节时，这里也会联动选中对应节点\n滑动到对应节点的章节时，自动展开该节点所在的父节点\n每次只能展开一个一个顶级节点中的子节点，当展开一个顶级节点时，需要收起其他节点"
+  },
+  "assetMap": {},
+  "directory": {
+    "nodes": [
+      {
+        "type": "folder",
+        "id": "directory-pages",
+        "title": "帮助中心",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "route",
+            "id": "route-product-add",
+            "title": "添加商品",
+            "route": "product-add"
+          },
+          {
+            "type": "route",
+            "id": "route-product-list",
+            "title": "商品列表",
+            "route": "product-list"
+          }
+        ]
+      }
+    ]
+  }
+}

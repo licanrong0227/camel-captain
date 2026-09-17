@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-17T02:57:53.093Z",
+  "prototypes": [
+    {
+      "id": "item-prototypes-help-center-admin-copy",
+      "kind": "item",
+      "title": "help center admin copy",
+      "itemKey": "prototypes/help-center-admin-copy"
+    },
+    {
+      "id": "item:prototypes:help-center-copy",
+      "kind": "item",
+      "title": "帮助中心（2026年9月16日）",
+      "itemKey": "prototypes/help-center-copy"
+    },
+    {
+      "id": "item:prototypes:help-center",
+      "kind": "item",
+      "title": "帮助中心",
+      "itemKey": "prototypes/help-center"
+    },
+    {
+      "id": "item:prototypes:annotation-demo",
+      "kind": "item",
+      "title": "标注演示",
+      "itemKey": "prototypes/annotation-demo"
+    },
+    {
+      "id": "item:prototypes:beginner-guide",
+      "kind": "item",
+      "title": "新手指导",
+      "itemKey": "prototypes/beginner-guide"
+    },
+    {
+      "id": "item:prototypes:touch-and-talk-annotation-demo",
+      "kind": "item",
+      "title": "批注演示",
+      "itemKey": "prototypes/touch-and-talk-annotation-demo"
+    }
+  ],
+  "docs": [],
+  "themesTree": [
+    {
+      "id": "item-themes-element-ui",
+      "kind": "item",
+      "title": "element ui",
+      "itemKey": "themes/element-ui"
+    }
+  ],
+  "themes": [],
+  "data": [],
+  "templates": [
+    "prd-template.md"
+  ],
+  "components": [],
+  "canvas": []
+}

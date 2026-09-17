@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+.dmb-page {
+  --dmb-primary: #409EFF;
+  --dmb-primary-light: #66B1FF;
+  --dmb-primary-dark: #3A8EE6;
+  --dmb-primary-lighter: #ECF5FF;
+  
+  --dmb-success: #67C23A;
+  --dmb-success-light: #85CE61;
+  --dmb-success-dark: #5DAF34;
+  --dmb-success-lighter: #F0F9EB;
+  
+  --dmb-warning: #E6A23C;
+  --dmb-warning-light: #EBB563;
+  --dmb-warning-dark: #CF9236;
+  --dmb-warning-lighter: #FDF6EC;
+  
+  --dmb-danger: #F56C6C;
+  --dmb-danger-light: #F78989;
+  --dmb-danger-dark: #DD6161;
+  --dmb-danger-lighter: #FEF0F0;
+  
+  --dmb-info: #909399;
+  --dmb-info-light: #A6A9AD;
+  --dmb-info-dark: #82848A;
+  --dmb-info-lighter: #F4F4F5;
+  
+  --dmb-text-primary: #303133;
+  --dmb-text-regular: #606266;
+  --dmb-text-secondary: #909399;
+  --dmb-text-placeholder: #C0C4CC;
+  --dmb-text-disabled: #C0C4CC;
+  
+  --dmb-background-page: #F5F7FA;
+  --dmb-background-card: #FFFFFF;
+  --dmb-background-hover: #F5F7FA;
+  --dmb-background-disabled: #F5F7FA;
+  
+  --dmb-border-primary: #DCDFE6;
+  --dmb-border-secondary: #D4D7DE;
+  --dmb-border-tertiary: #C0C4CC;
+  --dmb-border-active: #409EFF;
+  
+  --dmb-font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  --dmb-font-size-h1: 24px;
+  --dmb-font-size-h2: 20px;
+  --dmb-font-size-h3: 18px;
+  --dmb-font-size-h4: 16px;
+  --dmb-font-size-body: 14px;
+  --dmb-font-size-small: 12px;
+  
+  --dmb-spacing-xs: 4px;
+  --dmb-spacing-sm: 8px;
+  --dmb-spacing-md: 12px;
+  --dmb-spacing-lg: 16px;
+  --dmb-spacing-xl: 20px;
+  --dmb-spacing-2xl: 24px;
+  --dmb-spacing-3xl: 32px;
+  --dmb-spacing-4xl: 40px;
+  
+  --dmb-radius-none: 0;
+  --dmb-radius-xs: 2px;
+  --dmb-radius-sm: 3px;
+  --dmb-radius-md: 4px;
+  --dmb-radius-lg: 5px;
+  --dmb-radius-xl: 8px;
+  --dmb-radius-2xl: 10px;
+  --dmb-radius-3xl: 16px;
+  --dmb-radius-4xl: 20px;
+  --dmb-radius-full: 50%;
+  
+  --dmb-shadow-level1: 0 2px 12px 0 rgba(0,0,0,.1);
+  --dmb-shadow-level2: 0 8px 10px -5px rgba(0,0,0,.2), 0 16px 24px 2px rgba(0,0,0,.14), 0 6px 30px 5px rgba(0,0,0,.12);
+  --dmb-shadow-level3: 0 0 6px rgba(0,0,0,.12);
+  --dmb-shadow-level4: 0 1px 3px rgba(0,0,0,.3);
+  
+  --dmb-transition-fast: 0.1s;
+  --dmb-transition-normal: 0.3s;
+  --dmb-transition-slow: 0.5s;
+  
+  font-family: var(--dmb-font-family);
+  font-size: var(--dmb-font-size-body);
+  color: var(--dmb-text-regular);
+  background-color: var(--dmb-background-page);
+  line-height: 1.5;
+}

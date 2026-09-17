@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #409EFF;
+  --color-primary-light: #66B1FF;
+  --color-primary-dark: #3A8EE6;
+  --color-primary-lighter: #ECF5FF;
+  
+  --color-success: #67C23A;
+  --color-success-light: #85CE61;
+  --color-success-dark: #5DAF34;
+  --color-success-lighter: #F0F9EB;
+  
+  --color-warning: #E6A23C;
+  --color-warning-light: #EBB563;
+  --color-warning-dark: #CF9236;
+  --color-warning-lighter: #FDF6EC;
+  
+  --color-danger: #F56C6C;
+  --color-danger-light: #F78989;
+  --color-danger-dark: #DD6161;
+  --color-danger-lighter: #FEF0F0;
+  
+  --color-info: #909399;
+  --color-info-light: #A6A9AD;
+  --color-info-dark: #82848A;
+  --color-info-lighter: #F4F4F5;
+  
+  --color-text-primary: #303133;
+  --color-text-regular: #606266;
+  --color-text-secondary: #909399;
+  --color-text-placeholder: #C0C4CC;
+  --color-text-disabled: #C0C4CC;
+  
+  --color-background-page: #F5F7FA;
+  --color-background-card: #FFFFFF;
+  --color-background-hover: #F5F7FA;
+  --color-background-disabled: #F5F7FA;
+  
+  --color-border-primary: #DCDFE6;
+  --color-border-secondary: #D4D7DE;
+  --color-border-tertiary: #C0C4CC;
+  --color-border-active: #409EFF;
+  
+  --font-family-primary: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  
+  --font-size-h1: 24px;
+  --font-size-h2: 20px;
+  --font-size-h3: 18px;
+  --font-size-h4: 16px;
+  --font-size-body: 14px;
+  --font-size-small: 12px;
+  
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+  --spacing-4xl: 40px;
+  
+  --radius-none: 0;
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 5px;
+  --radius-xl: 8px;
+  --radius-2xl: 10px;
+  --radius-3xl: 16px;
+  --radius-4xl: 20px;
+  --radius-full: 50%;
+  
+  --shadow-level1: 0 2px 12px 0 rgba(0,0,0,.1);
+  --shadow-level2: 0 8px 10px -5px rgba(0,0,0,.2), 0 16px 24px 2px rgba(0,0,0,.14), 0 6px 30px 5px rgba(0,0,0,.12);
+  --shadow-level3: 0 0 6px rgba(0,0,0,.12);
+  --shadow-level4: 0 1px 3px rgba(0,0,0,.3);
+  
+  --transition-fast: 0.1s;
+  --transition-normal: 0.3s;
+  --transition-slow: 0.5s;
+}
