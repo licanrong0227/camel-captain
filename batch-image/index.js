@@ -1816,7 +1816,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
 4. **预览**
    - 显示文字水印的实际效果
    - 根据字号和透明度设置实时渲染
-   - 默认显示占位文字「水印文字」`,"image-watermark-config":`## 图片水印配置
+   - 默认显示占位文字「水印文字」
+
+### 字体
+- **字体**：思源黑体（Source Han Sans）
+- 系统预览区域的文字水印使用思源黑体展示
+- 开源地址：[Source Han Sans](https://github.com/adobe-fonts/source-han-sans/tree/release)`,"image-watermark-config":`## 图片水印配置
 
 ### 显示条件
 - 仅在水印类型选择「图片水印」时显示
