@@ -1,0 +1,46 @@
+/* ===== 计数器demo - Element UI 风格 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+    background: #f5f7fa;
+}
+
+.counter-page {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.counter-btn {
+    min-width: 160px;
+    height: 56px;
+    padding: 0 40px;
+    font-size: 22px;
+    font-weight: 500;
+    color: #409eff;
+    background: #ffffff;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.counter-btn:hover {
+    color: #ffffff;
+    background: #409eff;
+    border-color: #409eff;
+    box-shadow: 0 4px 16px 0 rgba(64, 158, 255, 0.4);
+}
+
+.counter-btn:active {
+    background: #3a8ee6;
+    border-color: #3a8ee6;
+    transform: translateY(1px);
+}

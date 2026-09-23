@@ -1,3 +1,4 @@
+import React from 'react';
 import './style.css';
 import { DesignMdBatchShowcase, type BatchShowcaseConfig } from '../../common/DesignMdBatchShowcase';
 import themeConfig from './theme.json';
