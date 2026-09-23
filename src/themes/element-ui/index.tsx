@@ -3,15 +3,25 @@ import './style.css';
 import { DesignMdBatchShowcase, type BatchShowcaseConfig } from '../../common/DesignMdBatchShowcase';
 import themeConfig from './theme.json';
 
+function contrastFor(color: string) {
+  const value = color.replace('#', '').slice(0, 6);
+  if (value.length !== 6) return '#171717';
+  const r = parseInt(value.slice(0, 2), 16);
+  const g = parseInt(value.slice(2, 4), 16);
+  const b = parseInt(value.slice(4, 6), 16);
+  return (r * 299 + g * 587 + b * 114) / 1000 > 150 ? '#171717' : '#ffffff';
+}
+
 const config: BatchShowcaseConfig = {
   brand: themeConfig.identity.titleZh,
   description: themeConfig.identity.descriptionZh,
   variant: 'saas-devtool',
   distributionTags: themeConfig.tags,
   palette: themeConfig.display.palette.colors.map(color => ({
-    name: color.name,
-    hex: color.hex,
-    description: color.description,
+    color: color.hex,
+    labelZh: color.name,
+    labelEn: color.name,
+    textColor: contrastFor(color.hex),
   })),
   radius: {
     control: themeConfig.tokens.radius.md,
@@ -27,9 +37,9 @@ const config: BatchShowcaseConfig = {
     { label: 'Level 4', value: themeConfig.tokens.shadow.level4 },
   ],
   borders: [
-    { label: '默认边框', value: `1px solid ${themeConfig.tokens.border.primary}` },
-    { label: '浅色边框', value: `1px solid ${themeConfig.tokens.border.secondary}` },
-    { label: '聚焦边框', value: `2px solid ${themeConfig.tokens.border.active}` },
+    { label: '默认边框', value: `1px solid ${themeConfig.tokens.palette.border.primary}` },
+    { label: '次级边框', value: `1px solid ${themeConfig.tokens.palette.border.tertiary}` },
+    { label: '聚焦边框', value: `2px solid ${themeConfig.tokens.palette.border.active}` },
   ],
   typography: [
     `font-family: ${themeConfig.tokens.typography.fontFamily}`,

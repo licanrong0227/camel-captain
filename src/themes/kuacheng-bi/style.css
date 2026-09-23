@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+/* 骆驼队长BI 主题变量：与 DESIGN.md / theme.json 同源 */
+.dmb-page {
+  --dmb-primary: #ff781f;
+  --dmb-primary-soft: #ffe9d5;
+  --dmb-primary-muted: #b35416;
+  --dmb-primary-selected-border: #ffc29a;
+
+  --dmb-success: #13ce66;
+  --dmb-warning: #ffba00;
+  --dmb-danger: #ff4949;
+  --dmb-info: #909399;
+
+  --dmb-text-primary: #303133;
+  --dmb-text-regular: #606266;
+  --dmb-text-secondary: #909399;
+  --dmb-text-placeholder: #c0c4cc;
+
+  --dmb-background-page: #f0f1f5;
+  --dmb-background-card: #ffffff;
+  --dmb-background-tagsview: #eff0f4;
+  --dmb-table-header-start: #fff5ef;
+  --dmb-table-header-end: #ffede0;
+  --dmb-table-row-hover: #f5f7fa;
+
+  --dmb-nav-bg: #001529;
+  --dmb-nav-hover: #000c17;
+  --dmb-nav-submenu-bg: #000c17;
+  --dmb-nav-submenu-hover: #001528;
+  --dmb-nav-logo: #001529;
+
+  --dmb-border-primary: #dcdfe6;
+  --dmb-border-light: #dfe4ed;
+  --dmb-border-lighter: #e6ebf5;
+  --dmb-border-divider: #ebeef5;
+
+  --dmb-font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  --dmb-font-size-h2: 20px;
+  --dmb-font-size-h4: 16px;
+  --dmb-font-size-body: 14px;
+  --dmb-font-size-menu: 13px;
+  --dmb-font-size-table: 12px;
+
+  --dmb-spacing-sm: 8px;
+  --dmb-spacing-md: 12px;
+  --dmb-spacing-lg: 16px;
+  --dmb-spacing-xl: 20px;
+  --dmb-spacing-2xl: 24px;
+
+  --dmb-radius-control: 8px;
+  --dmb-radius-card: 10px;
+  --dmb-radius-dialog: 6px;
+  --dmb-radius-popup: 8px;
+  --dmb-radius-table: 8px;
+
+  --dmb-shadow-popup: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  --dmb-shadow-navbar: 3px 4px 4px rgba(0, 21, 41, 0.08);
+  --dmb-shadow-sidebar: 0 6px 6px rgba(0, 21, 41, 0.35);
+  --dmb-shadow-dialog: 0 1px 3px rgba(0, 0, 0, 0.3);
+
+  --dmb-transition-normal: 0.3s;
+  --dmb-transition-easing: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  font-family: var(--dmb-font-family);
+  font-size: var(--dmb-font-size-body);
+  color: var(--dmb-text-regular);
+  background-color: var(--dmb-background-page);
+  line-height: 1.5;
+}

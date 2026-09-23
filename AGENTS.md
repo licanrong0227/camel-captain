@@ -1,7 +1,7 @@
 ## 项目信息
 
 - 项目名称：骆驼队长跨境ERP系统
-- 默认设计：element-ui（`src/themes/element-ui/DESIGN.md`）
+- 默认设计：kuacheng-bi（`src/themes/kuacheng-bi/DESIGN.md`）
 ## 核心流程
 
 新建或明显更新原型时，按以下顺序推进：

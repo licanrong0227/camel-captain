@@ -1,13 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-23T09:47:46.806Z",
+  "updatedAt": "2026-09-23T10:14:39.457Z",
   "prototypes": [
-    {
-      "id": "item-prototypes-counter-demo",
-      "kind": "item",
-      "title": "counter demo",
-      "itemKey": "prototypes/counter-demo"
-    },
     {
       "id": "folder-1790060254620-0uhxj0",
       "kind": "folder",
@@ -54,6 +48,12 @@
       "kind": "item",
       "title": "element ui",
       "itemKey": "themes/element-ui"
+    },
+    {
+      "id": "item-themes-kuacheng-bi",
+      "kind": "item",
+      "title": "kuacheng bi",
+      "itemKey": "themes/kuacheng-bi"
     }
   ],
   "themes": [],

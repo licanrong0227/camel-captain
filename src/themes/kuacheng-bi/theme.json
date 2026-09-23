@@ -1,0 +1,227 @@
+{
+  "schemaVersion": "1.0",
+  "source": {
+    "type": "website",
+    "url": "https://test.kuachengjing.com/dashboard",
+    "accessDate": "2026-09-23",
+    "method": "webfetch + capture-theme-source",
+    "notes": "生产 CSS 令牌 + 登录页截图采集；/dashboard 需登录未采集，主色经用户确认以 #ff781f 为准"
+  },
+  "identity": {
+    "slug": "kuacheng-bi",
+    "titleZh": "骆驼队长BI 主题",
+    "descriptionZh": "基于骆驼队长跨境 ERP 智慧运营中台的橙色数据中后台主题",
+    "version": "1.0.0"
+  },
+  "tags": ["跨境ERP", "BI看板", "数据中台", "中后台", "Vue", "Element UI"],
+  "assets": {
+    "tokensPath": "./assets/tokens.json",
+    "previewImages": ["./assets/source-preview.png", "./assets/preview-desktop.png", "./assets/preview-tablet.png", "./assets/preview-mobile.png"]
+  },
+  "tokens": {
+    "palette": {
+      "primary": {
+        "default": "#ff781f",
+        "soft": "#ffe9d5",
+        "muted": "#b35416",
+        "selectedBorder": "#ffc29a"
+      },
+      "success": "#13ce66",
+      "warning": "#ffba00",
+      "danger": "#ff4949",
+      "info": "#909399",
+      "text": {
+        "primary": "#303133",
+        "regular": "#606266",
+        "secondary": "#909399",
+        "placeholder": "#c0c4cc",
+        "disabled": "#c0c4cc"
+      },
+      "background": {
+        "page": "#f0f1f5",
+        "card": "#FFFFFF",
+        "tagsView": "#eff0f4",
+        "tableHeaderStart": "#fff5ef",
+        "tableHeaderEnd": "#ffede0",
+        "tableRowHover": "#f5f7fa"
+      },
+      "nav": {
+        "bg": "#001529",
+        "hover": "#000c17",
+        "subMenuBg": "#000c17",
+        "subMenuHover": "#001528",
+        "logo": "#001529"
+      },
+      "border": {
+        "primary": "#dcdfe6",
+        "light": "#dfe4ed",
+        "lighter": "#e6ebf5",
+        "divider": "#ebeef5"
+      },
+      "legacy": {
+        "note": "编译期 Element 主色 #1890ff 为遗留冲突色，不作为品牌主色",
+        "blue": "#1890ff",
+        "blueSoft": "#e7f3ff"
+      }
+    },
+    "typography": {
+      "fontFamily": "Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif",
+      "loginFontFamily": "Inter, \"Noto Sans SC\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+      "fontSize": {
+        "h1": "24px",
+        "h2": "20px",
+        "h3": "18px",
+        "h4": "16px",
+        "body": "14px",
+        "menu": "13px",
+        "table": "12px",
+        "loginHero": "54px"
+      },
+      "fontWeight": {
+        "normal": "400",
+        "medium": "500",
+        "semiBold": "600",
+        "bold": "700",
+        "heavy": "800"
+      },
+      "lineHeight": {
+        "tight": "1",
+        "normal": "1.5"
+      }
+    },
+    "spacing": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "12px",
+      "lg": "16px",
+      "xl": "20px",
+      "2xl": "24px",
+      "3xl": "32px",
+      "4xl": "40px"
+    },
+    "radius": {
+      "control": "8px",
+      "card": "10px",
+      "dialog": "6px",
+      "messageBox": "4px",
+      "popup": "8px",
+      "table": "8px",
+      "loginCard": "14px",
+      "loginControl": "12px",
+      "full": "50%"
+    },
+    "border": {
+      "width": "1px",
+      "activeWidth": "2px",
+      "style": "solid"
+    },
+    "shadow": {
+      "popup": "0 2px 12px 0 rgba(0,0,0,.1)",
+      "navbar": "3px 4px 4px rgba(0,21,41,.08)",
+      "sidebar": "0 6px 6px rgba(0,21,41,.35)",
+      "dialog": "0 1px 3px rgba(0,0,0,.3)",
+      "drawer": "0 8px 10px -5px rgba(0,0,0,.2), 0 16px 24px 2px rgba(0,0,0,.14), 0 6px 30px 5px rgba(0,0,0,.12)"
+    },
+    "layout": {
+      "sidebarWidth": "140px",
+      "sidebarCollapsed": "54px",
+      "navbarHeight": "50px",
+      "logoHeight": "64px",
+      "tableHeaderHeight": "40px",
+      "inputHeight": "40px",
+      "menuItemHeight": "40px",
+      "breakpoints": ["<768", "≥768", "≥992", "≥1200", "≥1920"]
+    },
+    "transition": {
+      "duration": { "fast": "0.2s", "normal": "0.3s", "input": "0.25s" },
+      "easing": "cubic-bezier(.645,.045,.355,1)"
+    }
+  },
+  "display": {
+    "palette": {
+      "title": "骆驼队长BI 色彩系统",
+      "description": "橙色品牌强调 + 深色导航 + 浅色工作区；状态色统一走 CSS 变量",
+      "colors": [
+        { "name": "Primary", "hex": "#ff781f", "description": "主色：主按钮、选中态、菜单高亮、tabs 活跃条" },
+        { "name": "Primary Soft", "hex": "#ffe9d5", "description": "主色柔和底：按钮 hover 底、标签浅底" },
+        { "name": "Success", "hex": "#13ce66", "description": "成功态" },
+        { "name": "Warning", "hex": "#ffba00", "description": "警告态" },
+        { "name": "Danger", "hex": "#ff4949", "description": "错误/危险态" },
+        { "name": "Info", "hex": "#909399", "description": "信息/次要" },
+        { "name": "Nav Dark", "hex": "#001529", "description": "深色侧边栏底" },
+        { "name": "Page BG", "hex": "#f0f1f5", "description": "工作区页面底色" }
+      ]
+    },
+    "typography": {
+      "title": "骆驼队长BI 字体系统",
+      "description": "Element 体系业务字体，登录页独立使用 Inter/Noto Sans SC",
+      "samples": [
+        { "name": "H1 大标题", "fontSize": "24px", "fontWeight": "700", "lineHeight": "1.5" },
+        { "name": "H2 页面标题", "fontSize": "20px", "fontWeight": "700", "lineHeight": "1.5" },
+        { "name": "正文/按钮", "fontSize": "14px", "fontWeight": "400/500", "lineHeight": "1.5" },
+        { "name": "表格正文", "fontSize": "12px", "fontWeight": "400", "lineHeight": "1.5" },
+        { "name": "登录页主标语", "fontSize": "54px", "fontWeight": "800", "lineHeight": "67.5px", "letterSpacing": "-1.35px" }
+      ]
+    },
+    "radius": {
+      "title": "骆驼队长BI 圆角规范",
+      "description": "控件 8px、卡片 10px、登录页 14px/12px",
+      "samples": [
+        { "name": "控件圆角", "value": "8px", "usage": "按钮、输入框、下拉、菜单项" },
+        { "name": "卡片圆角", "value": "10px", "usage": "卡片、表格" },
+        { "name": "弹窗圆角", "value": "6px", "usage": "Dialog" },
+        { "name": "登录页卡片", "value": "14px", "usage": "登录页（独立场景）" },
+        { "name": "登录页控件", "value": "12px", "usage": "登录按钮/输入框" }
+      ]
+    },
+    "spacing": {
+      "title": "骆驼队长BI 间距系统",
+      "description": "20px 页面节奏 + Element 间距标尺",
+      "samples": [
+        { "name": "页面容器", "value": "20px", "usage": "app-container 内边距" },
+        { "name": "卡片内容", "value": "20px", "usage": "el-card body" },
+        { "name": "卡片头部", "value": "18px 20px", "usage": "el-card header" },
+        { "name": "单元格纵向", "value": "12px", "usage": "表格 cell" },
+        { "name": "菜单项", "value": "2px 8px", "usage": "侧边栏 item margin" }
+      ]
+    },
+    "borders": {
+      "title": "骆驼队长BI 边框规范",
+      "description": "1px 灰阶边框，表头额外上渐变强调",
+      "samples": [
+        { "name": "输入/按钮边框", "value": "1px solid #dcdfe6", "usage": "控件常态" },
+        { "name": "常规分割线", "value": "1px solid #dfe4ed", "usage": "表格头部、单边分割" },
+        { "name": "卡片边框", "value": "1px solid #e6ebf5", "usage": "卡片、轻分割" },
+        { "name": "表头渐变", "value": "linear-gradient(180deg,#fff5ef,#ffede0)", "usage": "表格表头背景" }
+      ]
+    },
+    "shadows": {
+      "title": "骆驼队长BI 阴影层级",
+      "description": "克制阴影：弹出、顶栏、侧边栏、弹窗四档",
+      "samples": [
+        { "name": "Popup", "value": "0 2px 12px 0 rgba(0,0,0,.1)", "usage": "下拉、弹出面板、卡片悬浮" },
+        { "name": "Navbar", "value": "3px 4px 4px rgba(0,21,41,.08)", "usage": "顶栏投影" },
+        { "name": "Sidebar", "value": "0 6px 6px rgba(0,21,41,.35)", "usage": "侧边栏投影" },
+        { "name": "Dialog", "value": "0 1px 3px rgba(0,0,0,.3)", "usage": "弹窗" }
+      ]
+    },
+    "usageGuidance": {
+      "title": "骆驼队长BI 使用指南",
+      "description": "跨境 ERP / BI 数据中底盘的橙色主题规范",
+      "dos": [
+        "主色统一使用 #ff781f，状态色 #13ce66/#ffba00/#ff4949/#909399",
+        "工作区浅底 #f0f1f5 + 白卡片 + 表头渐变 #fff5ef→#ffede0",
+        "控件 8px 圆角、卡片 10px，1px 灰阶边框",
+        "字体 14px 正文 / 12px 表格 / 20px 区块标题",
+        "阴影仅用 popup/navbar/sidebar/dialog 四档"
+      ],
+      "donts": [
+        "不要在业务区使用蓝色 #1890ff 作品牌强调（遗留编译色）",
+        "不要在业务区使用彩色阴影或过重的大浮层阴影",
+        "不要把登录页 Tailwind 灰阶（#111827 等）混入业务文本体系",
+        "不要改变深色导航 #001529 与浅色工作区的搭配",
+        "不要在组件内硬编码颜色，统一走 --primary-color 变量"
+      ]
+    }
+  }
+}

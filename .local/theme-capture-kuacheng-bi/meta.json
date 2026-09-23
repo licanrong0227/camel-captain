@@ -1,0 +1,91 @@
+{
+  "tool": "capture-theme-source",
+  "theme": "kuacheng-bi",
+  "requestedUrl": "https://test.kuachengjing.com/dashboard",
+  "finalUrl": "https://test.kuachengjing.com/login",
+  "title": "骆驼队长 · 智慧运营中台",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "responsiveViewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "tablet",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "outputDir": "D:\\projects\\CAMEL CAPTAIN\\.local\\theme-capture-kuacheng-bi",
+  "files": {
+    "screenshot": "screenshot.png",
+    "responsive": {
+      "desktop": "responsive/desktop.png",
+      "tablet": "responsive/tablet.png",
+      "mobile": "responsive/mobile.png"
+    },
+    "theme": "theme.json",
+    "computedTokens": "computed-tokens.json"
+  },
+  "page": {
+    "scrollHeight": 900,
+    "nodeCount": 714
+  },
+  "responsive": {
+    "desktop": {
+      "url": "https://test.kuachengjing.com/login",
+      "title": "骆驼队长 · 智慧运营中台",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scrollHeight": 900,
+      "nodeCount": 714,
+      "screenshot": "responsive\\desktop.png"
+    },
+    "tablet": {
+      "url": "https://test.kuachengjing.com/login",
+      "title": "骆驼队长 · 智慧运营中台",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "scrollHeight": 1024,
+      "nodeCount": 714,
+      "screenshot": "responsive\\tablet.png"
+    },
+    "mobile": {
+      "url": "https://test.kuachengjing.com/login",
+      "title": "骆驼队长 · 智慧运营中台",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scrollHeight": 844,
+      "nodeCount": 714,
+      "screenshot": "responsive\\mobile.png"
+    }
+  },
+  "captureOptions": {
+    "waitUntil": "domcontentloaded",
+    "waitAfterLoadMs": 3000,
+    "scrollWarmup": true,
+    "selector": null,
+    "waitForSelectors": [],
+    "dismissSelectors": [],
+    "removeSelectors": [],
+    "connectCdp": false,
+    "browserExecutable": false,
+    "storageState": false
+  },
+  "capturedAt": "2026-09-23T10:05:53.876Z"
+}

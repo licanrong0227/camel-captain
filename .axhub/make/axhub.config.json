@@ -6,7 +6,7 @@
     "enableCommandAPI": false
   },
   "projectDefaults": {
-    "defaultTheme": "element-ui"
+    "defaultTheme": "kuacheng-bi"
   },
   "projectInfo": {
     "description": null

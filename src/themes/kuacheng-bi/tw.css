@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/* 骆驼队长BI 主题 Tailwind v4 片段（与 DESIGN.md tokens 同源） */
+@theme {
+  --color-primary: #ff781f;
+  --color-primary-soft: #ffe9d5;
+  --color-primary-muted: #b35416;
+  --color-primary-selected-border: #ffc29a;
+
+  --color-success: #13ce66;
+  --color-warning: #ffba00;
+  --color-danger: #ff4949;
+  --color-info: #909399;
+
+  --color-text-primary: #303133;
+  --color-text-regular: #606266;
+  --color-text-secondary: #909399;
+  --color-text-placeholder: #c0c4cc;
+
+  --color-background-page: #f0f1f5;
+  --color-background-card: #ffffff;
+  --color-background-tagsview: #eff0f4;
+  --color-table-header-start: #fff5ef;
+  --color-table-header-end: #ffede0;
+  --color-table-row-hover: #f5f7fa;
+
+  --color-nav-bg: #001529;
+  --color-nav-hover: #000c17;
+  --color-nav-submenu-bg: #000c17;
+  --color-nav-submenu-hover: #001528;
+  --color-nav-logo: #001529;
+
+  --color-border-primary: #dcdfe6;
+  --color-border-light: #dfe4ed;
+  --color-border-lighter: #e6ebf5;
+  --color-border-divider: #ebeef5;
+
+  --font-family-primary: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+
+  --font-size-h2: 20px;
+  --font-size-h4: 16px;
+  --font-size-body: 14px;
+  --font-size-menu: 13px;
+  --font-size-table: 12px;
+
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+
+  --radius-control: 8px;
+  --radius-card: 10px;
+  --radius-dialog: 6px;
+  --radius-popup: 8px;
+  --radius-table: 8px;
+
+  --shadow-popup: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  --shadow-navbar: 3px 4px 4px rgba(0, 21, 41, 0.08);
+  --shadow-sidebar: 0 6px 6px rgba(0, 21, 41, 0.35);
+  --shadow-dialog: 0 1px 3px rgba(0, 0, 0, 0.3);
+
+  --transition-fast: 0.2s;
+  --transition-normal: 0.3s;
+}
+
+/* 表头渐变与弹窗类 token（未被 Tailwind 原生映射的保留为 CSS 变量） */
+.dmb-page {
+  --dmb-table-header-gradient: linear-gradient(180deg, var(--dmb-table-header-start), var(--dmb-table-header-end));
+  --dmb-drawer-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12);
+}
