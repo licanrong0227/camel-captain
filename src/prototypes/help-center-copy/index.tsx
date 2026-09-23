@@ -286,6 +286,7 @@ const Component = forwardRef(function HelpCenter(
     const [expandedGroups, setExpandedGroups] = useState<string[]>(['product']);
     const [searchKeyword, setSearchKeyword] = useState<string>('');
     const [activeSection, setActiveSection] = useState<string>('product-add');
+    const [directoryExpanded, setDirectoryExpanded] = useState<boolean>(false);
     const scrollContainerRef = React.useRef<HTMLDivElement>(null);
     const sectionRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -437,8 +438,41 @@ const Component = forwardRef(function HelpCenter(
                                       onChange={handleSearchChange}
                                   />
                               </div>
-          
+
+                              {/* 以下为导航数据（读取后台数据） */}
                               <nav className="help-center-nav">
+                                  {/* 目录导航 - 固定展示区 */}
+                                  <div className="help-center-nav-group">
+                                      <div
+                                          className={`help-center-nav-group-header ${directoryExpanded ? 'is-expanded' : ''}`}
+                                          style={{ cursor: 'pointer' }}
+                                          onClick={() => setDirectoryExpanded(prev => !prev)}
+                                      >
+                                          <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                              <LayoutGrid size={16} />
+                                              目录导航
+                                          </span>
+                                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                              <span className="help-center-nav-count">(1)</span>
+                                              <span className={`help-center-nav-group-arrow ${directoryExpanded ? 'is-expanded' : ''}`} />
+                                          </span>
+                                      </div>
+                                      {directoryExpanded && (
+                                          <div className="help-center-nav-group-items">
+                                              {CHAPTERS.map(ch => (
+                                                  <button
+                                                      className={`help-center-nav-group-item ${activeSection === ch.id ? 'is-active' : ''}`}
+                                                      key={ch.id}
+                                                      type="button"
+                                                      onClick={() => handleNavigate(ch.id)}
+                                                  >
+                                                      {ch.title}
+                                                  </button>
+                                              ))}
+                                          </div>
+                                      )}
+                                  </div>
+
                                   {navItems.map(item => (
                                       <div key={item.id} className="help-center-nav-group">
                                            {item.children ? (
@@ -482,6 +516,8 @@ const Component = forwardRef(function HelpCenter(
                                   ))}
                               </nav>
           
+                              {/* 导航数据结束 */}
+
                               <button className="help-center-demo-btn" type="button">
                                   <Play className="help-center-demo-btn-icon" size={16} />
                                   演示视频
@@ -694,19 +730,10 @@ const Component = forwardRef(function HelpCenter(
                                                <hr className="help-center-section-divider" />
                                            </div>
 
-                                           <p className="help-center-content-desc">
-                                               管理和浏览所有商品信息，支持搜索、筛选和批量操作。
-                                           </p>
-                                           <div className="help-center-rich-media">
-                                               <div className="help-center-video-inline">
-                                                   <div className="help-center-video-inline-poster">
-                                                       <div className="help-center-video-inline-play">
-                                                           <Play size={20} />
-                                                       </div>
-                                                   </div>
-                                               </div>
-                                               <p style={{ margin: '8px 0 0', fontSize: 'var(--font-size-sm)', color: 'var(--text-tertiary)', textAlign: 'center' }}>图2：商品列表操作演示</p>
-                                           </div>
+                                           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, minHeight: '400px', color: 'var(--text-tertiary)' }}>
+                                                <EmptyStateIcon size={160} />
+                                                <p style={{ margin: '20px 0 0', fontSize: 'var(--font-size-lg)', color: 'var(--text-secondary)' }}>暂无帮助文档</p>
+                                            </div>
                                        </div>
 
                                        <div
@@ -859,6 +886,27 @@ function ImageIcon({ size }: { size: number }) {
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
             <circle cx="8.5" cy="8.5" r="1.5" />
             <polyline points="21 15 16 10 5 21" />
+        </svg>
+    );
+}
+
+function EmptyStateIcon({ size }: { size: number }) {
+    return (
+        <svg
+            width={size}
+            height={size}
+            viewBox="0 0 80 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <rect x="16" y="8" width="48" height="64" rx="4" fill="#F2F3F5" stroke="#C9CDD4" strokeWidth="1.5" />
+            <path d="M16 20H64" stroke="#C9CDD4" strokeWidth="1.5" />
+            <rect x="24" y="28" width="32" height="3" rx="1.5" fill="#D9DDE4" />
+            <rect x="24" y="36" width="24" height="3" rx="1.5" fill="#D9DDE4" />
+            <rect x="24" y="44" width="28" height="3" rx="1.5" fill="#D9DDE4" />
+            <rect x="24" y="52" width="20" height="3" rx="1.5" fill="#D9DDE4" />
+            <circle cx="40" cy="60" r="8" fill="white" stroke="#E5E6EB" strokeWidth="1.5" />
+            <path d="M37 60L39 62L43 58" stroke="#C9CDD4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
     );
 }

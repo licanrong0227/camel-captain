@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "counter-button",
+    "targetPath": "prototypes/counter-button",
+    "filePath": ".axhub/make/comments/efbaca913af343a2ca9fcb23116e4b0925082ffd7784ce4615afba9522f21791.json"
+  },
+  "comments": [],
+  "images": []
+}

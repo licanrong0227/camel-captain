@@ -6,50 +6,6 @@
     "targetPath": "prototypes/help-center-copy",
     "filePath": ".axhub/make/comments/baf70388d85bc65fe03d48dab9e61050dece964824159153a52fcd1fa3910df8.json"
   },
-  "comments": [
-    {
-      "label": "div#__axhub_annotation_host__ >> div(\"原型目录添加商品商品列表\")",
-      "locator": {
-        "selectors": [
-          "[data-axhub-annotation-comment-target-id=\"directory-panel\"]",
-          ".axhub-play-client-global-panel",
-          "div:nth-of-type(2) > div > div > div > div:nth-of-type(2)"
-        ],
-        "fingerprint": "div|class=axhub-play-client-global-panel|text=原型目录添加商品商品列表",
-        "path": [
-          25,
-          0,
-          0,
-          0,
-          2
-        ],
-        "shadowHostChain": [
-          "#__axhub_annotation_host__"
-        ]
-      },
-      "marker": {
-        "clientX": 1830,
-        "clientY": 111,
-        "documentX": 1830,
-        "documentY": 111,
-        "xPercent": 95.7112970711297,
-        "y": 111,
-        "isFixed": true,
-        "offsetX": 158,
-        "offsetY": 111,
-        "dirtySince": 1789629669023
-      },
-      "id": "04be64f3-553f-4196-a64f-67fdf93ee8e7",
-      "state": "idle",
-      "comment": "原型目录删除掉两个页面",
-      "pageScope": "prototypes/help-center-copy::page::product-add",
-      "provider": null,
-      "requestId": null,
-      "sessionId": null,
-      "updatedAt": null,
-      "message": null,
-      "code": null
-    }
-  ],
+  "comments": [],
   "images": []
 }

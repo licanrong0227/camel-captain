@@ -1,0 +1,195 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "instant-consultation",
+    "pageId": "instant-consultation",
+    "nodes": [
+      {
+        "id": "conv-search",
+        "index": 0,
+        "title": "会话搜索框",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"conv-search\"]"],
+          "fingerprint": "input|data-annotation-id=conv-search",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#E6A23C",
+        "images": [],
+        "createdAt": 1789718568898,
+        "updatedAt": 1789718568898
+      },
+      {
+        "id": "auto-translate-section",
+        "index": 1,
+        "title": "自动翻译区域",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"auto-translate-section\"]"],
+          "fingerprint": "div|data-annotation-id=auto-translate-section",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#409EFF",
+        "images": [],
+        "createdAt": 1789718568898,
+        "updatedAt": 1789718568898
+      },
+      {
+        "id": "translate-language-select",
+        "index": 2,
+        "title": "翻译语言选择",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"translate-language-select\"]"],
+          "fingerprint": "select|data-annotation-id=translate-language-select",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#67C23A",
+        "images": [],
+        "createdAt": 1789718568898,
+        "updatedAt": 1789718568898
+      },
+      {
+        "id": "translate-btn",
+        "index": 3,
+        "title": "翻译按钮",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"translate-btn\"]"],
+          "fingerprint": "button|data-annotation-id=translate-btn",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#E6A23C",
+        "images": [],
+        "createdAt": 1789718568898,
+        "updatedAt": 1789718568898
+      },
+      {
+        "id": "send-btn",
+        "index": 4,
+        "title": "发送按钮",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"send-btn\"]"],
+          "fingerprint": "button|data-annotation-id=send-btn",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#409EFF",
+        "images": [],
+        "createdAt": 1789718568898,
+        "updatedAt": 1789718568898
+      },
+      {
+        "id": "chat-input-textarea",
+        "index": 5,
+        "title": "输入框快捷键变更",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"chat-input-textarea\"]"],
+          "fingerprint": "textarea|data-annotation-id=chat-input-textarea",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#E6A23C",
+        "images": [],
+        "createdAt": 1789718568898,
+        "updatedAt": 1789718568898
+      },
+      {
+        "id": "msg-bubble",
+        "index": 6,
+        "title": "消息气泡",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"msg-bubble\"]"],
+          "fingerprint": "div|data-annotation-id=msg-bubble",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#909399",
+        "images": [],
+        "createdAt": 1789718568898,
+        "updatedAt": 1789718568898
+      }
+    ],
+    "updatedAt": 1789718568898
+  },
+  "markdownMap": {
+    "conv-search": "## 会话搜索框\n\n修改了说明文案，增加买家ID和聊天记录搜索，聊天记录包含接收的信息和发送的信息。\n\n### 搜索范围\n- 买家名称\n- 买家ID\n- 订单号\n- 聊天记录（接收的信息 + 发送的信息）",
+    "auto-translate-section": "## 自动翻译功能说明\n\n### 接收信息\n勾选后，打开聊天对话窗口时，**自动翻译当前用户所有接收到的未读文字信息**。\n\n### 交互逻辑\n- 选项默认不勾选\n- 勾选状态对所有用户生效，不按用户区分\n- 勾选后实时生效，无需手动确认\n\n### 变更记录\n- 已移除「发送信息」自动翻译选项；发送信息不支持自动翻译，需通过输入框快捷键 Alt + T 手动翻译",
+    "translate-language-select": "## 翻译语言\n\n翻译语种与用户绑定，每次打开对话窗口时，自动载入上一次与该用户沟通所选择的语种。\n\n### 支持语言列表（按接口支持语种全量加载）\n中文、英语、日语、韩语、法语、德语、西班牙语、葡萄牙语、意大利语、俄语、阿拉伯语、荷兰语、波兰语、泰语、越南语、土耳其语、印地语、印尼语、孟加拉语、捷克语、丹麦语、希腊语、芬兰语、希伯来语、匈牙利语、马来语、挪威语、罗马尼亚语、斯洛伐克语、瑞典语、乌克兰语、加泰罗尼亚语、克罗地亚语、爱沙尼亚语、拉脱维亚语、立陶宛语、斯洛文尼亚语、保加利亚语、塞尔维亚语、斯瓦希里语、菲律宾语、尼泊尔语、僧伽罗语、缅甸语、老挝语、高棉语、蒙古语、格鲁吉亚语、亚美尼亚语、阿塞拜疆语、哈萨克语、乌兹别克语",
+    "translate-btn": "## 翻译按钮\n\n### 功能说明\n将上方输入框中的原文消息翻译为下方输入框中的译文消息。\n\n### 交互逻辑\n- **禁用状态**：当上方原文输入框为空时，按钮置灰不可点击\n- **点击行为**：点击后调用翻译接口，将翻译结果填入下方译文输入框\n- **可编辑性**：翻译完成后，译文内容仍可在下方输入框中手动编辑\n- **按钮文字**：始终显示「翻译」，不做状态切换\n\n### 译文显示与发送规则\n- **译文显示位置**：翻译后的内容在原文内容下方显示，不替换原文内容\n- **译文输入框**：默认隐藏，点击翻译后显示\n- **清空隐藏**：用户清空译文输入框内容后，译文输入框自动隐藏\n- **发送逻辑**：发送时，若译文不为空则发送译文；若译文为空则发送原文",
+    "send-btn": "## 发送按钮\n\n### 功能说明\n将消息发送给对方。\n\n### 交互逻辑\n- **禁用状态**：当原文输入框和译文输入框均为空时，按钮置灰不可点击\n- **可点击条件**：原文或译文任一输入框不为空时即可点击发送\n- **发送内容**：优先发送译文内容；若译文为空则发送原文内容\n- **按钮样式**：主色调（蓝色）高亮按钮\n\n### 消息保留与接口发送规则\n- **两者均不为空时**：系统保留原文和译文内容，界面上同时展示；**发送给敦煌的接口只需要发送译文内容**\n- **仅译文为空时**：发送原文内容给接口\n- **仅原文为空时**：发送译文内容给接口",
+    "chat-input-textarea": "## 输入框快捷键变更\n\n### 变更说明\n输入框提示文字新增 **Alt + T 翻译** 快捷键提示（原 Ctrl + T 与浏览器快捷键冲突，已改为 Alt + T）。\n\n### 快捷键列表\n- **回车**：发送消息\n- **Ctrl + Enter**：换行\n- **Alt + T**：翻译当前输入内容\n- **Ctrl + V**：粘贴文字或图片",
+    "msg-bubble": "## 消息气泡\n\n### 功能说明\n聊天区域中每条消息的展示容器，展示原文和译文内容。\n\n### 显示规则\n- **原文和译文均不为空时**：上方始终显示原文，下方始终显示译文，中间用虚线分隔\n- **仅原文为空时**：仅显示译文内容\n- **仅译文为空时**：仅显示原文内容"
+  },
+  "assetMap": {},
+  "directory": {
+    "nodes": [
+      {
+        "type": "folder",
+        "id": "im-features",
+        "title": "即时咨询功能",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "route",
+            "id": "route-search",
+            "title": "会话搜索",
+            "route": "instant-consultation",
+            "payload": { "annotationId": "conv-search" }
+          },
+          {
+            "type": "route",
+            "id": "route-translate",
+            "title": "自动翻译",
+            "route": "instant-consultation",
+            "payload": { "annotationId": "auto-translate-section" }
+          },
+          {
+            "type": "route",
+            "id": "route-input-textarea",
+            "title": "输入框快捷键",
+            "route": "instant-consultation",
+            "payload": { "annotationId": "chat-input-textarea" }
+          },
+          {
+            "type": "route",
+            "id": "route-language",
+            "title": "翻译语言",
+            "route": "instant-consultation",
+            "payload": { "annotationId": "translate-language-select" }
+          },
+          {
+            "type": "route",
+            "id": "route-translate-btn",
+            "title": "翻译按钮",
+            "route": "instant-consultation",
+            "payload": { "annotationId": "translate-btn" }
+          },
+          {
+            "type": "route",
+            "id": "route-send-btn",
+            "title": "发送按钮",
+            "route": "instant-consultation",
+            "payload": { "annotationId": "send-btn" }
+          },
+          {
+            "type": "route",
+            "id": "route-msg-bubble",
+            "title": "消息气泡",
+            "route": "instant-consultation",
+            "payload": { "annotationId": "msg-bubble" }
+          }
+        ]
+      }
+    ]
+  }
+}

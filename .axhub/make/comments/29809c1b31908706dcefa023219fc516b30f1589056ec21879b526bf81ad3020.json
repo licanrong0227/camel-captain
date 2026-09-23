@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "batch-image",
+    "targetPath": "prototypes/batch-image",
+    "filePath": ".axhub/make/comments/29809c1b31908706dcefa023219fc516b30f1589056ec21879b526bf81ad3020.json"
+  },
+  "comments": [
+    {
+      "label": "button(\"编辑\")",
+      "locator": {
+        "selectors": [
+          "body > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > table > tbody > tr:nth-of-type(1) > td:nth-of-type(3) > div > button:nth-of-type(1)",
+          "#root div > div:nth-of-type(2) > div > div:nth-of-type(2) > table > tbody > tr:nth-of-type(1) > td:nth-of-type(3) > div > button:nth-of-type(1)"
+        ],
+        "fingerprint": "button|class=wm-action-btn|text=编辑",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          2,
+          0,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 1040,
+        "clientY": 392,
+        "documentX": 1040,
+        "documentY": 392,
+        "xPercent": 54.39330543933054,
+        "y": 392,
+        "isFixed": true,
+        "offsetX": 49.46875,
+        "offsetY": 9.5,
+        "dirtySince": 1789730195039
+      },
+      "id": "947f2bec-c94a-477a-9d90-a721372c5cbb",
+      "state": "idle",
+      "comment": "管理模板编辑和删除弹窗应该改在管理模板弹窗上，操作成功或关闭还是返回管理模板弹窗",
+      "pageScope": "/prototypes/batch-image",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    },
+    {
+      "label": "button(\"确认\")",
+      "locator": {
+        "selectors": [
+          ".wm-btn--confirm",
+          ".wm-btn.wm-btn--confirm",
+          "body > div > div > div:nth-of-type(2) > div > div:nth-of-type(3) > button:nth-of-type(2)",
+          "#root div > div:nth-of-type(2) > div > div:nth-of-type(3) > button:nth-of-type(2)"
+        ],
+        "fingerprint": "button|class=wm-btn.wm-btn--confirm|text=确认",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          2,
+          1
+        ]
+      },
+      "marker": {
+        "clientX": 1089,
+        "clientY": 491,
+        "documentX": 1089,
+        "documentY": 491,
+        "xPercent": 56.9560669456067,
+        "y": 491,
+        "isFixed": true,
+        "offsetX": 45,
+        "offsetY": 16.5,
+        "dirtySince": 1789730214616
+      },
+      "id": "c3b67f49-b2cd-47f8-949e-6353219e4eaf",
+      "state": "idle",
+      "comment": "删除成功需要toast提示",
+      "pageScope": "/prototypes/batch-image",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    },
+    {
+      "label": "Annotation Panel",
+      "locator": {
+        "selectors": [
+          "[data-axhub-annotation-panel-node-id=\"text-watermark-config\"]"
+        ],
+        "fingerprint": "annotation-panel:text-watermark-config",
+        "path": [],
+        "shadowHostChain": []
+      },
+      "marker": {
+        "clientX": 835,
+        "clientY": 585,
+        "documentX": 835,
+        "documentY": 585,
+        "xPercent": 43.67154811715481,
+        "y": 585,
+        "isFixed": true,
+        "offsetX": 60,
+        "offsetY": 4.125,
+        "dirtySince": 1790075481590
+      },
+      "id": "aee65d35-a9cd-4dfc-93b9-d70a3d643a7c",
+      "state": "idle",
+      "comment": "增加字体，字体采用思源黑体，开源链接https://github.com/adobe-fonts/source-han-sans/tree/release\n系统上预览的字体就要采用思源黑体的字体展示预览",
+      "pageScope": "/prototypes/batch-image",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    },
+    {
+      "label": "Annotation Panel",
+      "locator": {
+        "selectors": [
+          "[data-axhub-annotation-panel-node-id=\"tabs\"]"
+        ],
+        "fingerprint": "annotation-panel:tabs",
+        "path": [],
+        "shadowHostChain": []
+      },
+      "skillIds": [
+        "prototype-annotation"
+      ],
+      "marker": {
+        "clientX": 1070,
+        "clientY": 406,
+        "documentX": 1070,
+        "documentY": 406,
+        "xPercent": 55.962343096234314,
+        "y": 406,
+        "isFixed": true,
+        "offsetX": 287,
+        "offsetY": 50,
+        "dirtySince": 1789869698171
+      },
+      "id": "f428d1b6-e276-41fb-8472-4e46978f7bc0",
+      "state": "idle",
+      "comment": "补充标注说明，其他功能改图功能选项未改动，就新增了“加水印”功能",
+      "pageScope": "/prototypes/batch-image",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    },
+    {
+      "label": "Annotation Panel",
+      "locator": {
+        "selectors": [
+          "[data-axhub-annotation-panel-node-id=\"text-watermark-config\"]"
+        ],
+        "fingerprint": "annotation-panel:text-watermark-config",
+        "path": [],
+        "shadowHostChain": []
+      },
+      "skillIds": [
+        "prototype-annotation"
+      ],
+      "marker": {
+        "clientX": 940.5,
+        "clientY": 590.875,
+        "documentX": 940.5,
+        "documentY": 590.875,
+        "xPercent": 49.18933054393305,
+        "y": 590.875,
+        "isFixed": true,
+        "offsetX": 165.5,
+        "offsetY": 10,
+        "dirtySince": 1790076075022
+      },
+      "id": "3eaba2d5-0b92-4076-a663-c503eb94c0be",
+      "state": "idle",
+      "comment": "增加字体标注，字体采用思源黑体，开源链接https://github.com/adobe-fonts/source-han-sans/tree/release\n系统上预览的字体就要采用思源黑体的字体展示预览，只增加标注即可，无需调整页面上的功能",
+      "pageScope": "/prototypes/batch-image",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    },
+    {
+      "label": "button(\"加水印\")",
+      "locator": {
+        "selectors": [
+          ".batch-image-tab--active",
+          ".batch-image-tab.batch-image-tab--active",
+          "body > div > div > div > div:nth-of-type(2) > button:nth-of-type(3)",
+          "#root div > div > div:nth-of-type(2) > button:nth-of-type(3)"
+        ],
+        "fingerprint": "button|class=batch-image-tab.batch-image-tab--active|text=加水印",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          2
+        ]
+      },
+      "marker": {
+        "clientX": 628,
+        "clientY": 255,
+        "documentX": 628,
+        "documentY": 255,
+        "xPercent": 32.84518828451883,
+        "y": 255,
+        "isFixed": true,
+        "offsetX": 48,
+        "offsetY": 9,
+        "dirtySince": 1789869206808
+      },
+      "id": "c6eb494b-3c60-4a5a-a68e-d94f76c370f4",
+      "state": "idle",
+      "comment": "除了加水印的tab，其他tab移除点击功能\n默认选中“加水印”\ntab改为连接在一起的样式，不要分开的独立按钮",
+      "pageScope": "/prototypes/batch-image",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    }
+  ],
+  "images": []
+}

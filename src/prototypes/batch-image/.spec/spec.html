@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>批量美图 - 主规格</title>
+  <style>
+    body { font-family: "Helvetica Neue", Helvetica, "PingFang SC", sans-serif; padding: 40px; line-height: 1.6; color: #303133; }
+    h1 { font-size: 24px; margin-bottom: 24px; }
+    h2 { font-size: 18px; margin: 24px 0 12px; color: #2c7bfc; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+    th, td { border: 1px solid #dcdfe6; padding: 8px 12px; text-align: left; font-size: 14px; }
+    th { background: #f5f7fa; font-weight: 600; }
+    .tag { display: inline-block; padding: 2px 8px; background: #ecf5ff; color: #2c7bfc; border-radius: 4px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>批量美图弹窗 - 主规格</h1>
+
+  <h2>当前方案</h2>
+  <ul>
+    <li><strong>原型意图</strong>：高保真还原「批量美图」弹窗的视觉样式和基础交互</li>
+    <li><strong>使用场景</strong>：电商后台批量处理商品图片时弹出的操作面板</li>
+    <li><strong>当前表达</strong>：单弹窗页面，包含选项卡、图片网格、选择控制和操作按钮</li>
+  </ul>
+
+  <h2>原型范围</h2>
+  <h3>本次呈现</h3>
+  <ul>
+    <li>弹窗标题栏（标题 + 关闭按钮）</li>
+    <li>四个选项卡：转白底、翻译、去水印、裁剪缩放</li>
+    <li>橙色「开始处理」按钮</li>
+    <li>全选复选框 + 已选计数</li>
+    <li>6 张商品图片网格，含选中状态、尺寸标签和标题</li>
+    <li>底部「取消」和「确定」按钮</li>
+  </ul>
+
+  <h3>本次不呈现</h3>
+  <ul>
+    <li>选项卡内容的具体功能面板</li>
+    <li>图片上传/拖拽功能</li>
+    <li>后端 API 对接</li>
+  </ul>
+
+  <h2>交互与状态方案</h2>
+  <table>
+    <tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr>
+    <tr><td>选项卡</td><td>转白底高亮</td><td>点击其他选项卡</td><td>高亮切换到目标选项卡</td><td>目标选项卡高亮</td></tr>
+    <tr><td>全选复选框</td><td>全选状态</td><td>点击复选框</td><td>取消所有图片选中</td><td>所有图片取消选中</td></tr>
+    <tr><td>图片卡片</td><td>已选中</td><td>点击图片</td><td>取消该图片选中，蓝色边框消失</td><td>该图片未选中</td></tr>
+    <tr><td>开始处理</td><td>—</td><td>点击按钮</td><td>显示处理提示</td><td>—</td></tr>
+    <tr><td>确定按钮</td><td>—</td><td>点击按钮</td><td>关闭弹窗，返回选中图片</td><td>弹窗关闭</td></tr>
+    <tr><td>取消按钮</td><td>—</td><td>点击按钮</td><td>关闭弹窗</td><td>弹窗关闭</td></tr>
+  </table>
+
+  <h2>设计规格</h2>
+  <table>
+    <tr><th>属性</th><th>值</th></tr>
+    <tr><td>主色（蓝色）</td><td><span class="tag">#2c7bfc</span></td></tr>
+    <tr><td>强调色（橙色）</td><td><span class="tag">#ff781f</span></td></tr>
+    <tr><td>弹窗宽度</td><td>640px</td></tr>
+    <tr><td>弹窗圆角</td><td>10px</td></tr>
+    <tr><td>按钮圆角</td><td>8px</td></tr>
+    <tr><td>图片圆角</td><td>4px</td></tr>
+    <tr><td>字号</td><td>14px / 12px</td></tr>
+    <tr><td>图片网格</td><td>3 列，间距 12px</td></tr>
+  </table>
+</body>
+</html>
