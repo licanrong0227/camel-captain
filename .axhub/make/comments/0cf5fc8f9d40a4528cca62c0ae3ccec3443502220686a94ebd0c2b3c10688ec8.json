@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "auto-edit-dialog",
+    "targetPath": "prototypes/auto-edit-dialog",
+    "filePath": ".axhub/make/comments/0cf5fc8f9d40a4528cca62c0ae3ccec3443502220686a94ebd0c2b3c10688ec8.json"
+  },
+  "comments": [],
+  "images": []
+}

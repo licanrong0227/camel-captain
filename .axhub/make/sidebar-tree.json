@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-23T10:30:46.002Z",
+  "updatedAt": "2026-09-24T10:10:29.654Z",
   "prototypes": [
     {
       "id": "folder-1790060254620-0uhxj0",
@@ -24,6 +24,12 @@
           "kind": "item",
           "title": "即时咨询",
           "itemKey": "prototypes/instant-consultation"
+        },
+        {
+          "id": "item:prototypes:auto-edit-dialog",
+          "kind": "item",
+          "title": "自动编辑弹窗 - 骆驼队长BI",
+          "itemKey": "prototypes/auto-edit-dialog"
         }
       ]
     },

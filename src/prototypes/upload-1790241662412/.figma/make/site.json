@@ -1,0 +1,10 @@
+{
+  "description": "Provides a secure and user-friendly login interface enabling users to access their accounts efficiently and safely.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
