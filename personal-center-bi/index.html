@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>购买权益弹窗</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    html, body {
+      box-sizing: border-box;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    #root {
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      height: 100%;
+      min-height: 100vh;
+      overflow: visible;
+    }
+    body.is-element-page #root {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+  <style>
+.pcd-page{position:fixed;inset:0;background:#f0f1f5;font-family:Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif}.pcd-overlay{--pcd-primary: #ff781f;--pcd-gold: #faad14;--pcd-gold-light: #ffd666;--pcd-icon-gradient: linear-gradient(135deg, #ffd666, #faad14);--pcd-text-primary: #303133;--pcd-text-regular: #606266;--pcd-text-secondary: #909399;--pcd-text-placeholder: #c0c4cc;--pcd-border: #dcdfe6;--pcd-border-light: #ebeef5;--pcd-border-lighter: #e6ebf5;--pcd-bg-page: #f0f1f5;--pcd-bg-panel: #fafafa;--pcd-radius: 8px;--pcd-radius-card: 10px;--pcd-shadow: 0 2px 12px rgba(0, 0, 0, .1);--pcd-font: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;position:fixed;inset:0;background:#0000004d;display:flex;align-items:center;justify-content:center;z-index:1000;font-family:var(--pcd-font);color:var(--pcd-text-primary)}.pcd-modal{position:relative;width:1200px;max-width:calc(100vw - 32px);background:#fff;border-radius:var(--pcd-radius-card);box-shadow:var(--pcd-shadow);overflow:visible}.pcd-modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--pcd-border-light)}.pcd-modal-title{font-size:16px;font-weight:600;color:var(--pcd-text-primary)}.pcd-close{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--pcd-text-secondary);cursor:pointer}.pcd-close:hover{background:var(--pcd-bg-page);color:var(--pcd-text-primary)}.pcd-body{padding:24px 24px 20px}.pcd-steps{display:flex;align-items:center;justify-content:center;gap:12px;padding:8px 0 28px}.pcd-step{display:flex;align-items:center;gap:8px}.pcd-step-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;border:1px solid var(--pcd-text-placeholder);background:#fff;color:var(--pcd-text-secondary);font-size:13px}.pcd-step-label{font-size:14px;color:var(--pcd-text-secondary)}.pcd-step.is-active .pcd-step-num{border-color:var(--pcd-gold);background:var(--pcd-gold);color:#fff}.pcd-step.is-active .pcd-step-label{color:var(--pcd-gold)}.pcd-step-line{width:96px;height:1px;background:var(--pcd-border-lighter)}.pcd-brand-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.pcd-brand-right{margin-left:auto;display:flex;align-items:center;gap:16px}.pcd-currency{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;width:88px;height:32px;padding:0 10px;border:1px solid var(--pcd-border);border-radius:var(--pcd-radius);background:#fff;font-size:13px;color:var(--pcd-text-primary);box-sizing:border-box}.pcd-currency svg{color:var(--pcd-text-secondary)}.pcd-member-est{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--pcd-text-secondary)}.pcd-help-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--pcd-text-placeholder);color:#fff;font-size:10px;line-height:1}.pcd-section-label{font-size:14px;font-weight:600;color:var(--pcd-text-primary);margin-bottom:12px}.pcd-items{display:flex;gap:16px;margin-bottom:20px}.pcd-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;width:112px;padding:16px 10px 14px;border:1px solid var(--pcd-border-light);border-radius:var(--pcd-radius);background:#fff;box-sizing:border-box}.pcd-item.is-active{border-color:var(--pcd-gold);background:#fffdf6}.pcd-item{cursor:pointer}.pcd-item:hover{border-color:var(--pcd-gold)}.pcd-item-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:var(--pcd-radius-card);background:var(--pcd-icon-gradient);color:#fff;font-size:20px;font-weight:700}.pcd-item-icon--lg{width:56px;height:56px;border-radius:12px;font-size:26px}.pcd-item-name{font-size:14px;color:var(--pcd-text-primary)}.pcd-check-badge{position:absolute;top:-7px;right:-7px;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--pcd-gold);box-shadow:0 1px 3px #00000026}.pcd-panel{display:flex;gap:24px;padding:20px;border:1px solid #f0f0f0;border-radius:var(--pcd-radius-card);background:var(--pcd-bg-panel);margin-bottom:24px}.pcd-panel-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:148px;padding:20px 10px;border:1px solid #f0f0f0;border-radius:var(--pcd-radius-card);background:#fff;box-sizing:border-box;flex-shrink:0}.pcd-panel-card-name{font-size:14px;color:var(--pcd-text-primary)}.pcd-panel-content{flex:1;min-width:0}.pcd-qty-label{font-size:14px;color:var(--pcd-text-primary);margin-bottom:10px}.pcd-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}.pcd-chip{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 14px;border:1px solid var(--pcd-border);border-radius:6px;background:#fff;font-size:13px;color:var(--pcd-text-primary);box-sizing:border-box}.pcd-chip.is-active{border-color:var(--pcd-gold);color:var(--pcd-gold)}.pcd-chip-wrap{position:relative;display:inline-flex}.pcd-chip-badge{position:absolute;top:-11px;right:-10px;padding:3px 5px;border-radius:6px 6px 6px 2px;background:var(--pcd-primary);color:#fff;font-size:10px;line-height:1;white-space:nowrap}.pcd-numbox-row{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:4px}.pcd-numbox-label{font-size:12px;color:var(--pcd-text-regular)}.pcd-numbox{display:inline-flex;align-items:stretch;width:92px;height:28px;border:1px solid var(--pcd-border);border-radius:4px;background:#fff;overflow:hidden;box-sizing:border-box}.pcd-numbox-value{flex:1;display:flex;align-items:center;padding-left:8px;font-size:12px;color:var(--pcd-text-primary)}.pcd-numbox-spinners{display:flex;flex-direction:column;border-left:1px solid var(--pcd-border)}.pcd-numbox-spinner{display:flex;align-items:center;justify-content:center;flex:1;width:18px;color:var(--pcd-text-secondary);background:#fff}.pcd-numbox-spinner+.pcd-numbox-spinner{border-top:1px solid var(--pcd-border)}.pcd-price{display:flex;align-items:baseline;gap:6px;color:#fa8c16}.pcd-price-symbol{font-size:20px;font-weight:700}.pcd-price-value{font-size:30px;font-weight:700;line-height:1}.pcd-footer{display:flex;justify-content:flex-end}.pcd-submit{height:40px;padding:0 24px;border:0;border-radius:var(--pcd-radius);background:var(--pcd-primary);color:#fff;font-size:14px;cursor:pointer}.pcd-submit:hover{background:#e66a1a}.pcd-notice{width:420px}.pcd-notice-body{padding:26px 24px;font-size:14px;line-height:1.6;color:var(--pcd-text-regular)}.pcd-notice-footer{display:flex;justify-content:flex-end;gap:10px;padding:0 24px 20px}.pcd-btn{height:34px;padding:0 18px;border:1px solid var(--pcd-border);border-radius:var(--pcd-radius);background:#fff;color:var(--pcd-text-regular);font-size:13px;cursor:pointer}.pcd-btn:hover{color:var(--pcd-primary);border-color:#ffd3b3;background:#fff7f0}.pcd-btn--primary{border-color:var(--pcd-primary);background:var(--pcd-primary);color:#fff}.pcd-btn--primary:hover{border-color:#e66a1a;background:#e66a1a;color:#fff}.pcd-demo-bar{position:fixed;left:50%;bottom:20px;transform:translate(-50%);z-index:900;display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--pcd-border-light);border-radius:var(--pcd-radius);background:#ffffffeb;box-shadow:var(--pcd-shadow)}.pcd-demo-label{margin-right:4px;font-size:12px;color:var(--pcd-text-secondary)}.pcd-demo-btn{height:28px;padding:0 12px;border:1px solid var(--pcd-border);border-radius:6px;background:#fff;color:var(--pcd-text-regular);font-size:12px;cursor:pointer}.pcd-demo-btn:hover{border-color:#ffd3b3;color:var(--pcd-primary)}.pcd-demo-btn.is-active{border-color:var(--pcd-gold);color:var(--pcd-gold)}
+
+  </style>
+</head>
+<body>
+
+  <script>
+    (function () {
+      var isComponent = false;
+      if (document.body && (isComponent || window.location.pathname.includes('/components/'))) {
+        document.body.classList.add('is-element-page');
+      }
+    })();
+  </script>
+
+  <div id="root"></div>
+
+  
+  <script src="./assets/react.production.min.js"></script>
+  <script src="./assets/react-dom.production.min.js"></script>
+  <script src="./assets/export-html-bootstrap.js"></script>
+
+  <script>
+    function waitForBootstrap(timeoutMs) {
+      timeoutMs = timeoutMs || 10000;
+      return new Promise(function (resolve, reject) {
+        var startedAt = Date.now();
+        function check() {
+          if (window.HtmlTemplateBootstrap) {
+            resolve(window.HtmlTemplateBootstrap);
+            return;
+          }
+          if (Date.now() - startedAt >= timeoutMs) {
+            reject(new Error('[Html Template] Bootstrap 初始化超时'));
+            return;
+          }
+          setTimeout(check, 10);
+        }
+        check();
+      });
+    }
+
+    function loadEntryScript(src) {
+      return new Promise(function (resolve, reject) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = false;
+        script.onload = function () { resolve(); };
+        script.onerror = function () { reject(new Error('[Html Template] 入口脚本加载失败: ' + src)); };
+        document.body.appendChild(script);
+      });
+    }
+
+    async function bootstrapAndRender() {
+      try {
+        var bootstrap = await waitForBootstrap();
+        var renderComponent = bootstrap.renderComponent;
+        window.React = bootstrap.React;
+        window.ReactDOM = bootstrap.ReactDOM;
+
+        await loadEntryScript('./index.js');
+        
+
+        var Component = window.UserComponent && (window.UserComponent.Component || window.UserComponent.default || window.UserComponent);
+        if (!Component) {
+          throw new Error('[Html Template] 入口脚本未暴露 UserComponent');
+        }
+
+        renderComponent(Component);
+      } catch (error) {
+        console.error('[Html Template] 页面初始化失败:', error);
+      }
+    }
+
+    bootstrapAndRender();
+  </script>
+
+</body>
+</html>
