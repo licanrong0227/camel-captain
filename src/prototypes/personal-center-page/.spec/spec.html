@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>个人中心 - 骆驼队长BI · 原型主规格</title>
+  <style>
+    :root {
+      font-family:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --brand: #008f5d;
+      --brand-ink: #007a50;
+      --brand-soft: #e6f5ef;
+      --brand-surface: #f2faf7;
+      --brand-border: #b7ddcf;
+      --text: #222832;
+      --text-secondary: #4b5565;
+      --text-muted: #6f7888;
+      --text-placeholder: #8b94a3;
+      color: var(--text);
+      background: #f5f7fb;
+      scrollbar-gutter: stable;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px 20px 64px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 32px;
+      padding: 18px 14px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .sidebar-title {
+      margin: 0 8px 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .page-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .page-nav button {
+      width: 100%;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .page-nav button:hover,
+    .page-nav button[aria-current="page"] {
+      color: var(--brand-ink);
+      background: var(--brand-soft);
+    }
+
+    .page-nav button[aria-current="page"] { font-weight: 600; }
+
+    main {
+      min-width: 0;
+      padding: 40px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 16px rgb(30 45 75 / 6%);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.3;
+    }
+
+    h2 {
+      margin: 44px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e7eaf0;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    h3 {
+      margin: 28px 0 12px;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    p,
+    li {
+      font-size: 15px;
+      line-height: 2;
+    }
+
+    p { margin: 20px 0; }
+
+    td,
+    th {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .definition {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-left: 3px solid var(--brand);
+      color: var(--text-secondary);
+      background: var(--brand-surface);
+    }
+
+    .hint { color: var(--text-muted); }
+
+    ul {
+      margin: 10px 0 20px;
+      padding-left: 22px;
+    }
+
+    .placeholder-list { padding-left: 0; }
+
+    .placeholder-list li {
+      list-style: none;
+      color: var(--text-placeholder);
+    }
+
+    .placeholder-list li::before {
+      margin-right: 8px;
+      color: #b2bac6;
+      content: "—";
+    }
+
+    table {
+      width: 100%;
+      margin-top: 14px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 1px solid #dfe4ee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f6f8fb; }
+
+    td:empty::after {
+      content: "待补充";
+      color: var(--text-placeholder);
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #eef1f6;
+    }
+
+    .spec-page[hidden] { display: none; }
+
+    @media (max-width: 720px) {
+      body { padding: 0 8px 40px; }
+      .shell { display: block; }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        margin: 0 -8px 12px;
+        padding: 10px 8px;
+        border-width: 0 0 1px;
+        border-radius: 0;
+      }
+
+      .sidebar-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .page-nav {
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .page-nav::-webkit-scrollbar { display: none; }
+
+      .page-nav button {
+        width: auto;
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 24px 18px;
+        border-radius: 8px;
+      }
+
+      .table-wrap { overflow: visible; }
+
+      table,
+      tbody,
+      tr,
+      td {
+        display: block;
+        width: 100%;
+      }
+
+      thead { display: none; }
+
+      tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      tr {
+        overflow: hidden;
+        border: 1px solid #dfe4ee;
+        border-radius: 6px;
+        background: #fff;
+      }
+
+      td {
+        display: grid;
+        grid-template-columns: minmax(96px, 36%) minmax(0, 1fr);
+        gap: 12px;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 0;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      td:last-child { border-bottom: 0; }
+
+      td::before {
+        content: attr(data-label);
+        color: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <p class="sidebar-title">目录</p>
+      <nav class="page-nav" aria-label="规格文档页面">
+        <button type="button" data-page-target="overview" aria-current="page">当前方案</button>
+      </nav>
+    </aside>
+
+    <main>
+      <article class="spec-page" data-spec-page="overview">
+        <h1>个人中心 - 骆驼队长BI</h1>
+        <p class="definition">本文档是用户与 Agent 围绕当前原型进行方案沟通、确认和持续生成的事实依据。只维护当前有效方案，并简短记录会影响当前原型的重要用户决策和变更。</p>
+
+        <section id="current-plan">
+          <h2>当前方案</h2>
+          <ul>
+            <li>原型意图：按用户提供的线上截图与样式采集信息，高保真还原「个人中心 - 基础资料」整页，作为可运行的生产级前端原型。</li>
+            <li>使用场景：需求评审与后续功能扩展（如修改密码、会员中心等）的页面基底。</li>
+            <li>当前表达：顶部全局导航 + 面包屑 + 左侧个人中心菜单 + 中部个人信息卡片 + 右侧基本资料表单 + 右侧边缘「联系我们」悬浮入口。</li>
+          </ul>
+        </section>
+
+        <section id="facts-inputs">
+          <h2>事实与输入</h2>
+          <h3>用户确认事实</h3>
+          <ul>
+            <li>页面数据、文案、图标以截图为准：用户 ygq123456 / 昵称 哈吉米 / 手机 15638741517 / 邮箱 439231674@qq.com / 铜牌会员（到期 2026-10-13 23:59:59，ID: LT10035）/ 邀请码 L0TS9C / 算力余额 1208 / 积分 19 / 创建日期 2026-04-29 16:20:54 / 所属部门、角色暂无。</li>
+            <li>顶部导航：首页、商品、交易、采购、物流、报表、系统、工具箱、即时咨询；右侧亮度、菜单、帮助、VIP1 徽标、头像 Y。</li>
+            <li>左侧菜单：基础资料（选中）、会员中心、订单中心、分销中心。</li>
+            <li>用户与 Agent 确认：新建独立原型目录 <code>personal-center-page</code>，不并入现有「购买权益弹窗」原型 <code>personal-center-bi</code>。</li>
+          </ul>
+          <h3>参考资料</h3>
+          <ul>
+            <li>截图：个人中心页面整页截图（2026-09-30 用户提供），页面事实唯一来源。</li>
+            <li>样式采集 <code>个人中心样式.md</code>：CSS 变量（主色 #ff781f、圆角、阴影、间距、字体栈）、横幅与邀请码渐变、头像 base64 图，用于精确还原视觉。</li>
+          </ul>
+          <h3>当前假设</h3>
+          <ul>
+            <li>「修改密码」标签页截图未展示内容，还原为一个合理的占位表单（旧密码/新密码/确认密码 + 保存/关闭），不接入真实逻辑。</li>
+            <li>保存/关闭、生成推广链接等按钮仅做视觉与 hover 反馈，不产生真实提交行为。</li>
+          </ul>
+        </section>
+
+        <section id="prototype-scope">
+          <h2>原型范围</h2>
+          <h3>本次呈现</h3>
+          <ul>
+            <li>个人中心-基础资料整页的高保真静态还原 + 轻量交互（左侧菜单选中态、右侧标签页切换、表单可输入）。</li>
+            <li>「算力余额」卡右侧的「算力明细」按钮及算力明细弹窗（统计概览、时间/类型筛选、明细表格、分页），分页条吸附在弹窗底部。</li>
+          </ul>
+          <h3>本次不呈现</h3>
+          <ul>
+            <li>会员中心、订单中心、分销中心页面；购买权益弹窗（已在 <code>personal-center-bi</code> 原型单独承载）；真实后端数据与登录体系。</li>
+          </ul>
+        </section>
+
+        <section id="pages-content">
+          <h2>页面与内容方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>页面/视图</th><th>页面作用</th><th>主要模块与内容</th><th>示例数据或素材</th><th>与其他页面的关系</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td data-label="页面/视图">基础资料（默认页）</td>
+                  <td data-label="页面作用">展示账号概览并编辑基本资料</td>
+                  <td data-label="主要模块与内容">顶部全局导航；面包屑「个人中心」；左侧菜单卡片；中部个人信息卡（渐变横幅+头像+会员徽标+邀请码卡+10 项信息宫格）；右侧表单卡（基本资料/修改密码标签 + 4 字段表单 + 保存/关闭）；右缘「联系我们」悬浮按钮</td>
+                  <td data-label="示例数据或素材">截图内数据；logo 用样式文件中的 OSS 地址（实测为含「骆驼队长」文字的完整横版组合标，整图展示，不再重复渲染文字）；头像用样式文件 base64 的「Y」字图</td>
+                  <td data-label="与其他页面的关系">独立单页原型；后续可扩展会员中心等标签页</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图">算力明细弹窗</td>
+                  <td data-label="页面作用">查看算力收支流水</td>
+                  <td data-label="主要模块与内容">4 项统计概览；变动时间/类型筛选 + 搜索/重置/算力定价；明细表格（16 条演示数据）；底部分页（条数/页码/跳转）</td>
+                  <td data-label="示例数据或素材">演示用静态流水数据</td>
+                  <td data-label="与其他页面的关系">由「算力余额」卡右侧「算力明细」按钮打开</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="interaction-states">
+          <h2>交互与状态方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr></thead>
+              <tbody>
+                <tr><td data-label="对象/场景">左侧菜单</td><td data-label="前置状态">基础资料选中（橙色底）</td><td data-label="用户操作">点击其他菜单项</td><td data-label="原型表现">选中态迁移，内容区不变</td><td data-label="后续状态">仍停留在本页</td></tr>
+                <tr><td data-label="对象/场景">右侧标签页</td><td data-label="前置状态">基本资料</td><td data-label="用户操作">点击「修改密码」</td><td data-label="原型表现">切换为密码表单占位</td><td data-label="后续状态">可切回</td></tr>
+                <tr><td data-label="对象/场景">用户名称输入框</td><td data-label="前置状态">禁用态（灰底 + 锁图标）</td><td data-label="用户操作">尝试输入</td><td data-label="原型表现">不可编辑</td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">昵称/手机/邮箱</td><td data-label="前置状态">可编辑</td><td data-label="用户操作">输入</td><td data-label="原型表现">正常键入，focus 时边框变主色</td><td data-label="后续状态">保存按钮仅视觉反馈</td></tr>
+                <tr><td data-label="对象/场景">算力明细弹窗</td><td data-label="前置状态">页面加载完成</td><td data-label="用户操作">点击「算力明细」/关闭/筛选/翻页</td><td data-label="原型表现">弹窗打开；分页条始终吸附弹窗底部，表格在其上方滚动；点击遮罩或 ✕ 关闭</td><td data-label="后续状态">回到页面</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="design-basis">
+          <h2>设计基底与原型特有调整</h2>
+          <ul>
+            <li>采用的 <code>DESIGN.md</code>：<code>src/themes/camel-captain-erp/DESIGN.md</code></li>
+            <li>继承方式：以截图 + 样式采集文件的实测值为准（主色 #ff781f、卡片圆角、阴影、间距与主题一致）；与主题冲突处以截图为准。</li>
+            <li>本原型特有调整：个人信息横幅使用样式文件的金色渐变；邀请码卡使用米黄渐变底。</li>
+          </ul>
+        </section>
+
+        <section id="open-questions">
+          <h2>当前待确认事项</h2>
+          <ul>
+            <li>「修改密码」标签页内容为假设占位，如有真实设计稿可替换。</li>
+          </ul>
+        </section>
+
+        <section id="decision-history">
+          <h2>用户重要决策与变更</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr></thead>
+              <tbody>
+                <tr><td data-label="日期">2026-09-30</td><td data-label="用户决策或变更">确认新建独立原型目录，不并入 personal-center-bi 弹窗原型</td><td data-label="对当前原型的影响">本原型为独立整页，弹窗不在本页范围</td></tr>
+                <tr><td data-label="日期">2026-09-30</td><td data-label="用户决策或变更">批注：修复弹窗分页样式错乱；「算力明细」按钮放到右侧</td><td data-label="对当前原型的影响">分页条改为吸附弹窗底部（不再贴边裁切、滚动时不被表格遮挡）；按钮移到「算力余额」卡片右端</td></tr>
+                <tr><td data-label="日期">2026-09-30</td><td data-label="用户决策或变更">批注：分页条中间空白太多，减少间距、整体居右</td><td data-label="对当前原型的影响">分页各块（条数/页码/跳转）紧凑排列并整体靠弹窗右侧，不再把跳转块推到最右留大片空白</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const navItems = [...document.querySelectorAll('[data-page-target]')];
+    const pages = [...document.querySelectorAll('[data-spec-page]')];
+
+    const showPage = (pageId) => {
+      for (const navItem of navItems) {
+        const isCurrent = navItem.dataset.pageTarget === pageId;
+        if (isCurrent) {
+          navItem.setAttribute('aria-current', 'page');
+        } else {
+          navItem.removeAttribute('aria-current');
+        }
+      }
+
+      for (const page of pages) {
+        page.hidden = page.dataset.specPage !== pageId;
+      }
+    };
+
+    for (const navItem of navItems) {
+      navItem.addEventListener('click', () => showPage(navItem.dataset.pageTarget));
+    }
+  </script>
+</body>
+</html>

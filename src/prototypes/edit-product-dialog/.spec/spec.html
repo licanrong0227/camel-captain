@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>编辑产品弹窗 - 主规格</title>
+  <style>
+    :root {
+      font-family:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --brand: #008f5d;
+      --brand-ink: #007a50;
+      --brand-soft: #e6f5ef;
+      --brand-surface: #f2faf7;
+      --brand-border: #b7ddcf;
+      --text: #222832;
+      --text-secondary: #4b5565;
+      --text-muted: #6f7888;
+      --text-placeholder: #8b94a3;
+      color: var(--text);
+      background: #f5f7fb;
+      scrollbar-gutter: stable;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px 20px 64px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 32px;
+      padding: 18px 14px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .sidebar-title {
+      margin: 0 8px 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .page-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .page-nav button {
+      width: 100%;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .page-nav button:hover,
+    .page-nav button[aria-current="page"] {
+      color: var(--brand-ink);
+      background: var(--brand-soft);
+    }
+
+    .page-nav button[aria-current="page"] { font-weight: 600; }
+
+    main {
+      min-width: 0;
+      padding: 40px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 16px rgb(30 45 75 / 6%);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.3;
+    }
+
+    h2 {
+      margin: 44px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e7eaf0;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    h3 {
+      margin: 28px 0 12px;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    p,
+    li {
+      font-size: 15px;
+      line-height: 2;
+    }
+
+    p { margin: 20px 0; }
+
+    td,
+    th {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .definition {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-left: 3px solid var(--brand);
+      color: var(--text-secondary);
+      background: var(--brand-surface);
+    }
+
+    .hint { color: var(--text-muted); }
+
+    ul {
+      margin: 10px 0 20px;
+      padding-left: 22px;
+    }
+
+    .placeholder-list { padding-left: 0; }
+
+    .placeholder-list li {
+      list-style: none;
+      color: var(--text-placeholder);
+    }
+
+    .placeholder-list li::before {
+      margin-right: 8px;
+      color: #b2bac6;
+      content: "—";
+    }
+
+    table {
+      width: 100%;
+      margin-top: 14px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 1px solid #dfe4ee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f6f8fb; }
+
+    td:empty::after {
+      content: "待补充";
+      color: var(--text-placeholder);
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #eef1f6;
+    }
+
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--brand-border);
+      border-radius: 8px;
+      background: var(--brand-surface);
+    }
+
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .spec-page[hidden] { display: none; }
+
+    .stage-wrap {
+      margin-top: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--brand-border);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .stage-wrap .reconstruction-stage {
+      position: relative;
+      overflow: hidden;
+      width: 1912px;
+      height: 867px;
+      background: #fff;
+    }
+    .stage-wrap img { display: block; }
+
+
+    @media (max-width: 720px) {
+      body { padding: 0 8px 40px; }
+      .shell { display: block; }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        margin: 0 -8px 12px;
+        padding: 10px 8px;
+        border-width: 0 0 1px;
+        border-radius: 0;
+      }
+
+      .sidebar-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .page-nav {
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .page-nav::-webkit-scrollbar { display: none; }
+
+      .page-nav button {
+        width: auto;
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 24px 18px;
+        border-radius: 8px;
+      }
+
+      .table-wrap { overflow: visible; }
+
+      table,
+      tbody,
+      tr,
+      td {
+        display: block;
+        width: 100%;
+      }
+
+      thead { display: none; }
+
+      tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      tr {
+        overflow: hidden;
+        border: 1px solid #dfe4ee;
+        border-radius: 6px;
+        background: #fff;
+      }
+
+      td {
+        display: grid;
+        grid-template-columns: minmax(96px, 36%) minmax(0, 1fr);
+        gap: 12px;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 0;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      td:last-child { border-bottom: 0; }
+
+      td::before {
+        content: attr(data-label);
+        color: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <p class="sidebar-title">目录</p>
+      <nav class="page-nav" aria-label="规格文档页面">
+        <button type="button" data-page-target="overview" aria-current="page">编辑产品弹窗主规格</button>
+      </nav>
+    </aside>
+
+    <main>
+
+      <article class="spec-page" data-spec-page="overview">
+        <h1>编辑产品弹窗 - 主规格</h1>
+        <p class="definition">本文档是「认领中心 - 骆驼队长BI」编辑产品弹窗还原方案的事实依据。所有尺寸、颜色、文案均来自源截图逐像素实测，不来自推测。</p>
+
+        <section id="current-plan">
+          <h2>当前方案</h2>
+          <ul>
+            <li><strong>原型意图</strong>：把用户提供的产品截图 1:1 还原成可评审的 HTML 主规格，作为后续 React 原型的唯一事实来源。</li>
+            <li><strong>使用场景</strong>：跨境 ERP「认领中心 - 批量认领」和「我的商品 - 批量编辑」两个入口共用的编辑产品弹窗。</li>
+            <li><strong>当前表达</strong>：源图 viewport 1912×867 下的静态视觉稿，弹窗处于「详情」页签、第 1 个商品被选中、富文本编辑器内为一张 1000×570 详情主图的状态。</li>
+          </ul>
+        </section>
+
+        <section id="reconstruction-1to1">
+          <h2>1:1 还原视图</h2>
+          <p class="hint">下方为脚本按 Manifest 直出的还原结果（渲染阶段模型调用 0 次），已按源图 viewport 保持 1912×867 实际尺寸；容器内可横向滚动查看。</p>
+          <div class="stage-wrap"><div class="reconstruction-stage" data-renderer="reconstruction-review-v1" data-model-calls-during-render="0">
+<div data-reconstruction-id="bd-page" data-asset-action="none" style="position:absolute;left:0px;top:0px;width:1912px;height:867px;background-color:#f0f1f5;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:1"></div>
+<div data-reconstruction-id="bd-nav" data-asset-action="none" style="position:absolute;left:0px;top:0px;width:1912px;height:44px;background-color:#ffffff;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:2"></div>
+<div data-reconstruction-id="bd-content" data-asset-action="none" style="position:absolute;left:0px;top:141px;width:1912px;height:710px;background-color:#ffffff;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:2"></div>
+<div data-reconstruction-id="bd-side-tab" data-asset-action="none" style="position:absolute;left:1856px;top:498px;width:56px;height:34px;background-color:#ffffff;border:1px solid #e4e7ed;border-radius:4px 0 0 4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:2"></div>
+<div data-reconstruction-id="overlay" data-asset-action="none" style="position:absolute;left:0px;top:0px;width:1912px;height:867px;background-color:rgba(0,0,0,0.5);font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<div data-reconstruction-id="modal" data-asset-action="none" style="position:absolute;left:96px;top:52px;width:1720px;height:780px;background-color:#ffffff;border-radius:8px;box-shadow:0 2px 12px 0 rgba(0,0,0,0.1);font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:10"></div>
+<div data-reconstruction-id="modal-title" data-asset-action="none" style="position:absolute;left:116px;top:71px;width:74px;height:26px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:18px;line-height:26px;z-index:11" data-text-role="ui-text" data-render-mode="html-text">编辑产品</div>
+<img data-reconstruction-id="modal-close" data-asset-action="reuse" style="position:absolute;left:1779px;top:70px;width:20px;height:20px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/close.svg" alt="">
+<div data-reconstruction-id="list-panel" data-asset-action="none" style="position:absolute;left:96px;top:52px;width:250px;height:780px;background-color:#ffffff;border-radius:8px 0 0 8px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:10"></div>
+<div data-reconstruction-id="product-item-1" data-asset-action="none" style="position:absolute;left:116px;top:120px;width:220px;height:58px;background-color:#fffaf5;border:1px solid #ffb366;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<img data-reconstruction-id="product-thumb-1" data-asset-action="reuse" style="position:absolute;left:125px;top:129px;width:40px;height:40px;border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;object-fit:cover;z-index:12" src="../assets/product-thumb-1.png" alt="">
+<div data-reconstruction-id="product-title-1" data-asset-action="none" style="position:absolute;left:172px;top:129px;width:164px;height:20px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:20px;white-space:nowrap;z-index:12" data-text-role="ui-text" data-render-mode="html-text">【全新正品未拆封】i17Pr…</div>
+<div data-reconstruction-id="product-status-1" data-asset-action="none" style="position:absolute;left:172px;top:150px;width:60px;height:18px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:18px;z-index:12" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<div data-reconstruction-id="product-item-2" data-asset-action="none" style="position:absolute;left:116px;top:182px;width:220px;height:58px;background-color:#ffffff;border:1px solid #ffffff;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<img data-reconstruction-id="product-thumb-2" data-asset-action="reuse" style="position:absolute;left:125px;top:191px;width:40px;height:40px;border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;object-fit:cover;z-index:12" src="../assets/product-thumb-2.png" alt="">
+<div data-reconstruction-id="product-title-2" data-asset-action="none" style="position:absolute;left:172px;top:191px;width:164px;height:20px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:20px;white-space:nowrap;z-index:12" data-text-role="ui-text" data-render-mode="html-text">纯色北欧桌布防水防油免…</div>
+<div data-reconstruction-id="product-status-2" data-asset-action="none" style="position:absolute;left:172px;top:212px;width:60px;height:18px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:18px;z-index:12" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<div data-reconstruction-id="product-item-3" data-asset-action="none" style="position:absolute;left:116px;top:244px;width:220px;height:58px;background-color:#ffffff;border:1px solid #ffffff;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<img data-reconstruction-id="product-thumb-3" data-asset-action="reuse" style="position:absolute;left:125px;top:253px;width:40px;height:40px;border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;object-fit:cover;z-index:12" src="../assets/product-thumb-3.png" alt="">
+<div data-reconstruction-id="product-title-3" data-asset-action="none" style="position:absolute;left:172px;top:253px;width:164px;height:20px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:20px;white-space:nowrap;z-index:12" data-text-role="ui-text" data-render-mode="html-text">2026 Summer Full-Print P…</div>
+<div data-reconstruction-id="product-status-3" data-asset-action="none" style="position:absolute;left:172px;top:274px;width:60px;height:18px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:18px;z-index:12" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<div data-reconstruction-id="product-item-4" data-asset-action="none" style="position:absolute;left:116px;top:306px;width:220px;height:58px;background-color:#ffffff;border:1px solid #ffffff;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<img data-reconstruction-id="product-thumb-4" data-asset-action="reuse" style="position:absolute;left:125px;top:315px;width:40px;height:40px;border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;object-fit:cover;z-index:12" src="../assets/product-thumb-4.png" alt="">
+<div data-reconstruction-id="product-title-4" data-asset-action="none" style="position:absolute;left:172px;top:315px;width:164px;height:20px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:20px;white-space:nowrap;z-index:12" data-text-role="ui-text" data-render-mode="html-text">Summer Women’S Slipper…</div>
+<div data-reconstruction-id="product-status-4" data-asset-action="none" style="position:absolute;left:172px;top:336px;width:60px;height:18px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:18px;z-index:12" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<div data-reconstruction-id="product-item-5" data-asset-action="none" style="position:absolute;left:116px;top:368px;width:220px;height:58px;background-color:#ffffff;border:1px solid #ffffff;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<img data-reconstruction-id="product-thumb-5" data-asset-action="reuse" style="position:absolute;left:125px;top:377px;width:40px;height:40px;border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;object-fit:cover;z-index:12" src="../assets/product-thumb-5.png" alt="">
+<div data-reconstruction-id="product-title-5" data-asset-action="none" style="position:absolute;left:172px;top:377px;width:164px;height:20px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:20px;white-space:nowrap;z-index:12" data-text-role="ui-text" data-render-mode="html-text">Acupressure Foot Massag…</div>
+<div data-reconstruction-id="product-status-5" data-asset-action="none" style="position:absolute;left:172px;top:398px;width:60px;height:18px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:18px;z-index:12" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<div data-reconstruction-id="product-item-6" data-asset-action="none" style="position:absolute;left:116px;top:430px;width:220px;height:58px;background-color:#ffffff;border:1px solid #ffffff;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<img data-reconstruction-id="product-thumb-6" data-asset-action="reuse" style="position:absolute;left:125px;top:439px;width:40px;height:40px;border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;object-fit:cover;z-index:12" src="../assets/product-thumb-6.png" alt="">
+<div data-reconstruction-id="product-title-6" data-asset-action="none" style="position:absolute;left:172px;top:439px;width:164px;height:20px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:20px;white-space:nowrap;z-index:12" data-text-role="ui-text" data-render-mode="html-text">ASHALI Cute Bear Breath…</div>
+<div data-reconstruction-id="product-status-6" data-asset-action="none" style="position:absolute;left:172px;top:460px;width:60px;height:18px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:18px;z-index:12" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<div data-reconstruction-id="product-item-7" data-asset-action="none" style="position:absolute;left:116px;top:492px;width:220px;height:58px;background-color:#ffffff;border:1px solid #ffffff;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<img data-reconstruction-id="product-thumb-7" data-asset-action="reuse" style="position:absolute;left:125px;top:501px;width:40px;height:40px;border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;object-fit:cover;z-index:12" src="../assets/product-thumb-7.png" alt="">
+<div data-reconstruction-id="product-title-7" data-asset-action="none" style="position:absolute;left:172px;top:501px;width:164px;height:20px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:20px;white-space:nowrap;z-index:12" data-text-role="ui-text" data-render-mode="html-text">Designer womens Croppe…</div>
+<div data-reconstruction-id="product-status-7" data-asset-action="none" style="position:absolute;left:172px;top:522px;width:60px;height:18px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:18px;z-index:12" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<div data-reconstruction-id="product-item-8" data-asset-action="none" style="position:absolute;left:116px;top:554px;width:220px;height:58px;background-color:#ffffff;border:1px solid #ffffff;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<img data-reconstruction-id="product-thumb-8" data-asset-action="reuse" style="position:absolute;left:125px;top:563px;width:40px;height:40px;border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;object-fit:cover;z-index:12" src="../assets/product-thumb-8.png" alt="">
+<div data-reconstruction-id="product-title-8" data-asset-action="none" style="position:absolute;left:172px;top:563px;width:164px;height:20px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:20px;white-space:nowrap;z-index:12" data-text-role="ui-text" data-render-mode="html-text">天然淡水珍珠长款项链女…</div>
+<div data-reconstruction-id="product-status-8" data-asset-action="none" style="position:absolute;left:172px;top:584px;width:60px;height:18px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:18px;z-index:12" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<div data-reconstruction-id="product-item-9" data-asset-action="none" style="position:absolute;left:116px;top:616px;width:220px;height:58px;background-color:#ffffff;border:1px solid #ffffff;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<img data-reconstruction-id="product-thumb-9" data-asset-action="reuse" style="position:absolute;left:125px;top:625px;width:40px;height:40px;border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;object-fit:cover;z-index:12" src="../assets/product-thumb-9.png" alt="">
+<div data-reconstruction-id="product-title-9" data-asset-action="none" style="position:absolute;left:172px;top:625px;width:164px;height:20px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:20px;white-space:nowrap;z-index:12" data-text-role="ui-text" data-render-mode="html-text">智能感应垃圾桶家用卧室…</div>
+<div data-reconstruction-id="product-status-9" data-asset-action="none" style="position:absolute;left:172px;top:646px;width:60px;height:18px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:18px;z-index:12" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<div data-reconstruction-id="product-item-10" data-asset-action="none" style="position:absolute;left:116px;top:678px;width:220px;height:58px;background-color:#ffffff;border:1px solid #ffffff;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<img data-reconstruction-id="product-thumb-10" data-asset-action="reuse" style="position:absolute;left:125px;top:687px;width:40px;height:40px;border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;object-fit:cover;z-index:12" src="../assets/product-thumb-10.png" alt="">
+<div data-reconstruction-id="product-title-10" data-asset-action="none" style="position:absolute;left:172px;top:687px;width:164px;height:20px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:20px;white-space:nowrap;z-index:12" data-text-role="ui-text" data-render-mode="html-text">Women Simple Gold Chai…</div>
+<div data-reconstruction-id="product-status-10" data-asset-action="none" style="position:absolute;left:172px;top:708px;width:60px;height:18px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:18px;z-index:12" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<img data-reconstruction-id="item-icon-trash" data-asset-action="reuse" style="position:absolute;left:292px;top:151px;width:16px;height:16px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/trash.svg" alt="">
+<img data-reconstruction-id="item-icon-folder-check" data-asset-action="reuse" style="position:absolute;left:312px;top:151px;width:16px;height:16px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/folder-check.svg" alt="">
+<div data-reconstruction-id="list-pager-prev-box" data-asset-action="none" style="position:absolute;left:190px;top:746px;width:28px;height:28px;background-color:#f5f7fa;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<img data-reconstruction-id="list-pager-prev-icon" data-asset-action="reuse" style="position:absolute;left:198px;top:752px;width:12px;height:16px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/pager-prev.svg" alt="">
+<div data-reconstruction-id="list-pager-next-box" data-asset-action="none" style="position:absolute;left:234px;top:746px;width:28px;height:28px;background-color:#ffffff;border:1px solid #409eff;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<img data-reconstruction-id="list-pager-next-icon" data-asset-action="reuse" style="position:absolute;left:242px;top:752px;width:12px;height:16px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/pager-next.svg" alt="">
+<img data-reconstruction-id="tab-collapse-icon" data-asset-action="reuse" style="position:absolute;left:348px;top:120px;width:12px;height:12px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/collapse.svg" alt="">
+<div data-reconstruction-id="tab-basic" data-asset-action="none" style="position:absolute;left:369px;top:117px;width:32px;height:20px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:20px;z-index:11" data-text-role="ui-text" data-render-mode="html-text">基本</div>
+<div data-reconstruction-id="tab-divider-1" data-asset-action="none" style="position:absolute;left:412px;top:121px;width:1px;height:12px;background-color:#e7e9ee;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<div data-reconstruction-id="tab-detail" data-asset-action="none" style="position:absolute;left:424px;top:117px;width:32px;height:20px;color:#ff781f;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:20px;z-index:11" data-text-role="ui-text" data-render-mode="html-text">详情</div>
+<div data-reconstruction-id="tab-divider-2" data-asset-action="none" style="position:absolute;left:468px;top:121px;width:1px;height:12px;background-color:#e7e9ee;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<div data-reconstruction-id="tab-log" data-asset-action="none" style="position:absolute;left:481px;top:117px;width:30px;height:20px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:20px;z-index:11" data-text-role="ui-text" data-render-mode="html-text">日志</div>
+<div data-reconstruction-id="editor-box" data-asset-action="none" style="position:absolute;left:346px;top:148px;width:1450px;height:629px;background-color:#ffffff;border:1px solid #cccccc;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:11"></div>
+<div data-reconstruction-id="editor-toolbar-line" data-asset-action="none" style="position:absolute;left:347px;top:193px;width:1448px;height:1px;background-color:#cccccc;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:12"></div>
+<div data-reconstruction-id="tb-bold" data-asset-action="none" style="position:absolute;left:356px;top:157px;width:26px;height:28px;color:#444444;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:700;line-height:28px;text-align:center;z-index:12" data-text-role="ui-text" data-render-mode="html-text">B</div>
+<div data-reconstruction-id="tb-italic" data-asset-action="none" style="position:absolute;left:384px;top:157px;width:26px;height:28px;color:#444444;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-style:italic;font-weight:700;line-height:28px;text-align:center;z-index:12" data-text-role="ui-text" data-render-mode="html-text">I</div>
+<div data-reconstruction-id="tb-underline" data-asset-action="none" style="position:absolute;left:412px;top:157px;width:26px;height:28px;color:#444444;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:700;line-height:28px;text-align:center;text-decoration:underline;z-index:12" data-text-role="ui-text" data-render-mode="html-text">U</div>
+<div data-reconstruction-id="tb-font-size" data-asset-action="none" style="position:absolute;left:461px;top:157px;width:54px;height:28px;color:#444444;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:28px;text-align:center;z-index:12" data-text-role="ui-text" data-render-mode="html-text">默认大小</div>
+<img data-reconstruction-id="tb-font-size-caret" data-asset-action="reuse" style="position:absolute;left:515px;top:164px;width:10px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/caret.svg" alt="">
+<img data-reconstruction-id="tb-font-color" data-asset-action="reuse" style="position:absolute;left:554px;top:164px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/font-color.svg" alt="">
+<img data-reconstruction-id="tb-list-ul" data-asset-action="reuse" style="position:absolute;left:597px;top:164px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/list-ul.svg" alt="">
+<img data-reconstruction-id="tb-list-ol" data-asset-action="reuse" style="position:absolute;left:625px;top:164px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/list-ol.svg" alt="">
+<img data-reconstruction-id="tb-align" data-asset-action="reuse" style="position:absolute;left:668px;top:164px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/align-left.svg" alt="">
+<img data-reconstruction-id="tb-image" data-asset-action="reuse" style="position:absolute;left:708px;top:157px;width:28px;height:28px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/image.svg" alt="">
+<img data-reconstruction-id="tb-clear-format" data-asset-action="reuse" style="position:absolute;left:757px;top:164px;width:16px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/clear-format.svg" alt="">
+<img data-reconstruction-id="detail-poster" data-asset-action="reuse" style="position:absolute;left:362px;top:206px;width:1000px;height:570px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;object-fit:cover;z-index:12" data-text-role="display-text" data-render-mode="preserve-in-image" src="../assets/detail-poster.png" alt="新品上市 强势登场 i17ProMax">
+<img data-reconstruction-id="float-scroll-up" data-asset-action="reuse" style="position:absolute;left:1752px;top:699px;width:28px;height:28px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/arrow-up.svg" alt="">
+<img data-reconstruction-id="float-scroll-down" data-asset-action="reuse" style="position:absolute;left:1752px;top:735px;width:28px;height:28px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:13" src="../assets/icons/arrow-down.svg" alt="">
+<button data-reconstruction-id="btn-close" data-asset-action="none" style="position:absolute;left:877px;top:786px;width:73px;height:36px;background-color:#ffffff;border:1px solid #ff781f;border-radius:8px;color:#ff781f;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;letter-spacing:3px;line-height:34px;text-align:center;z-index:11" data-text-role="ui-text" data-render-mode="html-text">关闭</button>
+<button data-reconstruction-id="btn-save" data-asset-action="none" style="position:absolute;left:961px;top:786px;width:74px;height:36px;background-color:#ff781f;border:1px solid #ff781f;border-radius:8px;color:#ffffff;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;letter-spacing:3px;line-height:34px;text-align:center;z-index:11" data-text-role="ui-text" data-render-mode="html-text">保存</button>
+</div></div>
+        </section>
+
+        <section id="facts-inputs">
+          <h2>事实与输入</h2>
+          <h3>用户确认事实</h3>
+          <ul>
+            <li>还原范围：<strong>只需要实现截图中的弹窗部分</strong>，背景页面不属于交付范围。</li>
+            <li>页面归属：认领中心 - 骆驼队长BI 的「编辑产品」弹窗。</li>
+            <li>详情模板功能（2026-09-28 新增）：富文本框右上方提供模板下拉、创建模板、管理模板三个控件；创建模板把当前详情正文存为模板，下拉选中模板后用模板内容整体替换富文本框内容。</li>
+            <li>模板下拉演示口径：下拉展示全部已保存模板，公共 / 专属仅作为类型标签展示，不在原型中按子账号过滤（用户已确认）。</li>
+            <li>模板初始数据：预置示例模板 + 演示中可继续新建（用户已确认）。</li>
+          </ul>
+          <h3>参考资料</h3>
+          <ul>
+            <li>源截图：<code>0b095075-57d9-42a8-ad94-1f007d0eb8ec.png</code>（1912×867，sha256 8e4b461…264625）—— 唯一视觉事实来源。</li>
+            <li>模板弹窗参考图：<code>4603ebe7-8979-4e64-bdc8-38a2eb12535b.png</code>（创建 / 编辑模板）、<code>96ce272a-09bb-4b8c-a6b5-61b7fd4027e1.png</code>（管理模板）、<code>101c54d1-7096-4195-abb5-192ec0f6fda8.png</code>（删除二次确认）。</li>
+            <li>样式信息导出：<code>编辑产品弹窗样式.txt</code> —— 用于校验颜色与组件类名，尺寸仍以截图实测为准。</li>
+            <li>还原中间产物：<code>src/prototypes/edit-product-dialog/.spec/reconstruction/</code>（Manifest、裁切素材、first-pass.html）。</li>
+          </ul>
+          <h3>当前假设</h3>
+          <ul>
+            <li>列表行标题在源图中已是单行截断态，还原时直接采用截断后的文字（含省略号），不还原完整标题。</li>
+            <li>富文本工具栏按截图可见项还原，未展开的下拉选项（字号、颜色面板）不在本次范围内。</li>
+          </ul>
+        </section>
+
+        <section id="prototype-scope">
+          <h2>原型范围</h2>
+          <h3>本次呈现</h3>
+          <ul>
+            <li>弹窗容器：1720×780，圆角 8，标题「编辑产品」+ 右上关闭图标。</li>
+            <li>左侧商品列表：10 行（缩略图 40×40、标题、编辑状态、行内删除/完成图标），首行为选中态（#fffaf5 底 + #ffb366 描边）；底部翻页按钮 2 个。</li>
+            <li>右侧页签：基本 / 详情 / 日志，当前为「详情」（#ff781f），左侧「收起」双箭头图标。</li>
+            <li>富文本编辑器：1px #cccccc 边框、45px 工具栏、9 组工具（B / I / U / 字号 / 字色 / 无序 / 有序 / 对齐 / 图片 / 清除格式），正文区为可编辑区域，默认为一张 1000×570 详情主图。</li>
+            <li>工具栏右侧模板控件组：模板下拉（占位文字「选择已有模板快速替换」）、「创建模板」（主色按钮）、「管理模板」（描边按钮）。</li>
+            <li>模板弹窗族：创建 / 编辑模板表单弹窗（模板名称必填 + 模板类型公共/专属 + 可见性说明）、管理模板列表弹窗（编辑/删除操作）、删除二次确认「提示」弹窗。</li>
+            <li>右下角上/下滚动悬浮按钮，底部「关闭」「保存」按钮。</li>
+          </ul>
+          <h3>本次不呈现</h3>
+          <ul>
+            <li>背景页面的导航、菜单、表格等真实内容 —— 仅按遮罩下可见的明暗色块做最低限度还原，用于承载 50% 黑色遮罩。</li>
+            <li>页签切换后的表单内容、分页与选择逻辑（还原阶段为静态视觉稿）；富文本工具按钮仍为视觉态切换，详情模板控件与弹窗已实现（见「交互与状态方案」）。</li>
+          </ul>
+        </section>
+
+        <section id="assets-decisions">
+          <h2>素材与文字取舍</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>对象</th><th>决定</th><th>理由</th></tr></thead>
+              <tbody>
+                <tr><td data-label="对象">详情主图 <code>detail-poster.png</code></td><td data-label="决定">复用源图裁切（1000×570）</td><td data-label="理由">照片类位图，重绘必然失真；底部被编辑器容器裁断属源图自身裁切，如实保留</td></tr>
+                <tr><td data-label="对象">商品缩略图 ×10 <code>product-thumb-n.png</code></td><td data-label="决定">复用源图裁切（40×40）</td><td data-label="理由">实拍商品图，逐行按 62px 间距从源图裁切</td></tr>
+                <tr><td data-label="对象">工具栏 / 页签 / 行内 / 翻页 / 悬浮图标 ×15</td><td data-label="决定">SVG 矢量重建</td><td data-label="理由">单色线性与面性图标，矢量重建比裁切更清晰且可复用</td></tr>
+                <tr><td data-label="对象">B / I / U、默认大小、页签、列表文字、底部按钮文字</td><td data-label="决定">HTML 文本 + CSS</td><td data-label="理由">普通界面字体，非艺术字，可编辑可选中</td></tr>
+                <tr><td data-label="对象">遮罩、弹窗底、列表选中行、编辑器边框、分隔线</td><td data-label="决定">纯 CSS 盒</td><td data-label="理由">纯色/描边，无位图必要</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="design-basis">
+          <h2>设计基底与还原偏差</h2>
+          <ul>
+            <li>项目默认主题：<code>src/themes/kuacheng-bi/DESIGN.md</code>（Element-UI 体系，主色 #ff781f）。</li>
+            <li>继承方式：本任务为截图还原，<strong>以源图实测值为准</strong>；实测值与主题一致（主色 #ff781f、圆角 8、Element 灰阶 #303133 / #606266 / #909399）。</li>
+            <li>本原型特有调整：
+              <ul>
+                <li>背景页面简化为色块，属用户「仅需弹窗」范围要求的有意取舍。</li>
+                <li>文字与源图存在 1px 级抗锯齿差异：弹窗区域逐通道平均绝对差 0.80/255，左侧列表区 3.40/255（字体渲染环境差异，非结构问题）。</li>
+                <li>列表文字列实测起点 x=172，页签起点 x=369/424/481，均已按实测校正。</li>
+              </ul>
+            </li>
+          </ul>
+          <h3>模块与表示方式</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>模块</th><th>元素数</th><th>表示方式（representation / assetAction）</th></tr></thead>
+              <tbody>
+            <tr><td data-label="模块">背景层（仅遮罩可见部分）</td><td data-label="元素数">5</td><td data-label="表示方式">html (none)</td></tr>
+            <tr><td data-label="模块">弹窗容器</td><td data-label="元素数">3</td><td data-label="表示方式">html (none)、svg (reuse)</td></tr>
+            <tr><td data-label="模块">左侧商品列表</td><td data-label="元素数">7</td><td data-label="表示方式">html (none)、svg (reuse)</td></tr>
+            <tr><td data-label="模块">左侧商品行（1-10 重复）</td><td data-label="元素数">40</td><td data-label="表示方式">html (none)、clean-crop (reuse)</td></tr>
+            <tr><td data-label="模块">右侧页签</td><td data-label="元素数">6</td><td data-label="表示方式">svg (reuse)、html (none)</td></tr>
+            <tr><td data-label="模块">富文本编辑器容器</td><td data-label="元素数">2</td><td data-label="表示方式">html (none)</td></tr>
+            <tr><td data-label="模块">编辑器工具栏</td><td data-label="元素数">11</td><td data-label="表示方式">html (none)、svg (reuse)</td></tr>
+            <tr><td data-label="模块">详情主图</td><td data-label="元素数">1</td><td data-label="表示方式">clean-crop (reuse)</td></tr>
+            <tr><td data-label="模块">悬浮滚动按钮</td><td data-label="元素数">2</td><td data-label="表示方式">svg (reuse)</td></tr>
+            <tr><td data-label="模块">底部按钮</td><td data-label="元素数">2</td><td data-label="表示方式">html (none)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>排版实测汇总</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>字号 / 行高</th><th>使用元素数</th></tr></thead>
+              <tbody>
+            <tr><td data-label="字号 / 行高">12px / 20px</td><td data-label="使用元素数">10</td></tr>
+            <tr><td data-label="字号 / 行高">12px / 18px</td><td data-label="使用元素数">10</td></tr>
+            <tr><td data-label="字号 / 行高">14px / 20px</td><td data-label="使用元素数">3</td></tr>
+            <tr><td data-label="字号 / 行高">14px / 28px</td><td data-label="使用元素数">3</td></tr>
+            <tr><td data-label="字号 / 行高">14px / 34px</td><td data-label="使用元素数">2</td></tr>
+            <tr><td data-label="字号 / 行高">18px / 26px</td><td data-label="使用元素数">1</td></tr>
+            <tr><td data-label="字号 / 行高">12px / 28px</td><td data-label="使用元素数">1</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="interaction-states">
+          <h2>交互与状态方案（已在 React 原型实现）</h2>
+          <p class="hint">下表为 React 原型 <code>src/prototypes/edit-product-dialog/index.tsx</code> 已实现并验证过的交互口径。</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr></thead>
+              <tbody>
+                <tr><td data-label="对象/场景">商品列表行</td><td data-label="前置状态">第 1 行选中</td><td data-label="用户操作">点击另一行</td><td data-label="原型表现">选中态转移，行内操作图标随选中显示</td><td data-label="后续状态">目标行选中</td></tr>
+                <tr><td data-label="对象/场景">行内「标记已编辑」</td><td data-label="前置状态">某行未编辑</td><td data-label="用户操作">点击文件夹图标</td><td data-label="原型表现">该行状态在「未编辑 / 已编辑」间切换</td><td data-label="后续状态">状态更新，行数不变</td></tr>
+                <tr><td data-label="对象/场景">行内「删除」</td><td data-label="前置状态">列表 10 行</td><td data-label="用户操作">点击垃圾桶图标</td><td data-label="原型表现">该行移除，选中行回落到第 1 行</td><td data-label="后续状态">列表减少一行</td></tr>
+                <tr><td data-label="对象/场景">页签</td><td data-label="前置状态">详情</td><td data-label="用户操作">点击 基本 / 日志</td><td data-label="原型表现">切换到占位面板（源图未提供这两个页签内容）</td><td data-label="后续状态">目标页签激活</td></tr>
+                <tr><td data-label="对象/场景">收起列表</td><td data-label="前置状态">列表展开</td><td data-label="用户操作">点击双箭头</td><td data-label="原型表现">左侧列表 0.2s 收起，编辑区左移占满，箭头翻转</td><td data-label="后续状态">列表收起，再点恢复</td></tr>
+                <tr><td data-label="对象/场景">工具栏按钮</td><td data-label="前置状态">「图片」为激活态</td><td data-label="用户操作">点击任一按钮</td><td data-label="原型表现">在激活/未激活之间切换（普通按钮灰底，图片按钮图标置灰）</td><td data-label="后续状态">仅视觉态，不改动详情内容</td></tr>
+                <tr><td data-label="对象/场景">浮动上下按钮</td><td data-label="前置状态">详情长图可滚动 74px</td><td data-label="用户操作">点击上 / 下</td><td data-label="原型表现">编辑区平滑滚动 240px 并被钳制在边界</td><td data-label="后续状态">滚动位置变化</td></tr>
+                <tr><td data-label="对象/场景">分页器</td><td data-label="前置状态">第 1 页（共 10 条）</td><td data-label="用户操作">点击上一页 / 下一页</td><td data-label="原型表现">上一页禁用置灰；下一页按源图保留蓝色可点态，但无后续数据，点击不改变列表</td><td data-label="后续状态">页码保持 1</td></tr>
+                <tr><td data-label="对象/场景">关闭 / 保存</td><td data-label="前置状态">弹窗打开</td><td data-label="用户操作">点击按钮或右上角 ×</td><td data-label="原型表现">「保存」点击后顶部出现绿色「保存成功」轻提示（约 2s 自动消失）并关闭弹窗；「关闭」与 × 不提示直接关闭；重开后保留已做的选中与状态改动</td><td data-label="后续状态">弹窗关闭 / 重新打开</td></tr>
+                <tr><td data-label="对象/场景">模板下拉</td><td data-label="前置状态">未选模板，占位文字「选择已有模板快速替换」</td><td data-label="用户操作">展开并选择一个模板</td><td data-label="原型表现">富文本框内容整体替换为该模板保存的详情内容，下拉触发器显示模板名；预置「哈吉米（公共）」「桌布详情（专属）」</td><td data-label="后续状态">该模板为当前应用项</td></tr>
+                <tr><td data-label="对象/场景">创建模板</td><td data-label="前置状态">详情编辑区已有内容</td><td data-label="用户操作">点击「创建模板」，填写名称（必填）与类型后确定</td><td data-label="原型表现">弹出「创建模板」弹窗；名称为空时红字提示「请输入模板名称」；确定后当前详情内容存为新模板并进入下拉列表，顶部出现「创建成功」轻提示</td><td data-label="后续状态">弹窗关闭，模板数 +1</td></tr>
+                <tr><td data-label="对象/场景">管理模板</td><td data-label="前置状态">已存在模板</td><td data-label="用户操作">点击「管理模板」</td><td data-label="原型表现">弹出列表（模板名称 / 模板类型 / 操作），每行「编辑」「删除」，底部「关闭」；无数据时显示「暂无模板，请先创建」</td><td data-label="后续状态">管理弹窗打开</td></tr>
+                <tr><td data-label="对象/场景">编辑模板</td><td data-label="前置状态">管理列表某行</td><td data-label="用户操作">点击「编辑」并修改名称 / 类型后确定</td><td data-label="原型表现">「编辑模板」弹窗（与创建同布局）浮在管理模板弹窗顶层（z-index 210），管理弹窗保持打开并回填原名称与类型；确定或关闭编辑弹窗后回到管理模板弹窗；确定时更新元信息，模板内容保持不变，顶部出现「保存成功」轻提示</td><td data-label="后续状态">回到管理弹窗，列表与下拉同步更新</td></tr>
+                <tr><td data-label="对象/场景">删除模板</td><td data-label="前置状态">管理列表某行</td><td data-label="用户操作">点击「删除」，在「提示」弹窗中确定</td><td data-label="原型表现">二次确认文案「确定要删除模板×××吗？」；取消则不删除，确定后模板从列表与下拉中移除，顶部出现「删除成功」轻提示；若其为当前应用项则下拉回到占位文字</td><td data-label="后续状态">模板数 -1</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="implementation-parity">
+          <h2>React 实现与源图像素复核</h2>
+          <p class="hint">React 原型按 1912×867 视口截图与源图逐块复核，弹窗区域平均色差 <strong>0.864 / 255</strong>（HTML 主规格为 0.802）。复核中修正了主规格元素表未覆盖的偏移，React 以修正后的值为准。</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>位置</th><th>主规格元素表</th><th>React 实测修正</th><th>原因</th></tr></thead>
+              <tbody>
+                <tr><td data-label="位置">页签组</td><td data-label="主规格元素表">双箭头与页签间距 9px</td><td data-label="React 实测修正">间距 12px，整组右移 3px</td><td data-label="原因">源图「基本」墨迹左沿在 372，绝对定位盒与流式排布的左衬不同</td></tr>
+                <tr><td data-label="位置">商品列表行</td><td data-label="主规格元素表">行内边距 9px</td><td data-label="React 实测修正">内边距 8px（含 1px 透明边框）</td><td data-label="原因">边框计入内容起点，缩略图与标题整体下移 1px</td></tr>
+                <tr><td data-label="位置">详情编辑区</td><td data-label="主规格元素表">内容内边距 13 / 16</td><td data-label="React 实测修正">12 / 15</td><td data-label="原因">工具栏 1px 下边框计入流高度，长图整体下移 1px</td></tr>
+                <tr><td data-label="位置">工具栏</td><td data-label="主规格元素表">左内边距 10，文本按钮宽 26</td><td data-label="React 实测修正">左内边距 8，文本按钮宽 28、衬线 16px，字号按钮宽 64</td><td data-label="原因">源图 B/I/U 为衬线字形，字距 28；无衬线 14px 偏窄</td></tr>
+                <tr><td data-label="位置">分页器禁用态</td><td data-label="主规格元素表">—</td><td data-label="React 实测修正">去掉整块半透明，改用灰底 + 浅灰箭头</td><td data-label="原因">源图禁用按钮仍有 #f5f7fa 底色，opacity 会连底色一起淡出</td></tr>
+                <tr><td data-label="位置">右上角关闭</td><td data-label="主规格元素表">图标 20px</td><td data-label="React 实测修正">图标 14px、描边 1.8</td><td data-label="原因">源图 × 墨迹为 9×10</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="open-questions">
+          <h2>当前待确认事项</h2>
+          <ul>
+            <li>React 原型已按「仅需弹窗」实现：背景仅为半透明遮罩，未还原认领中心页面。若需要页面级上下文，需另行确认范围。</li>
+            <li>详情长图当前按源图内容裁切并允许在编辑区内滚动（可滚 74px）；是否需要还原成完整不裁切的长图排版待确认。</li>
+            <li>「基本」「日志」两个页签在源图中未出现，原型用占位面板表达，内容需产品补充。</li>
+            <li>分页器按源图状态呈现：上一页禁用、下一页保留蓝色可点态，但演示数据只有 1 页 10 条，点击不产生翻页效果。</li>
+          </ul>
+        </section>
+
+        <section id="element-appendix">
+          <h2>元素清单（还原 Manifest 全量）</h2>
+          <p class="hint">共 79 个元素，坐标为源图 viewport 绝对像素，供 React 实现与后续比对使用；React 实现阶段复核出的偏移见「React 实现与源图像素复核」。</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>名称</th><th>位置 · 尺寸</th><th>表示</th><th>素材</th><th>文字</th></tr></thead>
+              <tbody>
+            <tr><td data-label="ID"><code>bd-page</code></td><td data-label="名称">背景页面底色</td><td data-label="位置尺寸">0, 0 · 1912×867</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>bd-nav</code></td><td data-label="名称">背景顶部导航条</td><td data-label="位置尺寸">0, 0 · 1912×44</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>bd-content</code></td><td data-label="名称">背景内容白底区域</td><td data-label="位置尺寸">0, 141 · 1912×710</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>bd-side-tab</code></td><td data-label="名称">背景右侧悬浮入口</td><td data-label="位置尺寸">1856, 498 · 56×34</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>overlay</code></td><td data-label="名称">弹窗遮罩层</td><td data-label="位置尺寸">0, 0 · 1912×867</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>modal</code></td><td data-label="名称">编辑产品弹窗</td><td data-label="位置尺寸">96, 52 · 1720×780</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>modal-title</code></td><td data-label="名称">弹窗标题</td><td data-label="位置尺寸">116, 71 · 74×26</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">编辑产品</td></tr>
+            <tr><td data-label="ID"><code>modal-close</code></td><td data-label="名称">关闭图标</td><td data-label="位置尺寸">1779, 70 · 20×20</td><td data-label="表示">svg</td><td data-label="素材"><code>close.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>list-panel</code></td><td data-label="名称">左侧商品列表容器</td><td data-label="位置尺寸">96, 52 · 250×780</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-item-1</code></td><td data-label="名称">商品行 1</td><td data-label="位置尺寸">116, 120 · 220×58</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-thumb-1</code></td><td data-label="名称">商品缩略图 1</td><td data-label="位置尺寸">125, 129 · 40×40</td><td data-label="表示">clean-crop</td><td data-label="素材"><code>product-thumb-1.png</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-title-1</code></td><td data-label="名称">商品标题 1</td><td data-label="位置尺寸">172, 129 · 164×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">【全新正品未拆封】i17Pr…</td></tr>
+            <tr><td data-label="ID"><code>product-status-1</code></td><td data-label="名称">编辑状态 1</td><td data-label="位置尺寸">172, 150 · 60×18</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">未编辑</td></tr>
+            <tr><td data-label="ID"><code>product-item-2</code></td><td data-label="名称">商品行 2</td><td data-label="位置尺寸">116, 182 · 220×58</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-thumb-2</code></td><td data-label="名称">商品缩略图 2</td><td data-label="位置尺寸">125, 191 · 40×40</td><td data-label="表示">clean-crop</td><td data-label="素材"><code>product-thumb-2.png</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-title-2</code></td><td data-label="名称">商品标题 2</td><td data-label="位置尺寸">172, 191 · 164×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">纯色北欧桌布防水防油免…</td></tr>
+            <tr><td data-label="ID"><code>product-status-2</code></td><td data-label="名称">编辑状态 2</td><td data-label="位置尺寸">172, 212 · 60×18</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">未编辑</td></tr>
+            <tr><td data-label="ID"><code>product-item-3</code></td><td data-label="名称">商品行 3</td><td data-label="位置尺寸">116, 244 · 220×58</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-thumb-3</code></td><td data-label="名称">商品缩略图 3</td><td data-label="位置尺寸">125, 253 · 40×40</td><td data-label="表示">clean-crop</td><td data-label="素材"><code>product-thumb-3.png</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-title-3</code></td><td data-label="名称">商品标题 3</td><td data-label="位置尺寸">172, 253 · 164×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">2026 Summer Full-Print P…</td></tr>
+            <tr><td data-label="ID"><code>product-status-3</code></td><td data-label="名称">编辑状态 3</td><td data-label="位置尺寸">172, 274 · 60×18</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">未编辑</td></tr>
+            <tr><td data-label="ID"><code>product-item-4</code></td><td data-label="名称">商品行 4</td><td data-label="位置尺寸">116, 306 · 220×58</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-thumb-4</code></td><td data-label="名称">商品缩略图 4</td><td data-label="位置尺寸">125, 315 · 40×40</td><td data-label="表示">clean-crop</td><td data-label="素材"><code>product-thumb-4.png</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-title-4</code></td><td data-label="名称">商品标题 4</td><td data-label="位置尺寸">172, 315 · 164×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">Summer Women’S Slipper…</td></tr>
+            <tr><td data-label="ID"><code>product-status-4</code></td><td data-label="名称">编辑状态 4</td><td data-label="位置尺寸">172, 336 · 60×18</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">未编辑</td></tr>
+            <tr><td data-label="ID"><code>product-item-5</code></td><td data-label="名称">商品行 5</td><td data-label="位置尺寸">116, 368 · 220×58</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-thumb-5</code></td><td data-label="名称">商品缩略图 5</td><td data-label="位置尺寸">125, 377 · 40×40</td><td data-label="表示">clean-crop</td><td data-label="素材"><code>product-thumb-5.png</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-title-5</code></td><td data-label="名称">商品标题 5</td><td data-label="位置尺寸">172, 377 · 164×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">Acupressure Foot Massag…</td></tr>
+            <tr><td data-label="ID"><code>product-status-5</code></td><td data-label="名称">编辑状态 5</td><td data-label="位置尺寸">172, 398 · 60×18</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">未编辑</td></tr>
+            <tr><td data-label="ID"><code>product-item-6</code></td><td data-label="名称">商品行 6</td><td data-label="位置尺寸">116, 430 · 220×58</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-thumb-6</code></td><td data-label="名称">商品缩略图 6</td><td data-label="位置尺寸">125, 439 · 40×40</td><td data-label="表示">clean-crop</td><td data-label="素材"><code>product-thumb-6.png</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-title-6</code></td><td data-label="名称">商品标题 6</td><td data-label="位置尺寸">172, 439 · 164×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">ASHALI Cute Bear Breath…</td></tr>
+            <tr><td data-label="ID"><code>product-status-6</code></td><td data-label="名称">编辑状态 6</td><td data-label="位置尺寸">172, 460 · 60×18</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">未编辑</td></tr>
+            <tr><td data-label="ID"><code>product-item-7</code></td><td data-label="名称">商品行 7</td><td data-label="位置尺寸">116, 492 · 220×58</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-thumb-7</code></td><td data-label="名称">商品缩略图 7</td><td data-label="位置尺寸">125, 501 · 40×40</td><td data-label="表示">clean-crop</td><td data-label="素材"><code>product-thumb-7.png</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-title-7</code></td><td data-label="名称">商品标题 7</td><td data-label="位置尺寸">172, 501 · 164×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">Designer womens Croppe…</td></tr>
+            <tr><td data-label="ID"><code>product-status-7</code></td><td data-label="名称">编辑状态 7</td><td data-label="位置尺寸">172, 522 · 60×18</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">未编辑</td></tr>
+            <tr><td data-label="ID"><code>product-item-8</code></td><td data-label="名称">商品行 8</td><td data-label="位置尺寸">116, 554 · 220×58</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-thumb-8</code></td><td data-label="名称">商品缩略图 8</td><td data-label="位置尺寸">125, 563 · 40×40</td><td data-label="表示">clean-crop</td><td data-label="素材"><code>product-thumb-8.png</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-title-8</code></td><td data-label="名称">商品标题 8</td><td data-label="位置尺寸">172, 563 · 164×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">天然淡水珍珠长款项链女…</td></tr>
+            <tr><td data-label="ID"><code>product-status-8</code></td><td data-label="名称">编辑状态 8</td><td data-label="位置尺寸">172, 584 · 60×18</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">未编辑</td></tr>
+            <tr><td data-label="ID"><code>product-item-9</code></td><td data-label="名称">商品行 9</td><td data-label="位置尺寸">116, 616 · 220×58</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-thumb-9</code></td><td data-label="名称">商品缩略图 9</td><td data-label="位置尺寸">125, 625 · 40×40</td><td data-label="表示">clean-crop</td><td data-label="素材"><code>product-thumb-9.png</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-title-9</code></td><td data-label="名称">商品标题 9</td><td data-label="位置尺寸">172, 625 · 164×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">智能感应垃圾桶家用卧室…</td></tr>
+            <tr><td data-label="ID"><code>product-status-9</code></td><td data-label="名称">编辑状态 9</td><td data-label="位置尺寸">172, 646 · 60×18</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">未编辑</td></tr>
+            <tr><td data-label="ID"><code>product-item-10</code></td><td data-label="名称">商品行 10</td><td data-label="位置尺寸">116, 678 · 220×58</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-thumb-10</code></td><td data-label="名称">商品缩略图 10</td><td data-label="位置尺寸">125, 687 · 40×40</td><td data-label="表示">clean-crop</td><td data-label="素材"><code>product-thumb-10.png</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>product-title-10</code></td><td data-label="名称">商品标题 10</td><td data-label="位置尺寸">172, 687 · 164×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">Women Simple Gold Chai…</td></tr>
+            <tr><td data-label="ID"><code>product-status-10</code></td><td data-label="名称">编辑状态 10</td><td data-label="位置尺寸">172, 708 · 60×18</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">未编辑</td></tr>
+            <tr><td data-label="ID"><code>item-icon-trash</code></td><td data-label="名称">删除图标（选中行）</td><td data-label="位置尺寸">292, 151 · 16×16</td><td data-label="表示">svg</td><td data-label="素材"><code>trash.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>item-icon-folder-check</code></td><td data-label="名称">完成图标（选中行）</td><td data-label="位置尺寸">312, 151 · 16×16</td><td data-label="表示">svg</td><td data-label="素材"><code>folder-check.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>list-pager-prev-box</code></td><td data-label="名称">列表翻页上一页</td><td data-label="位置尺寸">190, 746 · 28×28</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>list-pager-prev-icon</code></td><td data-label="名称">上一页箭头</td><td data-label="位置尺寸">198, 752 · 12×16</td><td data-label="表示">svg</td><td data-label="素材"><code>pager-prev.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>list-pager-next-box</code></td><td data-label="名称">列表翻页下一页</td><td data-label="位置尺寸">234, 746 · 28×28</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>list-pager-next-icon</code></td><td data-label="名称">下一页箭头</td><td data-label="位置尺寸">242, 752 · 12×16</td><td data-label="表示">svg</td><td data-label="素材"><code>pager-next.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>tab-collapse-icon</code></td><td data-label="名称">收起列表图标</td><td data-label="位置尺寸">348, 120 · 12×12</td><td data-label="表示">svg</td><td data-label="素材"><code>collapse.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>tab-basic</code></td><td data-label="名称">页签 基本</td><td data-label="位置尺寸">369, 117 · 32×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">基本</td></tr>
+            <tr><td data-label="ID"><code>tab-divider-1</code></td><td data-label="名称">页签分隔线 1</td><td data-label="位置尺寸">412, 121 · 1×12</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>tab-detail</code></td><td data-label="名称">页签 详情</td><td data-label="位置尺寸">424, 117 · 32×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">详情</td></tr>
+            <tr><td data-label="ID"><code>tab-divider-2</code></td><td data-label="名称">页签分隔线 2</td><td data-label="位置尺寸">468, 121 · 1×12</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>tab-log</code></td><td data-label="名称">页签 日志</td><td data-label="位置尺寸">481, 117 · 30×20</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">日志</td></tr>
+            <tr><td data-label="ID"><code>editor-box</code></td><td data-label="名称">富文本编辑器外框</td><td data-label="位置尺寸">346, 148 · 1450×629</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>editor-toolbar-line</code></td><td data-label="名称">工具栏分隔线</td><td data-label="位置尺寸">347, 193 · 1448×1</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>tb-bold</code></td><td data-label="名称">加粗按钮</td><td data-label="位置尺寸">356, 157 · 26×28</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">B</td></tr>
+            <tr><td data-label="ID"><code>tb-italic</code></td><td data-label="名称">斜体按钮</td><td data-label="位置尺寸">384, 157 · 26×28</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">I</td></tr>
+            <tr><td data-label="ID"><code>tb-underline</code></td><td data-label="名称">下划线按钮</td><td data-label="位置尺寸">412, 157 · 26×28</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">U</td></tr>
+            <tr><td data-label="ID"><code>tb-font-size</code></td><td data-label="名称">字号选择</td><td data-label="位置尺寸">461, 157 · 54×28</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">默认大小</td></tr>
+            <tr><td data-label="ID"><code>tb-font-size-caret</code></td><td data-label="名称">字号下拉箭头</td><td data-label="位置尺寸">515, 164 · 10×14</td><td data-label="表示">svg</td><td data-label="素材"><code>caret.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>tb-font-color</code></td><td data-label="名称">字色按钮</td><td data-label="位置尺寸">554, 164 · 14×14</td><td data-label="表示">svg</td><td data-label="素材"><code>font-color.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>tb-list-ul</code></td><td data-label="名称">无序列表</td><td data-label="位置尺寸">597, 164 · 14×14</td><td data-label="表示">svg</td><td data-label="素材"><code>list-ul.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>tb-list-ol</code></td><td data-label="名称">有序列表</td><td data-label="位置尺寸">625, 164 · 14×14</td><td data-label="表示">svg</td><td data-label="素材"><code>list-ol.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>tb-align</code></td><td data-label="名称">对齐方式</td><td data-label="位置尺寸">668, 164 · 14×14</td><td data-label="表示">svg</td><td data-label="素材"><code>align-left.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>tb-image</code></td><td data-label="名称">插入图片（激活）</td><td data-label="位置尺寸">708, 157 · 28×28</td><td data-label="表示">svg</td><td data-label="素材"><code>image.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>tb-clear-format</code></td><td data-label="名称">清除格式</td><td data-label="位置尺寸">757, 164 · 16×14</td><td data-label="表示">svg</td><td data-label="素材"><code>clear-format.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>detail-poster</code></td><td data-label="名称">详情海报图</td><td data-label="位置尺寸">362, 206 · 1000×570</td><td data-label="表示">clean-crop</td><td data-label="素材"><code>detail-poster.png</code></td><td data-label="文字">新品上市 强势登场 i17ProMax</td></tr>
+            <tr><td data-label="ID"><code>float-scroll-up</code></td><td data-label="名称">上滚圆形按钮</td><td data-label="位置尺寸">1752, 699 · 28×28</td><td data-label="表示">svg</td><td data-label="素材"><code>arrow-up.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>float-scroll-down</code></td><td data-label="名称">下滚圆形按钮</td><td data-label="位置尺寸">1752, 735 · 28×28</td><td data-label="表示">svg</td><td data-label="素材"><code>arrow-down.svg</code></td><td data-label="文字">—</td></tr>
+            <tr><td data-label="ID"><code>btn-close</code></td><td data-label="名称">关闭按钮</td><td data-label="位置尺寸">877, 786 · 73×36</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">关闭</td></tr>
+            <tr><td data-label="ID"><code>btn-save</code></td><td data-label="名称">保存按钮</td><td data-label="位置尺寸">961, 786 · 74×36</td><td data-label="表示">html</td><td data-label="素材">—</td><td data-label="文字">保存</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="decision-history">
+          <h2>用户重要决策与变更</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr></thead>
+              <tbody>
+                <tr><td data-label="日期">2026-09-28</td><td data-label="用户决策或变更">要求精准还原编辑产品弹窗，范围限定为「只需要实现截图中的弹窗部分」</td><td data-label="对当前原型的影响">背景页面降级为遮罩底色，还原精度集中在弹窗 79 个元素</td></tr>
+                <tr><td data-label="日期">2026-09-28</td><td data-label="用户决策或变更">质疑「怎么只生成规格，没有可运行页面」，要求交付可运行原型</td><td data-label="对当前原型的影响">视为放行确认，进入 React 实现阶段，新增 <code>src/prototypes/edit-product-dialog/index.tsx</code> 与 <code>style.css</code></td></tr>
+                <tr><td data-label="日期">2026-09-28</td><td data-label="用户决策或变更">新增详情模板功能（下拉 / 创建 / 管理 / 编辑 / 删除二次确认），并确认：下拉展示全部模板不做子账号过滤；初始数据为预置示例 + 可新建</td><td data-label="对当前原型的影响">工具栏右侧新增模板控件组与三类弹窗；详情正文改为可编辑区域以支持「存为模板 / 模板替换」；管理表中类型文案统一用「公共」（参考图 2 中的「公用」按创建弹窗口径处理）</td></tr>
+                <tr><td data-label="日期">2026-09-28</td><td data-label="用户决策或变更">页面批注三条：① 删除模板确认后需要提示；② 保存需要成功提示；③ 编辑模板弹窗应在管理模板弹窗顶层，关闭后回到管理模板弹窗</td><td data-label="对当前原型的影响">新增顶部绿色轻提示组件（删除成功 / 保存成功，约 2s 自动消失，保存提示在弹窗关闭后仍可见）；编辑弹窗遮罩 z-index 提升至 210 且不再关闭管理弹窗，取消 / 确定 / × 均回到管理弹窗</td></tr>
+                <tr><td data-label="日期">2026-09-28</td><td data-label="用户决策或变更">创建模板成功和编辑模板保存成功也需要提示</td><td data-label="对当前原型的影响">模板表单弹窗「确定」后复用轻提示：创建显示「创建成功」、编辑显示「保存成功」</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+
+
+      <article class="spec-page" data-spec-page="detail-two" hidden>
+        <h1>&lt;扩展页面二名称&gt;</h1>
+        <p class="hint">需要更多页面时可复制此页，并为新页面配置唯一的页面标识和对应导航项。</p>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const navItems = [...document.querySelectorAll('[data-page-target]')];
+    const pages = [...document.querySelectorAll('[data-spec-page]')];
+
+    const showPage = (pageId) => {
+      for (const navItem of navItems) {
+        const isCurrent = navItem.dataset.pageTarget === pageId;
+        if (isCurrent) {
+          navItem.setAttribute('aria-current', 'page');
+        } else {
+          navItem.removeAttribute('aria-current');
+        }
+      }
+
+      for (const page of pages) {
+        page.hidden = page.dataset.specPage !== pageId;
+      }
+    };
+
+    for (const navItem of navItems) {
+      navItem.addEventListener('click', () => showPage(navItem.dataset.pageTarget));
+    }
+  </script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#e6f5ef',
+        primaryTextColor: '#222832',
+        primaryBorderColor: '#008f5d',
+        lineColor: '#008f5d',
+        secondaryColor: '#f2faf7',
+        tertiaryColor: '#ffffff',
+        edgeLabelBackground: '#ffffff',
+        fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      },
+    });
+  </script>
+</body>
+</html>

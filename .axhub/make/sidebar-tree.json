@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-24T10:10:29.654Z",
+  "updatedAt": "2026-09-30T08:23:17.477Z",
   "prototypes": [
     {
       "id": "folder-1790060254620-0uhxj0",
@@ -28,8 +28,32 @@
         {
           "id": "item:prototypes:auto-edit-dialog",
           "kind": "item",
-          "title": "自动编辑弹窗 - 骆驼队长BI",
+          "title": "批量编辑弹窗",
           "itemKey": "prototypes/auto-edit-dialog"
+        },
+        {
+          "id": "item:prototypes:edit-product-dialog",
+          "kind": "item",
+          "title": "编辑产品弹窗",
+          "itemKey": "prototypes/edit-product-dialog"
+        },
+        {
+          "id": "item:prototypes:operation-log",
+          "kind": "item",
+          "title": "算力明细",
+          "itemKey": "prototypes/operation-log"
+        },
+        {
+          "id": "item:prototypes:personal-center-bi",
+          "kind": "item",
+          "title": "购买权益弹窗",
+          "itemKey": "prototypes/personal-center-bi"
+        },
+        {
+          "id": "item:prototypes:personal-center-page",
+          "kind": "item",
+          "title": "个人中心 - 骆驼队长BI",
+          "itemKey": "prototypes/personal-center-page"
         }
       ]
     },
@@ -56,13 +80,22 @@
       "itemKey": "themes/element-ui"
     },
     {
-      "id": "item-themes-kuacheng-bi",
+      "id": "item-themes-camel-captain-erp",
       "kind": "item",
-      "title": "kuacheng bi",
-      "itemKey": "themes/kuacheng-bi"
+      "title": "camel captain erp",
+      "itemKey": "themes/camel-captain-erp"
+    },
+    {
+      "id": "item-themes-localhost",
+      "kind": "item",
+      "title": "localhost",
+      "itemKey": "themes/localhost"
     }
   ],
-  "themes": [],
+  "themes": [
+    "element-ui",
+    "camel-captain-erp"
+  ],
   "data": [],
   "templates": [
     "prd-template.md"

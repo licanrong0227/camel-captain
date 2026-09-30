@@ -276,16 +276,36 @@
     font-weight: 500;
 }
 
-.help-center-nav-group-arrow {
-    width: 0;
-    height: 0;
-    border-left: 5px solid var(--text-tertiary);
-    border-top: 4px solid transparent;
-    border-bottom: 4px solid transparent;
+.help-center-nav-group-header.is-active {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 500;
+}
+
+/* 展开/收起按钮 */
+.help-center-nav-toggle {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.help-center-nav-toggle:hover {
+    background: var(--border-light);
+    color: var(--text-primary);
+}
+
+.help-center-nav-toggle svg {
     transition: transform 0.2s;
 }
 
-.help-center-nav-group-arrow.is-expanded {
+.help-center-nav-toggle.is-expanded svg {
     transform: rotate(90deg);
 }
 
@@ -331,6 +351,33 @@
     font-weight: 500;
 }
 
+/* 导航多级树 */
+.help-center-nav-group-item {
+    justify-content: space-between;
+}
+
+.help-center-nav-group-item > span:last-child {
+    flex-shrink: 0;
+}
+
+/* 标题可收缩，否则加计数后计数和箭头会被顶出按钮 */
+.help-center-nav-tree-item > .help-center-nav-group-item > span:first-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.help-center-nav-tree-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.help-center-nav-tree-items {
+    display: flex;
+    flex-direction: column;
+}
+
 /* 演示视频按钮 */
 .help-center-demo-btn {
     display: flex;
@@ -362,7 +409,6 @@
     flex: 1;
     padding: 0;
     overflow-y: auto;
-    scroll-snap-type: y mandatory;
 }
 
 .help-center-content-inner {
@@ -572,9 +618,8 @@
     color: var(--text-tertiary);
 }
 
-/* 滚动章节 */
+/* 长页面章节 */
 .help-center-section {
-    min-height: 100vh;
     padding: var(--spacing-xl);
     box-sizing: border-box;
     display: flex;
@@ -584,7 +629,6 @@
 
 .help-center-section-header {
     margin-bottom: var(--spacing-xl);
-    scroll-snap-align: start;
 }
 
 .help-center-section-title {
@@ -601,6 +645,27 @@
     border: none;
     border-top: 1px solid var(--border-light);
     margin: 0 0 24px 0;
+}
+
+/* 文档标题层级：一级到三级字号逐级减小，三级及以后字号相同 */
+.help-center-heading {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-sm) 0;
+    line-height: 1.4;
+}
+
+.help-center-heading.is-l1 {
+    font-size: 28px;
+}
+
+.help-center-heading.is-l2 {
+    font-size: 24px;
+}
+
+.help-center-heading.is-l3,
+.help-center-heading.is-l4 {
+    font-size: 20px;
 }
 
 /* 富文本内嵌视频 */

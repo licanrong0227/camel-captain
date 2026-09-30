@@ -1,0 +1,31 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "personal-center-page",
+    "pageId": "personal-center-page",
+    "nodes": [
+      {
+        "id": "compute-detail-btn",
+        "index": 1,
+        "title": "算力明细入口（新增）",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"compute-detail-btn\"]"],
+          "fingerprint": "button|data-annotation-id=compute-detail-btn",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#ff781f",
+        "images": [],
+        "createdAt": 1790758061662,
+        "updatedAt": 1790758061662
+      }
+    ],
+    "updatedAt": 1790758061662
+  },
+  "markdownMap": {
+    "compute-detail-btn": "## 算力明细入口（新增）\n\n此按钮为**新增入口**，原「报表 → 运营 → 算力明细」导航入口移至个人中心「算力余额」字段旁。\n\n> **待移除：** 需在「报表」导航中移除「运营 - 算力明细」入口，避免重复。"
+  },
+  "assetMap": {}
+}

@@ -5,7 +5,122 @@
     "version": 2,
     "prototypeName": "auto-edit-dialog",
     "pageId": "auto-edit-dialog",
-    "nodes": [],
-    "metadata": {}
+    "updatedAt": 1790579745220,
+    "nodes": [
+      {
+        "id": "main-image-row",
+        "index": 1,
+        "title": "主图（本次新增栏目）",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"main-image-row\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=main-image-row",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#ff781f",
+        "images": [],
+        "createdAt": 1790524800000,
+        "updatedAt": 1790524800000
+      },
+      {
+        "id": "main-mode-reorder",
+        "index": 2,
+        "title": "主图功能：调换顺序",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"main-mode-reorder\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=main-mode-reorder",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1790524800000,
+        "updatedAt": 1790524800000
+      },
+      {
+        "id": "main-mode-replace",
+        "index": 3,
+        "title": "主图功能：替换主图",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"main-mode-replace\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=main-mode-replace",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#12b886",
+        "images": [],
+        "createdAt": 1790524800000,
+        "updatedAt": 1790524800000
+      },
+      {
+        "id": "main-mode-delete",
+        "index": 4,
+        "title": "主图功能：删除主图",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"main-mode-delete\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=main-mode-delete",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#f59f00",
+        "images": [],
+        "createdAt": 1790524800000,
+        "updatedAt": 1790524800000
+      },
+      {
+        "id": "main-mode-append",
+        "index": 5,
+        "title": "主图功能：附加主图",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"main-mode-append\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=main-mode-append",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#e8590c",
+        "images": [],
+        "createdAt": 1790524800000,
+        "updatedAt": 1790524800000
+      },
+      {
+        "id": "upload-image-dialog",
+        "index": 6,
+        "title": "「上传图片」弹窗（样式演示）",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"upload-image-dialog\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=upload-image-dialog",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#7048e8",
+        "images": [],
+        "createdAt": 1790524800000,
+        "updatedAt": 1790524800000
+      }
+    ]
+  },
+  "markdownMap": {
+    "main-image-row": "## 主图（本次新增）\n\n位于「图片视频」栏目第一行，「推广图」上方。\n\n### 组成\n- 行首复选框：启用 / 停用本栏目配置\n- 功能单选：调换顺序、替换主图、删除主图、附加主图（各功能的控件与逻辑见对应编号标注）\n\n### 重要说明：本次调整位置\n本栏目的改动同时作用于两个入口：\n1. 认领中心 - 批量认领 - 自动编辑\n2. 我的商品 - 批量编辑\n\n### 交互逻辑\n- 选中某个功能单选项后，下方展开该功能对应的操作区\n- 点选任一功能单选项会自动勾选行首复选框\n- 取消勾选行首复选框会清空当前功能选择并收起操作区\n- 主图位置上限 15 个（位置1…位置15），第一个方块上方标记「首图」\n- 保存后按所选功能批量作用于本次选中的全部商品",
+    "main-mode-reorder": "## 功能 1：调换顺序\n\n**说明文字**：拖拽调整主图顺序，或由系统随机打乱顺序\n\n### 控件\n- 按钮「随机打乱顺序」：点击后将主图方块随机乱序\n- 按钮「恢复初始顺序」：点击后方块恢复到位置1…位置15\n- 主图方块：位置1…位置15（最多 15 个），第一个方块上方显示「首图」；方块只做位置展示，不可上传图片，可拖拽排序\n\n### 拖拽交互\n- 按住方块拖到目标方块上时，目标位置的方块即时挪动，实时看到顺序变化（不是松手后才换位）\n- 拖拽跟随鼠标的拖影只显示「主图N」，「首图」和「位置N」标签固定在原位不跟随\n\n### 功能逻辑\n保存后，商品的主图按照方块的顺序进行调整，如果商品对应的顺序没有图片，则不会生效。\n\n> 例：方块顺序是 28546371，但商品A 原本只有 5 张主图，则商品A 保存后的图片顺序为 25431。",
+    "main-mode-replace": "## 功能 2：替换主图\n\n**说明文字**：上传图片置换指定位置的主图\n\n### 控件\n- 主图方块（不可拖拽）：位置1…位置15，第一个方块上方显示「首图」\n- 每个方块下方有一个图片上传控件：正方形、虚线边框、云朵上传图标，文字为「点击」\n- 上传的图片在左下角显示分辨率，例如 1024*1024\n- 鼠标悬停已上传的图片：右上角出现删除按钮，下方弹出操作菜单\n\n### 交互\n- 点击上传控件打开「上传图片」弹窗（本原型只演示弹窗样式，弹窗内只有单个上传，没有批量上传）\n- 上传控件只做点击上传，不再提示 Ctrl+V；粘贴上传统一在「上传图片」弹窗的拖拽区按 Ctrl+V 完成（上传控件数量多，不再靠控件位置判断粘贴目标）\n- 悬停删除按钮：点击直接删除该图片，无需二次确认\n- 悬停操作菜单（AI图像编辑 / 高级图像翻译 / 快速裁剪）：这些菜单功能是系统里原本已经实现的功能，原型只展示菜单入口，点击后按系统原有功能处理\n\n### 功能逻辑\n保存后，对应位置的主图替换成新上传的图片，如果对应商品没有对应位置的图片，则不会生效。\n\n> 例：商品A 只有 5 张主图，用户替换了第 3 张和第 8 张主图，则保存后商品A 只有第 3 张图片被替换。",
+    "main-mode-delete": "## 功能 3：删除主图\n\n**说明文字**：删除指定位置的主图\n\n### 控件\n- 主图方块（不可拖拽）：位置1…位置15，第一个方块上方显示「首图」\n- 每个方块下方有一个红色「删除」按钮\n\n### 交互\n- 点击红色「删除」按钮后，按钮变成灰色文字，文案改为「取消删除」，方块变为已删除（置灰）态\n- 点击「取消删除」恢复该位置\n\n### 功能逻辑\n保存后，对应位置的主图将被删除，如果对应商品没有对应位置的图片，则不会生效。\n\n> 例：商品A 只有 5 张主图，用户删除了第 3 张和第 8 张主图，则保存后商品A 只有第 3 张图片被删除。",
+    "main-mode-append": "## 功能 4：附加主图\n\n**说明文字**：上传新的图片附加到结尾，如果主图数量超过限制，则自动替换最后的主图\n\n### 控件\n- 图片上传控件：正方形、虚线边框、云朵上传图标，文字为「点击/Ctrl+V粘贴」\n- 上传后在上传控件下方以宫格展示已上传图片列表，每张图片左下角显示分辨率\n- 最多只能上传 15 张图片\n\n### 交互\n- 点击上传控件打开「上传图片」弹窗（弹窗内提供单个上传 + 批量上传，本原型只演示样式）\n- 本栏只有一个上传控件，粘贴目标明确，因此支持两种上传方式：点击控件打开「上传图片」弹窗选图；或点选控件后直接按 Ctrl+V 把剪贴板图片追加到列表末尾（与「替换主图」的多个控件不同）\n- 鼠标悬停已上传图片：右上角删除按钮点击即删除（无二次确认）；下方弹出操作菜单（AI图像编辑 / 高级图像翻译 / 快速裁剪），这些是系统里已经实现的功能，原型只展示入口，点击后按系统原有功能处理\n\n### 功能逻辑\n保存后，图片自动追加到原来的主图末尾，如果主图数量已经超过限制，则自动替换最后主图。\n\n> 例：主图数量上限是 8，用户上传了 3 张记为 abc；商品A 有 5 张主图 12345，保存后为 12345abc（追加）；商品B 有 8 张主图 12345678，保存后为 12345abc（替换）。",
+    "upload-image-dialog": "## 「上传图片」弹窗\n\n从「替换主图」「附加主图」的上传控件点击进入，本原型只还原弹窗样式，不实现真实上传与确认逻辑。\n\n### 结构\n- 标题栏：上传图片 + 关闭按钮\n- 页签：本地（当前选中）/ URL / 引用\n- 上传方式：单个上传；「附加主图」入口额外出现「批量上传」，「替换主图」只做单张上传，因此没有批量上传选项\n- 拖拽区：将文件拖到此处，或点击上传；提示「按 Ctrl+V 可从剪贴板上传」\n- 底部：取消 / 确认"
+  },
+  "assetMap": {},
+  "directory": {
+    "nodes": []
   }
 }

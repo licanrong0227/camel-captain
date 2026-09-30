@@ -566,6 +566,333 @@
   margin-bottom: 0;
 }
 
+/* ===== 主图：位置方块 ===== */
+.ae-main-panel {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--ae-border-lighter);
+}
+
+.ae-main-panel .ae-hint {
+  margin-bottom: 12px;
+}
+
+.ae-order-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.ae-order-btns svg {
+  vertical-align: -2px;
+  margin-right: 2px;
+}
+
+.ae-pos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 8px;
+}
+
+.ae-pos-item {
+  width: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ae-pos-tag {
+  height: 18px;
+  line-height: 18px;
+  font-size: 12px;
+  color: var(--ae-primary);
+  background: var(--ae-soft);
+  border-radius: 3px;
+  padding: 0 6px;
+}
+
+.ae-pos-spacer {
+  height: 18px;
+}
+
+.ae-pos-badge {
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+  color: var(--ae-text-regular);
+}
+
+.ae-pos-thumb {
+  width: 88px;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--ae-text-secondary);
+  border: 1px solid var(--ae-border);
+  border-radius: var(--ae-radius-sm);
+  background: #f5f7fa center/cover no-repeat;
+  box-sizing: border-box;
+}
+
+.ae-pos-thumb.is-draggable {
+  cursor: grab;
+}
+
+.ae-pos-item.is-reorder {
+  cursor: grab;
+}
+
+.ae-pos-item.is-dragging {
+  cursor: grabbing;
+}
+
+.ae-pos-item.is-dragging .ae-pos-thumb {
+  opacity: 0.45;
+  border-style: dashed;
+  border-color: var(--ae-primary);
+}
+
+/* 拖拽时跟随光标的影像：不含首图/位置标签 */
+.ae-drag-ghost {
+  position: fixed;
+  top: -200px;
+  left: -200px;
+  width: 88px;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ae-border);
+  border-radius: var(--ae-radius-sm);
+  background: #f5f7fa;
+  color: var(--ae-text-secondary);
+  font-size: 12px;
+  font-family: var(--ae-font);
+  pointer-events: none;
+}
+
+.ae-pos-thumb.is-removed {
+  opacity: 0.4;
+  filter: grayscale(1);
+}
+
+.ae-del-btn,
+.ae-del-cancel {
+  margin-top: 6px;
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  line-height: 18px;
+}
+
+.ae-del-btn {
+  color: #fff;
+  background: #f56c6c;
+  border-radius: 3px;
+  padding: 2px 12px;
+}
+
+.ae-del-btn:hover {
+  background: #f78989;
+}
+
+.ae-del-cancel {
+  color: var(--ae-text-secondary);
+}
+
+.ae-del-cancel:hover {
+  color: var(--ae-text-primary);
+}
+
+/* ===== 主图：上传控件 ===== */
+.ae-upload {
+  width: 88px;
+  height: 88px;
+  margin-top: 6px;
+  border: 1px dashed var(--ae-border);
+  border-radius: var(--ae-radius-sm);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--ae-text-secondary);
+  cursor: pointer;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.ae-upload:not(.is-filled):hover {
+  border-color: var(--ae-primary);
+  color: var(--ae-primary);
+}
+
+.ae-upload.is-filled {
+  border-style: solid;
+  padding: 0;
+  cursor: default;
+}
+
+.ae-upload img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 3px;
+}
+
+.ae-upload-text {
+  font-size: 11px;
+  line-height: 14px;
+  text-align: center;
+  padding: 0 2px;
+}
+
+.ae-append-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 3px;
+}
+
+.ae-size {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 1px 4px;
+  font-size: 10px;
+  line-height: 14px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  border-top-right-radius: 3px;
+  white-space: nowrap;
+}
+
+/* ===== 已上传图片：悬停删除按钮 + 操作菜单（菜单仅样式） ===== */
+.ae-thumb-del {
+  display: none;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--ae-primary);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.ae-thumb:hover .ae-thumb-del {
+  display: flex;
+}
+
+.ae-thumb-del:hover {
+  background: var(--ae-primary-hover);
+}
+
+.ae-thumb-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 152px;
+  padding: 6px 0;
+  background: #fff;
+  border: 1px solid var(--ae-border-light);
+  border-radius: 6px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  z-index: 20;
+}
+
+.ae-thumb:hover .ae-thumb-menu {
+  display: block;
+}
+
+.ae-thumb-menu-item {
+  padding: 9px 16px;
+  font-size: 14px;
+  color: var(--ae-text-primary);
+  white-space: nowrap;
+  cursor: default;
+}
+
+.ae-thumb-menu-item:hover {
+  background: #f5f7fa;
+}
+
+/* 让悬停菜单不被行容器裁切 */
+.ae-row.is-flush {
+  overflow: visible;
+}
+
+.ae-row-label {
+  border-radius: var(--ae-radius) 0 0 var(--ae-radius);
+}
+
+/* 模拟已上传的示例图片 */
+.ae-sample {
+  width: 88px;
+  height: 88px;
+  margin-top: 6px;
+  border: 1px solid var(--ae-border);
+  border-radius: var(--ae-radius-sm);
+  background: #fff;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.ae-sample img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ae-append-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.ae-append-item {
+  width: 88px;
+  height: 88px;
+  border: 1px solid var(--ae-border);
+  border-radius: var(--ae-radius-sm);
+  position: relative;
+  box-sizing: border-box;
+}
+
+.ae-append-grid .ae-sample {
+  margin-top: 0;
+}
+
+/* ===== 未改动的栏目：仅展示，不可交互 ===== */
+.ae-row.is-disabled .ae-checkbox,
+.ae-row.is-disabled .ae-radio {
+  cursor: default;
+}
+
+.ae-row.is-disabled .ae-checkbox-mask,
+.ae-row.is-disabled .ae-radio-mask {
+  background: #f5f7fa;
+  border-color: #e4e7ed;
+}
+
 /* ===== Footer ===== */
 .ae-footer {
   display: flex;
@@ -627,4 +954,134 @@
 .ae-content::-webkit-scrollbar-track,
 .ae-menu::-webkit-scrollbar-track {
   background: transparent;
+}
+
+/* ===== 上传图片弹窗（静态样式） ===== */
+.au-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  font-family: var(--ae-font);
+}
+
+.au-modal {
+  width: 960px;
+  max-width: calc(100vw - 48px);
+  background: #fff;
+  border-radius: var(--ae-radius);
+  box-shadow: var(--ae-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.au-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--ae-border-lighter);
+  flex-shrink: 0;
+}
+
+.au-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ae-text-primary);
+}
+
+.au-body {
+  display: flex;
+  min-height: 400px;
+}
+
+.au-tabs {
+  width: 112px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--ae-border-lighter);
+  padding-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.au-tab {
+  position: relative;
+  padding: 0 0 0 24px;
+  font-size: 15px;
+  color: var(--ae-text-regular);
+}
+
+.au-tab.active {
+  color: var(--ae-primary);
+  font-weight: 600;
+}
+
+.au-tab.active::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  background: var(--ae-primary);
+}
+
+.au-content {
+  flex: 1;
+  min-width: 0;
+  padding: 22px 24px 24px;
+}
+
+.au-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--ae-text-primary);
+  cursor: default;
+}
+
+.au-radio.is-active {
+  color: var(--ae-primary);
+}
+
+.au-drop {
+  margin-top: 20px;
+  height: 300px;
+  border: 1px dashed var(--ae-border);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.au-drop-text {
+  font-size: 15px;
+  color: var(--ae-text-regular);
+}
+
+.au-drop-link {
+  color: #2c7bfc;
+}
+
+.au-drop-tip {
+  font-size: 15px;
+  color: var(--ae-text-secondary);
+}
+
+.au-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 4px 0 26px;
 }

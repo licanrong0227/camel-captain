@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "provider": "current-agent",
+  "kind": "assets",
+  "pass": 2,
+  "inputImage": "masked-pass-2.png",
+  "note": "第二轮在遮蔽图上复核：剩余可见元素（关闭 X、Tab «、工具栏图标、上/下圆形按钮、列表分页按钮、选中项垃圾桶/文件夹图标）均为矢量图标或文本，无新增位图素材。",
+  "regions": []
+}

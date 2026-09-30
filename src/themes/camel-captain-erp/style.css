@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/* 骆驼队长ERP 设计规范主题变量：与 DESIGN.md / theme.json / assets/tokens.json 同源 */
+.dmb-page {
+  /* ── 品牌色（-1 背景 / -2 边框 / -3 悬停 / -4 常规 / -5 点击） ── */
+  --dmb-brand-1: #ffefe5;
+  --dmb-brand-2: #ffd9bf;
+  --dmb-brand-3: #ff9148;
+  --dmb-brand-4: #ff7d29;
+  --dmb-brand-5: #d25909;
+
+  /* ── 功能色 ── */
+  --dmb-success-1: #e2f6ec;
+  --dmb-success-2: #b6ead0;
+  --dmb-success-3: #30c379;
+  --dmb-success-4: #0bb861;
+  --dmb-success-5: #03892e;
+
+  --dmb-warning-1: #fff4e5;
+  --dmb-warning-2: #ffe4bf;
+  --dmb-warning-3: #ffb348;
+  --dmb-warning-4: #ffa628;
+  --dmb-warning-5: #e56507;
+
+  --dmb-danger-1: #fee9e7;
+  --dmb-danger-2: #fcc8c3;
+  --dmb-danger-3: #f66355;
+  --dmb-danger-4: #f44837;
+  --dmb-danger-5: #c51708;
+
+  --dmb-info-1: #e5f0ff;
+  --dmb-info-2: #bfd9ff;
+  --dmb-info-3: #4894ff;
+  --dmb-info-4: #2881ff;
+  --dmb-info-5: #0948d2;
+
+  /* ── 中性色 ── */
+  --dmb-neutral-1: #f7f8fa;
+  --dmb-neutral-2: #f2f3f5;
+  --dmb-neutral-3: #ebeef5;
+  --dmb-neutral-4: #e5e6eb;
+  --dmb-neutral-5: #c0c5cf;
+  --dmb-neutral-6: #86909c;
+  --dmb-neutral-7: #4e5969;
+  --dmb-neutral-8: #1d2129;
+
+  --dmb-primary: var(--dmb-brand-4);
+  --dmb-link: var(--dmb-brand-4);
+  --dmb-muted: var(--dmb-neutral-6);
+  --dmb-background: var(--dmb-neutral-1);
+  --dmb-surface: #ffffff;
+  --dmb-selected: var(--dmb-neutral-2);
+  --dmb-active-surface: var(--dmb-brand-1);
+
+  --dmb-text-primary: var(--dmb-neutral-8);
+  --dmb-text-secondary: var(--dmb-neutral-7);
+  --dmb-text-tertiary: var(--dmb-neutral-6);
+  --dmb-text-disabled: var(--dmb-neutral-5);
+  --dmb-text-inverse: #ffffff;
+
+  --dmb-mask-dialog: rgba(0, 0, 0, 0.6);
+  --dmb-mask-image: rgba(0, 0, 0, 0.8);
+
+  /* ── 字体 ── */
+  --dmb-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+  --dmb-font-size-12: 12px;
+  --dmb-line-height-12: 20px;
+  --dmb-font-size-14: 14px;
+  --dmb-line-height-14: 22px;
+  --dmb-font-size-16: 16px;
+  --dmb-line-height-16: 24px;
+  --dmb-font-size-18: 18px;
+  --dmb-line-height-18: 26px;
+  --dmb-font-size-20: 20px;
+  --dmb-line-height-20: 28px;
+  --dmb-font-weight-regular: 400;
+  --dmb-font-weight-medium: 500;
+  --dmb-font-weight-semibold: 600;
+
+  /* ── 间距（保守默认，规范未提供间距页） ── */
+  --dmb-spacing-xs: 4px;
+  --dmb-spacing-sm: 8px;
+  --dmb-spacing-md: 12px;
+  --dmb-spacing-lg: 16px;
+  --dmb-spacing-xl: 20px;
+  --dmb-spacing-2xl: 24px;
+  --dmb-spacing-3xl: 32px;
+  --dmb-spacing-4xl: 40px;
+  --dmb-dialog-padding: 30px;
+
+  /* ── 圆角 ── */
+  --dmb-radius-none: 0px;
+  --dmb-radius-control: 4px;
+  --dmb-radius-card: 8px;
+  --dmb-radius-large: 12px;
+  --dmb-radius-full: 100px;
+
+  /* ── 边框 ── */
+  --dmb-border-width: 1px;
+  --dmb-border-control: 1px solid var(--dmb-neutral-4);
+  --dmb-border-divider: 1px solid var(--dmb-neutral-3);
+  --dmb-border-selected: 1px solid var(--dmb-brand-2);
+  --dmb-border-active: 1px solid var(--dmb-brand-4);
+
+  /* ── 阴影（量测推断，规范页仅命名） ── */
+  --dmb-shadow-light: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --dmb-shadow-base: 0 4px 24px rgba(0, 0, 0, 0.1);
+
+  /* ── 布局（1x 量测推断） ── */
+  --dmb-navbar-height: 55px;
+  --dmb-sidebar-width: 193px;
+
+  /* ── 动效（保守默认） ── */
+  --dmb-transition-color: 0.2s ease-in-out;
+  --dmb-transition-expand: 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  --dmb-transition-overlay: 0.3s ease-out;
+
+  font-family: var(--dmb-font-family);
+  font-size: var(--dmb-font-size-14);
+  line-height: var(--dmb-line-height-14);
+  color: var(--dmb-text-primary);
+  background-color: var(--dmb-background);
+}

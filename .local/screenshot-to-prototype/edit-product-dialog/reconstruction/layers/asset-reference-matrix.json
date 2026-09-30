@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "columns": 4,
+  "rows": 3,
+  "cellWidth": 1024,
+  "cellHeight": 594,
+  "width": 4096,
+  "height": 1782,
+  "transparentBackground": true,
+  "cells": [
+    {
+      "id": "detail-poster",
+      "x": 12,
+      "y": 12,
+      "width": 1000,
+      "height": 570,
+      "sourcePass": 1
+    },
+    {
+      "id": "product-thumb-1",
+      "x": 1516,
+      "y": 277,
+      "width": 40,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "product-thumb-2",
+      "x": 2540,
+      "y": 277,
+      "width": 40,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "product-thumb-3",
+      "x": 3564,
+      "y": 277,
+      "width": 40,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "product-thumb-4",
+      "x": 492,
+      "y": 871,
+      "width": 40,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "product-thumb-5",
+      "x": 1516,
+      "y": 871,
+      "width": 40,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "product-thumb-6",
+      "x": 2540,
+      "y": 871,
+      "width": 40,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "product-thumb-7",
+      "x": 3564,
+      "y": 871,
+      "width": 40,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "product-thumb-8",
+      "x": 492,
+      "y": 1465,
+      "width": 40,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "product-thumb-9",
+      "x": 1516,
+      "y": 1465,
+      "width": 40,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "product-thumb-10",
+      "x": 2540,
+      "y": 1465,
+      "width": 40,
+      "height": 40,
+      "sourcePass": 1
+    }
+  ]
+}

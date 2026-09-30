@@ -1,0 +1,37 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "presentation": {
+    "layerSelectors": [".pcd-overlay"]
+  },
+  "data": {
+    "version": 2,
+    "prototypeName": "personal-center-bi",
+    "pageId": "default",
+    "updatedAt": 1790784000000,
+    "nodes": [
+      {
+        "id": "purchase-dialog-header",
+        "index": 1,
+        "title": "购买权益弹窗（全局共用）",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"purchase-dialog-header\"]"],
+          "fingerprint": "header|data-annotation-id=purchase-dialog-header",
+          "path": []
+        },
+        "aiPrompt": "",
+        "annotationText": "全局共用弹窗，根据用户进入弹窗的场景选中购买项目：\n1. AI算力积分不足，点击「购买」进入弹窗，默认选中「AI算力」；\n2. 创建店铺数量不足，点击「购买」进入弹窗，默认选中「店铺数量」。",
+        "hasMarkdown": false,
+        "color": "#D97706",
+        "images": [],
+        "createdAt": 1790784000000,
+        "updatedAt": 1790784000000
+      }
+    ]
+  },
+  "markdownMap": {},
+  "assetMap": {},
+  "directory": {
+    "nodes": []
+  }
+}

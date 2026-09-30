@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "status": "fallback-required",
+  "fallback": "current-agent",
+  "reason": "vision-config-incomplete",
+  "settingsPath": "C:\\Users\\admin\\.axhub\\make\\voice-assistant.settings.json",
+  "promptFile": "D:\\projects\\CAMEL CAPTAIN\\.local\\screenshot-to-prototype\\edit-product-dialog\\prompt-assets.txt",
+  "image": "C:\\Users\\admin\\.qoder-cn\\tmp\\D--projects-CAMEL-CAPTAIN\\images\\b96346c0-ad63-41a3-b694-2fb1796b25ca\\0b095075-57d9-42a8-ad94-1f007d0eb8ec.png",
+  "kind": "assets",
+  "ocrSubmitted": false,
+  "regions": []
+}

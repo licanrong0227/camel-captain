@@ -1,0 +1,51 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "operation-log",
+    "pageId": "operation-log",
+    "nodes": [
+      {
+        "id": "annotation-1",
+        "index": 1,
+        "locator": {
+          "selectors": [
+            ".ol-modal"
+          ],
+          "fingerprint": "div",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "div",
+              "index": 0
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "createdAt": 1790652280297,
+        "updatedAt": 1790652280297
+      }
+    ],
+    "updatedAt": 1790652280297
+  },
+  "markdownMap": {
+    "annotation-1": "读取后台AI产品算力定价中状态为“已启用”的数据"
+  },
+  "assetMap": {}
+}

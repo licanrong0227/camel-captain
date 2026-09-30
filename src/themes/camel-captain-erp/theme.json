@@ -1,0 +1,225 @@
+{
+  "schemaVersion": "1.0",
+  "source": {
+    "type": "figma-spec-export",
+    "url": "https://www.figma.com/proto/A6SdYXzkWSpxdZEswWM4rN/%E9%AA%86%E9%A9%BC%E9%98%9F%E9%95%BFERP?node-id=60-6105&page-id=19%3A5008",
+    "accessDate": "2026-09-30",
+    "method": "用户导出的 10 张规范页 PNG + 自研 PNG 像素量测复核（Figma MCP 不可用，结构化 Variables 未采集）",
+    "notes": "全局设计规范（用户 2026-09-30 确认）。间距/断点/动效/focus 态/图标网格未提供规范页，按保守默认处理；阴影数值为量测推断。详见 SOURCES.md 缺口与冲突表"
+  },
+  "identity": {
+    "slug": "camel-captain-erp",
+    "titleZh": "骆驼队长ERP 设计规范主题",
+    "descriptionZh": "跨境 ERP 中后台的浅色工作台主题：品牌橙 #FF7D29 + 五级功能色板 + 中性色文本层级",
+    "version": "1.0.0"
+  },
+  "tags": ["跨境ERP", "中后台", "设计规范", "浅色导航", "橙色品牌", "高密度表格"],
+  "assets": {
+    "tokensPath": "./assets/tokens.json",
+    "previewImages": [
+      "./assets/source-preview.png",
+      "./assets/preview-components.png",
+      "./assets/preview-table.png",
+      "./assets/preview-navigation.png"
+    ]
+  },
+  "tokens": {
+    "palette": {
+      "brand": {
+        "1": "#FFEFE5",
+        "2": "#FFD9BF",
+        "3": "#FF9148",
+        "4": "#FF7D29",
+        "5": "#D25909",
+        "role": "1 背景 / 2 边框 / 3 悬停 / 4 主色·常规 / 5 点击"
+      },
+      "success": { "1": "#E2F6EC", "2": "#B6EAD0", "3": "#30C379", "4": "#0BB861", "5": "#03892E" },
+      "warning": { "1": "#FFF4E5", "2": "#FFE4BF", "3": "#FFB348", "4": "#FFA628", "5": "#E56507" },
+      "danger": { "1": "#FEE9E7", "2": "#FCC8C3", "3": "#F66355", "4": "#F44837", "5": "#C51708" },
+      "info": { "1": "#E5F0FF", "2": "#BFD9FF", "3": "#4894FF", "4": "#2881FF", "5": "#0948D2" },
+      "neutral": {
+        "1": "#F7F8FA",
+        "2": "#F2F3F5",
+        "3": "#EBEEF5",
+        "4": "#E5E6EB",
+        "5": "#C0C5CF",
+        "6": "#86909C",
+        "7": "#4E5969",
+        "8": "#1D2129",
+        "role": "1 背景 / 2 浅填充·悬停·禁用 / 3 分割线 / 4 边框 / 5 禁用文字 / 6 辅助文字 / 7 次要文字 / 8 主要文字"
+      },
+      "white": "#FFFFFF",
+      "black": "#000000",
+      "mask": { "dialog": "rgba(0,0,0,0.6)", "image": "rgba(0,0,0,0.8)" },
+      "text": {
+        "primary": "#1D2129",
+        "secondary": "#4E5969",
+        "tertiary": "#86909C",
+        "disabled": "#C0C5CF",
+        "link": "#FF7D29",
+        "inverse": "#FFFFFF"
+      },
+      "background": { "page": "#F7F8FA", "surface": "#FFFFFF", "selected": "#F2F3F5", "active": "#FFEFE5" }
+    },
+    "typography": {
+      "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Helvetica, Arial, sans-serif",
+      "familyRule": "优先使用系统默认界面字体，不引入 Web Font",
+      "numericRule": "数字、金额、SKU、时间列使用 font-variant-numeric: tabular-nums",
+      "scale": [
+        { "size": "12px", "lineHeight": "20px", "weight": "400", "role": "表格正文、辅助说明、标签" },
+        { "size": "14px", "lineHeight": "22px", "weight": "400 / 500", "role": "界面基准：正文、按钮、输入框、菜单" },
+        { "size": "16px", "lineHeight": "24px", "weight": "500", "role": "区块标题、弹窗标题" },
+        { "size": "18px", "lineHeight": "26px", "weight": "500", "role": "页面标题" },
+        { "size": "20px", "lineHeight": "28px", "weight": "500", "role": "一级标题、关键指标" },
+        { "size": "24px", "lineHeight": "32px", "weight": "500", "role": "模块主标题" },
+        { "size": "30px", "lineHeight": "38px", "weight": "500", "role": "展示级（登录页/空态）" },
+        { "size": "38px", "lineHeight": "46px", "weight": "500", "role": "展示级" },
+        { "size": "46px", "lineHeight": "54px", "weight": "500", "role": "展示级" },
+        { "size": "56px", "lineHeight": "64px", "weight": "500", "role": "展示级" }
+      ],
+      "lineHeightFormula": "h = f + 8n",
+      "fontWeight": { "regular": "400", "medium": "500", "semibold": "600（仅极少数或英文加粗）" }
+    },
+    "spacing": {
+      "note": "未提供间距规范页，按 4px 基准保守默认",
+      "xs": "4px",
+      "sm": "8px",
+      "md": "12px",
+      "lg": "16px",
+      "xl": "20px",
+      "2xl": "24px",
+      "3xl": "32px",
+      "4xl": "40px",
+      "dialogPadding": "30px"
+    },
+    "radius": {
+      "note": "src-002 Corner 页标注值",
+      "none": "0px",
+      "control": "4px",
+      "card": "8px",
+      "large": "12px",
+      "tag": "4px",
+      "dialog": "8px",
+      "full": "100px"
+    },
+    "border": {
+      "width": "1px",
+      "style": "solid",
+      "control": "1px solid #E5E6EB",
+      "divider": "1px solid #EBEEF5",
+      "active": "1px solid #FF7D29",
+      "selected": "1px solid #FFD9BF"
+    },
+    "shadow": {
+      "note": "阴影页仅命名未标注数值，以下为像素量测推断",
+      "light": "0 2px 8px rgba(0,0,0,0.06)",
+      "base": "0 4px 24px rgba(0,0,0,0.10)"
+    },
+    "layout": {
+      "designWidth": "1440px",
+      "navbarHeight": "55px",
+      "sidebarWidth": "193px",
+      "breakpoints": "未提供断点规范：保守默认 <1280 紧凑 / 1280-1600 默认 / >1600 宽松；<1200 侧边栏收为收起态",
+      "note": "navbarHeight 与 sidebarWidth 为 1x 量测推断值，非规范标注"
+    },
+    "transition": {
+      "note": "未提供动效规范页，以下为保守默认",
+      "color": "0.2s ease-in-out",
+      "expand": "0.25s cubic-bezier(0.645, 0.045, 0.355, 1)",
+      "overlay": "0.3s ease-out",
+      "spinner": "linear infinite"
+    }
+  },
+  "display": {
+    "palette": {
+      "title": "骆驼队长ERP 色彩系统",
+      "description": "品牌橙 + 成功/警告/错误/信息四组功能色，统一「-1 背景 / -2 边框 / -3 悬停 / -4 常规 / -5 点击」五级结构；文本层级由中性色承担",
+      "colors": [
+        { "name": "品牌主色 brand-4", "hex": "#FF7D29", "description": "主按钮、链接、激活文字、指示条" },
+        { "name": "品牌浅底 brand-1", "hex": "#FFEFE5", "description": "激活导航项、浅底主按钮、选中底色" },
+        { "name": "品牌点击 brand-5", "hex": "#D25909", "description": "主按钮 active、主色边框 active" },
+        { "name": "成功 success-4", "hex": "#0BB861", "description": "成功态、已完成标签" },
+        { "name": "警告 warning-4", "hex": "#FFA628", "description": "警告态、待处理" },
+        { "name": "错误 danger-4", "hex": "#F44837", "description": "错误、删除、危险操作" },
+        { "name": "信息 info-4", "hex": "#2881FF", "description": "信息提示、进行中" },
+        { "name": "主要文字 neutral-8", "hex": "#1D2129", "description": "标题与正文主色" },
+        { "name": "次要文字 neutral-7", "hex": "#4E5969", "description": "次要文本、图标默认色" },
+        { "name": "辅助文字 neutral-6", "hex": "#86909C", "description": "辅助说明、占位符" },
+        { "name": "控件边框 neutral-4", "hex": "#E5E6EB", "description": "控件与表格外框" },
+        { "name": "禁用/选中底 neutral-2", "hex": "#F2F3F5", "description": "禁用按钮底、表格选中行底" },
+        { "name": "页面底 neutral-1", "hex": "#F7F8FA", "description": "工作台背景" },
+        { "name": "遮罩", "hex": "#000000", "description": "弹窗遮罩 60% / 图片遮罩 80%" }
+      ]
+    },
+    "typography": {
+      "title": "骆驼队长ERP 字体系统",
+      "description": "系统默认界面字体；行高公式 h = f + 8n；字重只用 400/500，600 为极少数例外",
+      "samples": [
+        { "name": "展示级", "fontSize": "30px", "fontWeight": "500", "lineHeight": "38px" },
+        { "name": "一级标题", "fontSize": "20px", "fontWeight": "500", "lineHeight": "28px" },
+        { "name": "页面标题", "fontSize": "18px", "fontWeight": "500", "lineHeight": "26px" },
+        { "name": "区块标题", "fontSize": "16px", "fontWeight": "500", "lineHeight": "24px" },
+        { "name": "正文/按钮", "fontSize": "14px", "fontWeight": "400 / 500", "lineHeight": "22px" },
+        { "name": "表格/辅助", "fontSize": "12px", "fontWeight": "400", "lineHeight": "20px" }
+      ]
+    },
+    "radius": {
+      "title": "骆驼队长ERP 圆角规范",
+      "description": "Corner 页标注：无 0 / 小 4 / 中 8 / 大 12 / 全 100px",
+      "samples": [
+        { "name": "无圆角", "value": "0px", "usage": "表格、通栏区块" },
+        { "name": "小圆角", "value": "4px", "usage": "按钮、输入框、标签、Toast" },
+        { "name": "中圆角", "value": "8px", "usage": "卡片、弹窗、下拉面板" },
+        { "name": "大圆角", "value": "12px", "usage": "强调卡片" },
+        { "name": "全圆角", "value": "100px", "usage": "头像、圆形按钮" }
+      ]
+    },
+    "spacing": {
+      "title": "骆驼队长ERP 间距系统",
+      "description": "未提供间距规范页，按 4px 基准保守默认；唯一有来源的页面级留白是弹窗内容填充区 30px",
+      "samples": [
+        { "name": "图标与文字", "value": "4px / 8px", "usage": "紧凑元素间距" },
+        { "name": "标签与控件", "value": "8px / 12px", "usage": "表单项内部" },
+        { "name": "卡片内边距", "value": "20px", "usage": "内容区（保守默认）" },
+        { "name": "区块间距", "value": "16px / 24px", "usage": "卡片之间、分组之间" },
+        { "name": "弹窗填充区", "value": "30px", "usage": "上下左右（规范原文）" }
+      ]
+    },
+    "borders": {
+      "title": "骆驼队长ERP 边框规范",
+      "description": "统一 1px 实线，灰阶分层，选中态才用色板边框",
+      "samples": [
+        { "name": "控件边框", "value": "1px solid #E5E6EB", "usage": "按钮、输入框、表格外框" },
+        { "name": "分割线", "value": "1px solid #EBEEF5", "usage": "行线、区块分隔" },
+        { "name": "选中边框", "value": "1px solid #FFD9BF", "usage": "浅底选中态" },
+        { "name": "激活边框", "value": "1px solid #FF7D29", "usage": "当前选中项、focus（保守默认）" }
+      ]
+    },
+    "shadows": {
+      "title": "骆驼队长ERP 阴影层级",
+      "description": "只有两档：较轻阴影与基础阴影（数值为量测推断，规范页未标注）",
+      "samples": [
+        { "name": "较轻阴影", "value": "0 2px 8px rgba(0,0,0,0.06)", "usage": "卡片、Toast、下拉面板" },
+        { "name": "基础阴影", "value": "0 4px 24px rgba(0,0,0,0.10)", "usage": "弹窗、抽屉、浮层容器" }
+      ]
+    },
+    "usageGuidance": {
+      "title": "骆驼队长ERP 使用指南",
+      "description": "跨境 ERP 中后台全局设计规范",
+      "dos": [
+        "主色用 #FF7D29，状态色一律走 -1 背景 / -2 边框 / -3 悬停 / -4 常规 / -5 点击 五级结构",
+        "浅色工作台：页面底 #F7F8FA + 白色卡片 + 1px #E5E6EB 边框，导航为白底 + 品牌橙激活态",
+        "文本层级用中性色：#1D2129 主要 / #4E5969 次要 / #86909C 辅助 / #C0C5CF 禁用",
+        "字号只在 12/14/16/18/20 取值，行高按 h = f + 8n 配对，字重只用 400 和 500",
+        "禁用态统一底 #F2F3F5 + 文字 #C0C5CF，表格选中行底 #F2F3F5"
+      ],
+      "donts": [
+        "不要用深色导航（线上 #001529 属 kuacheng-bi 现状，本规范为浅色导航）",
+        "不要用线上遗留值 #ff781f、#1890ff、#f5f7fa 替代规范 token",
+        "不要用渐变、毛玻璃、彩色阴影或超过两档的阴影",
+        "不要把品牌橙用作正文文字色或大面积页面底色",
+        "不要为未采集项（focus 态、断点、图标网格、动效时长）编造规范，标注待确认"
+      ]
+    }
+  }
+}

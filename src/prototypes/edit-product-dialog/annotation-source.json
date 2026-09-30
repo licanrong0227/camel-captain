@@ -1,0 +1,13 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "edit-product-dialog",
+    "pageId": "edit-product-dialog",
+    "nodes": [],
+    "updatedAt": 1790653649802
+  },
+  "markdownMap": {},
+  "assetMap": {}
+}

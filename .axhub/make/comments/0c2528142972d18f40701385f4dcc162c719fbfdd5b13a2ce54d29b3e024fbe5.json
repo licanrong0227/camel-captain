@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "edit-product-dialog",
+    "targetPath": "prototypes/edit-product-dialog",
+    "filePath": ".axhub/make/comments/0c2528142972d18f40701385f4dcc162c719fbfdd5b13a2ce54d29b3e024fbe5.json"
+  },
+  "comments": [],
+  "images": []
+}

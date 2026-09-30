@@ -2,8 +2,13 @@
  * @name 自动编辑弹窗 - 骆驼队长BI
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { AnnotationViewer } from '@axhub/annotation';
+import type { AnnotationSourceDocument } from '@axhub/annotation';
+import annotationSourceDocument from './annotation-source.json';
 import './style.css';
+import mainSample1 from './assets/main-image-sample-1.png';
+import mainSample2 from './assets/main-image-sample-2.png';
 
 // ===== Icons =====
 const FileIcon = () => (
@@ -162,24 +167,177 @@ const menuItems: MenuItem[] = [
   { id: 'stock', label: '备货信息', count: 1, icon: <MenuBox /> },
   { id: 'custom', label: '定制商品', count: 1, icon: <MenuDoc /> },
   { id: 'pack', label: '包装物流', count: 1, icon: <MenuPkg /> },
-  { id: 'image', label: '图片视频', count: 5, icon: <MenuImg /> },
+  { id: 'image', label: '图片视频', count: 6, icon: <MenuImg /> },
   { id: 'trans', label: '翻译', count: 1, icon: <MenuTrans />, done: true },
   { id: 'source', label: '货源信息', count: 1, icon: <MenuLink /> },
 ];
 
-// ===== Row component =====
-function FormRow({ label, checked, onCheck, children, last }: {
-  label: string;
-  checked: boolean;
-  onCheck: () => void;
-  children: React.ReactNode;
-  last?: boolean;
+// ===== 主图 =====
+const MAX_MAIN_IMAGES = 15;
+
+type UploadedImage = { url: string; width: number; height: number };
+type MainImageMode = 'reorder' | 'replace' | 'delete' | 'append';
+
+const mainImageModes: { id: MainImageMode; label: string; hint: string }[] = [
+  { id: 'reorder', label: '调换顺序', hint: '拖拽调整主图顺序，或由系统随机打乱顺序' },
+  { id: 'replace', label: '替换主图', hint: '' },
+  { id: 'delete', label: '删除主图', hint: '删除指定位置的主图' },
+  { id: 'append', label: '附加主图', hint: '上传新的图片附加到结尾，如果主图数量超过限制，则自动替换最后的主图' },
+];
+
+const CloudUploadIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+    <polyline points="15 11 12 8 9 11" />
+    <line x1="12" y1="16" x2="12" y2="8" />
+  </svg>
+);
+
+const ShuffleIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="16 3 21 3 21 8" />
+    <line x1="4" y1="20" x2="21" y2="3" />
+    <polyline points="21 16 21 21 16 21" />
+    <line x1="15" y1="15" x2="21" y2="21" />
+    <line x1="4" y1="4" x2="9" y2="9" />
+  </svg>
+);
+
+const ResetIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="1 4 1 10 7 10" />
+    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+  </svg>
+);
+
+const PictureIcon = () => (
+  <svg width="62" height="62" viewBox="0 0 24 24" fill="none" stroke="#c0c4cc" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+    <circle cx="8.5" cy="8.5" r="1.5" />
+    <polyline points="21 15 16 10 5 21" />
+  </svg>
+);
+
+function readImageFile(file: File): Promise<UploadedImage | null> {
+  if (!file.type.startsWith('image/')) return Promise.resolve(null);
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => resolve({ url, width: img.naturalWidth, height: img.naturalHeight });
+    img.onerror = () => resolve(null);
+    img.src = url;
+  });
+}
+
+const sizeText = (img: UploadedImage) => `${img.width}*${img.height}`;
+
+const thumbMenuItems = ['AI图像编辑', '高级图像翻译', '快速裁剪'];
+
+const TrashIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="3 6 5 6 21 6" />
+    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+    <path d="M10 11v6" />
+    <path d="M14 11v6" />
+    <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+  </svg>
+);
+
+// 悬停已上传图片时的操作：右上角删除 + 下方操作菜单（菜单项为系统已有功能，这里只展示入口）
+function ImageHoverActions({ onDelete }: { onDelete?: () => void }) {
+  return (
+    <>
+      <button
+        className="ae-thumb-del"
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete?.();
+        }}
+      >
+        <TrashIcon />
+      </button>
+      <div className="ae-thumb-menu">
+        {thumbMenuItems.map((item) => (
+          <div key={item} className="ae-thumb-menu-item">{item}</div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function UploadBox({ image, text = '点击', onOpen, onActivate, onDelete }: {
+  image?: UploadedImage;
+  text?: string;
+  onOpen?: () => void;
+  onActivate?: () => void;
+  onDelete?: () => void;
 }) {
   return (
-    <div className={`ae-row${last ? ' ae-row-last' : ''}`}>
-      <div className="ae-row-label">
+    <div
+      className={`ae-upload${image ? ' ae-thumb is-filled' : ''}`}
+      onMouseDown={onActivate}
+      onClick={image ? undefined : onOpen}
+    >
+      {image ? (
+        <>
+          <img src={image.url} alt="" />
+          <span className="ae-size">{sizeText(image)}</span>
+          <ImageHoverActions onDelete={onDelete} />
+        </>
+      ) : (
+        <>
+          <CloudUploadIcon />
+          <span className="ae-upload-text">{text}</span>
+        </>
+      )}
+    </div>
+  );
+}
+
+// 模拟已上传的示例图片效果
+function SampleImage({ src, size, onDelete }: { src: string; size: string; onDelete?: () => void }) {
+  return (
+    <div className="ae-sample ae-thumb">
+      <img src={src} alt="" />
+      <span className="ae-size">{size}</span>
+      <ImageHoverActions onDelete={onDelete} />
+    </div>
+  );
+}
+
+function PositionHead({ position, isFirst }: { position: number; isFirst: boolean }) {
+  return (
+    <>
+      {isFirst ? <span className="ae-pos-tag">首图</span> : <span className="ae-pos-spacer" />}
+      <span className="ae-pos-badge">位置{position}</span>
+    </>
+  );
+}
+
+// ===== Row component =====
+function FormRow({ label, checked, onCheck, children, last, disabled, flush, annotationId }: {
+  label: string;
+  checked?: boolean;
+  onCheck?: () => void;
+  children: React.ReactNode;
+  last?: boolean;
+  disabled?: boolean;
+  flush?: boolean;
+  annotationId?: string;
+}) {
+  return (
+    <div
+      className={`ae-row${last ? ' ae-row-last' : ''}${disabled ? ' is-disabled' : ''}${flush ? ' is-flush' : ''}`}
+    >
+      <div className="ae-row-label" data-annotation-id={annotationId}>
         <label className="ae-checkbox">
-          <input type="checkbox" checked={checked} onChange={onCheck} />
+          <input
+            type="checkbox"
+            checked={!!checked}
+            onChange={onCheck}
+            disabled={disabled}
+          />
           <span className="ae-checkbox-mask" />
         </label>
         <span className="ae-row-label-text">{label}</span>
@@ -192,22 +350,89 @@ function FormRow({ label, checked, onCheck, children, last }: {
 // ===== Main =====
 export default function AutoEditDialog() {
   const [activeMenu, setActiveMenu] = useState('image');
-  const [checkedRows, setCheckedRows] = useState<Record<string, boolean>>({
-    promo: false,
-    removeSku: false,
-    video: false,
-    whiteBg: false,
-    limit: true,
-  });
-  const [promoImg, setPromoImg] = useState('');
-  const [videoOp, setVideoOp] = useState('');
-  const [whiteBg, setWhiteBg] = useState('');
-  const [limitYes, setLimitYes] = useState(true);
+  const [mainImageChecked, setMainImageChecked] = useState(false);
+  const [mainImageMode, setMainImageMode] = useState<MainImageMode | ''>('');
+  const [slotIds, setSlotIds] = useState<number[]>(() =>
+    Array.from({ length: MAX_MAIN_IMAGES }, (_, i) => i + 1));
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [replaceImages, setReplaceImages] = useState<Record<number, UploadedImage>>({});
+  const [deletedPositions, setDeletedPositions] = useState<number[]>([]);
+  const [appendImages, setAppendImages] = useState<UploadedImage[]>([]);
+  const [uploadDialog, setUploadDialog] = useState<'replace' | 'append' | null>(null);
+  const [sampleAtPos3, setSampleAtPos3] = useState(true);
+  const [appendSample, setAppendSample] = useState(true);
+  const pasteTargetRef = useRef<{ kind: 'append' } | null>(null);
 
-  const toggleRow = (key: string) =>
-    setCheckedRows((s) => ({ ...s, [key]: !s[key] }));
+  const positions = Array.from({ length: MAX_MAIN_IMAGES }, (_, i) => i + 1);
+  const currentHint = mainImageModes.find((m) => m.id === mainImageMode)?.hint;
+
+  const selectMode = (mode: MainImageMode) => {
+    setMainImageMode(mode);
+    setMainImageChecked(true);
+  };
+
+  const toggleMainImage = () =>
+    setMainImageChecked((prev) => {
+      if (prev) setMainImageMode('');
+      return !prev;
+    });
+
+  const shuffleOrder = () =>
+    setSlotIds((prev) => {
+      const next = [...prev];
+      for (let i = next.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [next[i], next[j]] = [next[j], next[i]];
+      }
+      return next;
+    });
+
+  const resetOrder = () =>
+    setSlotIds(Array.from({ length: MAX_MAIN_IMAGES }, (_, i) => i + 1));
+
+  // 拖拽经过某个位置时立即换位，而不是松手才生效
+  const handleDragEnter = (index: number) => {
+    if (dragIndex === null || dragIndex === index) return;
+    setSlotIds((prev) => {
+      const next = [...prev];
+      const [moved] = next.splice(dragIndex, 1);
+      next.splice(index, 0, moved);
+      return next;
+    });
+    setDragIndex(index);
+  };
+
+  // 自定义拖拽影像：只带方块，不带「首图 / 位置」标签
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    const ghost = document.createElement('div');
+    ghost.className = 'ae-drag-ghost';
+    ghost.textContent = `主图${slotIds[index]}`;
+    document.body.appendChild(ghost);
+    e.dataTransfer?.setDragImage(ghost, 44, 44);
+    if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
+    window.setTimeout(() => ghost.remove(), 0);
+    setDragIndex(index);
+  };
+
+  useEffect(() => {
+    if (!mainImageChecked) return;
+    const onPaste = async (e: ClipboardEvent) => {
+      const target = pasteTargetRef.current;
+      if (!target) return;
+      if (target.kind !== 'append' || mainImageMode !== 'append') return;
+      const file = Array.from(e.clipboardData?.files ?? []).find((f) => f.type.startsWith('image/'));
+      if (!file) return;
+      e.preventDefault();
+      const uploaded = await readImageFile(file);
+      if (!uploaded) return;
+      setAppendImages((prev) => (prev.length >= MAX_MAIN_IMAGES ? prev : [...prev, uploaded]));
+    };
+    document.addEventListener('paste', onPaste);
+    return () => document.removeEventListener('paste', onPaste);
+  }, [mainImageChecked, mainImageMode]);
 
   return (
+    <>
     <div className="ae-overlay">
       <div className="ae-modal" data-annotation-id="auto-edit-modal">
         {/* Header */}
@@ -260,12 +485,156 @@ export default function AutoEditDialog() {
           </div>
 
           <div className="ae-content" data-annotation-id="content">
+            {/* 主图 */}
+            <FormRow label="主图" checked={mainImageChecked} onCheck={toggleMainImage} flush annotationId="main-image-row">
+              <div className="ae-radio-group">
+                {mainImageModes.map((mode) => (
+                  <div key={mode.id} className="ae-radio-slot" data-annotation-id={`main-mode-${mode.id}`}>
+                    <label className="ae-radio">
+                      <input
+                        type="radio"
+                        name="mainImage"
+                        checked={mainImageMode === mode.id}
+                        onChange={() => selectMode(mode.id)}
+                      />
+                      <span className="ae-radio-mask" />
+                      <span>{mode.label}</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              {mainImageChecked && mainImageMode && (
+                <div className="ae-main-panel">
+                  {currentHint && <div className="ae-hint">{currentHint}</div>}
+
+                  {mainImageMode === 'reorder' && (
+                    <>
+                      <div className="ae-order-btns">
+                        <button className="ae-op-btn ae-shuffle-btn" type="button" onClick={shuffleOrder}>
+                          <ShuffleIcon /> 随机打乱顺序
+                        </button>
+                        <button className="ae-op-btn ae-reset-btn" type="button" onClick={resetOrder}>
+                          <ResetIcon /> 恢复初始顺序
+                        </button>
+                      </div>
+                      <div className="ae-pos-grid">
+                        {slotIds.map((slotId, index) => (
+                          <div
+                            key={slotId}
+                            className={`ae-pos-item is-reorder${dragIndex === index ? ' is-dragging' : ''}`}
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, index)}
+                            onDragEnter={() => handleDragEnter(index)}
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={(e) => e.preventDefault()}
+                            onDragEnd={() => setDragIndex(null)}
+                          >
+                            <PositionHead position={index + 1} isFirst={index === 0} />
+                            <div className="ae-pos-thumb is-draggable">主图{slotId}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+
+                  {mainImageMode === 'replace' && (
+                    <div className="ae-pos-grid">
+                      {positions.map((position) => (
+                        <div key={position} className="ae-pos-item">
+                          <PositionHead position={position} isFirst={position === 1} />
+                          {position === 3 && sampleAtPos3 ? (
+                            <SampleImage
+                              src={mainSample2}
+                              size="1024*1024"
+                              onDelete={() => setSampleAtPos3(false)}
+                            />
+                          ) : (
+                            <UploadBox
+                              image={replaceImages[position]}
+                              onOpen={() => setUploadDialog('replace')}
+                              onDelete={() => setReplaceImages((prev) => {
+                                const next = { ...prev };
+                                delete next[position];
+                                return next;
+                              })}
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {mainImageMode === 'delete' && (
+                    <div className="ae-pos-grid">
+                      {positions.map((position) => {
+                        const isDeleted = deletedPositions.includes(position);
+                        return (
+                          <div key={position} className="ae-pos-item">
+                            <PositionHead position={position} isFirst={position === 1} />
+                            <div className={`ae-pos-thumb${isDeleted ? ' is-removed' : ''}`}>主图{position}</div>
+                            {isDeleted ? (
+                              <button
+                                className="ae-del-cancel"
+                                type="button"
+                                onClick={() => setDeletedPositions((s) => s.filter((p) => p !== position))}
+                              >
+                                取消删除
+                              </button>
+                            ) : (
+                              <button
+                                className="ae-del-btn"
+                                type="button"
+                                onClick={() => setDeletedPositions((s) => [...s, position])}
+                              >
+                                删除
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {mainImageMode === 'append' && (
+                    <>
+                      <UploadBox
+                        text="点击/Ctrl+V粘贴"
+                        onOpen={() => setUploadDialog('append')}
+                        onActivate={() => { pasteTargetRef.current = { kind: 'append' }; }}
+                      />
+                      {(appendImages.length > 0 || appendSample) && (
+                        <div className="ae-append-grid">
+                          {appendSample && (
+                            <SampleImage
+                              src={mainSample1}
+                              size="1024*1024"
+                              onDelete={() => setAppendSample(false)}
+                            />
+                          )}
+                          {appendImages.map((img, index) => (
+                            <div key={`${img.url}-${index}`} className="ae-append-item ae-thumb">
+                              <img src={img.url} alt="" />
+                              <span className="ae-size">{sizeText(img)}</span>
+                              <ImageHoverActions
+                                onDelete={() => setAppendImages((prev) => prev.filter((_, i) => i !== index))}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
+            </FormRow>
+
             {/* 推广图 */}
-            <FormRow label="推广图" checked={checkedRows.promo} onCheck={() => toggleRow('promo')}>
+            <FormRow label="推广图" disabled>
               <div className="ae-radio-group">
                 {['第一张', '随机一张', '上传一张图片'].map((opt) => (
                   <label key={opt} className="ae-radio">
-                    <input type="radio" name="promo" checked={promoImg === opt} onChange={() => setPromoImg(opt)} />
+                    <input type="radio" name="promo" disabled checked={false} onChange={() => {}} />
                     <span className="ae-radio-mask" />
                     <span>{opt}</span>
                   </label>
@@ -274,16 +643,16 @@ export default function AutoEditDialog() {
             </FormRow>
 
             {/* 移除sku图片 */}
-            <FormRow label="移除sku图片" checked={checkedRows.removeSku} onCheck={() => toggleRow('removeSku')}>
+            <FormRow label="移除sku图片" disabled>
               <span className="ae-hint">系统自动替换无需操作，请直接点击确认</span>
             </FormRow>
 
             {/* 视频 */}
-            <FormRow label="视频" checked={checkedRows.video} onCheck={() => toggleRow('video')}>
+            <FormRow label="视频" disabled>
               <div className="ae-radio-group">
                 {['上传视频', '删除视频'].map((opt) => (
                   <label key={opt} className="ae-radio">
-                    <input type="radio" name="video" checked={videoOp === opt} onChange={() => setVideoOp(opt)} />
+                    <input type="radio" name="video" disabled checked={false} onChange={() => {}} />
                     <span className="ae-radio-mask" />
                     <span>{opt}</span>
                   </label>
@@ -292,11 +661,11 @@ export default function AutoEditDialog() {
             </FormRow>
 
             {/* 推广图变白底图 */}
-            <FormRow label="推广图变白底图" checked={checkedRows.whiteBg} onCheck={() => toggleRow('whiteBg')}>
+            <FormRow label="推广图变白底图" disabled>
               <div className="ae-radio-group">
                 {['免费', 'AI付费'].map((opt) => (
                   <label key={opt} className="ae-radio">
-                    <input type="radio" name="whiteBg" checked={whiteBg === opt} onChange={() => setWhiteBg(opt)} />
+                    <input type="radio" name="whiteBg" disabled checked={false} onChange={() => {}} />
                     <span className="ae-radio-mask" />
                     <span>{opt}</span>
                   </label>
@@ -306,16 +675,16 @@ export default function AutoEditDialog() {
             </FormRow>
 
             {/* 图片数量限制 */}
-            <FormRow label="图片数量限制" checked={checkedRows.limit} onCheck={() => toggleRow('limit')} last>
+            <FormRow label="图片数量限制" disabled last>
               <div className="ae-radio-group inline-start">
                 <span className="ae-limit-text">是否限制图片最大数量</span>
                 <label className="ae-radio">
-                  <input type="radio" name="limit" checked={limitYes} onChange={() => setLimitYes(true)} />
+                  <input type="radio" name="limit" disabled checked={false} onChange={() => {}} />
                   <span className="ae-radio-mask" />
                   <span>是</span>
                 </label>
                 <label className="ae-radio">
-                  <input type="radio" name="limit" checked={!limitYes} onChange={() => setLimitYes(false)} />
+                  <input type="radio" name="limit" disabled checked={false} onChange={() => {}} />
                   <span className="ae-radio-mask" />
                   <span>否</span>
                 </label>
@@ -331,5 +700,65 @@ export default function AutoEditDialog() {
         </div>
       </div>
     </div>
+
+    {/* 上传图片弹窗（仅样式，本地/URL/引用、单个/批量均不可切换） */}
+    {uploadDialog && (
+      <div className="au-overlay">
+        <div className="au-modal" data-annotation-id="upload-image-dialog">
+          <div className="au-header">
+            <span className="au-title">上传图片</span>
+            <button className="ae-close" type="button" onClick={() => setUploadDialog(null)}>
+              <CloseIcon />
+            </button>
+          </div>
+          <div className="au-body">
+            <div className="au-tabs">
+              <span className="au-tab active">本地</span>
+              <span className="au-tab">URL</span>
+              <span className="au-tab">引用</span>
+            </div>
+            <div className="au-content">
+              <div className="ae-radio-group">
+                <label className="ae-radio au-radio is-active">
+                  <input type="radio" name="auWay" disabled checked onChange={() => {}} />
+                  <span className="ae-radio-mask" />
+                  <span>单个上传</span>
+                </label>
+                {uploadDialog === 'append' && (
+                  <label className="ae-radio au-radio">
+                    <input type="radio" name="auWay" disabled checked={false} onChange={() => {}} />
+                    <span className="ae-radio-mask" />
+                    <span>批量上传</span>
+                  </label>
+                )}
+              </div>
+              <div className="au-drop">
+                <PictureIcon />
+                <div className="au-drop-text">
+                  将文件拖到此处，或<span className="au-drop-link">点击上传</span>
+                </div>
+                <div className="au-drop-tip">按 Ctrl+V 可从剪贴板上传</div>
+              </div>
+            </div>
+          </div>
+          <div className="au-footer">
+            <button className="ae-btn-cancel" type="button" onClick={() => setUploadDialog(null)}>取消</button>
+            <button className="ae-btn-submit" type="button" onClick={() => setUploadDialog(null)}>确认</button>
+          </div>
+        </div>
+      </div>
+    )}
+    <AnnotationViewer
+      source={annotationSourceDocument as unknown as AnnotationSourceDocument}
+      options={{
+        currentPageId: 'auto-edit-dialog',
+        toolbarEdge: 'right',
+        showToolbar: true,
+        showThemeToggle: true,
+        showColorFilter: true,
+        emptyWhenNoData: true,
+      }}
+    />
+    </>
   );
 }

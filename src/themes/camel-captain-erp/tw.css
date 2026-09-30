@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+/* 骆驼队长ERP 设计规范主题 Tailwind v4 片段（与 DESIGN.md tokens 同源） */
+@theme {
+  /* 品牌色：1 背景 / 2 边框 / 3 悬停 / 4 常规 / 5 点击 */
+  --color-brand-1: #ffefe5;
+  --color-brand-2: #ffd9bf;
+  --color-brand-3: #ff9148;
+  --color-brand-4: #ff7d29;
+  --color-brand-5: #d25909;
+
+  --color-success-1: #e2f6ec;
+  --color-success-2: #b6ead0;
+  --color-success-3: #30c379;
+  --color-success-4: #0bb861;
+  --color-success-5: #03892e;
+
+  --color-warning-1: #fff4e5;
+  --color-warning-2: #ffe4bf;
+  --color-warning-3: #ffb348;
+  --color-warning-4: #ffa628;
+  --color-warning-5: #e56507;
+
+  --color-danger-1: #fee9e7;
+  --color-danger-2: #fcc8c3;
+  --color-danger-3: #f66355;
+  --color-danger-4: #f44837;
+  --color-danger-5: #c51708;
+
+  --color-info-1: #e5f0ff;
+  --color-info-2: #bfd9ff;
+  --color-info-3: #4894ff;
+  --color-info-4: #2881ff;
+  --color-info-5: #0948d2;
+
+  --color-neutral-1: #f7f8fa;
+  --color-neutral-2: #f2f3f5;
+  --color-neutral-3: #ebeef5;
+  --color-neutral-4: #e5e6eb;
+  --color-neutral-5: #c0c5cf;
+  --color-neutral-6: #86909c;
+  --color-neutral-7: #4e5969;
+  --color-neutral-8: #1d2129;
+
+  --color-primary: #ff7d29;
+  --color-link: #ff7d29;
+  --color-page: #f7f8fa;
+  --color-surface: #ffffff;
+  --color-selected: #f2f3f5;
+  --color-active-surface: #ffefe5;
+  --color-disabled-bg: #f2f3f5;
+  --color-disabled-text: #c0c5cf;
+
+  --font-family-interface: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+
+  --text-12: 12px;
+  --text-12--line-height: 20px;
+  --text-14: 14px;
+  --text-14--line-height: 22px;
+  --text-16: 16px;
+  --text-16--line-height: 24px;
+  --text-18: 18px;
+  --text-18--line-height: 26px;
+  --text-20: 20px;
+  --text-20--line-height: 28px;
+  --text-24: 24px;
+  --text-24--line-height: 32px;
+
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+
+  --radius-none: 0px;
+  --radius-control: 4px;
+  --radius-card: 8px;
+  --radius-large: 12px;
+  --radius-full: 100px;
+
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-base: 0 4px 24px rgba(0, 0, 0, 0.1);
+
+  --ease-expand: cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/* 未被 Tailwind 命名空间映射的 token 保留为 CSS 变量 */
+.dmb-page {
+  --tw-mask-dialog: rgba(0, 0, 0, 0.6);
+  --tw-mask-image: rgba(0, 0, 0, 0.8);
+  --tw-dialog-padding: 30px;
+  --tw-navbar-height: 55px;
+  --tw-sidebar-width: 193px;
+  --tw-border-control: 1px solid var(--color-neutral-4);
+  --tw-border-divider: 1px solid var(--color-neutral-3);
+  --tw-border-selected: 1px solid var(--color-brand-2);
+  --tw-border-active: 1px solid var(--color-brand-4);
+}

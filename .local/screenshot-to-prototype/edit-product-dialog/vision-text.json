@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "provider": "current-agent",
+  "kind": "text",
+  "regions": [
+    {
+      "id": "dialog-title",
+      "text": "编辑产品",
+      "bounds": {
+        "left": 58.7082,
+        "top": 81.0265,
+        "right": 99.2416,
+        "bottom": 109.2849
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "tab-bar",
+      "text": "« 基本 | 详情 | 日志",
+      "bounds": {
+        "left": 180.0471,
+        "top": 134.083,
+        "right": 268.6977,
+        "bottom": 158.8812
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "toolbar",
+      "text": "B I U 默认大小 A 列表 对齐 图片 清除格式",
+      "bounds": {
+        "left": 186.3232,
+        "top": 175.6055,
+        "right": 410.9571,
+        "bottom": 218.8581
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "footer-buttons",
+      "text": "关闭 保存",
+      "bounds": {
+        "left": 457.2437,
+        "top": 903.4025,
+        "right": 542.7563,
+        "bottom": 950.1153
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "product-text-1",
+      "text": "商品标题（截断）/ 未编辑",
+      "bounds": {
+        "left": 87.9969,
+        "top": 145.6171,
+        "right": 176.6475,
+        "bottom": 193.4833
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "product-text-2",
+      "text": "商品标题（截断）/ 未编辑",
+      "bounds": {
+        "left": 87.9969,
+        "top": 217.128,
+        "right": 176.6475,
+        "bottom": 264.9942
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "product-text-3",
+      "text": "商品标题（截断）/ 未编辑",
+      "bounds": {
+        "left": 87.9969,
+        "top": 288.639,
+        "right": 176.6475,
+        "bottom": 336.5052
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "product-text-4",
+      "text": "商品标题（截断）/ 未编辑",
+      "bounds": {
+        "left": 87.9969,
+        "top": 360.1499,
+        "right": 176.6475,
+        "bottom": 408.0161
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "product-text-5",
+      "text": "商品标题（截断）/ 未编辑",
+      "bounds": {
+        "left": 87.9969,
+        "top": 431.6609,
+        "right": 176.6475,
+        "bottom": 479.5271
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "product-text-6",
+      "text": "商品标题（截断）/ 未编辑",
+      "bounds": {
+        "left": 87.9969,
+        "top": 503.1719,
+        "right": 176.6475,
+        "bottom": 551.0381
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "product-text-7",
+      "text": "商品标题（截断）/ 未编辑",
+      "bounds": {
+        "left": 87.9969,
+        "top": 574.6828,
+        "right": 176.6475,
+        "bottom": 622.549
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "product-text-8",
+      "text": "商品标题（截断）/ 未编辑",
+      "bounds": {
+        "left": 87.9969,
+        "top": 646.1938,
+        "right": 176.6475,
+        "bottom": 694.06
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "product-text-9",
+      "text": "商品标题（截断）/ 未编辑",
+      "bounds": {
+        "left": 87.9969,
+        "top": 717.7047,
+        "right": 176.6475,
+        "bottom": 765.5709
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "product-text-10",
+      "text": "商品标题（截断）/ 未编辑",
+      "bounds": {
+        "left": 87.9969,
+        "top": 789.2157,
+        "right": 176.6475,
+        "bottom": 837.0819
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "backdrop-nav",
+      "text": "顶部导航文字",
+      "bounds": {
+        "left": 0.1308,
+        "top": 11.8224,
+        "right": 585.6433,
+        "bottom": 45.8478
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "backdrop-left",
+      "text": "背景页面左侧文字",
+      "bounds": {
+        "left": 0.1308,
+        "top": 63.7255,
+        "right": 50.0785,
+        "bottom": 149.654
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "backdrop-tab",
+      "text": "右侧悬浮入口",
+      "bounds": {
+        "left": 967.704,
+        "top": 576.9896,
+        "right": 999.8692,
+        "bottom": 611.015
+      },
+      "confidence": 0.95
+    }
+  ]
+}

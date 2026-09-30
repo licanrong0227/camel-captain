@@ -1,0 +1,4022 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "path": "C:/Users/admin/.qoder-cn/tmp/D--projects-CAMEL-CAPTAIN/images/b96346c0-ad63-41a3-b694-2fb1796b25ca/0b095075-57d9-42a8-ad94-1f007d0eb8ec.png",
+    "sha256": "8e4b461543d250102215ef28e5f82cf6a0ca8a11c62725ee555a733d90264625",
+    "width": 1912,
+    "height": 867,
+    "viewport": {
+      "width": 1912,
+      "height": 867,
+      "deviceScaleFactor": 1
+    }
+  },
+  "elements": [
+    {
+      "id": "bd-page",
+      "name": "背景页面底色",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 0,
+        "y": 0,
+        "width": 1912,
+        "height": 867
+      },
+      "targetBBox": {
+        "x": 0,
+        "y": 0,
+        "width": 1912,
+        "height": 867
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "纯色背景，无文字无素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#f0f1f5",
+        "zIndex": 1
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "bd-page",
+      "reactTarget": null
+    },
+    {
+      "id": "bd-nav",
+      "name": "背景顶部导航条",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 0,
+        "y": 0,
+        "width": 1912,
+        "height": 44
+      },
+      "targetBBox": {
+        "x": 0,
+        "y": 0,
+        "width": 1912,
+        "height": 44
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "纯色背景，弹窗遮罩下不可辨识，不做还原"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "zIndex": 2
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "bd-nav",
+      "reactTarget": null
+    },
+    {
+      "id": "bd-content",
+      "name": "背景内容白底区域",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 0,
+        "y": 141,
+        "width": 1912,
+        "height": 710
+      },
+      "targetBBox": {
+        "x": 0,
+        "y": 141,
+        "width": 1912,
+        "height": 710
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "纯色背景，无文字无素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "zIndex": 2
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "bd-content",
+      "reactTarget": null
+    },
+    {
+      "id": "bd-side-tab",
+      "name": "背景右侧悬浮入口",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 1856,
+        "y": 498,
+        "width": 56,
+        "height": 34
+      },
+      "targetBBox": {
+        "x": 1856,
+        "y": 498,
+        "width": 56,
+        "height": 34
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "容器盒，内部文字被遮罩压暗，不做还原"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #e4e7ed",
+        "borderRadius": "4px 0 0 4px",
+        "zIndex": 2
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "bd-side-tab",
+      "reactTarget": null
+    },
+    {
+      "id": "overlay",
+      "name": "弹窗遮罩层",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 0,
+        "y": 0,
+        "width": 1912,
+        "height": 867
+      },
+      "targetBBox": {
+        "x": 0,
+        "y": 0,
+        "width": 1912,
+        "height": 867
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "半透明遮罩，实测压暗值 127 对应 50% 黑"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "rgba(0,0,0,0.5)",
+        "zIndex": 5
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "overlay",
+      "reactTarget": null
+    },
+    {
+      "id": "modal",
+      "name": "编辑产品弹窗",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 96,
+        "y": 52,
+        "width": 1720,
+        "height": 780
+      },
+      "targetBBox": {
+        "x": 96,
+        "y": 52,
+        "width": 1720,
+        "height": 780
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "弹窗容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "borderRadius": "8px",
+        "boxShadow": "0 2px 12px 0 rgba(0,0,0,0.1)",
+        "zIndex": 10
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "modal",
+      "reactTarget": null
+    },
+    {
+      "id": "modal-title",
+      "name": "弹窗标题",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 116,
+        "y": 71,
+        "width": 74,
+        "height": 26
+      },
+      "targetBBox": {
+        "x": 116,
+        "y": 71,
+        "width": 74,
+        "height": 26
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "编辑产品",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "常规无衬线中文标题，实测字宽 18px/字，非艺术字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "18px",
+        "lineHeight": "26px",
+        "color": "#303133",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "modal-title",
+      "reactTarget": null
+    },
+    {
+      "id": "modal-close",
+      "name": "关闭图标",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 1779,
+        "y": 70,
+        "width": 20,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 1779,
+        "y": 70,
+        "width": 20,
+        "height": 20
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "线性图标，矢量重建更清晰"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-close",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/close.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-close",
+      "specElementId": "modal-close",
+      "reactTarget": null
+    },
+    {
+      "id": "list-panel",
+      "name": "左侧商品列表容器",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 96,
+        "y": 52,
+        "width": 250,
+        "height": 780
+      },
+      "targetBBox": {
+        "x": 96,
+        "y": 52,
+        "width": 250,
+        "height": 780
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "列表容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "borderRadius": "8px 0 0 8px",
+        "zIndex": 10
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "list-panel",
+      "reactTarget": null
+    },
+    {
+      "id": "product-item-1",
+      "name": "商品行 1",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 116,
+        "y": 120,
+        "width": 220,
+        "height": 58
+      },
+      "targetBBox": {
+        "x": 116,
+        "y": 120,
+        "width": 220,
+        "height": 58
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "列表行容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#fffaf5",
+        "border": "1px solid #ffb366",
+        "borderRadius": "4px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "product-item-1",
+      "reactTarget": null
+    },
+    {
+      "id": "product-thumb-1",
+      "name": "商品缩略图 1",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 125,
+        "y": 129,
+        "width": 40,
+        "height": 40
+      },
+      "targetBBox": {
+        "x": 125,
+        "y": 129,
+        "width": 40,
+        "height": 40
+      },
+      "representation": "clean-crop",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "商品实拍图，必须保留像素，按 40x40 原图裁切"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "objectFit": "cover",
+        "borderRadius": "2px",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "crop-product-thumb-1",
+          "route": "clean-crop",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/product-thumb-1.png",
+          "backgroundMode": "preserve",
+          "width": 40,
+          "height": 40,
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "按 40x40 精确裁切",
+              "1:1 原始分辨率，未放大"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "crop-product-thumb-1",
+      "specElementId": "product-thumb-1",
+      "reactTarget": null
+    },
+    {
+      "id": "product-title-1",
+      "name": "商品标题 1",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 129,
+        "width": 164,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 129,
+        "width": 164,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "【全新正品未拆封】i17Pr…",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "列表正文文字，源图即为单行截断显示"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "color": "#303133",
+        "whiteSpace": "nowrap",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-title-1",
+      "reactTarget": null
+    },
+    {
+      "id": "product-status-1",
+      "name": "编辑状态 1",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 150,
+        "width": 60,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 150,
+        "width": 60,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "未编辑",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "次要状态文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "color": "#909399",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-status-1",
+      "reactTarget": null
+    },
+    {
+      "id": "product-item-2",
+      "name": "商品行 2",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 116,
+        "y": 182,
+        "width": 220,
+        "height": 58
+      },
+      "targetBBox": {
+        "x": 116,
+        "y": 182,
+        "width": 220,
+        "height": 58
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "列表行容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #ffffff",
+        "borderRadius": "4px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "product-item-2",
+      "reactTarget": null
+    },
+    {
+      "id": "product-thumb-2",
+      "name": "商品缩略图 2",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 125,
+        "y": 191,
+        "width": 40,
+        "height": 40
+      },
+      "targetBBox": {
+        "x": 125,
+        "y": 191,
+        "width": 40,
+        "height": 40
+      },
+      "representation": "clean-crop",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "商品实拍图，必须保留像素，按 40x40 原图裁切"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "objectFit": "cover",
+        "borderRadius": "2px",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "crop-product-thumb-2",
+          "route": "clean-crop",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/product-thumb-2.png",
+          "backgroundMode": "preserve",
+          "width": 40,
+          "height": 40,
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "按 40x40 精确裁切",
+              "1:1 原始分辨率，未放大"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "crop-product-thumb-2",
+      "specElementId": "product-thumb-2",
+      "reactTarget": null
+    },
+    {
+      "id": "product-title-2",
+      "name": "商品标题 2",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 191,
+        "width": 164,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 191,
+        "width": 164,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "纯色北欧桌布防水防油免…",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "列表正文文字，源图即为单行截断显示"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "color": "#303133",
+        "whiteSpace": "nowrap",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-title-2",
+      "reactTarget": null
+    },
+    {
+      "id": "product-status-2",
+      "name": "编辑状态 2",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 212,
+        "width": 60,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 212,
+        "width": 60,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "未编辑",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "次要状态文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "color": "#909399",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-status-2",
+      "reactTarget": null
+    },
+    {
+      "id": "product-item-3",
+      "name": "商品行 3",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 116,
+        "y": 244,
+        "width": 220,
+        "height": 58
+      },
+      "targetBBox": {
+        "x": 116,
+        "y": 244,
+        "width": 220,
+        "height": 58
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "列表行容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #ffffff",
+        "borderRadius": "4px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "product-item-3",
+      "reactTarget": null
+    },
+    {
+      "id": "product-thumb-3",
+      "name": "商品缩略图 3",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 125,
+        "y": 253,
+        "width": 40,
+        "height": 40
+      },
+      "targetBBox": {
+        "x": 125,
+        "y": 253,
+        "width": 40,
+        "height": 40
+      },
+      "representation": "clean-crop",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "商品实拍图，必须保留像素，按 40x40 原图裁切"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "objectFit": "cover",
+        "borderRadius": "2px",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "crop-product-thumb-3",
+          "route": "clean-crop",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/product-thumb-3.png",
+          "backgroundMode": "preserve",
+          "width": 40,
+          "height": 40,
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "按 40x40 精确裁切",
+              "1:1 原始分辨率，未放大"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "crop-product-thumb-3",
+      "specElementId": "product-thumb-3",
+      "reactTarget": null
+    },
+    {
+      "id": "product-title-3",
+      "name": "商品标题 3",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 253,
+        "width": 164,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 253,
+        "width": 164,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "2026 Summer Full-Print P…",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "列表正文文字，源图即为单行截断显示"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "color": "#303133",
+        "whiteSpace": "nowrap",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-title-3",
+      "reactTarget": null
+    },
+    {
+      "id": "product-status-3",
+      "name": "编辑状态 3",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 274,
+        "width": 60,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 274,
+        "width": 60,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "未编辑",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "次要状态文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "color": "#909399",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-status-3",
+      "reactTarget": null
+    },
+    {
+      "id": "product-item-4",
+      "name": "商品行 4",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 116,
+        "y": 306,
+        "width": 220,
+        "height": 58
+      },
+      "targetBBox": {
+        "x": 116,
+        "y": 306,
+        "width": 220,
+        "height": 58
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "列表行容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #ffffff",
+        "borderRadius": "4px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "product-item-4",
+      "reactTarget": null
+    },
+    {
+      "id": "product-thumb-4",
+      "name": "商品缩略图 4",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 125,
+        "y": 315,
+        "width": 40,
+        "height": 40
+      },
+      "targetBBox": {
+        "x": 125,
+        "y": 315,
+        "width": 40,
+        "height": 40
+      },
+      "representation": "clean-crop",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "商品实拍图，必须保留像素，按 40x40 原图裁切"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "objectFit": "cover",
+        "borderRadius": "2px",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "crop-product-thumb-4",
+          "route": "clean-crop",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/product-thumb-4.png",
+          "backgroundMode": "preserve",
+          "width": 40,
+          "height": 40,
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "按 40x40 精确裁切",
+              "1:1 原始分辨率，未放大"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "crop-product-thumb-4",
+      "specElementId": "product-thumb-4",
+      "reactTarget": null
+    },
+    {
+      "id": "product-title-4",
+      "name": "商品标题 4",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 315,
+        "width": 164,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 315,
+        "width": 164,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "Summer Women’S Slipper…",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "列表正文文字，源图即为单行截断显示"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "color": "#303133",
+        "whiteSpace": "nowrap",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-title-4",
+      "reactTarget": null
+    },
+    {
+      "id": "product-status-4",
+      "name": "编辑状态 4",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 336,
+        "width": 60,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 336,
+        "width": 60,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "未编辑",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "次要状态文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "color": "#909399",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-status-4",
+      "reactTarget": null
+    },
+    {
+      "id": "product-item-5",
+      "name": "商品行 5",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 116,
+        "y": 368,
+        "width": 220,
+        "height": 58
+      },
+      "targetBBox": {
+        "x": 116,
+        "y": 368,
+        "width": 220,
+        "height": 58
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "列表行容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #ffffff",
+        "borderRadius": "4px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "product-item-5",
+      "reactTarget": null
+    },
+    {
+      "id": "product-thumb-5",
+      "name": "商品缩略图 5",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 125,
+        "y": 377,
+        "width": 40,
+        "height": 40
+      },
+      "targetBBox": {
+        "x": 125,
+        "y": 377,
+        "width": 40,
+        "height": 40
+      },
+      "representation": "clean-crop",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "商品实拍图，必须保留像素，按 40x40 原图裁切"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "objectFit": "cover",
+        "borderRadius": "2px",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "crop-product-thumb-5",
+          "route": "clean-crop",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/product-thumb-5.png",
+          "backgroundMode": "preserve",
+          "width": 40,
+          "height": 40,
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "按 40x40 精确裁切",
+              "1:1 原始分辨率，未放大"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "crop-product-thumb-5",
+      "specElementId": "product-thumb-5",
+      "reactTarget": null
+    },
+    {
+      "id": "product-title-5",
+      "name": "商品标题 5",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 377,
+        "width": 164,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 377,
+        "width": 164,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "Acupressure Foot Massag…",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "列表正文文字，源图即为单行截断显示"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "color": "#303133",
+        "whiteSpace": "nowrap",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-title-5",
+      "reactTarget": null
+    },
+    {
+      "id": "product-status-5",
+      "name": "编辑状态 5",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 398,
+        "width": 60,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 398,
+        "width": 60,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "未编辑",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "次要状态文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "color": "#909399",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-status-5",
+      "reactTarget": null
+    },
+    {
+      "id": "product-item-6",
+      "name": "商品行 6",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 116,
+        "y": 430,
+        "width": 220,
+        "height": 58
+      },
+      "targetBBox": {
+        "x": 116,
+        "y": 430,
+        "width": 220,
+        "height": 58
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "列表行容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #ffffff",
+        "borderRadius": "4px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "product-item-6",
+      "reactTarget": null
+    },
+    {
+      "id": "product-thumb-6",
+      "name": "商品缩略图 6",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 125,
+        "y": 439,
+        "width": 40,
+        "height": 40
+      },
+      "targetBBox": {
+        "x": 125,
+        "y": 439,
+        "width": 40,
+        "height": 40
+      },
+      "representation": "clean-crop",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "商品实拍图，必须保留像素，按 40x40 原图裁切"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "objectFit": "cover",
+        "borderRadius": "2px",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "crop-product-thumb-6",
+          "route": "clean-crop",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/product-thumb-6.png",
+          "backgroundMode": "preserve",
+          "width": 40,
+          "height": 40,
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "按 40x40 精确裁切",
+              "1:1 原始分辨率，未放大"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "crop-product-thumb-6",
+      "specElementId": "product-thumb-6",
+      "reactTarget": null
+    },
+    {
+      "id": "product-title-6",
+      "name": "商品标题 6",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 439,
+        "width": 164,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 439,
+        "width": 164,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "ASHALI Cute Bear Breath…",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "列表正文文字，源图即为单行截断显示"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "color": "#303133",
+        "whiteSpace": "nowrap",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-title-6",
+      "reactTarget": null
+    },
+    {
+      "id": "product-status-6",
+      "name": "编辑状态 6",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 460,
+        "width": 60,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 460,
+        "width": 60,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "未编辑",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "次要状态文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "color": "#909399",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-status-6",
+      "reactTarget": null
+    },
+    {
+      "id": "product-item-7",
+      "name": "商品行 7",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 116,
+        "y": 492,
+        "width": 220,
+        "height": 58
+      },
+      "targetBBox": {
+        "x": 116,
+        "y": 492,
+        "width": 220,
+        "height": 58
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "列表行容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #ffffff",
+        "borderRadius": "4px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "product-item-7",
+      "reactTarget": null
+    },
+    {
+      "id": "product-thumb-7",
+      "name": "商品缩略图 7",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 125,
+        "y": 501,
+        "width": 40,
+        "height": 40
+      },
+      "targetBBox": {
+        "x": 125,
+        "y": 501,
+        "width": 40,
+        "height": 40
+      },
+      "representation": "clean-crop",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "商品实拍图，必须保留像素，按 40x40 原图裁切"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "objectFit": "cover",
+        "borderRadius": "2px",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "crop-product-thumb-7",
+          "route": "clean-crop",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/product-thumb-7.png",
+          "backgroundMode": "preserve",
+          "width": 40,
+          "height": 40,
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "按 40x40 精确裁切",
+              "1:1 原始分辨率，未放大"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "crop-product-thumb-7",
+      "specElementId": "product-thumb-7",
+      "reactTarget": null
+    },
+    {
+      "id": "product-title-7",
+      "name": "商品标题 7",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 501,
+        "width": 164,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 501,
+        "width": 164,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "Designer womens Croppe…",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "列表正文文字，源图即为单行截断显示"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "color": "#303133",
+        "whiteSpace": "nowrap",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-title-7",
+      "reactTarget": null
+    },
+    {
+      "id": "product-status-7",
+      "name": "编辑状态 7",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 522,
+        "width": 60,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 522,
+        "width": 60,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "未编辑",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "次要状态文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "color": "#909399",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-status-7",
+      "reactTarget": null
+    },
+    {
+      "id": "product-item-8",
+      "name": "商品行 8",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 116,
+        "y": 554,
+        "width": 220,
+        "height": 58
+      },
+      "targetBBox": {
+        "x": 116,
+        "y": 554,
+        "width": 220,
+        "height": 58
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "列表行容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #ffffff",
+        "borderRadius": "4px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "product-item-8",
+      "reactTarget": null
+    },
+    {
+      "id": "product-thumb-8",
+      "name": "商品缩略图 8",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 125,
+        "y": 563,
+        "width": 40,
+        "height": 40
+      },
+      "targetBBox": {
+        "x": 125,
+        "y": 563,
+        "width": 40,
+        "height": 40
+      },
+      "representation": "clean-crop",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "商品实拍图，必须保留像素，按 40x40 原图裁切"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "objectFit": "cover",
+        "borderRadius": "2px",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "crop-product-thumb-8",
+          "route": "clean-crop",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/product-thumb-8.png",
+          "backgroundMode": "preserve",
+          "width": 40,
+          "height": 40,
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "按 40x40 精确裁切",
+              "1:1 原始分辨率，未放大"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "crop-product-thumb-8",
+      "specElementId": "product-thumb-8",
+      "reactTarget": null
+    },
+    {
+      "id": "product-title-8",
+      "name": "商品标题 8",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 563,
+        "width": 164,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 563,
+        "width": 164,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "天然淡水珍珠长款项链女…",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "列表正文文字，源图即为单行截断显示"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "color": "#303133",
+        "whiteSpace": "nowrap",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-title-8",
+      "reactTarget": null
+    },
+    {
+      "id": "product-status-8",
+      "name": "编辑状态 8",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 584,
+        "width": 60,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 584,
+        "width": 60,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "未编辑",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "次要状态文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "color": "#909399",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-status-8",
+      "reactTarget": null
+    },
+    {
+      "id": "product-item-9",
+      "name": "商品行 9",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 116,
+        "y": 616,
+        "width": 220,
+        "height": 58
+      },
+      "targetBBox": {
+        "x": 116,
+        "y": 616,
+        "width": 220,
+        "height": 58
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "列表行容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #ffffff",
+        "borderRadius": "4px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "product-item-9",
+      "reactTarget": null
+    },
+    {
+      "id": "product-thumb-9",
+      "name": "商品缩略图 9",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 125,
+        "y": 625,
+        "width": 40,
+        "height": 40
+      },
+      "targetBBox": {
+        "x": 125,
+        "y": 625,
+        "width": 40,
+        "height": 40
+      },
+      "representation": "clean-crop",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "商品实拍图，必须保留像素，按 40x40 原图裁切"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "objectFit": "cover",
+        "borderRadius": "2px",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "crop-product-thumb-9",
+          "route": "clean-crop",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/product-thumb-9.png",
+          "backgroundMode": "preserve",
+          "width": 40,
+          "height": 40,
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "按 40x40 精确裁切",
+              "1:1 原始分辨率，未放大"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "crop-product-thumb-9",
+      "specElementId": "product-thumb-9",
+      "reactTarget": null
+    },
+    {
+      "id": "product-title-9",
+      "name": "商品标题 9",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 625,
+        "width": 164,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 625,
+        "width": 164,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "智能感应垃圾桶家用卧室…",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "列表正文文字，源图即为单行截断显示"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "color": "#303133",
+        "whiteSpace": "nowrap",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-title-9",
+      "reactTarget": null
+    },
+    {
+      "id": "product-status-9",
+      "name": "编辑状态 9",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 646,
+        "width": 60,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 646,
+        "width": 60,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "未编辑",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "次要状态文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "color": "#909399",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-status-9",
+      "reactTarget": null
+    },
+    {
+      "id": "product-item-10",
+      "name": "商品行 10",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 116,
+        "y": 678,
+        "width": 220,
+        "height": 58
+      },
+      "targetBBox": {
+        "x": 116,
+        "y": 678,
+        "width": 220,
+        "height": 58
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "列表行容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #ffffff",
+        "borderRadius": "4px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "product-item-10",
+      "reactTarget": null
+    },
+    {
+      "id": "product-thumb-10",
+      "name": "商品缩略图 10",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 125,
+        "y": 687,
+        "width": 40,
+        "height": 40
+      },
+      "targetBBox": {
+        "x": 125,
+        "y": 687,
+        "width": 40,
+        "height": 40
+      },
+      "representation": "clean-crop",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "商品实拍图，必须保留像素，按 40x40 原图裁切"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "objectFit": "cover",
+        "borderRadius": "2px",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "crop-product-thumb-10",
+          "route": "clean-crop",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/product-thumb-10.png",
+          "backgroundMode": "preserve",
+          "width": 40,
+          "height": 40,
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "按 40x40 精确裁切",
+              "1:1 原始分辨率，未放大"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "crop-product-thumb-10",
+      "specElementId": "product-thumb-10",
+      "reactTarget": null
+    },
+    {
+      "id": "product-title-10",
+      "name": "商品标题 10",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 687,
+        "width": 164,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 687,
+        "width": 164,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "Women Simple Gold Chai…",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "列表正文文字，源图即为单行截断显示"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "color": "#303133",
+        "whiteSpace": "nowrap",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-title-10",
+      "reactTarget": null
+    },
+    {
+      "id": "product-status-10",
+      "name": "编辑状态 10",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 172,
+        "y": 708,
+        "width": 60,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 172,
+        "y": 708,
+        "width": 60,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "未编辑",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "次要状态文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "18px",
+        "color": "#909399",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "product-status-10",
+      "reactTarget": null
+    },
+    {
+      "id": "item-icon-trash",
+      "name": "删除图标（选中行）",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 292,
+        "y": 151,
+        "width": 16,
+        "height": 16
+      },
+      "targetBBox": {
+        "x": 292,
+        "y": 151,
+        "width": 16,
+        "height": 16
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "线性图标，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-trash",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/trash.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-trash",
+      "specElementId": "item-icon-trash",
+      "reactTarget": null
+    },
+    {
+      "id": "item-icon-folder-check",
+      "name": "完成图标（选中行）",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 312,
+        "y": 151,
+        "width": 16,
+        "height": 16
+      },
+      "targetBBox": {
+        "x": 312,
+        "y": 151,
+        "width": 16,
+        "height": 16
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "面性图标，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-folder-check",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/folder-check.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-folder-check",
+      "specElementId": "item-icon-folder-check",
+      "reactTarget": null
+    },
+    {
+      "id": "list-pager-prev-box",
+      "name": "列表翻页上一页",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 190,
+        "y": 746,
+        "width": 28,
+        "height": 28
+      },
+      "targetBBox": {
+        "x": 190,
+        "y": 746,
+        "width": 28,
+        "height": 28
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "按钮底盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#f5f7fa",
+        "borderRadius": "4px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "list-pager-prev-box",
+      "reactTarget": null
+    },
+    {
+      "id": "list-pager-prev-icon",
+      "name": "上一页箭头",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 198,
+        "y": 752,
+        "width": 12,
+        "height": 16
+      },
+      "targetBBox": {
+        "x": 198,
+        "y": 752,
+        "width": 12,
+        "height": 16
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "箭头图标，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-pager-prev",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/pager-prev.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-pager-prev",
+      "specElementId": "list-pager-prev-icon",
+      "reactTarget": null
+    },
+    {
+      "id": "list-pager-next-box",
+      "name": "列表翻页下一页",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 234,
+        "y": 746,
+        "width": 28,
+        "height": 28
+      },
+      "targetBBox": {
+        "x": 234,
+        "y": 746,
+        "width": 28,
+        "height": 28
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "按钮底盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #409eff",
+        "borderRadius": "4px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "list-pager-next-box",
+      "reactTarget": null
+    },
+    {
+      "id": "list-pager-next-icon",
+      "name": "下一页箭头",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 242,
+        "y": 752,
+        "width": 12,
+        "height": 16
+      },
+      "targetBBox": {
+        "x": 242,
+        "y": 752,
+        "width": 12,
+        "height": 16
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "箭头图标，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-pager-next",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/pager-next.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-pager-next",
+      "specElementId": "list-pager-next-icon",
+      "reactTarget": null
+    },
+    {
+      "id": "tab-collapse-icon",
+      "name": "收起列表图标",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 348,
+        "y": 120,
+        "width": 12,
+        "height": 12
+      },
+      "targetBBox": {
+        "x": 348,
+        "y": 120,
+        "width": 12,
+        "height": 12
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "双箭头线性图标，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-collapse",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/collapse.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-collapse",
+      "specElementId": "tab-collapse-icon",
+      "reactTarget": null
+    },
+    {
+      "id": "tab-basic",
+      "name": "页签 基本",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 369,
+        "y": 117,
+        "width": 32,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 369,
+        "y": 117,
+        "width": 32,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "基本",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "普通页签文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "color": "#606266",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "tab-basic",
+      "reactTarget": null
+    },
+    {
+      "id": "tab-divider-1",
+      "name": "页签分隔线 1",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 412,
+        "y": 121,
+        "width": 1,
+        "height": 12
+      },
+      "targetBBox": {
+        "x": 412,
+        "y": 121,
+        "width": 1,
+        "height": 12
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "分隔线"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#e7e9ee",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "tab-divider-1",
+      "reactTarget": null
+    },
+    {
+      "id": "tab-detail",
+      "name": "页签 详情",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 424,
+        "y": 117,
+        "width": 32,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 424,
+        "y": 117,
+        "width": 32,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "详情",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "当前激活页签文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "color": "#ff781f",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "tab-detail",
+      "reactTarget": null
+    },
+    {
+      "id": "tab-divider-2",
+      "name": "页签分隔线 2",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 468,
+        "y": 121,
+        "width": 1,
+        "height": 12
+      },
+      "targetBBox": {
+        "x": 468,
+        "y": 121,
+        "width": 1,
+        "height": 12
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "分隔线"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#e7e9ee",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "tab-divider-2",
+      "reactTarget": null
+    },
+    {
+      "id": "tab-log",
+      "name": "页签 日志",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 481,
+        "y": 117,
+        "width": 30,
+        "height": 20
+      },
+      "targetBBox": {
+        "x": 481,
+        "y": 117,
+        "width": 30,
+        "height": 20
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "日志",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "普通页签文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "color": "#606266",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "tab-log",
+      "reactTarget": null
+    },
+    {
+      "id": "editor-box",
+      "name": "富文本编辑器外框",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 346,
+        "y": 148,
+        "width": 1450,
+        "height": 629
+      },
+      "targetBBox": {
+        "x": 346,
+        "y": 148,
+        "width": 1450,
+        "height": 629
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "编辑器容器盒"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #cccccc",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "editor-box",
+      "reactTarget": null
+    },
+    {
+      "id": "editor-toolbar-line",
+      "name": "工具栏分隔线",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 347,
+        "y": 193,
+        "width": 1448,
+        "height": 1
+      },
+      "targetBBox": {
+        "x": 347,
+        "y": 193,
+        "width": 1448,
+        "height": 1
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "分隔线"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#cccccc",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "css-box",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "纯 CSS 盒，无位图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "css-box",
+      "specElementId": "editor-toolbar-line",
+      "reactTarget": null
+    },
+    {
+      "id": "tb-bold",
+      "name": "加粗按钮",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 356,
+        "y": 157,
+        "width": 26,
+        "height": 28
+      },
+      "targetBBox": {
+        "x": 356,
+        "y": 157,
+        "width": 26,
+        "height": 28
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "B",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "工具栏字符图标，源产品即用字母表示"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "28px",
+        "fontWeight": 700,
+        "color": "#444444",
+        "textAlign": "center",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "tb-bold",
+      "reactTarget": null
+    },
+    {
+      "id": "tb-italic",
+      "name": "斜体按钮",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 384,
+        "y": 157,
+        "width": 26,
+        "height": 28
+      },
+      "targetBBox": {
+        "x": 384,
+        "y": 157,
+        "width": 26,
+        "height": 28
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "I",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "工具栏字符图标"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "28px",
+        "fontStyle": "italic",
+        "fontWeight": 700,
+        "color": "#444444",
+        "textAlign": "center",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "tb-italic",
+      "reactTarget": null
+    },
+    {
+      "id": "tb-underline",
+      "name": "下划线按钮",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 412,
+        "y": 157,
+        "width": 26,
+        "height": 28
+      },
+      "targetBBox": {
+        "x": 412,
+        "y": 157,
+        "width": 26,
+        "height": 28
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "U",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "工具栏字符图标"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "28px",
+        "fontWeight": 700,
+        "textDecoration": "underline",
+        "color": "#444444",
+        "textAlign": "center",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "tb-underline",
+      "reactTarget": null
+    },
+    {
+      "id": "tb-font-size",
+      "name": "字号选择",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 461,
+        "y": 157,
+        "width": 54,
+        "height": 28
+      },
+      "targetBBox": {
+        "x": 461,
+        "y": 157,
+        "width": 54,
+        "height": 28
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "默认大小",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "下拉选择器文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "fontSize": "12px",
+        "lineHeight": "28px",
+        "color": "#444444",
+        "textAlign": "center",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "tb-font-size",
+      "reactTarget": null
+    },
+    {
+      "id": "tb-font-size-caret",
+      "name": "字号下拉箭头",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 515,
+        "y": 164,
+        "width": 10,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 515,
+        "y": 164,
+        "width": 10,
+        "height": 14
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "上下双箭头，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-caret",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/caret.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-caret",
+      "specElementId": "tb-font-size-caret",
+      "reactTarget": null
+    },
+    {
+      "id": "tb-font-color",
+      "name": "字色按钮",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 554,
+        "y": 164,
+        "width": 14,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 554,
+        "y": 164,
+        "width": 14,
+        "height": 14
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "字母 A + 色条，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-font-color",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/font-color.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-font-color",
+      "specElementId": "tb-font-color",
+      "reactTarget": null
+    },
+    {
+      "id": "tb-list-ul",
+      "name": "无序列表",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 597,
+        "y": 164,
+        "width": 14,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 597,
+        "y": 164,
+        "width": 14,
+        "height": 14
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "线性图标，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-list-ul",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/list-ul.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-list-ul",
+      "specElementId": "tb-list-ul",
+      "reactTarget": null
+    },
+    {
+      "id": "tb-list-ol",
+      "name": "有序列表",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 625,
+        "y": 164,
+        "width": 14,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 625,
+        "y": 164,
+        "width": 14,
+        "height": 14
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "线性图标，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-list-ol",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/list-ol.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-list-ol",
+      "specElementId": "tb-list-ol",
+      "reactTarget": null
+    },
+    {
+      "id": "tb-align",
+      "name": "对齐方式",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 668,
+        "y": 164,
+        "width": 14,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 668,
+        "y": 164,
+        "width": 14,
+        "height": 14
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "线性图标，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-align-left",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/align-left.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-align-left",
+      "specElementId": "tb-align",
+      "reactTarget": null
+    },
+    {
+      "id": "tb-image",
+      "name": "插入图片（激活）",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 708,
+        "y": 157,
+        "width": 28,
+        "height": 28
+      },
+      "targetBBox": {
+        "x": 708,
+        "y": 157,
+        "width": 28,
+        "height": 28
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "蓝色实底图标按钮，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-image",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/image.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-image",
+      "specElementId": "tb-image",
+      "reactTarget": null
+    },
+    {
+      "id": "tb-clear-format",
+      "name": "清除格式",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 757,
+        "y": 164,
+        "width": 16,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 757,
+        "y": 164,
+        "width": 16,
+        "height": 14
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "Tx 图标，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-clear-format",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/clear-format.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-clear-format",
+      "specElementId": "tb-clear-format",
+      "reactTarget": null
+    },
+    {
+      "id": "detail-poster",
+      "name": "详情海报图",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 362,
+        "y": 206,
+        "width": 1000,
+        "height": 570
+      },
+      "targetBBox": {
+        "x": 362,
+        "y": 206,
+        "width": 1000,
+        "height": 570
+      },
+      "representation": "clean-crop",
+      "textReview": {
+        "content": "新品上市 强势登场 i17ProMax",
+        "textRole": "display-text",
+        "renderMode": "preserve-in-image",
+        "ocrUsage": "semantic-only",
+        "decisionSource": "vision-ai",
+        "confidence": 0.95,
+        "reason": "海报内的商品宣传艺术字属于位图内容，保留在图片中，不用普通字体重排"
+      },
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted-with-warning",
+        "reason": "电商详情长图，源图在编辑器内被裁切到 570px 高，按可见区域原样裁切复用"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "objectFit": "cover",
+        "zIndex": 12
+      },
+      "candidates": [
+        {
+          "id": "crop-detail-poster",
+          "route": "clean-crop",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/detail-poster.png",
+          "backgroundMode": "preserve",
+          "width": 1000,
+          "height": 570,
+          "audit": {
+            "status": "accepted-with-warning",
+            "checks": [
+              "按可见区域 1000x570 精确裁切",
+              "1:1 原始分辨率，未放大"
+            ],
+            "warnings": [
+              "海报下半部分在源截图中被编辑器容器裁切，无法还原完整长图"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "crop-detail-poster",
+      "specElementId": "detail-poster",
+      "reactTarget": null
+    },
+    {
+      "id": "float-scroll-up",
+      "name": "上滚圆形按钮",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 1752,
+        "y": 699,
+        "width": 28,
+        "height": 28
+      },
+      "targetBBox": {
+        "x": 1752,
+        "y": 699,
+        "width": 28,
+        "height": 28
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "圆形描边箭头按钮，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-arrow-up",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/arrow-up.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-arrow-up",
+      "specElementId": "float-scroll-up",
+      "reactTarget": null
+    },
+    {
+      "id": "float-scroll-down",
+      "name": "下滚圆形按钮",
+      "kind": "region",
+      "sourceBBox": {
+        "x": 1752,
+        "y": 735,
+        "width": 28,
+        "height": 28
+      },
+      "targetBBox": {
+        "x": 1752,
+        "y": 735,
+        "width": 28,
+        "height": 28
+      },
+      "representation": "svg",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "reuse",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "圆形描边箭头按钮，矢量重建"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "zIndex": 13
+      },
+      "candidates": [
+        {
+          "id": "svg-arrow-down",
+          "route": "svg",
+          "assetPath": "src/prototypes/edit-product-dialog/assets/icons/arrow-down.svg",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "矢量重建，尺寸与截图一致",
+              "单色描边，无位图边缘"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "svg-arrow-down",
+      "specElementId": "float-scroll-down",
+      "reactTarget": null
+    },
+    {
+      "id": "btn-close",
+      "name": "关闭按钮",
+      "kind": "button",
+      "uiRole": "button",
+      "sourceBBox": {
+        "x": 877,
+        "y": 786,
+        "width": 73,
+        "height": 36
+      },
+      "targetBBox": {
+        "x": 877,
+        "y": 786,
+        "width": 73,
+        "height": 36
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "关闭",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "次要按钮文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #ff781f",
+        "borderRadius": "8px",
+        "color": "#ff781f",
+        "fontSize": "14px",
+        "lineHeight": "34px",
+        "textAlign": "center",
+        "letterSpacing": "3px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "btn-close",
+      "reactTarget": null
+    },
+    {
+      "id": "btn-save",
+      "name": "保存按钮",
+      "kind": "button",
+      "uiRole": "button",
+      "sourceBBox": {
+        "x": 961,
+        "y": 786,
+        "width": 74,
+        "height": 36
+      },
+      "targetBBox": {
+        "x": 961,
+        "y": 786,
+        "width": 74,
+        "height": 36
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "保存",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.96,
+        "reason": "主按钮文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通界面文字，无需位图素材"
+      },
+      "visualStyle": {
+        "fontFamily": "\"Helvetica Neue\", Helvetica, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Arial, sans-serif",
+        "backgroundColor": "#ff781f",
+        "border": "1px solid #ff781f",
+        "borderRadius": "8px",
+        "color": "#ffffff",
+        "fontSize": "14px",
+        "lineHeight": "34px",
+        "textAlign": "center",
+        "letterSpacing": "3px",
+        "zIndex": 11
+      },
+      "candidates": [
+        {
+          "id": "html-text",
+          "route": "html",
+          "audit": {
+            "status": "passed",
+            "checks": [
+              "普通字体渲染，非艺术字"
+            ]
+          }
+        }
+      ],
+      "selectedCandidateId": "html-text",
+      "specElementId": "btn-save",
+      "reactTarget": null
+    }
+  ]
+}

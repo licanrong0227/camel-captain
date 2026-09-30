@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "source": "C:\\Users\\admin\\.qoder-cn\\tmp\\D--projects-CAMEL-CAPTAIN\\images\\b96346c0-ad63-41a3-b694-2fb1796b25ca\\0b095075-57d9-42a8-ad94-1f007d0eb8ec.png",
+  "sourceSha256": "8e4b461543d250102215ef28e5f82cf6a0ca8a11c62725ee555a733d90264625",
+  "ocrSubmitted": false,
+  "padding": 0,
+  "summary": {
+    "pass1": 11,
+    "pass2": 0,
+    "textRegionCount": 17,
+    "duplicatesRemoved": 0,
+    "skipped": 0,
+    "merged": 11
+  },
+  "regions": [
+    {
+      "id": "detail-poster",
+      "sourcePass": 1,
+      "confidence": 0.98,
+      "normalizedBounds": {
+        "left": 189,
+        "top": 238,
+        "right": 712,
+        "bottom": 895
+      },
+      "referencePath": "references/detail-poster.png",
+      "width": 1000,
+      "height": 570
+    },
+    {
+      "id": "product-thumb-1",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 149,
+        "right": 86,
+        "bottom": 195
+      },
+      "referencePath": "references/product-thumb-1.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "product-thumb-2",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 220,
+        "right": 86,
+        "bottom": 266
+      },
+      "referencePath": "references/product-thumb-2.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "product-thumb-3",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 292,
+        "right": 86,
+        "bottom": 338
+      },
+      "referencePath": "references/product-thumb-3.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "product-thumb-4",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 363,
+        "right": 86,
+        "bottom": 409
+      },
+      "referencePath": "references/product-thumb-4.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "product-thumb-5",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 435,
+        "right": 86,
+        "bottom": 481
+      },
+      "referencePath": "references/product-thumb-5.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "product-thumb-6",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 506,
+        "right": 86,
+        "bottom": 552
+      },
+      "referencePath": "references/product-thumb-6.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "product-thumb-7",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 578,
+        "right": 86,
+        "bottom": 624
+      },
+      "referencePath": "references/product-thumb-7.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "product-thumb-8",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 649,
+        "right": 86,
+        "bottom": 696
+      },
+      "referencePath": "references/product-thumb-8.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "product-thumb-9",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 721,
+        "right": 86,
+        "bottom": 767
+      },
+      "referencePath": "references/product-thumb-9.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "product-thumb-10",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 792,
+        "right": 86,
+        "bottom": 839
+      },
+      "referencePath": "references/product-thumb-10.png",
+      "width": 40,
+      "height": 40
+    }
+  ],
+  "skipped": []
+}

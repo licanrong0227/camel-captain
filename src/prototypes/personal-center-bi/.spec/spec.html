@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>个人中心 - 购买权益弹窗 - 主规格</title>
+  <style>
+    :root {
+      font-family:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --brand: #008f5d;
+      --brand-ink: #007a50;
+      --brand-soft: #e6f5ef;
+      --brand-surface: #f2faf7;
+      --brand-border: #b7ddcf;
+      --text: #222832;
+      --text-secondary: #4b5565;
+      --text-muted: #6f7888;
+      --text-placeholder: #8b94a3;
+      color: var(--text);
+      background: #f5f7fb;
+      scrollbar-gutter: stable;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px 20px 64px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 32px;
+      padding: 18px 14px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .sidebar-title {
+      margin: 0 8px 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .page-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .page-nav button {
+      width: 100%;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .page-nav button:hover,
+    .page-nav button[aria-current="page"] {
+      color: var(--brand-ink);
+      background: var(--brand-soft);
+    }
+
+    .page-nav button[aria-current="page"] { font-weight: 600; }
+
+    main {
+      min-width: 0;
+      padding: 40px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 16px rgb(30 45 75 / 6%);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.3;
+    }
+
+    h2 {
+      margin: 44px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e7eaf0;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    h3 {
+      margin: 28px 0 12px;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    p,
+    li {
+      font-size: 15px;
+      line-height: 2;
+    }
+
+    p { margin: 20px 0; }
+
+    td,
+    th {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .definition {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-left: 3px solid var(--brand);
+      color: var(--text-secondary);
+      background: var(--brand-surface);
+    }
+
+    .hint { color: var(--text-muted); }
+
+    ul {
+      margin: 10px 0 20px;
+      padding-left: 22px;
+    }
+
+    .placeholder-list { padding-left: 0; }
+
+    .placeholder-list li {
+      list-style: none;
+      color: var(--text-placeholder);
+    }
+
+    .placeholder-list li::before {
+      margin-right: 8px;
+      color: #b2bac6;
+      content: "—";
+    }
+
+    table {
+      width: 100%;
+      margin-top: 14px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 1px solid #dfe4ee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f6f8fb; }
+
+    td:empty::after {
+      content: "待补充";
+      color: var(--text-placeholder);
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #eef1f6;
+    }
+
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--brand-border);
+      border-radius: 8px;
+      background: var(--brand-surface);
+    }
+
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .spec-page[hidden] { display: none; }
+
+    @media (max-width: 720px) {
+      body { padding: 0 8px 40px; }
+      .shell { display: block; }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        margin: 0 -8px 12px;
+        padding: 10px 8px;
+        border-width: 0 0 1px;
+        border-radius: 0;
+      }
+
+      .sidebar-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .page-nav {
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .page-nav::-webkit-scrollbar { display: none; }
+
+      .page-nav button {
+        width: auto;
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 24px 18px;
+        border-radius: 8px;
+      }
+
+      .table-wrap { overflow: visible; }
+
+      table,
+      tbody,
+      tr,
+      td {
+        display: block;
+        width: 100%;
+      }
+
+      thead { display: none; }
+
+      tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      tr {
+        overflow: hidden;
+        border: 1px solid #dfe4ee;
+        border-radius: 6px;
+        background: #fff;
+      }
+
+      td {
+        display: grid;
+        grid-template-columns: minmax(96px, 36%) minmax(0, 1fr);
+        gap: 12px;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 0;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      td:last-child { border-bottom: 0; }
+
+      td::before {
+        content: attr(data-label);
+        color: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <p class="sidebar-title">目录</p>
+      <nav class="page-nav" aria-label="规格文档页面">
+        <button type="button" data-page-target="overview" aria-current="page">当前方案</button>
+      </nav>
+    </aside>
+
+    <main>
+      <article class="spec-page" data-spec-page="overview">
+        <h1>个人中心 - 购买权益弹窗（骆驼队长BI）</h1>
+        <p class="definition">本文档是用户与 Agent 围绕当前原型进行方案沟通、确认和持续生成的事实依据。只维护当前有效方案，并简短记录会影响当前原型的重要用户决策和变更。</p>
+
+        <section id="current-plan">
+          <h2>当前方案</h2>
+          <ul>
+            <li>原型意图：按截图高保真还原「个人中心 - 骆驼队长BI」的单独购买权益页面，并以弹窗形式呈现；默认先弹出「提示」引导购买。</li>
+            <li>使用场景：打开原型即见「算力积分不足」提示弹窗；点「购买」打开购买权益弹窗（截图内容），点「关闭」或 X 关闭提示。</li>
+            <li>当前表达：购买权益弹窗为<strong>全局共用弹窗</strong>，会根据用户进入弹窗的场景默认选中对应购买项目；弹窗开关为真实交互。</li>
+          </ul>
+        </section>
+
+        <section id="facts-inputs">
+          <h2>事实与输入</h2>
+          <h3>用户确认事实</h3>
+          <ul>
+            <li>弹窗标题为「购买权益」，为全局共用弹窗：根据进入场景默认选中对应购买项目（算力积分不足→AI算力，创建店铺数量不足→店铺数量）。</li>
+            <li>购买权益弹窗内「店铺数量」已可选用：进入购买权益弹窗后可在 AI算力 / 店铺数量 之间点击切换，选中项带对勾、面板跟随切换。</li>
+            <li>购买权益弹窗默认隐藏；页面默认显示「提示」弹窗。</li>
+            <li>提示弹窗：标题「提示」，按进入场景展示文案「算力积分不足，请先购买算力积分。」或「创建店铺数量不足，请先购买店铺数量。」，操作为「关闭」和「购买」（主操作，点击后打开购买权益弹窗并默认选中对应项目）。</li>
+            <li>店铺数量选中面板按第二张截图还原：左侧卡片含「数量」步进器（值 1，静态）；右侧为「期限」档位 1月 / 3月 / 6月(9.5折) / 1年(9折，选中) / 2年(8.5折) / 3年(8折)，价格 ¥214.92；折扣为档位右上角橙色角标。</li>
+            <li>主规格使用 HTML 格式。</li>
+          </ul>
+          <h3>参考资料</h3>
+          <ul>
+            <li>页面截图（1920 宽，购买流程第 1 步「选择」）：视觉还原的唯一事实来源。</li>
+            <li>《单独购买权益页面样式.txt》：提供颜色、圆角、间距、阴影、字体等样式 token（主色 #ff781f、图标渐变 135deg #ffd666→#faad14 等）。</li>
+          </ul>
+          <h3>当前假设</h3>
+          <ul>
+            <li>截图左上角打码 logo 与右缘「联系客服」悬浮入口已从弹窗内容中移除（用户手动删除，视为确认）。</li>
+            <li>「购买」打开购买权益弹窗时提示弹窗保留在底层；关闭购买权益弹窗后回到提示弹窗。</li>
+          </ul>
+        </section>
+
+        <section id="prototype-scope">
+          <h2>原型范围</h2>
+          <h3>本次呈现</h3>
+          <ul>
+            <li>「提示」弹窗（默认显示算力积分不足场景，可切换）：标题 + 关闭 X + 按进入场景变化的文案 +「关闭」「购买（主操作）」按钮。</li>
+            <li>「购买权益」弹窗（默认隐藏，点「购买」后打开）：标题 + 关闭 X。</li>
+            <li>购买权益弹窗内容：步骤条（① 选择当前态 / ② 支付 / ③ 完成）、CNY 币种 + 会员估算、购买项目卡片（默认按进入场景选中带对勾，可点击切换）、数量面板（AI算力：50点选中 / 1000点 / 3000点 / 10000点 / 50000点，¥1.75；店铺数量：左侧「数量」步进器 + 期限档位 1月~3年 带 9.5折/9折/8.5折/8折 角标、1年选中，¥214.92）、提交订单按钮。</li>
+            <li>页面底部「演示入口」：用于切换两种进入场景（算力积分不足 / 店铺数量不足）。</li>
+          </ul>
+          <h3>本次不呈现</h3>
+          <ul>
+            <li>支付、完成两个步骤的界面内容（截图未提供）。</li>
+            <li>期限档位的选择交互和价格联动（保持静态展示，选中项固定为 1年）。</li>
+            <li>截图中的打码 logo 与「联系客服」悬浮入口（已按用户删除，不再呈现）。</li>
+          </ul>
+        </section>
+
+        <section id="pages-content">
+          <h2>页面与内容方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>页面/视图</th><th>页面作用</th><th>主要模块与内容</th><th>示例数据或素材</th><th>与其他页面的关系</th></tr></thead>
+              <tbody><tr><td data-label="页面/视图">提示弹窗</td><td data-label="页面作用">告知算力积分不足或店铺数量不足并引导购买</td><td data-label="主要模块与内容">标题「提示」、关闭 X、按进入场景变化的提示文案、「关闭」「购买」按钮</td><td data-label="示例数据或素材">文案由用户提供两种场景</td><td data-label="与其他页面的关系">「购买」打开购买权益弹窗并默认选中对应项目</td></tr>
+              <tr><td data-label="页面/视图">购买权益弹窗</td><td data-label="页面作用">以弹窗承载截图所示「个人中心 - 单独购买权益」第 1 步选择界面；全局共用，按进入场景默认选中购买项目</td><td data-label="主要模块与内容">步骤条；品牌行（CNY、会员估算）；购买项目卡片（AI算力/店铺数量，可点击切换）；数量面板（AI算力：50点~50000点、¥1.75；店铺数量：数量步进器 + 期限档位 1月~3年 带折扣角标、¥214.92）；提交订单</td><td data-label="示例数据或素材">文案、档位、价格取自两张截图；样式 token 取自《单独购买权益页面样式.txt》</td><td data-label="与其他页面的关系">从提示弹窗进入（默认选中对应项目），也可在弹窗内切换项目；关闭后回到提示弹窗</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="interaction-states">
+          <h2>交互与状态方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr></thead>
+              <tbody>
+                <tr><td data-label="对象/场景">提示弹窗</td><td data-label="前置状态">打开原型即显示，唯一弹窗</td><td data-label="用户操作">点「购买」</td><td data-label="原型表现">购买权益弹窗叠加打开，按进入场景默认选中对应购买项目（算力积分不足→AI算力；店铺数量不足→店铺数量）</td><td data-label="后续状态">两弹窗并存</td></tr>
+                <tr><td data-label="对象/场景">提示弹窗</td><td data-label="前置状态">提示显示中</td><td data-label="用户操作">点「关闭」或标题栏 X</td><td data-label="原型表现">提示弹窗关闭，页面只剩灰色底与底部「演示入口」</td><td data-label="后续状态">无弹窗</td></tr>
+                <tr><td data-label="对象/场景">购买权益弹窗</td><td data-label="前置状态">已打开</td><td data-label="用户操作">点标题栏 X</td><td data-label="原型表现">购买权益关闭，回到底层的提示弹窗</td><td data-label="后续状态">仅提示显示</td></tr>
+                <tr><td data-label="对象/场景">购买权益弹窗内部</td><td data-label="前置状态">已打开</td><td data-label="用户操作">点 AI算力 / 店铺数量 卡片</td><td data-label="原型表现">选中项带对勾并高亮，数量面板跟随切换</td><td data-label="后续状态">选中项目变化</td></tr>
+                <tr><td data-label="对象/场景">演示入口</td><td data-label="前置状态">无弹窗时可见</td><td data-label="用户操作">点「算力积分不足」或「店铺数量不足」</td><td data-label="原型表现">弹出对应场景的提示弹窗</td><td data-label="后续状态">显示提示弹窗</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="hint">弹窗开关为真实交互；购买项目卡片可切换、数量面板跟随切换；档位选择与提交订单仍保持静态无响应。</p>
+        </section>
+
+        <section id="design-basis">
+          <h2>设计基底与原型特有调整</h2>
+          <ul>
+            <li>采用的 <code>DESIGN.md</code>：<code>src/themes/kuacheng-bi/DESIGN.md</code>（项目默认主题）</li>
+            <li>继承方式：严格遵循；颜色、圆角、间距、阴影、字体以附件《单独购买权益页面样式.txt》从原页面提取的 token 为准（主色 #ff781f、图标渐变 135deg #ffd666→#faad14、圆角 8/10px）。</li>
+            <li>本原型特有调整：弹窗外壳（遮罩 + 白色圆角卡片 + 标题「购买权益」+ 关闭按钮）为本次要求新增，截图本身为全页形态。</li>
+          </ul>
+          <p class="hint">只记录用户针对当前原型确认的偏离或加强项，不复制 DESIGN.md 已有规则。</p>
+        </section>
+
+        <section id="open-questions">
+          <h2>当前待确认事项</h2>
+          <ul class="placeholder-list"><li>弹窗宽度按 1200px 设定（截图为 1920 全页），如评审时觉得比例不合适可调整。</li></ul>
+        </section>
+
+        <section id="decision-history">
+          <h2>用户重要决策与变更</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr></thead>
+              <tbody>
+                <tr><td data-label="日期">2026-09-30</td><td data-label="用户决策或变更">弹窗标题定为「购买权益」；截图内容放入弹窗内</td><td data-label="对当前原型的影响">原型为带标题栏的居中弹窗，而非全页还原</td></tr>
+                <tr><td data-label="日期">2026-09-30</td><td data-label="用户决策或变更">不做交互，仅画出截图所示界面；「店铺数量」不可点击</td><td data-label="对当前原型的影响">纯静态展示态，无步骤流转和选择逻辑</td></tr>
+                <tr><td data-label="日期">2026-09-30</td><td data-label="用户决策或变更">购买权益弹窗为全局共用弹窗：按进入场景默认选中购买项目（算力积分不足→AI算力；创建店铺数量不足→店铺数量）；「店铺数量」卡片可点击切换</td><td data-label="对当前原型的影响">购买项目选中态改为状态驱动；店铺数量不再禁用；数量面板跟随选中项目切换（店铺档位为占位数据）；底部新增两种场景的「演示入口」</td></tr>
+                <tr><td data-label="日期">2026-09-30</td><td data-label="用户决策或变更">主规格采用 HTML 格式</td><td data-label="对当前原型的影响">本文件即主规格</td></tr>
+                <tr><td data-label="日期">2026-09-30</td><td data-label="用户决策或变更">购买权益弹窗默认隐藏；默认显示「提示」弹窗（算力积分不足），点「购买」才打开购买权益弹窗</td><td data-label="对当前原型的影响">新增提示弹窗和弹窗开关交互，原型不再是纯静态</td></tr>
+                <tr><td data-label="日期">2026-09-30</td><td data-label="用户决策或变更">用户手动移除弹窗内打码 logo 占位与「联系客服」悬浮入口</td><td data-label="对当前原型的影响">购买权益弹窗不再包含这两处元素</td></tr>
+                <tr><td data-label="日期">2026-09-30</td><td data-label="用户决策或变更">批注以原型标注形式落档（购买权益弹窗 header 挂标注）</td><td data-label="对当前原型的影响">原型接入 AnnotationViewer，标注正文记录全局共用弹窗的场景选中规则</td></tr>
+                <tr><td data-label="日期">2026-09-30</td><td data-label="用户决策或变更">提供店铺数量选中态截图，要求优化选中店铺的样式</td><td data-label="对当前原型的影响">店铺数量面板改为「数量步进器 + 期限档位（带折扣角标）+ ¥214.92」，替换原占位档位</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const navItems = [...document.querySelectorAll('[data-page-target]')];
+    const pages = [...document.querySelectorAll('[data-spec-page]')];
+
+    const showPage = (pageId) => {
+      for (const navItem of navItems) {
+        const isCurrent = navItem.dataset.pageTarget === pageId;
+        if (isCurrent) {
+          navItem.setAttribute('aria-current', 'page');
+        } else {
+          navItem.removeAttribute('aria-current');
+        }
+      }
+
+      for (const page of pages) {
+        page.hidden = page.dataset.specPage !== pageId;
+      }
+    };
+
+    for (const navItem of navItems) {
+      navItem.addEventListener('click', () => showPage(navItem.dataset.pageTarget));
+    }
+  </script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#e6f5ef',
+        primaryTextColor: '#222832',
+        primaryBorderColor: '#008f5d',
+        lineColor: '#008f5d',
+        secondaryColor: '#f2faf7',
+        tertiaryColor: '#ffffff',
+        edgeLabelBackground: '#ffffff',
+        fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      },
+    });
+  </script>
+</body>
+</html>

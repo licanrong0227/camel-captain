@@ -14,6 +14,7 @@ import {
     Search,
     Home,
     LayoutGrid,
+    ChevronRight,
 } from 'lucide-react';
 import { defineHashPageRoute, useHashPage } from '../../common/useHashPage';
 import './style.css';
@@ -94,7 +95,31 @@ const navItems: NavItem[] = [
         title: '商品管理',
         icon: GridIcon,
         children: [
-            { id: 'product-add', title: '添加商品', icon: GridIcon },
+            {
+                id: 'product-add',
+                title: '添加商品',
+                icon: GridIcon,
+                children: [
+                    {
+                        id: 'pa-steps',
+                        title: '操作步骤',
+                        icon: GridIcon,
+                        children: [
+                            { id: 'pa-steps-media', title: '上传商品图片', icon: GridIcon },
+                            { id: 'pa-steps-publish', title: '配置规格与发布', icon: GridIcon },
+                        ],
+                    },
+                    {
+                        id: 'pa-notice',
+                        title: '注意事项与说明',
+                        icon: GridIcon,
+                        children: [
+                            { id: 'pa-fields', title: '表单字段说明', icon: GridIcon },
+                            { id: 'pa-faq', title: '常见问题', icon: GridIcon },
+                        ],
+                    },
+                ],
+            },
             { id: 'product-list', title: '商品列表', icon: GridIcon },
             { id: 'product-category', title: '商品分类', icon: GridIcon },
             { id: 'product-attr', title: '商品属性', icon: GridIcon },
@@ -273,10 +298,53 @@ const navItems: NavItem[] = [
     },
 ];
 
+const NAV_PARENT_CHAIN: Record<string, string[]> = (() => {
+    const map: Record<string, string[]> = {};
+    const walk = (nodes: NavItem[], chain: string[]) => {
+        for (const node of nodes) {
+            map[node.id] = chain;
+            if (node.children) walk(node.children, chain.concat(node.id));
+        }
+    };
+    walk(navItems, []);
+    return map;
+})();
+
 const helpCenterRoute = defineHashPageRoute([
     { id: 'product-add', title: '添加商品' },
     { id: 'product-list', title: '商品列表' },
 ], { defaultPageId: 'product-add' });
+
+// 页面内锚点（按正文从上到下顺序），用于点击定位和滚动联动
+const ANCHOR_ORDER = [
+    'product',
+    'product-add',
+    'pa-steps',
+    'pa-steps-media',
+    'pa-steps-publish',
+    'pa-notice',
+    'pa-fields',
+    'pa-faq',
+    'product-list',
+    'product-category',
+    'product-attr',
+    'product-sku',
+];
+
+const ANCHOR_CHAPTER: Record<string, string> = {
+    'product': 'product-add',
+    'product-add': 'product-add',
+    'pa-steps': 'product-add',
+    'pa-steps-media': 'product-add',
+    'pa-steps-publish': 'product-add',
+    'pa-notice': 'product-add',
+    'pa-fields': 'product-add',
+    'pa-faq': 'product-add',
+    'product-list': 'product-list',
+    'product-category': 'product-category',
+    'product-attr': 'product-attr',
+    'product-sku': 'product-sku',
+};
 
 const Component = forwardRef(function HelpCenter(
     innerProps: AxureProps,
@@ -284,11 +352,16 @@ const Component = forwardRef(function HelpCenter(
 ) {
     const { page: activeId, setPage } = useHashPage(helpCenterRoute);
     const [expandedGroups, setExpandedGroups] = useState<string[]>(['product']);
+    const [expandedNodes, setExpandedNodes] = useState<string[]>(['product-add', 'pa-steps', 'pa-notice']);
     const [searchKeyword, setSearchKeyword] = useState<string>('');
     const [activeSection, setActiveSection] = useState<string>('product-add');
     const [directoryExpanded, setDirectoryExpanded] = useState<boolean>(false);
     const scrollContainerRef = React.useRef<HTMLDivElement>(null);
-    const sectionRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
+    const sectionRefs = React.useRef<Record<string, HTMLElement | null>>({});
+
+    const anchorRef = useCallback((id: string) => (el: HTMLElement | null) => {
+        sectionRefs.current[id] = el;
+    }, []);
 
     const CHAPTERS = [
         { id: 'product-add', title: '添加商品' },
@@ -312,24 +385,42 @@ const Component = forwardRef(function HelpCenter(
 
         const handleScroll = () => {
             const containerTop = container.getBoundingClientRect().top;
-            let currentId = CHAPTERS[0].id;
+            let currentId = ANCHOR_ORDER[0];
 
-            for (const ch of CHAPTERS) {
-                const el = sectionRefs.current[ch.id];
+            for (const anchorId of ANCHOR_ORDER) {
+                const el = sectionRefs.current[anchorId];
                 if (!el) continue;
                 const elTop = el.getBoundingClientRect().top;
                 if (elTop <= containerTop + 1) {
-                    currentId = ch.id;
+                    currentId = anchorId;
                 }
             }
 
-            setActiveSection(currentId);
+            // 最后一个章节不足一屏时滚不到顶，滚到底也算命中
+            const atBottom = container.scrollHeight > container.clientHeight + 2
+                && container.scrollTop + container.clientHeight >= container.scrollHeight - 2;
+
+            setActiveSection(atBottom ? ANCHOR_ORDER[ANCHOR_ORDER.length - 1] : currentId);
         };
 
         container.addEventListener('scroll', handleScroll, { passive: true });
         handleScroll();
         return () => container.removeEventListener('scroll', handleScroll);
     }, []);
+
+    // 右侧滚到某个锚点时，自动展开它在左侧的父级
+    React.useEffect(() => {
+        const chain = NAV_PARENT_CHAIN[activeSection];
+        if (!chain || !chain.length) return;
+        const groupId = chain[0];
+        const nodeIds = chain.slice(1);
+        setExpandedGroups(prev => prev.includes(groupId) ? prev : prev.concat(groupId));
+        if (!nodeIds.length) return;
+        setExpandedNodes(prev => {
+            const missing = nodeIds.filter(id => !prev.includes(id));
+            return missing.length ? prev.concat(missing) : prev;
+        });
+    }, [activeSection]);
 
     // 从配置中获取值
     const searchPlaceholder = getConfigValue(configSource, 'search_placeholder', '搜索帮助文档...');
@@ -341,19 +432,73 @@ const Component = forwardRef(function HelpCenter(
     const isActive = useCallback((itemId: string) => activeId === itemId, [activeId]);
 
     // 包装 setPage 以触发事件
-    const handleNavigate = useCallback((pageId: string) => {
-        const container = scrollContainerRef.current;
-        if (container && CHAPTERS.some(ch => ch.id === pageId)) {
-            const el = sectionRefs.current[pageId];
-            if (el) {
-                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                setActiveSection(pageId);
-                return;
-            }
+    const handleNavigate = useCallback((targetId: string) => {
+        const el = sectionRefs.current[targetId];
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setActiveSection(targetId);
+            const chapterId = ANCHOR_CHAPTER[targetId];
+            if (chapterId && chapterId !== activeId) setPage(chapterId);
+            emitEvent('onNavigate', targetId);
+            return;
         }
-        setPage(pageId);
-        emitEvent('onNavigate', pageId);
-    }, [setPage, emitEvent]);
+        setPage(targetId);
+        emitEvent('onNavigate', targetId);
+    }, [activeId, setPage, emitEvent]);
+
+    const toggleNode = useCallback((nodeId: string) => {
+        setExpandedNodes(prev => {
+            const next = prev.includes(nodeId) ? prev.filter(id => id !== nodeId) : prev.concat(nodeId);
+            emitEvent('onToggleGroup', JSON.stringify({ id: nodeId, expanded: next.includes(nodeId) }));
+            return next;
+        });
+    }, [emitEvent]);
+
+    const isNodeActive = useCallback((node: NavItem): boolean => activeSection === node.id, [activeSection]);
+
+    const renderTreeNode = useCallback((node: NavItem, depth: number): React.ReactNode => {
+        const hasChildren = !!(node.children && node.children.length);
+        const expanded = expandedNodes.includes(node.id);
+        return (
+            <div className="help-center-nav-tree-item" key={node.id}>
+                <button
+                    className={`help-center-nav-group-item ${isNodeActive(node) ? 'is-active' : ''}`}
+                    style={{ paddingLeft: `${12 + depth * 16}px` }}
+                    type="button"
+                    onClick={() => handleNavigate(node.id)}
+                >
+                    <span>{node.title}</span>
+                    {hasChildren && (
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <span className="help-center-nav-count">({node.children!.length})</span>
+                            <span
+                                className={`help-center-nav-toggle ${expanded ? 'is-expanded' : ''}`}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleNode(node.id);
+                                }}
+                            >
+                                <ChevronRight size={12} />
+                            </span>
+                        </span>
+                    )}
+                </button>
+                {hasChildren && expanded && (
+                    <div className="help-center-nav-tree-items">
+                        {node.children!.map(child => renderTreeNode(child, depth + 1))}
+                    </div>
+                )}
+            </div>
+        );
+    }, [expandedNodes, isNodeActive, handleNavigate, toggleNode]);
+
+    const toggleGroup = useCallback((groupId: string) => {
+        setExpandedGroups(prev => {
+            const next = prev.includes(groupId) ? prev.filter(id => id !== groupId) : prev.concat(groupId);
+            emitEvent('onToggleGroup', JSON.stringify({ groupId, expanded: next.includes(groupId) }));
+            return next;
+        });
+    }, [emitEvent]);
 
     // 搜索处理
     const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -425,7 +570,7 @@ const Component = forwardRef(function HelpCenter(
                       </header>
           
                       <div className="help-center-main">
-                          <aside className="help-center-sidebar">
+                          <aside className="help-center-sidebar" data-annotation-id="nav-anchor-interaction">
                               <div className="help-center-sidebar-header">章节导航</div>
           
                               <div className="help-center-search">
@@ -454,14 +599,16 @@ const Component = forwardRef(function HelpCenter(
                                           </span>
                                           <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                               <span className="help-center-nav-count">(1)</span>
-                                              <span className={`help-center-nav-group-arrow ${directoryExpanded ? 'is-expanded' : ''}`} />
+                                              <span className={`help-center-nav-toggle ${directoryExpanded ? 'is-expanded' : ''}`}>
+                                                  <ChevronRight size={12} />
+                                              </span>
                                           </span>
                                       </div>
                                       {directoryExpanded && (
                                           <div className="help-center-nav-group-items">
                                               {CHAPTERS.map(ch => (
                                                   <button
-                                                      className={`help-center-nav-group-item ${activeSection === ch.id ? 'is-active' : ''}`}
+                                                      className={`help-center-nav-group-item ${ANCHOR_CHAPTER[activeSection] === ch.id ? 'is-active' : ''}`}
                                                       key={ch.id}
                                                       type="button"
                                                       onClick={() => handleNavigate(ch.id)}
@@ -477,27 +624,31 @@ const Component = forwardRef(function HelpCenter(
                                       <div key={item.id} className="help-center-nav-group">
                                            {item.children ? (
                                               <>
-                                                  <div className={`help-center-nav-group-header ${item.id === 'product' ? 'is-expanded' : ''}`}>
+                                                  <div
+                                                      className={`help-center-nav-group-header ${expandedGroups.includes(item.id) ? 'is-expanded' : ''} ${activeSection === item.id ? 'is-active' : ''}`}
+                                                      onClick={() => {
+                                                          if (sectionRefs.current[item.id]) handleNavigate(item.id);
+                                                      }}
+                                                  >
                                                       <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                           {item.icon}
                                                           {item.title}
                                                       </span>
                                                       <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                                           <span className="help-center-nav-count">({item.children?.length || 0})</span>
-                                                          <span className={`help-center-nav-group-arrow ${item.id === 'product' ? 'is-expanded' : ''}`} />
+                                                          <span
+                                                              className={`help-center-nav-toggle ${expandedGroups.includes(item.id) ? 'is-expanded' : ''}`}
+                                                              onClick={(e) => {
+                                                                  e.stopPropagation();
+                                                                  toggleGroup(item.id);
+                                                              }}
+                                                          >
+                                                              <ChevronRight size={12} />
+                                                          </span>
                                                       </span>
                                                   </div>
                                                   <div className="help-center-nav-group-items">
-                                                      {item.children.map(child => (
-                                                          <button
-                                                              className={`help-center-nav-group-item ${activeSection === child.id ? 'is-active' : ''}`}
-                                                              key={child.id}
-                                                              type="button"
-                                                              onClick={() => handleNavigate(child.id)}
-                                                          >
-                                                              {child.title}
-                                                          </button>
-                                                      ))}
+                                                      {item.children.map(child => renderTreeNode(child, 0))}
                                                   </div>
                                               </>
                                           ) : (
@@ -529,86 +680,19 @@ const Component = forwardRef(function HelpCenter(
 
                                        <div
                                            id="product-add"
-                                           ref={el => { sectionRefs.current['product-add'] = el; }}
                                            className="help-center-section"
                                        >
-                                           <div className="help-center-section-header">
-                                               <h1 className="help-center-section-title">
-                                                   <span>添加商品</span>
-                                                   <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontWeight: 'normal' }}>
-                                                       商品管理·1/{CHAPTERS.length}章节
-                                                   </span>
-                                               </h1>
+                                           <div className="help-center-section-header" data-annotation-id="heading-scale">
+                                               <h1 className="help-center-heading is-l1" ref={anchorRef('product')}>商品管理</h1>
+                                               <h2 className="help-center-heading is-l2" ref={anchorRef('product-add')}>添加商品</h2>
+                                               <h3 className="help-center-heading is-l3" ref={anchorRef('pa-steps')}>操作步骤</h3>
+                                               <h4 className="help-center-heading is-l4" ref={anchorRef('pa-steps-media')}>上传商品图片</h4>
                                                <hr className="help-center-section-divider" />
                                            </div>
 
-                                           <p className="help-center-content-desc">
-                                               了解如何使用骆驼队长BI系统进行跨境电商运营管理。
-                                           </p>
-                                           <div className="help-center-info-box">
-                                              <AlertCircle className="help-center-info-box-icon" size={20} />
-                                              <div className="help-center-info-box-content">
-                                                  <h3 className="help-center-info-box-title">提示</h3>
-                                                  <p className="help-center-info-box-text">
-                                                      本帮助文档将引导您了解骆驼队长BI系统的核心功能。您可以点击左侧导航栏查看不同模块的详细说明。
-                                                  </p>
-                                              </div>
-                                          </div>
-
-                                           <div className="help-center-rich-media">
-                                               <div className="help-center-image-inline">
-                                                   <div className="help-center-image-inline-placeholder">
-                                                       <ImageIcon size={32} />
-                                                       <span style={{ fontSize: 'var(--font-size-sm)' }}>添加商品界面截图</span>
-                                                   </div>
-                                               </div>
-                                               <p style={{ margin: '8px 0 0', fontSize: 'var(--font-size-sm)', color: 'var(--text-tertiary)', textAlign: 'center' }}>图1：添加商品操作界面</p>
-                                           </div>
-
-                                            <div className="help-center-table-wrapper">
-                                                <table className="help-center-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>按钮名称</th>
-                                                            <th>功能说明</th>
-                                                            <th>快捷键</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>新建商品</td>
-                                                            <td>创建新的商品记录</td>
-                                                            <td>Ctrl + N</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>保存</td>
-                                                            <td>保存当前编辑内容</td>
-                                                            <td>Ctrl + S</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>导出</td>
-                                                            <td>导出当前数据为Excel格式</td>
-                                                            <td>Ctrl + E</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>刷新</td>
-                                                            <td>重新加载当前页面数据</td>
-                                                            <td>F5</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                            <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 var(--spacing-lg) 0' }}>操作步骤</h2>
-
-                                            <p className="help-center-content-desc" style={{ marginBottom: 'var(--spacing-md)' }}>
-                                                按照以下步骤完成商品添加流程：
-                                            </p>
+                                            <h4 className="help-center-heading is-l4" ref={anchorRef('pa-steps-publish')}>配置规格与发布</h4>
 
                                             <ol style={{ margin: '0 0 var(--spacing-xl) 0', paddingLeft: '24px', lineHeight: 2, color: 'var(--text-primary)', fontSize: 'var(--font-size-md)' }}>
-                                                <li>进入「商品管理」模块，点击页面右上角的「新建商品」按钮</li>
-                                                <li>填写商品基本信息，包括商品名称、商品编码（SKU）、所属分类</li>
-                                                <li>上传商品主图和详情图，建议尺寸不小于 800×800 像素</li>
                                                 <li>设置商品价格、库存数量及物流属性（重量、体积）</li>
                                                 <li>配置商品规格组合（如颜色、尺码），系统自动生成 SKU 矩阵</li>
                                                 <li>预览商品信息，确认无误后点击「发布」或「保存为草稿」</li>
@@ -625,6 +709,8 @@ const Component = forwardRef(function HelpCenter(
                                                 <p style={{ margin: '8px 0 0', fontSize: 'var(--font-size-sm)', color: 'var(--text-tertiary)', textAlign: 'center' }}>视频教程：添加商品完整流程演示</p>
                                             </div>
 
+                                            <h3 className="help-center-heading is-l3" ref={anchorRef('pa-notice')}>注意事项与说明</h3>
+
                                             <div className="help-center-info-box" style={{ background: '#EFF6FF', borderColor: '#BFDBFE' }}>
                                                <AlertCircle className="help-center-info-box-icon" size={20} />
                                                <div className="help-center-info-box-content">
@@ -635,7 +721,7 @@ const Component = forwardRef(function HelpCenter(
                                                </div>
                                             </div>
 
-                                            <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 var(--spacing-lg) 0' }}>表单字段说明</h2>
+                                            <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 var(--spacing-lg) 0' }} ref={anchorRef('pa-fields')}>表单字段说明</h2>
 
                                             <div className="help-center-table-wrapper">
                                                 <table className="help-center-table">
@@ -691,7 +777,7 @@ const Component = forwardRef(function HelpCenter(
                                                 </table>
                                             </div>
 
-                                            <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 var(--spacing-lg) 0' }}>常见问题</h2>
+                                            <h2 ref={anchorRef('pa-faq')} style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 var(--spacing-lg) 0' }}>常见问题</h2>
 
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)', marginBottom: 'var(--spacing-xl)' }}>
                                                 <div style={{ background: 'var(--bg-sidebar)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-lg)' }}>
@@ -723,9 +809,6 @@ const Component = forwardRef(function HelpCenter(
                                            <div className="help-center-section-header">
                                                <h1 className="help-center-section-title">
                                                    <span>商品列表</span>
-                                                   <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontWeight: 'normal' }}>
-                                                       商品管理·2/{CHAPTERS.length}章节
-                                                   </span>
                                                </h1>
                                                <hr className="help-center-section-divider" />
                                            </div>
@@ -744,9 +827,6 @@ const Component = forwardRef(function HelpCenter(
                                            <div className="help-center-section-header">
                                                <h1 className="help-center-section-title">
                                                    <span>商品分类</span>
-                                                   <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontWeight: 'normal' }}>
-                                                       商品管理·3/{CHAPTERS.length}章节
-                                                   </span>
                                                </h1>
                                                <hr className="help-center-section-divider" />
                                            </div>
@@ -774,9 +854,6 @@ const Component = forwardRef(function HelpCenter(
                                            <div className="help-center-section-header">
                                                <h1 className="help-center-section-title">
                                                    <span>商品属性</span>
-                                                   <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontWeight: 'normal' }}>
-                                                       商品管理·4/{CHAPTERS.length}章节
-                                                   </span>
                                                </h1>
                                                <hr className="help-center-section-divider" />
                                            </div>
@@ -804,9 +881,6 @@ const Component = forwardRef(function HelpCenter(
                                            <div className="help-center-section-header">
                                                <h1 className="help-center-section-title">
                                                    <span>SKU管理</span>
-                                                   <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontWeight: 'normal' }}>
-                                                       商品管理·5/{CHAPTERS.length}章节
-                                                   </span>
                                                </h1>
                                                <hr className="help-center-section-divider" />
                                            </div>
@@ -867,25 +941,6 @@ function AlertCircle({ size, className }: { size: number; className?: string }) 
             <circle cx="12" cy="12" r="10" />
             <line x1="12" y1="8" x2="12" y2="12" />
             <line x1="12" y1="16" x2="12.01" y2="16" />
-        </svg>
-    );
-}
-
-function ImageIcon({ size }: { size: number }) {
-    return (
-        <svg
-            width={size}
-            height={size}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <polyline points="21 15 16 10 5 21" />
         </svg>
     );
 }

@@ -1,0 +1,351 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "source": "C:/Users/admin/.qoder-cn/tmp/D--projects-CAMEL-CAPTAIN/images/b96346c0-ad63-41a3-b694-2fb1796b25ca/0b095075-57d9-42a8-ad94-1f007d0eb8ec.png",
+  "sourceSha256": "8e4b461543d250102215ef28e5f82cf6a0ca8a11c62725ee555a733d90264625",
+  "output": "masked-pass-2.png",
+  "padding": 0,
+  "ocrSubmitted": false,
+  "regionCount": 11,
+  "ocrCount": 17,
+  "textRegionCount": 17,
+  "maskedCount": 28,
+  "boxes": [
+    {
+      "source": "pass-1",
+      "id": "detail-poster",
+      "bounds": {
+        "x": 362,
+        "y": 206,
+        "right": 1362,
+        "bottom": 776,
+        "width": 1000,
+        "height": 570
+      }
+    },
+    {
+      "source": "pass-1",
+      "id": "product-thumb-1",
+      "bounds": {
+        "x": 125,
+        "y": 129,
+        "right": 165,
+        "bottom": 169,
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "source": "pass-1",
+      "id": "product-thumb-2",
+      "bounds": {
+        "x": 125,
+        "y": 191,
+        "right": 165,
+        "bottom": 231,
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "source": "pass-1",
+      "id": "product-thumb-3",
+      "bounds": {
+        "x": 125,
+        "y": 253,
+        "right": 165,
+        "bottom": 293,
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "source": "pass-1",
+      "id": "product-thumb-4",
+      "bounds": {
+        "x": 125,
+        "y": 315,
+        "right": 165,
+        "bottom": 355,
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "source": "pass-1",
+      "id": "product-thumb-5",
+      "bounds": {
+        "x": 125,
+        "y": 377,
+        "right": 165,
+        "bottom": 417,
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "source": "pass-1",
+      "id": "product-thumb-6",
+      "bounds": {
+        "x": 125,
+        "y": 439,
+        "right": 165,
+        "bottom": 479,
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "source": "pass-1",
+      "id": "product-thumb-7",
+      "bounds": {
+        "x": 125,
+        "y": 501,
+        "right": 165,
+        "bottom": 541,
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "source": "pass-1",
+      "id": "product-thumb-8",
+      "bounds": {
+        "x": 125,
+        "y": 563,
+        "right": 165,
+        "bottom": 603,
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "source": "pass-1",
+      "id": "product-thumb-9",
+      "bounds": {
+        "x": 125,
+        "y": 625,
+        "right": 165,
+        "bottom": 665,
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "source": "pass-1",
+      "id": "product-thumb-10",
+      "bounds": {
+        "x": 125,
+        "y": 687,
+        "right": 165,
+        "bottom": 727,
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "dialog-title",
+      "bounds": {
+        "x": 112,
+        "y": 70,
+        "right": 190,
+        "bottom": 95,
+        "width": 78,
+        "height": 25
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "tab-bar",
+      "bounds": {
+        "x": 344,
+        "y": 116,
+        "right": 515,
+        "bottom": 138,
+        "width": 171,
+        "height": 22
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "toolbar",
+      "bounds": {
+        "x": 355,
+        "y": 152,
+        "right": 786,
+        "bottom": 190,
+        "width": 431,
+        "height": 38
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "footer-buttons",
+      "bounds": {
+        "x": 873,
+        "y": 782,
+        "right": 1039,
+        "bottom": 824,
+        "width": 166,
+        "height": 42
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "product-text-1",
+      "bounds": {
+        "x": 168,
+        "y": 126,
+        "right": 339,
+        "bottom": 168,
+        "width": 171,
+        "height": 42
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "product-text-2",
+      "bounds": {
+        "x": 168,
+        "y": 188,
+        "right": 339,
+        "bottom": 230,
+        "width": 171,
+        "height": 42
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "product-text-3",
+      "bounds": {
+        "x": 168,
+        "y": 250,
+        "right": 339,
+        "bottom": 293,
+        "width": 171,
+        "height": 43
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "product-text-4",
+      "bounds": {
+        "x": 168,
+        "y": 312,
+        "right": 339,
+        "bottom": 354,
+        "width": 171,
+        "height": 42
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "product-text-5",
+      "bounds": {
+        "x": 168,
+        "y": 374,
+        "right": 339,
+        "bottom": 417,
+        "width": 171,
+        "height": 43
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "product-text-6",
+      "bounds": {
+        "x": 168,
+        "y": 436,
+        "right": 339,
+        "bottom": 478,
+        "width": 171,
+        "height": 42
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "product-text-7",
+      "bounds": {
+        "x": 168,
+        "y": 498,
+        "right": 339,
+        "bottom": 541,
+        "width": 171,
+        "height": 43
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "product-text-8",
+      "bounds": {
+        "x": 168,
+        "y": 560,
+        "right": 339,
+        "bottom": 602,
+        "width": 171,
+        "height": 42
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "product-text-9",
+      "bounds": {
+        "x": 168,
+        "y": 622,
+        "right": 339,
+        "bottom": 665,
+        "width": 171,
+        "height": 43
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "product-text-10",
+      "bounds": {
+        "x": 168,
+        "y": 684,
+        "right": 339,
+        "bottom": 726,
+        "width": 171,
+        "height": 42
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "backdrop-nav",
+      "bounds": {
+        "x": 0,
+        "y": 10,
+        "right": 1121,
+        "bottom": 40,
+        "width": 1121,
+        "height": 30
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "backdrop-left",
+      "bounds": {
+        "x": 0,
+        "y": 55,
+        "right": 96,
+        "bottom": 131,
+        "width": 96,
+        "height": 76
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "backdrop-tab",
+      "bounds": {
+        "x": 1850,
+        "y": 500,
+        "right": 1912,
+        "bottom": 530,
+        "width": 62,
+        "height": 30
+      }
+    }
+  ]
+}

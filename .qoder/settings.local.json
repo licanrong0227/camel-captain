@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm ls cc-connect 2>/dev/null; npm ls -g cc-connect 2>/dev/null; where cc-connect 2>/dev/null; echo \"---\"; npm config get registry)",
+      "Bash(npm view cc-connect version 2>&1 | head -5)",
+      "Bash(npx -y cc-connect --help 2>&1 | head -40)",
+      "Bash(grep -ril \"cc-connect\" node_modules/@axhub 2>/dev/null | head -20)",
+      "Bash(grep -rl \"did not become ready\" node_modules 2>/dev/null | head -5; echo \"---\"; grep -rl \"cc-connect\" node_modules 2>/dev/null | head -10)",
+      "Bash(npm view cc-connect os cpu bin 2>&1; echo \"---\"; ls \"$\\(npm root -g\\)/cc-connect\" 2>/dev/null | head; echo \"---\"; find \"$HOME/.cc-connect\" -maxdepth 1 2>/dev/null | head; ls \"$HOME/AppData/Local/cc-connect\" 2>/dev/null | head)",
+      "Bash(grep -rl \"did not become ready\" \"$HOME/.qoder-cn\" \"$HOME/AppData/Roaming\" 2>/dev/null | head -5; echo \"===\"; tasklist | grep -i -E \"cc-connect|axhub|make\" | head)",
+      "Bash(npx:*)",
+      "Bash(sleep 6; tail -30 \"C:\\\\Users\\\\admin\\\\AppData\\\\Local\\\\Temp\\\\qoder-cli-cn\\\\D--projects-CAMEL-CAPTAIN\\\\434fc726-9545-42f7-97dd-c81ea46265c4\\\\tasks\\\\batjqcox0.output\"; echo \"=== ports:\"; netstat -ano | grep -E \"9810|9820\" | head -5)",
+      "Bash(curl -s -m 5 -H \"Authorization: Bearer management-09f04e1d1d972c49cdae0a3850d67aad3123d375a35b30ca\" http://localhost:9820/api/status | head -c 400; echo)",
+      "Bash(TOK=\"management-09f04e1d1d972c49cdae0a3850d67aad3123d375a35b30ca\"; for p in /health /healthz /status /api/health /api/v1/status /api/sessions /openapi.json /api/docs; do code=$\\(curl -s -o /dev/null -m 3 -w \"%{http_code}\" -H \"Authorization: Bearer $TOK\" \"http://localhost:9820$p\"\\); echo \"$p -> $code\"; done)",
+      "Bash(tail -20 \"C:\\\\Users\\\\admin\\\\AppData\\\\Local\\\\Temp\\\\qoder-cli-cn\\\\D--projects-CAMEL-CAPTAIN\\\\434fc726-9545-42f7-97dd-c81ea46265c4\\\\tasks\\\\batjqcox0.output\"; echo \"=== ports:\"; netstat -ano | grep -E \":9810|:9820\" | head -4)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && npx tsc --noEmit src/prototypes/personal-center-page/index.tsx 2>&1 | head -30)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && npx tsc --noEmit --project tsconfig.json 2>&1 | grep \"personal-center-page\" | head -10)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:51720/prototypes/personal-center-page?agentToolbar=host\" 2>&1)",
+      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git diff --stat HEAD 2>/dev/null | tail -5)",
+      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git log --oneline -5)",
+      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git status --short 2>/dev/null | head -60)",
+      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && ls src/prototypes/edit-product-dialog/ 2>/dev/null | head -10 && echo \"---\" && ls src/prototypes/personal-center-bi/ 2>/dev/null | head -10 && echo \"---\" && ls src/prototypes/personal-center-page/ 2>/dev/null | head -10 && echo \"---\" && ls src/prototypes/operation-log/ 2>/dev/null | head -10)",
+      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && ls src/themes/camel-captain-erp/ 2>/dev/null | head -15)"
+    ]
+  }
+}

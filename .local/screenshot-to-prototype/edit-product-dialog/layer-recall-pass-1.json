@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "provider": "current-agent",
+  "kind": "assets",
+  "sourceImage": "C:/Users/admin/.qoder-cn/tmp/D--projects-CAMEL-CAPTAIN/images/b96346c0-ad63-41a3-b694-2fb1796b25ca/0b095075-57d9-42a8-ad94-1f007d0eb8ec.png",
+  "regions": [
+    {
+      "id": "detail-poster",
+      "label": "详情富文本中的 iPhone 17 Pro Max 竖版海报",
+      "bounds": {
+        "left": 189.4613,
+        "top": 237.8893,
+        "right": 712.2123,
+        "bottom": 894.752
+      },
+      "confidence": 0.98,
+      "route": "reuse-crop"
+    },
+    {
+      "id": "product-thumb-1",
+      "label": "商品列表第 1 行商品缩略图",
+      "bounds": {
+        "left": 65.5073,
+        "top": 149.0773,
+        "right": 86.1663,
+        "bottom": 194.6367
+      },
+      "confidence": 0.97,
+      "route": "reuse-crop"
+    },
+    {
+      "id": "product-thumb-2",
+      "label": "商品列表第 2 行商品缩略图",
+      "bounds": {
+        "left": 65.5073,
+        "top": 220.5882,
+        "right": 86.1663,
+        "bottom": 266.1476
+      },
+      "confidence": 0.97,
+      "route": "reuse-crop"
+    },
+    {
+      "id": "product-thumb-3",
+      "label": "商品列表第 3 行商品缩略图",
+      "bounds": {
+        "left": 65.5073,
+        "top": 292.0992,
+        "right": 86.1663,
+        "bottom": 337.6586
+      },
+      "confidence": 0.97,
+      "route": "reuse-crop"
+    },
+    {
+      "id": "product-thumb-4",
+      "label": "商品列表第 4 行商品缩略图",
+      "bounds": {
+        "left": 65.5073,
+        "top": 363.6101,
+        "right": 86.1663,
+        "bottom": 409.1696
+      },
+      "confidence": 0.97,
+      "route": "reuse-crop"
+    },
+    {
+      "id": "product-thumb-5",
+      "label": "商品列表第 5 行商品缩略图",
+      "bounds": {
+        "left": 65.5073,
+        "top": 435.1211,
+        "right": 86.1663,
+        "bottom": 480.6805
+      },
+      "confidence": 0.97,
+      "route": "reuse-crop"
+    },
+    {
+      "id": "product-thumb-6",
+      "label": "商品列表第 6 行商品缩略图",
+      "bounds": {
+        "left": 65.5073,
+        "top": 506.6321,
+        "right": 86.1663,
+        "bottom": 552.1915
+      },
+      "confidence": 0.97,
+      "route": "reuse-crop"
+    },
+    {
+      "id": "product-thumb-7",
+      "label": "商品列表第 7 行商品缩略图",
+      "bounds": {
+        "left": 65.5073,
+        "top": 578.143,
+        "right": 86.1663,
+        "bottom": 623.7024
+      },
+      "confidence": 0.97,
+      "route": "reuse-crop"
+    },
+    {
+      "id": "product-thumb-8",
+      "label": "商品列表第 8 行商品缩略图",
+      "bounds": {
+        "left": 65.5073,
+        "top": 649.654,
+        "right": 86.1663,
+        "bottom": 695.2134
+      },
+      "confidence": 0.97,
+      "route": "reuse-crop"
+    },
+    {
+      "id": "product-thumb-9",
+      "label": "商品列表第 9 行商品缩略图",
+      "bounds": {
+        "left": 65.5073,
+        "top": 721.1649,
+        "right": 86.1663,
+        "bottom": 766.7243
+      },
+      "confidence": 0.97,
+      "route": "reuse-crop"
+    },
+    {
+      "id": "product-thumb-10",
+      "label": "商品列表第 10 行商品缩略图",
+      "bounds": {
+        "left": 65.5073,
+        "top": 792.6759,
+        "right": 86.1663,
+        "bottom": 838.2353
+      },
+      "confidence": 0.97,
+      "route": "reuse-crop"
+    }
+  ]
+}
