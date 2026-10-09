@@ -38,6 +38,7 @@
     "directories": [
       ".agents/skills",
       ".claude/skills",
+      ".workbuddy/skills",
       "rules",
       "design-knowledge",
       "scripts/templates",
@@ -49,17 +50,17 @@
     "fileRules": [
       {
         "action": "exclude",
-        "pattern": "^\\.(?:agents|claude)/skills/prototype-comments(?:/|$)",
+        "pattern": "^\\.(?:agents|claude|workbuddy)/skills/prototype-comments(?:/|$)",
         "description": "旧版 prototype-comments 已由 handle-comments 替代，不进入发布模板。"
       },
       {
         "action": "exclude",
-        "pattern": "^\\.(?:agents|claude)/skills/triple-ampersand-operator(?:/|$)",
+        "pattern": "^\\.(?:agents|claude|workbuddy)/skills/triple-ampersand-operator(?:/|$)",
         "description": "测试用 triple-ampersand-operator 不进入发布模板。"
       },
       {
         "action": "exclude",
-        "pattern": "^\\.(?:agents|claude)/skills/generate-data-cockpit-prototype(?:/|$)",
+        "pattern": "^\\.(?:agents|claude|workbuddy)/skills/generate-data-cockpit-prototype(?:/|$)",
         "description": "未完善的数据大屏技能暂不进入发布模板。"
       },
       {

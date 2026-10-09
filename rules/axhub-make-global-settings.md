@@ -1,19 +1,19 @@
 # Axhub Make 全局设置规则
 
-供 AI Agent 协助用户检查或修改 Axhub Make 用户级全局设置。不授权修改项目内容、处理凭据、安装软件或执行发布。
+供 AI Agent 协助用户检查或修改 Axhub Make 用户级全局设置。不授权修改项目内容、直接处理凭据、安装软件或执行发布。
 
 ## 范围
 
-| 文件 | Windows | macOS / Linux |
+| 类型 | Windows | macOS / Linux |
 | --- | --- | --- |
-| `server.config.json` | `%USERPROFILE%\.axhub\make\server.config.json` | `~/.axhub/make/server.config.json` |
-| `voice-assistant.settings.json` | `%USERPROFILE%\.axhub\make\voice-assistant.settings.json` | `~/.axhub/make/voice-assistant.settings.json` |
+| 可编辑公开配置 `server.config.json` | `%USERPROFILE%\.axhub\make\server.config.json` | `~/.axhub/make/server.config.json` |
+| 服务端托管密钥 `server.secrets.json` | Make 管理 | Make 管理 |
 
-两份文件均为 UTF-8 JSON，写回时使用两空格缩进并保留末尾换行。不得修改项目目录内的 `.axhub/make/axhub.config.json`。
+`server.config.json` 为 UTF-8 JSON，写回时使用两空格缩进并保留末尾换行。`server.secrets.json` 不属于 Agent 可编辑配置，不得直接读取、写入或回显。不得修改项目目录内的 `.axhub/make/axhub.config.json`。
 
 ## 操作原则
 
-1. 按操作系统解析用户主目录，先读取目标文件并严格解析 JSON；无法解析时不得覆盖原文件。
+1. 按操作系统解析用户主目录，只读取 `server.config.json` 并严格解析 JSON；无法解析时不得覆盖原文件。
 2. 写入前列出将修改的文件和完整字段路径，等待用户确认。
 3. 只合并用户明确要求的字段，保留未知字段、未提及分组和现有数组项；文件不存在时只创建最小对象。
 4. 写入后重新解析文件并核对差异；验证失败时恢复原值。
@@ -23,7 +23,7 @@
 
 密钥、密码、token、secret，以及密码散列、LAN secret、发布 token 和对象存储凭据都是敏感值。
 
-- 不得擅自生成、删除、回显或迁移敏感值；只有用户明确提供新值、目标字段并确认写入时才能修改。
+- 不得擅自生成、删除、回显或迁移敏感值；用户确认修改后也只能调用对应 Make API，不得直接操作密钥文件。
 - 不得在终端、日志、diff、截图或最终报告中展示完整敏感值。
 - 局域网密码必须由 Make 的密码设置流程生成，不得手工拼装 `passwordHash`、`salt` 或 `secret`。
 - 安装软件、提升权限或对外发布前，必须单独说明目标和影响并取得确认。
@@ -36,25 +36,29 @@
 | --- | --- |
 | `automation` | `conversationPromptClient` / `annotationPromptClient` / `canvasPromptClient` 及对应模型；`agentRunConcurrency` 范围 1–10；ACP 权限放宽前先说明风险。 |
 | `assistant` | `webBaseUrl` 和 `apiBaseUrl`；只使用用户提供或本机已验证的服务。 |
-| `ai.imageGeneration` | `baseUrl`、`apiKey`、`model`、`lastTest`；不得伪造测试状态。 |
+| `ai.imageGeneration` | 公开字段为 `baseUrl`、`model`、`lastTest`；`apiKey` 只经 `/api/config/ai-services` 管理。 |
+| `ai.doubao` / `ai.processing` / `ai.vision` | 非敏感字段由 Make 管理；凭据只经 `/api/config/ai-services` 管理。 |
 | `uiPreferences` | Excalidraw 属性面板开关与位置；不同时修改画布内容。 |
 | `toolOpenState` | 只合并对应路径字段，保留同条目其他字段和 `web:<agent>` 条目。 |
-| `accessControl.lanPassword` | 只通过 Make 流程设置或清除；更换后旧登录和分享链接失效。 |
-| `cloudPublishing` | Vercel、Cloudflare Pages、S3、GitHub Pages 和 `publishSettings`；修改配置不等于获得发布授权。 |
+| `accessControl.lanPassword` | 不写入公开配置；只通过 Make 密码设置流程设置或清除，更换后旧登录和分享链接失效。 |
+| `cloudPublishing` | 公开发布偏好可合并；Vercel、Cloudflare Pages、S3 等凭据只通过 Make 云发布 API 管理。 |
 
 Agent 路径分别使用 `ide:<agent>.executablePath`、`local-app:<agent>.commandPath` 和 `cli:<agent>.commandPath`。
 
-### `voice-assistant.settings.json`
+### AI 服务 API
 
-| 分组 | 字段 |
+`GET/PUT <MAKE_API_ORIGIN>/api/config/ai-services?projectId=<PROJECT_ID>` 用于读取掩码状态和更新 AI 服务设置。空白密钥表示保留现值；只有显式 `clearSecrets` 才清除。
+
+| 分组 | 公开字段与凭据 |
 | --- | --- |
-| `doubao` | `appId`、`resourceId`、`accessKey`、`appKey`、`realtimeUrl`、`speaker` |
-| `processing` | 界面名称“网页任务 API”；`baseUrl`、`apiKey`、`model` |
-| `vision` | `endpoint`、`apiKey`、`model` |
+| `imageGeneration` | `baseUrl`、`model`、`lastTest`；凭据 `apiKey` |
+| `doubao` | `appId`、`speaker`；凭据 `accessKey` |
+| `processing` | 界面名称“网页任务 API”；`baseUrl`、`model`；凭据 `apiKey` |
+| `vision` | `endpoint`、`model`；凭据 `apiKey` |
 
 豆包语音 API 配置缺失时，引导用户登录 [火山引擎豆包语音控制台](https://console.volcengine.com/speech/new/overview) 开通服务并获取 App ID、Resource ID 与所需凭据。AI 不代替用户登录，不猜测或回显凭据。
 
-顶层 `version` 和 `updatedAt` 由 Make 管理，不得伪造。远程 HTTP/WebSocket 地址应使用 HTTPS/WSS。
+服务端密钥文件的 `version` 和 `updatedAt` 由 Make 管理，不得伪造。远程 HTTP/WebSocket 地址应使用 HTTPS/WSS。
 
 ## 本地 Agent 验证
 

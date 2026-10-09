@@ -13,7 +13,7 @@
 - 新建原型或为现有原型新增页面。
 - 明显重构信息架构、核心交互、页面流程或视觉方向。
 
-局部文案、样式、素材替换、明确 bug 修复等不改变产品范围、信息架构和视觉骨架的任务，可以跳过正式对齐；但仍要记录采用的假设，并在发现关键缺口时回到对齐流程。
+局部文案、样式、素材替换和明确的 bug 修复，也必须遵循本指南的需求对齐与主规格确认流程。
 
 ## 上下文读取
 
@@ -61,11 +61,11 @@ Make 管理端默认使用 `http://localhost:53817/`；`check-app-ready` 返回 
 
 设计方案阶段负责回答“怎么表达”。进入视觉、主题或明显 UI 改版前，必须先让用户确认一个 `DESIGN.md` 作为设计基底：
 
-- 如果用户已指定 `DESIGN.md` 或主题，直接采用；如果用户未指定，默认推荐 3 个：先从当前项目本地候选（项目默认主题、已有同类原型和 `src/themes/`）中选择；本地不足 3 个时，才使用 `$search-design-system` 从 Design Knowledge 主题库补足。从这些已有候选中选择设计基底不得触发 `$build-design-system`；只有用户明确要求创建或修改主题时才使用它。
+- 如果用户已指定 `DESIGN.md` 或主题，直接采用；如果用户未指定，先检查当前项目本地候选（项目默认主题、已有同类原型和 `src/themes/`），仅在本地候选不足 3 个或没有明显匹配时，才使用 `$search-design-system` 补足。必须将本地候选与检索候选放在同一张对比表中，逐项写明匹配点、不匹配点和可核验的 `DESIGN.md`/预览；用户明确选择前，不得安装或采用任何主题，也不得创建/更新主规格、创建原型或开始实现。只有用户明确要求创建或修改主题时才使用 `$build-design-system`。
 
 整理当前项目候选时优先读取主题 `theme.json`，用 `tags.*`、`display.distributionTags`、`identity.title*/description*` 和 `display.variant` 做检索与候选说明；用 `identity.slug` 和 `assets.designMd.path` 校验目录与 `DESIGN.md` 路径。不自行新建 `DESIGN.md`。
 
-当前项目本地候选必须提供完整的 Make 主题深链，格式为 `http://localhost:53817/?projectId=<project-id>&theme=<theme-key>`，并标出对应 `DESIGN.md` 路径；Design Knowledge 候选使用检索结果提供的链接。
+当前项目本地候选提供基于实际 `serverUrl` 的完整 Make 主题深链和 `DESIGN.md` 路径；Design Knowledge 候选使用检索结果提供的链接。
 
 `DESIGN.md` 确定后，用户零散提出的颜色、字体、布局、动效、组件形态等需求，都作为基于该设计基底的调整处理，不另起一套视觉系统。
 

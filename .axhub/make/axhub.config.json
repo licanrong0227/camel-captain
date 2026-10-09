@@ -1,12 +1,10 @@
 {
   "server": {
     "host": "localhost",
-    "lanHost": "192.168.110.205",
-    "skipLanPreviewAuth": false,
     "enableCommandAPI": false
   },
   "projectDefaults": {
-    "defaultTheme": "camel-captain-erp"
+    "defaultTheme": null
   },
   "projectInfo": {
     "description": null
@@ -24,7 +22,7 @@
       "productionBranch": "main"
     },
     "githubPages": {
-      "repository": "licanrong0227/camel-captain",
+      "repository": "",
       "branch": "gh-pages",
       "sourceDirectory": "/"
     },

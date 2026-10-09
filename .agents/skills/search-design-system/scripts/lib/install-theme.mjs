@@ -89,7 +89,6 @@ export async function fetchPackageBytes(url, { fetch: fetcher = globalThis.fetch
 async function archiveEntries(bytes, limits = DEFAULT_LIMITS) {
   const entries = [];
   const names = new Set();
-  const fileNames = new Set();
   let entryCount = 0;
   let unpacked = 0;
   let rejected;
@@ -132,10 +131,7 @@ async function archiveEntries(bytes, limits = DEFAULT_LIMITS) {
           next();
           return;
         }
-        if (!rejected) {
-          entries.push({ relative, bytes: Buffer.concat(chunks, size) });
-          fileNames.add(relative);
-        }
+        if (!rejected) entries.push({ relative, bytes: Buffer.concat(chunks, size) });
         next();
       });
       stream.once('error', (error) => {
@@ -157,7 +153,7 @@ async function archiveEntries(bytes, limits = DEFAULT_LIMITS) {
     if (rejected.code) throw rejected;
     throw failure('FETCH_FAILED', { reason: 'invalid-archive' }, rejected);
   }
-  if (REQUIRED_FILES.some((name) => !fileNames.has(name))) throw failure('FETCH_FAILED', { reason: 'package-file-contract' });
+  if (REQUIRED_FILES.some((name) => !names.has(name))) throw failure('FETCH_FAILED', { reason: 'package-file-contract' });
   return entries;
 }
 
@@ -171,32 +167,8 @@ async function writeEntries(entries, root) {
   }
 }
 
-async function assertSafeExistingComponents(root, candidate) {
-  const resolvedRoot = path.resolve(root);
-  const resolved = path.resolve(candidate);
-  if (!isInside(resolvedRoot, resolved)) throw failure('INSTALL_DESTINATION_INVALID', { reason: 'themes-root' });
-  let current = resolvedRoot;
-  for (const part of path.relative(resolvedRoot, resolved).split(path.sep).filter(Boolean)) {
-    current = path.join(current, part);
-    try {
-      if ((await fs.lstat(current)).isSymbolicLink()) {
-        throw failure('INSTALL_DESTINATION_INVALID', { reason: 'symlink', path: path.relative(resolvedRoot, current) });
-      }
-    } catch (error) {
-      if (error?.code === 'ENOENT') break;
-      if (error?.code === 'INSTALL_DESTINATION_INVALID') throw error;
-      throw failure('INSTALL_DESTINATION_INVALID', { reason: 'destination-component' }, error);
-    }
-  }
-}
-
 async function readProjectThemesRoot(projectRoot) {
-  let root;
-  try {
-    root = await fs.realpath(path.resolve(projectRoot ?? ''));
-  } catch (error) {
-    throw failure('INSTALL_DESTINATION_INVALID', { reason: 'project-root' }, error);
-  }
+  const root = path.resolve(projectRoot ?? '');
   await fs.realpath(path.join(root, '.axhub/make/client.json')).catch(() => { throw failure('INSTALL_DESTINATION_INVALID', { reason: 'client-marker' }); });
   let relative = 'src/themes';
   try {
@@ -214,7 +186,6 @@ async function readProjectThemesRoot(projectRoot) {
   }
   const themesRoot = path.resolve(root, relative);
   if (!isInside(root, themesRoot)) throw failure('INSTALL_DESTINATION_INVALID', { reason: 'themes-root' });
-  await assertSafeExistingComponents(root, themesRoot);
   return { root, themesRoot };
 }
 
@@ -236,9 +207,8 @@ function defaultMetadataSync(projectRoot) {
 }
 
 async function installEntries({ entries, projectRoot, themesRoot, themeId, runMetadataSync }) {
-  const target = path.join(themesRoot, themeId);
-  await assertSafeExistingComponents(projectRoot, target);
   await fs.mkdir(themesRoot, { recursive: true });
+  const target = path.join(themesRoot, themeId);
   const targetExists = await fs.lstat(target).then(() => true).catch((error) => error?.code === 'ENOENT' ? false : Promise.reject(error));
   const replacingSpec = targetExists && await isSpecOnly(target);
   if (targetExists && !replacingSpec) throw failure('INSTALL_DESTINATION_INVALID', { reason: 'exists', themeId });
@@ -267,7 +237,6 @@ async function installEntries({ entries, projectRoot, themesRoot, themeId, runMe
 
 async function writeSpecOnly({ snapshot, themeId, platform, projectRoot, themesRoot, failures, now }) {
   const target = path.join(themesRoot, themeId);
-  await assertSafeExistingComponents(projectRoot, target);
   if (await fs.lstat(target).then(() => true).catch(() => false)) throw failure('INSTALL_DESTINATION_INVALID', { reason: 'exists', themeId });
   const candidate = path.join(themesRoot, `.axhub-theme-spec-${themeId}-${crypto.randomUUID()}`);
   const design = await readBundledDesignMd({ snapshot, slug: themeId });
@@ -302,11 +271,7 @@ function stableFailure(error) {
 
 export async function installTheme({ themeId, platform, projectRoot, snapshotRoot, fetch, now, timeoutMs = 10_000, runMetadataSync } = {}) {
   if (!SLUG_PATTERN.test(themeId ?? '') || !['desktop', 'mobile'].includes(platform)) throw failure('INSTALL_DESTINATION_INVALID');
-  const snapshot = await resolveBundledSnapshot({
-    startDir: projectRoot ?? process.cwd(),
-    snapshotRoot,
-    projectRoot,
-  });
+  const snapshot = await resolveBundledSnapshot({ startDir: process.cwd(), snapshotRoot });
   const loaded = await loadBundledIndex({ snapshot, platform });
   const record = loaded.index.records.find((item) => item.id === themeId);
   if (!record?.publishable) throw failure('PACKAGE_SOURCE_INVALID', { themeId, platform });
@@ -314,7 +279,6 @@ export async function installTheme({ themeId, platform, projectRoot, snapshotRoo
   const packageHash = record.remoteArtifacts?.packageHash ?? record.artifacts?.packageHash;
   if (!HASH_PATTERN.test(packageHash ?? '')) throw failure('PACKAGE_SOURCE_INVALID', { field: 'packageHash' });
   const { root, themesRoot } = await readProjectThemesRoot(projectRoot);
-  await assertSafeExistingComponents(root, path.join(themesRoot, themeId));
   const sources = [
     ['primary', packageUrl(snapshot.manifest.packageSources?.primary, packagePath)],
     ['fallback', packageUrl(snapshot.manifest.packageSources?.fallback?.base, packagePath)],

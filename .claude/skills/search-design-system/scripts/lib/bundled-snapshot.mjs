@@ -123,6 +123,15 @@ function validateManifest(manifest) {
   if (manifest.designMd.count !== manifest.indexes.desktop.count + manifest.indexes.mobile.count) {
     fail('BUNDLED_SNAPSHOT_INVALID', { field: 'designMd.count' });
   }
+  const hiddenRecordIds = manifest.quarantine?.hiddenRecordIds;
+  if (hiddenRecordIds !== undefined) {
+    if (!manifest.quarantine || typeof manifest.quarantine !== 'object' || Array.isArray(manifest.quarantine)
+      || !Array.isArray(hiddenRecordIds)
+      || hiddenRecordIds.some((id) => !SLUG_RE.test(id))
+      || new Set(hiddenRecordIds).size !== hiddenRecordIds.length) {
+      fail('BUNDLED_SNAPSHOT_INVALID', { field: 'quarantine.hiddenRecordIds' });
+    }
+  }
   const fallback = manifest.packageSources?.fallback;
   if (typeof manifest.packageSources?.primary !== 'string' || !COMMIT_RE.test(fallback?.commit) || fallback?.repository !== 'axhub/Make-Template' || typeof fallback?.base !== 'string') {
     fail('BUNDLED_SNAPSHOT_INVALID', { field: 'packageSources' });
@@ -140,6 +149,16 @@ function validateManifest(manifest) {
     || sourceUrls.fallback.origin !== 'https://gitee.com' || sourceUrls.fallback.pathname !== `/axhub/Make-Template/raw/${fallback.commit}/knowledge/versions/${manifest.snapshotVersion}/`) {
     fail('BUNDLED_SNAPSHOT_INVALID', { field: 'packageSources' });
   }
+}
+
+function visibleIndex(index, manifest) {
+  const hiddenRecordIds = new Set(manifest.quarantine?.hiddenRecordIds ?? []);
+  if (!hiddenRecordIds.size) return index;
+  const records = index.records.filter((record) => !hiddenRecordIds.has(record.id));
+  const postings = Object.fromEntries(Object.entries(index.postings)
+    .map(([token, ids]) => [token, ids.filter((id) => !hiddenRecordIds.has(id))])
+    .filter(([, ids]) => ids.length > 0));
+  return Object.freeze({ ...index, records, postings });
 }
 
 async function discoverSnapshotRoot(startDir) {
@@ -244,11 +263,12 @@ export async function loadBundledIndex({ snapshot, platform, request, readFile =
   for (const record of index.records) {
     await readVerifiedFile(snapshot.root, record.artifacts.designMdPath, record.artifacts.designMdHash, `records.${record.id}.artifacts.designMd`, readFile);
   }
+  const filteredIndex = visibleIndex(index, snapshot.manifest);
   const loaded = Object.freeze({
-    index,
+    index: filteredIndex,
     cacheStatus: 'bundled',
     cacheVersion: snapshot.manifest.snapshotVersion,
-    expectedCount: descriptor.count,
+    expectedCount: filteredIndex.records.length,
     bundled: true,
     localRoot: snapshot.root,
     snapshot,

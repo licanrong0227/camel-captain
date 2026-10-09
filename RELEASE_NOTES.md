@@ -1,7 +1,10 @@
-# Axhub Make Client 0.1.20
+# Axhub Make Client 0.1.21
 
-- 恢复并绑定项目设置中的 5 个内置固定模板，确保新建项目可以直接选择完整模板
-- 内置本地 Design Knowledge 检索，以及 223 份经过哈希校验的 `DESIGN.md` 设计知识
-- 主题包安装使用 SHA-256 哈希验证，并支持主源失败后切换到 Gitee 固定回退源
-- 同步当前客户端规则、配套技能、预览与项目元数据能力
-- 发布 ZIP 不包含本地主题源码；主题内容按索引在安装时下载并校验
+- 升级 `@axhub/annotation` 至 `^1.0.20`，纳入 Mermaid 与 XMarkdown 文档渲染、跨文档目标和 HTML 文档阅读能力
+- 更新 `annotation-demo`、`beginner-guide`、`touch-and-talk-annotation-demo` 三个官方示例及其批注内容
+- 发布模板继续携带 Design Knowledge `2026-08-14.2` 双平台索引和完整文档快照
+- 更新客户端工作规则和内置技能，完善原型开发与截图还原流程
+- 为 `screenshot-to-prototype` 新增 rembg 背景移除能力和重建清单校验
+- `check-app-ready` 返回 Make 管理端深链，便于直接打开目标资源
+- 支持仅包含主规格的原型参与项目元数据同步
+- 更新内置示例原型及相关标注内容

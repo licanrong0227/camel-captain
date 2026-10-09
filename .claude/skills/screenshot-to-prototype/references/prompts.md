@@ -4,7 +4,7 @@
 
 ## 两轮视觉召回
 
-第一轮只向 `request-vision.mjs` 提交原图和下面的提示词，不提交 OCR：
+第一轮只向 `request-vision.mjs --project-id <当前项目 ID>` 提交原图和下面的提示词，不提交 OCR：
 
 ```text
 分析附图，找出所有需要保留原始像素才能忠实复现的视觉对象。
@@ -32,7 +32,7 @@ confidence 是 0–1 数值。
 
 ## 可选 OCR 与文字区域
 
-文字检测必须与素材召回分开。客户端存在 OCR 结果时，用 `normalize-text-regions.mjs --ocr` 统一为 `text-regions.json`；没有 OCR 时，用 `request-vision.mjs --kind text` 对原图单独调用一次下面的提示词，再用 `normalize-text-regions.mjs --vision` 统一。视觉 API 也未配置时仍由当前 Agent 返回同一契约。输出的 `source` 必须是 `ocr`、`vision-api` 或 `current-agent`。
+文字检测必须与素材召回分开。客户端存在 OCR 结果时，用 `normalize-text-regions.mjs --ocr` 统一为 `text-regions.json`；没有 OCR 时，用 `request-vision.mjs --project-id <当前项目 ID> --kind text` 对原图单独调用一次下面的提示词，再用 `normalize-text-regions.mjs --vision` 统一。视觉 API 也未配置时仍由当前 Agent 返回同一契约。输出的 `source` 必须是 `ocr`、`vision-api` 或 `current-agent`。
 
 ```text
 检测附图中的全部可见文字区域。只做文字区域检测，不判断素材、组件或布局。

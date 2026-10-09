@@ -182,7 +182,7 @@ const mainImageModes: { id: MainImageMode; label: string; hint: string }[] = [
   { id: 'reorder', label: '调换顺序', hint: '拖拽调整主图顺序，或由系统随机打乱顺序' },
   { id: 'replace', label: '替换主图', hint: '' },
   { id: 'delete', label: '删除主图', hint: '删除指定位置的主图' },
-  { id: 'append', label: '附加主图', hint: '上传新的图片附加到结尾，如果主图数量超过限制，则自动替换最后的主图' },
+  { id: 'append', label: '附加主图', hint: '上传新的图片附加到结尾，如果主图数量超过限制，则自动替换最后的主图（上架平台前最高限制 15 张；上架平台后继续使用批量编辑，最高限制根据平台来定）' },
 ];
 
 const CloudUploadIcon = () => (

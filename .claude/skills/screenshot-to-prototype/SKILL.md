@@ -25,9 +25,9 @@ description: Use only when 用户明确要求把本地截图、设计稿或高�
 ## 流程
 
 1. 读取源图、现有规格和素材；运行 `prepare-reconstruction-source.mjs` 生成源图摘要。
-2. 用 `request-vision.mjs` 对原图做第一轮素材召回，提示词只短注“含状态栏”，不提交 OCR。视觉 API 未配置完整时由当前 Agent 输出同契约结果。
+2. 用 `request-vision.mjs --project-id <当前项目 ID>` 对原图做第一轮素材召回，提示词只短注“含状态栏”，不提交 OCR。视觉 API 未配置完整时由当前 Agent 输出同契约结果。
 3. 第一轮后处理文字：有 OCR 时直接用；没有时由视觉 API 单独检测一次，仍未配置则由当前 Agent 检测。用 `normalize-text-regions.mjs` 统一来源，再以 `mask-layer-recall.mjs` 无间距遮蔽第一轮矩形与文字。第二轮复用素材提示词且不提交文字结果；最后用 `finalize-layer-recall.mjs` 合并并从原图裁切。
-4. 按 `references/prompts.md` 处理素材。前景先生成本地透明候选与矩阵，再复用 `ui-image-generation/scripts/request-image.mjs` 完整化；背景/Banner 单独清理。返回结果继续本地透明清理与审计，临时结果留在 `.local/`。
+4. 按 `references/prompts.md` 处理素材。前景先生成本地透明候选与矩阵，再复用 `ui-image-generation/scripts/request-image.mjs --project-id <当前项目 ID>` 完整化；背景/Banner 单独清理。返回结果继续本地透明清理与审计，临时结果留在 `.local/`。
 5. AI 输出带稳定 ID 的 `elements.json`，OCR 只提供文字、位置和置信度；AI 决定文字角色、渲染方式和素材动作。
 6. 运行 `build-reconstruction-manifest.mjs` 和 `validate-reconstruction-manifest.mjs`，生成并校验 `reconstruction-manifest.json`。
 7. 运行 `render-reconstruction-review.mjs` 确定性生成 `first-pass.html`。渲染器会再次校验 Manifest，渲染阶段模型调用必须为 0。

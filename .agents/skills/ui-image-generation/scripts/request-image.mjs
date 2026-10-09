@@ -1,27 +1,55 @@
+#!/usr/bin/env node
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
 
-let apiKeyForRedaction = '';
+function imageMimeType(filePath) {
+  const extension = path.extname(filePath).toLowerCase();
+  if (extension === '.jpg' || extension === '.jpeg') return 'image/jpeg';
+  if (extension === '.webp') return 'image/webp';
+  return 'image/png';
+}
 
-function redact(value) {
-  const text = value instanceof Error ? value.message : String(value);
-  return apiKeyForRedaction ? text.replaceAll(apiKeyForRedaction, '[REDACTED]') : text;
+async function readMakeOrigin() {
+  const homeDir = process.env.AXHUB_MAKE_HOME_DIR || os.homedir();
+  const infoPath = path.join(homeDir, '.axhub', 'make', '.admin-server-info.json');
+  let source;
+  try {
+    source = JSON.parse(await fs.readFile(infoPath, 'utf8'));
+  } catch (error) {
+    throw new Error(`Unable to read Make server info ${infoPath}: ${error instanceof Error ? error.message : String(error)}`);
+  }
+  const origin = typeof source?.origin === 'string' ? source.origin.trim().replace(/\/+$/u, '') : '';
+  if (!origin || !/^https?:\/\//u.test(origin)) {
+    throw new Error(`Make server info has no valid origin: ${infoPath}`);
+  }
+  return origin;
 }
 
 async function fetchWithTimeout(url, init, signal, timeoutSeconds) {
   try {
     return await fetch(url, { ...init, signal });
   } catch (error) {
-    if (signal.aborted) throw new Error(`Image provider request timed out after ${timeoutSeconds} seconds`);
+    if (signal.aborted) throw new Error(`Make image proxy request timed out after ${timeoutSeconds} seconds`);
     throw error;
+  }
+}
+
+async function jsonResponse(response) {
+  const text = await response.text();
+  if (!text.trim()) return {};
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error(`Make image proxy returned HTTP ${response.status} with invalid JSON`);
   }
 }
 
 async function main() {
   const { values } = parseArgs({
     options: {
+      'project-id': { type: 'string' },
       'prompt-file': { type: 'string' },
       out: { type: 'string' },
       size: { type: 'string' },
@@ -30,78 +58,52 @@ async function main() {
       'timeout-seconds': { type: 'string' },
     },
   });
+  if (!values['project-id']?.trim()) throw new Error('Missing required --project-id');
   if (!values['prompt-file']) throw new Error('Missing required --prompt-file');
   if (!values.out) throw new Error('Missing required --out');
 
   const outputPath = path.resolve(values.out);
-  let outputExists = true;
   try {
     await fs.access(outputPath);
+    throw new Error(`Output already exists: ${outputPath}`);
   } catch (error) {
     if (error?.code !== 'ENOENT') throw error;
-    outputExists = false;
   }
-  if (outputExists) throw new Error(`Output already exists: ${outputPath}`);
 
   const prompt = (await fs.readFile(path.resolve(values['prompt-file']), 'utf8')).trim();
   if (!prompt) throw new Error('Prompt file is empty');
   const timeoutSeconds = Number(values['timeout-seconds'] || 600);
-  if (!Number.isFinite(timeoutSeconds) || timeoutSeconds <= 0) {
-    throw new Error('--timeout-seconds must be greater than 0');
+  if (!Number.isFinite(timeoutSeconds) || timeoutSeconds <= 0 || timeoutSeconds > 900) {
+    throw new Error('--timeout-seconds must be greater than 0 and at most 900');
   }
   const signal = AbortSignal.timeout(timeoutSeconds * 1000);
-
-  const makeHomeDir = process.env.AXHUB_MAKE_HOME_DIR || os.homedir();
-  const configPath = path.join(makeHomeDir, '.axhub', 'make', 'server.config.json');
-  const config = JSON.parse(await fs.readFile(configPath, 'utf8'));
-  const imageConfig = config?.ai?.imageGeneration;
-  if (!imageConfig?.baseUrl || !imageConfig?.apiKey || !imageConfig?.model) {
-    throw new Error(`Incomplete ai.imageGeneration configuration in ${configPath}`);
-  }
-  apiKeyForRedaction = imageConfig.apiKey;
-  const referenceImages = values.image || [];
-  let endpoint = 'images/generations';
-  let requestBody;
-  let requestHeaders = {
-    authorization: `Bearer ${imageConfig.apiKey}`,
-    'content-type': 'application/json',
-  };
-  if (referenceImages.length) {
-    endpoint = 'images/edits';
-    const formData = new FormData();
-    formData.append('model', imageConfig.model);
-    formData.append('prompt', prompt);
-    if (values.size) formData.append('size', values.size);
-    if (values.quality) formData.append('quality', values.quality);
-    for (const imagePath of referenceImages) {
-      const resolvedPath = path.resolve(imagePath);
-      const extension = path.extname(resolvedPath).toLowerCase();
-      const mimeType = extension === '.jpg' || extension === '.jpeg'
-        ? 'image/jpeg'
-        : extension === '.webp'
-          ? 'image/webp'
-          : 'image/png';
-      formData.append('image[]', new Blob([await fs.readFile(resolvedPath)], { type: mimeType }), path.basename(resolvedPath));
-    }
-    requestBody = formData;
-    requestHeaders = { authorization: `Bearer ${imageConfig.apiKey}` };
-  } else {
-    requestBody = JSON.stringify({
-      model: imageConfig.model,
+  const origin = await readMakeOrigin();
+  const url = new URL('/api/ai/image/generate', origin);
+  url.searchParams.set('projectId', values['project-id'].trim());
+  const images = await Promise.all((values.image || []).map(async (imagePath) => {
+    const resolvedPath = path.resolve(imagePath);
+    return {
+      fileName: path.basename(resolvedPath),
+      mimeType: imageMimeType(resolvedPath),
+      base64: (await fs.readFile(resolvedPath)).toString('base64'),
+    };
+  }));
+  const response = await fetchWithTimeout(url, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
       prompt,
       ...(values.size ? { size: values.size } : {}),
       ...(values.quality ? { quality: values.quality } : {}),
-    });
+      ...(images.length ? { images } : {}),
+      timeoutSeconds,
+    }),
+  }, signal, timeoutSeconds);
+  const payload = await jsonResponse(response);
+  if (!response.ok) {
+    throw new Error(`Make image proxy returned HTTP ${response.status}: ${payload?.error || 'request failed'}`);
   }
 
-  const response = await fetchWithTimeout(`${imageConfig.baseUrl.replace(/\/+$/u, '')}/${endpoint}`, {
-    method: 'POST',
-    headers: requestHeaders,
-    body: requestBody,
-  }, signal, timeoutSeconds);
-  if (!response.ok) throw new Error(`Image provider returned HTTP ${response.status}: ${await response.text()}`);
-
-  const payload = await response.json();
   const item = payload?.data?.[0];
   let imageBytes;
   if (item?.b64_json) {
@@ -131,6 +133,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  process.stderr.write(`Image request failed: ${redact(error)}\n`);
+  process.stderr.write(`Image request failed: ${error instanceof Error ? error.message : String(error)}\n`);
   process.exitCode = 1;
 });
