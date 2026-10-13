@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "provider": "current-agent",
+  "kind": "assets",
+  "reason": "Make 视觉代理端点 /api/ai/vision/analyze 返回 HTTP 404（未配置），由当前 Agent 按同一契约补全",
+  "sourceImage": "C:/Users/admin/.qoder-cn/tmp/D--projects-CAMEL-CAPTAIN/images/6710385f-0d10-4e9a-9c2a-5e8a599ccb70/02635610-e965-4299-aa2d-a6705a13054c.png",
+  "ocrSubmitted": false,
+  "regions": [
+    { "id": "thumb-1", "label": "商品列表第 1 行缩略图（多人合影暗色图）", "bounds": { "left": 65, "top": 147, "right": 92, "bottom": 204 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "thumb-2", "label": "商品列表第 2 行缩略图（绿色蒲团俯拍图）", "bounds": { "left": 65, "top": 220, "right": 92, "bottom": 265 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "thumb-3", "label": "商品列表第 3 行缩略图（棕色字母托特包白底图）", "bounds": { "left": 65, "top": 294, "right": 92, "bottom": 340 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "thumb-4", "label": "商品列表第 4 行缩略图（绿色字母背心实拍）", "bounds": { "left": 65, "top": 363, "right": 92, "bottom": 408 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "thumb-5", "label": "商品列表第 5 行缩略图（灰色毛巾实拍）", "bounds": { "left": 65, "top": 435, "right": 92, "bottom": 480 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "thumb-6", "label": "商品列表第 6 行缩略图（竹纤维床笠包装图）", "bounds": { "left": 65, "top": 506, "right": 92, "bottom": 551 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "thumb-7", "label": "商品列表第 7 行缩略图（圣诞树装饰图）", "bounds": { "left": 65, "top": 578, "right": 92, "bottom": 623 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "thumb-8", "label": "商品列表第 8 行缩略图（按摩垫实拍）", "bounds": { "left": 65, "top": 649, "right": 92, "bottom": 694 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "thumb-9", "label": "商品列表第 9 行缩略图（蓝色风扇实拍）", "bounds": { "left": 65, "top": 721, "right": 92, "bottom": 766 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "thumb-10", "label": "商品列表第 10 行缩略图（黑色鞋链白底图）", "bounds": { "left": 65, "top": 792, "right": 92, "bottom": 837 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "main-1", "label": "主图第 1 张（手持棕色字母手提包实拍）", "bounds": { "left": 348, "top": 543, "right": 388, "bottom": 657 }, "confidence": 0.98, "route": "reuse-crop" },
+    { "id": "main-2", "label": "主图第 2 张（棕色字母手提包实拍）", "bounds": { "left": 406, "top": 543, "right": 445, "bottom": 657 }, "confidence": 0.98, "route": "reuse-crop" },
+    { "id": "main-3", "label": "主图第 3 张（棕色字母手提包实拍）", "bounds": { "left": 463, "top": 543, "right": 503, "bottom": 657 }, "confidence": 0.98, "route": "reuse-crop" },
+    { "id": "main-4", "label": "主图第 4 张（白衬衫模特拎包实拍）", "bounds": { "left": 520, "top": 543, "right": 560, "bottom": 657 }, "confidence": 0.98, "route": "reuse-crop" },
+    { "id": "main-5", "label": "主图第 5 张（白衬衫模特拎包实拍）", "bounds": { "left": 577, "top": 543, "right": 618, "bottom": 657 }, "confidence": 0.98, "route": "reuse-crop" },
+    { "id": "promo-1", "label": "站外推广图第 1 张（白衬衫模特拎包实拍，底部被裁切）", "bounds": { "left": 286, "top": 825, "right": 337, "bottom": 896 }, "confidence": 0.96, "route": "reuse-crop" }
+  ]
+}

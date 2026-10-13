@@ -24,7 +24,19 @@
       "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git diff --stat HEAD 2>/dev/null | head -40)",
       "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git diff --stat HEAD 2>/dev/null | tail -1)",
       "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git diff HEAD -- .agents/skills/prototype-annotation/SKILL.md 2>/dev/null | head -80)",
-      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git diff HEAD -- src/prototypes/ 2>/dev/null | head -60)"
+      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git diff HEAD -- src/prototypes/ 2>/dev/null | head -60)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && git status)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && git remote -v)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && git branch -vv)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && git fetch origin)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && git log --oneline origin/master..HEAD)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && git log --oneline HEAD..origin/master)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && git show --stat 47f3fcf)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && git show --stat c02fbd9)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && git log --oneline -5 -- \"src/prototypes/my-products-bi/index.tsx\")",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && git status -- \"src/prototypes/my-products-bi/\")",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && npx tsc --noEmit --pretty 2>&1 | head -30)",
+      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git status --short 2>/dev/null | head -80)"
     ]
   }
 }

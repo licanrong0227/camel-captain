@@ -1,0 +1,355 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "presentation": {
+    "layerSelectors": [
+      ".dcc-modal-mask"
+    ]
+  },
+  "data": {
+    "version": 2,
+    "prototypeName": "dhgate-compliance-check",
+    "pageId": "launch",
+    "updatedAt": 1791856369516,
+    "nodes": [
+      {
+        "id": "dcc-item-material",
+        "index": 1,
+        "title": "质检项结果卡片 - 材质检测",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-material\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-item-material",
+          "path": []
+        },
+        "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
+        "annotationText": "展示场景对照：\n\n通过＝材质属性值合法且与主图一致\n\n违规1＝属性值缺失（材质属性值为空或无意义）\n\n违规2＝属性值错误（属性值与主图材质不符）\n\n疑似＝疑似违规，需人工复核\n\n材质仅校验已填写的属性数据。",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "segmented",
+            "attributeId": "item_state_material",
+            "displayName": "展示场景",
+            "info": "切换本卡片展示的通过/违规/疑似违规场景，每种场景有独立的展示数据。",
+            "initialValue": "pass",
+            "options": [
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规1",
+                "value": "value_missing"
+              },
+              {
+                "label": "违规2",
+                "value": "value_wrong"
+              },
+              {
+                "label": "疑似",
+                "value": "suspect"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1791900000000
+      },
+      {
+        "id": "dcc-item-size",
+        "index": 2,
+        "title": "质检项结果卡片 - 尺码检测",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-size\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-item-size",
+          "path": []
+        },
+        "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
+        "annotationText": "展示场景对照：\n\n通过＝尺码表一致\n\n尺码表不一致＝违规，填写的尺码表与图片尺码表矛盾\n\n疑似违规＝尺码数据不完整，需人工复核",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "segmented",
+            "attributeId": "item_state_size",
+            "displayName": "展示场景",
+            "info": "切换本卡片展示的通过/违规/疑似违规场景，每种场景有独立的展示数据。",
+            "initialValue": "pass",
+            "options": [
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "尺码表不一致",
+                "value": "table_mismatch"
+              },
+              {
+                "label": "疑似违规",
+                "value": "suspect"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1791856369516
+      },
+      {
+        "id": "dcc-item-ipr",
+        "index": 3,
+        "title": "质检项结果卡片 - 知识产权侵权风险检查",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-ipr\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-item-ipr",
+          "path": []
+        },
+        "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
+        "annotationText": "展示场景对照：\n\n通过＝未发现侵权特征\n\n标题品牌词＝违规，标题含受保护品牌词\n\n图片logo＝违规，主图含品牌 logo\n\n疑似违规＝疑似商标元素，需人工复核",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "segmented",
+            "attributeId": "item_state_ipr",
+            "displayName": "展示场景",
+            "info": "切换本卡片展示的通过/违规/疑似违规场景，每种场景有独立的展示数据。",
+            "initialValue": "pass",
+            "options": [
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "标题品牌词",
+                "value": "title_word"
+              },
+              {
+                "label": "图片logo",
+                "value": "image_logo"
+              },
+              {
+                "label": "疑似违规",
+                "value": "suspect"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1791856369516
+      },
+      {
+        "id": "dcc-item-category",
+        "index": 4,
+        "title": "质检项结果卡片 - 类目错放检查",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-category\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-item-category",
+          "path": []
+        },
+        "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
+        "annotationText": "展示场景对照：\n\n通过＝类目与商品一致\n\n类目错放＝违规，商品与所在类目明显不符\n\n疑似违规＝存在跨类目特征，需人工复核",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "segmented",
+            "attributeId": "item_state_category",
+            "displayName": "展示场景",
+            "info": "切换本卡片展示的通过/违规/疑似违规场景，每种场景有独立的展示数据。",
+            "initialValue": "pass",
+            "options": [
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "类目错放",
+                "value": "misplaced"
+              },
+              {
+                "label": "疑似违规",
+                "value": "suspect"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1791856369516
+      },
+      {
+        "id": "dcc-item-price",
+        "index": 5,
+        "title": "质检项结果卡片 - 价格违规检查",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-price\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-item-price",
+          "path": []
+        },
+        "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
+        "annotationText": "展示场景对照：\n\n通过＝价格合规\n\n阶梯价低＝违规，批发阶梯价低于最低价线\n\nSKU价低＝违规，SKU 价格低于最低价线\n\n疑似违规＝价格接近阈值，需人工复核",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "segmented",
+            "attributeId": "item_state_price",
+            "displayName": "展示场景",
+            "info": "切换本卡片展示的通过/违规/疑似违规场景，每种场景有独立的展示数据。",
+            "initialValue": "pass",
+            "options": [
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "阶梯价低",
+                "value": "tier_low"
+              },
+              {
+                "label": "SKU价低",
+                "value": "sku_low"
+              },
+              {
+                "label": "疑似违规",
+                "value": "suspect"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1791856369516
+      },
+      {
+        "id": "dcc-item-legal",
+        "index": 6,
+        "title": "质检项结果卡片 - 违法违规检查",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-legal\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-item-legal",
+          "path": []
+        },
+        "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
+        "annotationText": "展示场景对照：\n\n通过＝无违规内容\n\n禁售商品＝违规，命中禁售词库/图片库\n\n赌博类＝违规，涉赌博词库/网址库\n\n疑似违规＝图片相似度接近阈值，需人工复核",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "segmented",
+            "attributeId": "item_state_legal",
+            "displayName": "展示场景",
+            "info": "切换本卡片展示的通过/违规/疑似违规场景，每种场景有独立的展示数据。",
+            "initialValue": "pass",
+            "options": [
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "禁售商品",
+                "value": "banned"
+              },
+              {
+                "label": "赌博类",
+                "value": "gambling"
+              },
+              {
+                "label": "疑似违规",
+                "value": "suspect"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1791856369516
+      },
+      {
+        "id": "dcc-conclusion-bar",
+        "index": 7,
+        "title": "总体结论条",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-conclusion-bar\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-conclusion-bar",
+          "path": []
+        },
+        "aiPrompt": "根据总体结论条标注生成实现说明。",
+        "annotationText": "展示状态对照：\n\n违规＝不通过（存在违规，需整改）\n\n通过＝全部合规\n\n疑似＝待人工复核（存在疑似违规）\n\n失败＝部分质检项检测失败，结论不完整\n\n检测＝检测中（结果逐项返回）\n\n采集＝采集失败（未获取到商品数据）",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "segmented",
+            "attributeId": "conclusion_state",
+            "displayName": "展示状态",
+            "info": "切换总体结论条展示的状态，每种状态有独立的底色、计数与结论文案：不通过（红色）、通过（绿色）、待人工确认/部分失败（橙色）、检测中（蓝色，带加载动画）、采集失败（红色，无计数）。",
+            "initialValue": "reject",
+            "options": [
+              {
+                "label": "违规",
+                "value": "reject"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "疑似",
+                "value": "manual"
+              },
+              {
+                "label": "失败",
+                "value": "partial"
+              },
+              {
+                "label": "检测",
+                "value": "checking"
+              },
+              {
+                "label": "采集",
+                "value": "failed"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1791856369516
+      }
+    ]
+  },
+  "markdownMap": {},
+  "assetMap": {},
+  "targets": [],
+  "directory": {
+    "nodes": []
+  },
+  "documents": {
+    "nodes": []
+  }
+}

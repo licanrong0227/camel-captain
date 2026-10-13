@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "provider": "current-agent",
+  "kind": "assets",
+  "pass": 2,
+  "inputImage": "masked-pass-2.png",
+  "note": "第二轮在遮蔽图上复核：剩余可见元素（太阳/菜单/帮助/VIP 皇冠、日历、排序箭头、刷新、上下圆形按钮、联系我们耳机图标、头像 C）均为单色或简单几何图标，可用 SVG/图标库复刻，无新增位图素材。",
+  "regions": []
+}

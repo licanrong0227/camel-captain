@@ -1,0 +1,616 @@
+/* ============ 编辑产品弹窗（视频 / 主图 / 站外推广图）============
+   尺寸、颜色、间距按源截图 1912x867 逐像素实测，纯样式无交互。 */
+
+:root {
+  --emd-primary: #ff781f;
+  --emd-text-primary: #303133;
+  --emd-text-regular: #606266;
+  --emd-text-secondary: #909399;
+  --emd-text-placeholder: #c0c4cc;
+  --emd-border: #dcdfe6;
+  --emd-divider: #ebeef5;
+  --emd-danger: #ff4949;
+  --emd-blue: #409eff;
+  --emd-active-bg: #fffaf5;
+  --emd-active-border: #ffb366;
+  --emd-mask: #7f7f7f;
+  --emd-font: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", Arial, sans-serif;
+}
+
+.emd-mask,
+.emd-mask * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.emd-mask {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 52px;
+  overflow: hidden;
+  background: var(--emd-mask);
+  font-family: var(--emd-font);
+  color: var(--emd-text-primary);
+}
+
+.emd-dialog {
+  position: relative;
+  width: 1720px;
+  height: 780px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+/* ---------- 头部 ---------- */
+
+.emd-dialog__title {
+  position: absolute;
+  left: 19px;
+  top: 18px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--emd-text-primary);
+}
+
+.emd-dialog__close {
+  position: absolute;
+  left: 1687px;
+  top: 23px;
+  width: 15px;
+  height: 15px;
+}
+
+/* ---------- 左侧商品列表 ---------- */
+
+.emd-list {
+  position: absolute;
+  left: 20px;
+  top: 68px;
+  width: 220px;
+  list-style: none;
+}
+
+.emd-item {
+  position: relative;
+  height: 62px;
+}
+
+.emd-item__card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 58px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+.emd-item--active .emd-item__card {
+  border-color: var(--emd-active-border);
+  background: var(--emd-active-bg);
+}
+
+.emd-item__thumb {
+  position: absolute;
+  left: 9px;
+  top: 9px;
+  width: 40px;
+  height: 40px;
+  display: block;
+  object-fit: cover;
+}
+
+.emd-item__title {
+  position: absolute;
+  left: 57px;
+  top: 11px;
+  width: 155px;
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--emd-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emd-item__foot {
+  position: absolute;
+  left: 77px;
+  top: 33px;
+  width: 152px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.emd-item__status {
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--emd-text-secondary);
+}
+
+.emd-item__actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+}
+
+.emd-item__action {
+  display: none;
+}
+
+.emd-item--active .emd-item__action {
+  display: block;
+}
+
+.emd-item__action img {
+  display: block;
+}
+
+/* ---------- 分页 ---------- */
+
+.emd-pager {
+  position: absolute;
+  left: 94px;
+  top: 694px;
+  display: flex;
+  gap: 16px;
+}
+
+.emd-pager__btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e4e7ed;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.emd-pager__btn--next {
+  border-color: var(--emd-blue);
+}
+
+/* ---------- 基本 / 详情 / 日志 标签 ---------- */
+
+.emd-tabs {
+  position: absolute;
+  left: 250px;
+  top: 66px;
+  display: flex;
+  align-items: center;
+  height: 24px;
+}
+
+.emd-tabs__collapse {
+  width: 14px;
+  height: 16px;
+  display: block;
+}
+
+.emd-tabs__item {
+  margin-left: 11px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--emd-text-regular);
+}
+
+.emd-tabs__item--active {
+  color: var(--emd-primary);
+}
+
+.emd-tabs__divider {
+  width: 1px;
+  height: 12px;
+  margin-left: 11px;
+  background: var(--emd-border);
+}
+
+.emd-tabs__divider + .emd-tabs__item {
+  margin-left: 12px;
+}
+
+/* ---------- 分区菜单 ---------- */
+
+.emd-menu {
+  position: absolute;
+  left: 266px;
+  top: 96px;
+  width: 152px;
+}
+
+.emd-menu__item {
+  position: relative;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.emd-menu__icon {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.emd-menu__label {
+  margin-left: 10px;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--emd-text-regular);
+}
+
+.emd-menu__item--active .emd-menu__label {
+  font-weight: 500;
+  color: var(--emd-primary);
+}
+
+.emd-menu__bar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 4px;
+  height: 40px;
+  border-radius: 2px;
+  background: var(--emd-primary);
+}
+
+/* ---------- 内容区 ---------- */
+
+.emd-editor {
+  position: absolute;
+  left: 418px;
+  top: 96px;
+  width: 1282px;
+  height: 629px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.emd-cards {
+  position: absolute;
+  left: 12px;
+  top: 0;
+  width: 1258px;
+}
+
+.emd-card {
+  position: relative;
+  margin-top: 11px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.emd-card--video {
+  margin-top: 0;
+  height: 210px;
+}
+
+.emd-card--main {
+  height: 232px;
+}
+
+.emd-card--promo {
+  height: 165px;
+}
+
+.emd-card__title--clip {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  width: 34px;
+  height: 2px;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 14px;
+  color: var(--emd-text-primary);
+}
+
+.emd-card__star,
+.emd-card__name,
+.emd-card__counter {
+  position: absolute;
+  line-height: 22px;
+  font-size: 16px;
+  color: var(--emd-text-primary);
+}
+
+.emd-card__star {
+  width: 10px;
+  line-height: 22px;
+  font-size: 16px;
+  color: var(--emd-danger);
+}
+
+.emd-card__name--main,
+.emd-card__name--promo {
+  font-weight: 700;
+}
+
+.emd-card__counter {
+  line-height: 14px;
+  font-size: 12px;
+  color: var(--emd-text-secondary);
+}
+
+.emd-card__star--main,
+.emd-card__name--main {
+  top: 12px;
+}
+
+.emd-card__star--main {
+  left: 20px;
+}
+
+.emd-card__name--main {
+  left: 26px;
+  width: 34px;
+}
+
+.emd-card__counter--main {
+  left: 68px;
+  top: 16px;
+  width: 24px;
+}
+
+.emd-card__star--promo {
+  left: 20px;
+  top: 12px;
+}
+
+.emd-card__name--promo {
+  left: 26px;
+  top: 10px;
+  width: 80px;
+}
+
+.emd-card__counter--promo {
+  left: 117px;
+  top: 17px;
+  width: 20px;
+}
+
+.emd-card__divider {
+  position: absolute;
+  left: 20px;
+  width: 1218px;
+  height: 1px;
+  background: var(--emd-divider);
+}
+
+.emd-field-label {
+  position: absolute;
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--emd-text-regular);
+}
+
+.emd-input {
+  position: absolute;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px 0 16px;
+  border: 1px solid var(--emd-border);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.emd-input__placeholder {
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--emd-text-placeholder);
+  white-space: nowrap;
+}
+
+.emd-input__counter {
+  margin-left: auto;
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--emd-text-placeholder);
+}
+
+.emd-upload {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--emd-border);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.emd-upload__text {
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--emd-text-regular);
+}
+
+.emd-upload__text--small {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* 主图 / 推广图 图片卡片 */
+
+.emd-shot {
+  position: relative;
+  border: 2px solid #e6e6e6;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.emd-shot__img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  object-fit: cover;
+}
+
+.emd-shot__badge {
+  position: absolute;
+  left: 5px;
+  bottom: 2px;
+  height: 17px;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--emd-text-regular);
+}
+
+/* ---------- 底部操作栏 ---------- */
+
+.emd-footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 0 0 8px 8px;
+  background: #fff;
+}
+
+.emd-btn {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 14px;
+}
+
+.emd-btn--plain {
+  width: 74px;
+  border: 1px solid var(--emd-primary);
+  background: #fff;
+  color: var(--emd-primary);
+  letter-spacing: 4px;
+}
+
+.emd-btn--primary {
+  width: 74px;
+  border: 1px solid var(--emd-primary);
+  background: var(--emd-primary);
+  color: #fff;
+  letter-spacing: 4px;
+}
+
+.emd-btn--publish {
+  width: 112px;
+  border: 1px solid var(--emd-primary);
+  background: var(--emd-primary);
+  color: #fff;
+}
+
+/* ---------- 橙色工具按钮 ---------- */
+
+.emd-btn-tool {
+  position: absolute;
+  width: 80px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 4px;
+  background: var(--emd-primary);
+  font: inherit;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+.emd-btn-tool--collage:hover {
+  cursor: pointer;
+}
+
+/* ---------- 精确落位（源自 1912x867 实测） ---------- */
+
+.emd-card__divider--video { top: 17px; }
+.emd-card__divider--main { top: 46px; }
+.emd-card__divider--promo { top: 47px; }
+
+.emd-btn-tool--batch-main { left: 20px; top: 59px; }
+.emd-btn-tool--collage { left: 110px; top: 59px; }
+.emd-btn-tool--download { left: 200px; top: 59px; }
+.emd-btn-tool--batch-promo { left: 20px; top: 62px; }
+
+.emd-field-label--name { left: 19px; top: 37px; width: 56px; }
+.emd-field-label--desc { left: 361px; top: 37px; width: 56px; }
+
+.emd-input--name { left: 88px; top: 31px; width: 250px; }
+.emd-input--desc { left: 430px; top: 31px; width: 808px; }
+
+.emd-upload--video {
+  left: 20px;
+  top: 73px;
+  width: 160px;
+  height: 120px;
+  gap: 10px;
+}
+
+.emd-upload--main {
+  left: 20px;
+  top: 102px;
+  width: 100px;
+  height: 100px;
+  justify-content: flex-start;
+  padding-top: 27px;
+  gap: 3px;
+}
+
+.emd-shots--main {
+  position: absolute;
+  left: 130px;
+  top: 102px;
+  display: flex;
+  gap: 10px;
+}
+
+.emd-shot--main {
+  width: 100px;
+  height: 100px;
+}
+
+.emd-shot--main .emd-shot__img {
+  width: 96px;
+  height: 96px;
+}
+
+.emd-shot--promo {
+  position: absolute;
+  left: 20px;
+  top: 103px;
+  width: 100px;
+  height: 100px;
+}
+
+.emd-shot--promo .emd-shot__img {
+  width: 96px;
+  height: 60px;
+}
+

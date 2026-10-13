@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>敦煌网商品合规检测原型主规格</title>
+  <style>
+    :root {
+      font-family:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --brand: #d25909;
+      --brand-ink: #b74a08;
+      --brand-soft: #ffefe5;
+      --brand-surface: #fff7f0;
+      --brand-border: #ffd9bf;
+      --text: #222832;
+      --text-secondary: #4b5565;
+      --text-muted: #6f7888;
+      --text-placeholder: #8b94a3;
+      color: var(--text);
+      background: #f5f7fb;
+      scrollbar-gutter: stable;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px 20px 64px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 32px;
+      padding: 18px 14px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .sidebar-title {
+      margin: 0 8px 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .page-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .page-nav button {
+      width: 100%;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .page-nav button:hover,
+    .page-nav button[aria-current="page"] {
+      color: var(--brand-ink);
+      background: var(--brand-soft);
+    }
+
+    .page-nav button[aria-current="page"] { font-weight: 600; }
+
+    main {
+      min-width: 0;
+      padding: 40px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 16px rgb(30 45 75 / 6%);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.3;
+    }
+
+    h2 {
+      margin: 44px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e7eaf0;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    h3 {
+      margin: 28px 0 12px;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    p,
+    li {
+      font-size: 15px;
+      line-height: 2;
+    }
+
+    p { margin: 20px 0; }
+
+    td,
+    th {
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 1px solid #dfe4ee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .definition {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-left: 3px solid var(--brand);
+      color: var(--text-secondary);
+      background: var(--brand-surface);
+    }
+
+    .hint { color: var(--text-muted); }
+
+    ul {
+      margin: 10px 0 20px;
+      padding-left: 22px;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 14px;
+      border-collapse: collapse;
+    }
+
+    th { background: #f6f8fb; }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #eef1f6;
+    }
+
+    .spec-page[hidden] { display: none; }
+
+    @media (max-width: 720px) {
+      body { padding: 0 8px 40px; }
+      .shell { display: block; }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        margin: 0 -8px 12px;
+        padding: 10px 8px;
+        border-width: 0 0 1px;
+        border-radius: 0;
+      }
+
+      .sidebar-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .page-nav {
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .page-nav::-webkit-scrollbar { display: none; }
+
+      .page-nav button {
+        width: auto;
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 24px 18px;
+        border-radius: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <p class="sidebar-title">目录</p>
+      <nav class="page-nav" aria-label="规格文档页面">
+        <button type="button" data-page-target="overview" aria-current="page">当前方案</button>
+        <button type="button" data-page-target="check-items">质检项展示规范</button>
+      </nav>
+    </aside>
+
+    <main>
+      <article class="spec-page" data-spec-page="overview">
+        <h1>敦煌网商品合规检测原型</h1>
+        <p class="definition">本文档是用户与 Agent 围绕当前原型进行方案沟通、确认和持续生成的事实依据。只维护当前有效方案，并简短记录会影响当前原型的重要用户决策和变更。</p>
+
+        <section id="current-plan">
+          <h2>当前方案</h2>
+          <ul>
+            <li>原型意图：在骆驼队长 ERP 内嵌页面中演示「输入敦煌网商品链接 → 后台并行质检 → 独立结果反馈」的完整合规检测体验。</li>
+            <li>使用场景：运营/商家/审核/质检管理员发起检测、查看记录与结果、点赞点踩反馈。</li>
+            <li>当前表达：单原型多页面路由（发起检测 / 质检记录 / 质检详情 / 规则说明），核心卖点「后台运行、刷新不丢失、并行返回」做成动态轮询演示；数据全部为前端模拟数据。</li>
+          </ul>
+        </section>
+
+        <section id="facts-inputs">
+          <h2>事实与输入</h2>
+          <h3>用户确认事实</h3>
+          <ul>
+            <li>需求来源：《敦煌网商品合规检测 PRD（前端原型版）》（用户附件 <code>前端原型绘制PRD.MD</code>），页面清单 P1–P7、状态定义、质检项展示规范、验收标准以该 PRD 为准。</li>
+            <li>质检规则依据：《商品合规检测规则说明》2026-10-13 更新版（用户附件），材质、尺码等信息规范类质检仅校验已填写数据的合法性与一致性。</li>
+            <li>设计基底：<code>src/themes/camel-captain-erp/DESIGN.md</code>（用户 2026-10-12 确认）。</li>
+            <li>原型形态：单原型 + 顶栏导航多页面路由，不拆分为多个原型。</li>
+            <li>演示方式：动态轮询演示——提交后进入详情页，各质检项约 15–30 秒内陆续从排队中→检测中→完成；任务状态存 localStorage，刷新页面不丢失。</li>
+            <li>结果卡片视觉：色条 + 浅色底强调违规（详见「设计基底与原型特有调整」）。</li>
+          </ul>
+          <h3>参考资料</h3>
+          <ul>
+            <li>PRD 第 4 节核心流程、第 6 节全局状态、第 7 节页面低保真布局：作为页面结构与状态展示依据。</li>
+            <li>项目已有原型（如 <code>my-products-bi</code>）的商品缩略图素材与 ERP 页面骨架习惯：复用风格，不跨原型引用文件。</li>
+          </ul>
+          <h3>当前假设</h3>
+          <ul>
+            <li>敦煌网链接合法域名按 <code>dhgate.com</code> 及其子域识别，商品详情链接形如 <code>https://www.dhgate.com/product/...</code>。</li>
+            <li>质检子项共 6 个：材质检测、尺码检测、知识产权侵权风险检查、类目错放检查、价格违规检查、违法违规检查（PRD 4 核心流程）。</li>
+            <li>商品主图、详情图等图片素材使用项目已有素材或 AI 生成白底商品图，不接入真实敦煌数据。</li>
+          </ul>
+        </section>
+
+        <section id="prototype-scope">
+          <h2>原型范围</h2>
+          <h3>本次呈现</h3>
+          <ul>
+            <li>P1 合规检测发起页：链接输入、粘贴、校验错误提示、开始检测/清空、最近检测列表、重复提交提示。</li>
+            <li>P2 质检记录列表页：筛选栏（状态/时间/质检项/结果/搜索）、任务表格、任务状态标签、质检概览计数、查看/重新检测/取消操作、分页。</li>
+            <li>P3 质检详情页：商品摘要卡、总体结论条、质检项结果卡片列表；检测中（动态轮询、骨架屏、已完成项可先看）与检测完成两种形态。</li>
+            <li>P4 质检项结果卡片：6 个质检项的违规/疑似/通过/检测失败状态展示，含命中原因、参考信息（命中词高亮、原图标注、OCR 文本、对比表差异高亮）、建议方案、展开详情。</li>
+            <li>P5 忽略确认弹窗：已整体移除（2026-10-13 用户批注：没有忽略场景了，忽略状态、忽略操作与相关文案全部去掉）。</li>
+            <li>P6 满意度反馈弹窗：点赞可取消；点踩弹出原因标签（误报/漏报/原因不准/建议不准/参考信息缺失/其他）+ 文本。</li>
+            <li>P7 规则说明页：质检规则摘要与入口。</li>
+            <li>异常状态：非敦煌链接、草稿/无效商品、采集失败（可重试）、单项检测失败（单项重试）、图片加载失败占位。</li>
+          </ul>
+          <h3>本次不呈现</h3>
+          <ul>
+            <li>后端质检算法、敦煌接口调用、真实商品数据抓取。</li>
+            <li>人工审核后台、词库/图库/规则库维护界面。</li>
+            <li>真实轮询/WebSocket（用本地定时器模拟）。</li>
+          </ul>
+        </section>
+
+        <section id="pages-content">
+          <h2>页面与内容方案</h2>
+          <table>
+            <thead><tr><th>页面/视图</th><th>页面作用</th><th>主要模块与内容</th><th>示例数据或素材</th><th>与其他页面的关系</th></tr></thead>
+            <tbody>
+              <tr><td data-label="页面">P1 发起检测<br><code>#page=launch</code></td><td>输入链接并发起任务</td><td>检测卡片（链接输入 + 校验提示 + 开始检测/清空）；最近检测 5 条</td><td>3 条合法敦煌链接 + 非敦煌/草稿/无效演示链接各 1 条触发错误</td><td>提交成功跳转 P3；「查看」跳 P3；重复提交提示可跳进行中的 P3</td></tr>
+              <tr><td data-label="页面">P2 质检记录<br><code>#page=records</code></td><td>历史任务总览</td><td>筛选栏 + 表格（商品信息/敦煌链接/提交时间/任务状态/质检概览/操作）</td><td>预置 8 条覆盖 待采集/采集中/质检中/检测完成/部分失败/采集失败 的记录</td><td>行点击/查看进 P3；取消/重新检测改变任务状态</td></tr>
+              <tr><td data-label="页面">P3 质检详情<br><code>#page=detail&amp;task=&lt;id&gt;</code></td><td>单任务完整结果</td><td>顶部操作（返回/重新检测/复制链接）；商品摘要卡；总体结论条（带状态标注）；6 张质检项卡片（卡片操作：重新检测 + 点赞/点踩）</td><td>示例商品：男士西装（类目 服装&gt;男装&gt;男士西装，$10–$99，12 SKU）</td><td>返回 P2；卡片操作挂 P5/P6 弹窗</td></tr>
+              <tr><td data-label="页面">P4 质检项卡片</td><td>单项结果独立展示</td><td>头部（编号/名称/状态标签/点赞/点踩）；摘要；命中原因；参考信息；建议；展开区；底部操作</td><td>见「质检项展示规范」扩展页</td><td>状态由轮询模拟驱动，独立于其他卡片</td></tr>
+              <tr><td data-label="页面">P5 忽略弹窗</td><td>—（已移除）</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td data-label="页面">P6 反馈弹窗</td><td>点踩原因收集</td><td>原因标签多选 + 文本框 + 提交</td><td>—</td><td>提交后卡片记「已点踩」，可再点取消</td></tr>
+              <tr><td data-label="页面">P7 规则说明<br><code>#page=rules</code></td><td>质检规则摘要</td><td>6 个质检项的规则说明、依据来源、状态图例</td><td>摘自 PRD 8.1–8.6 展示规范</td><td>从顶部导航入口进入查看（卡片不再提供「查看规则」跳转）</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="interaction-states">
+          <h2>交互与状态方案</h2>
+          <table>
+            <thead><tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr></thead>
+            <tbody>
+              <tr><td>链接校验</td><td>输入框为空/非法</td><td>输入非敦煌链接、草稿或无效商品链接</td><td>输入框下方红色提示「仅支持敦煌网商品链接」/「该商品无法检测，请确认链接为有效商品」；空输入时按钮禁用</td><td>修正为合法链接后可提交</td></tr>
+              <tr><td>提交检测</td><td>合法链接</td><td>点击「开始检测」</td><td>创建任务（localStorage 持久化），跳转详情页；6 张质检项卡片进入页面即显示（采集/排队阶段先展示排队态），随后按排队→检测中→完成逐个刷新（约 15–30 秒）</td><td>检测完成/部分失败；刷新页面后恢复最新状态</td></tr>
+              <tr><td>重复提交</td><td>同链接任务检测中</td><td>再次提交同一链接</td><td>弹确认「该商品正在检测中，是否查看？」</td><td>查看→跳进行中详情；取消→留在发起页</td></tr>
+              <tr><td>场景标注切换</td><td>详情页任一质检项卡片</td><td>点卡片上的标注序号，在标注面板「展示场景」中选择该质检项的通过/各违规场景/疑似违规</td><td>卡片就地更新为该场景的完整展示效果与专属示例数据（可反复切换，标注点不消失）；面板只展示场景控件，不展示标注正文</td><td>无「真实状态」选项，卡片默认展示「通过」场景</td></tr>
+              <tr><td>结论条状态标注</td><td>详情页总体结论条</td><td>点结论条标注序号，在「展示状态」中选择 不通过/通过/待人工确认/部分失败/检测中/采集失败</td><td>结论条就地切换为该状态的底色、计数与提示文案（检测中/采集失败不显示计数，检测中带加载动画）；标注点不消失</td><td>默认展示「不通过」场景</td></tr>
+              <tr><td>点赞</td><td>任意结果卡片</td><td>点👍 / 再点</td><td>切换「已点赞」高亮，可取消</td><td>—</td></tr>
+              <tr><td>点踩</td><td>任意结果卡片</td><td>点👎</td><td>P6 弹窗，勾选原因 + 文本；提交后卡片记「已点踩」</td><td>可再次点击取消或修改</td></tr>
+              <tr><td>卡片重新检测</td><td>已返回结果的质检项卡片</td><td>点卡片右上角「重新检测」（反馈👍左侧）</td><td>仅该项重新走 排队/检测中→结果，其他项不受影响；进行中时隐藏该按钮</td><td>完成/再次失败</td></tr>
+              <tr><td>重新检测</td><td>详情页/记录页</td><td>点「重新检测」</td><td>创建新任务（旧记录保留）；若同商品检测中则提示「该商品正在检测中，请稍后」</td><td>进入新任务详情</td></tr>
+              <tr><td>取消任务</td><td>记录页检测中任务</td><td>点「取消」</td><td>确认后任务状态变「已取消」（灰色）</td><td>不可再进入进行中视图</td></tr>
+              <tr><td>直接进入详情页</td><td>URL 无 task 参数或任务 ID 失效</td><td>通过页面切换进入「质检详情」</td><td>自动展示提交时间最近的任务；完全无任务时展示引导「前往发起检测」</td><td>正常查看/操作</td></tr>
+            </tbody>
+          </table>
+          <p>空状态：发起页无记录展示「暂无检测记录」；记录页筛选无结果展示空态。异常：采集失败展示原因 + 重试；图片加载失败展示占位图 + 重新加载。</p>
+          <p>状态色板：任务状态（待采集灰/采集中蓝/采集失败红/质检中蓝带进度/完成绿或红/部分失败橙/已取消灰）；质检项状态（排队灰/检测中蓝/通过绿/违规红/疑似橙/建议人工橙/失败红灰），均取自 camel-captain-erp 功能色。</p>
+        </section>
+
+        <section id="design-basis">
+          <h2>设计基底与原型特有调整</h2>
+          <ul>
+            <li>采用的 <code>DESIGN.md</code>：<code>src/themes/camel-captain-erp/DESIGN.md</code></li>
+            <li>继承方式：默认严格遵循（品牌橙 #FF7D29、五级功能色、中性色文本层级、高密度表格、浅色导航 ERP 骨架）。</li>
+            <li>本原型特有调整（用户确认）：质检项结果卡片采用「色条 + 浅色底」强调——卡片左侧 4px 功能色色条；违规卡片浅红底 <code>#FEE9E7</code>、疑似/建议人工浅橙底 <code>#FFF4E5</code>、检测失败浅灰底；<b>通过项默认收起为一行摘要</b>（名称 + 绿色通过标签，点击展开），违规/疑似项默认展开显示命中原因 + 参考信息 + 建议。</li>
+            <li>数据呈现：全部为前端模拟示例数据；轮询用本地定时器 + localStorage 模拟持久化。</li>
+            <li>状态标注（2026-10-13 批注新增，同日二次调整）：P4 每个质检项卡片挂载组件标注（<code>annotation-source.json</code>，页面 <code>detail</code>），标注面板提供「展示场景」切换：<b>违规与疑似违规按具体场景拆分展示</b>（材质=属性值缺失/属性值错误，知识产权=标题品牌词/图片logo，价格=批发阶梯价/SKU最低价，违法违规=禁售商品/赌博类等，各含通过 + 疑似违规），每场景有独立示例数据；<b>已去掉「真实状态」选项</b>，卡片默认展示「通过」场景。</li>
+            <li>结论条状态标注（2026-10-13 批注新增）：P3 总体结论条挂载「展示状态」标注（<code>dcc-conclusion-bar</code>），六种状态 不通过/通过/待人工确认/部分失败/检测中/采集失败 各有独立底色、计数与提示文案，默认展示「不通过」。因标注面板单格宽度有限，状态切换选项使用精简标签（如 违规/通过/疑似/失败/检测/采集、违规1/2/3），完整含义写在标注「内容」页的场景对照里。同批批注：卡片标题去编号并加粗；卡片反馈按钮左侧新增「重新检测」；无折叠内容时不显示「展开详情」；移除卡片「查看规则」按钮与「多处违规」提示条；弹窗关闭按钮右对齐至内容边界。</li>
+          </ul>
+        </section>
+
+        <section id="open-questions">
+          <h2>当前待确认事项</h2>
+          <ul>
+            <li>无（方案与演示组合已确认并完成首轮实现验收）。</li>
+          </ul>
+        </section>
+
+        <section id="decision-history">
+          <h2>用户重要决策与变更</h2>
+          <table>
+            <thead><tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr></thead>
+            <tbody>
+              <tr><td data-label="日期">2026-10-12</td><td data-label="决策">设计基底选定 camel-captain-erp（否决 element-ui）</td><td data-label="影响">全部页面继承 ERP 橙色规范</td></tr>
+              <tr><td data-label="日期">2026-10-12</td><td data-label="决策">单原型多页面路由，不拆分原型</td><td data-label="影响">P1/P2/P3/P7 以 #page= 路由组织在同一目录</td></tr>
+              <tr><td data-label="日期">2026-10-12</td><td data-label="决策">后台检测做成动态轮询演示 + localStorage 刷新不丢失</td><td data-label="影响">详情页支持质检中实时刷新视图</td></tr>
+              <tr><td data-label="日期">2026-10-12</td><td data-label="决策">结果卡片采用色条 + 浅色底强调违规，通过项默认收起</td><td data-label="影响">P4 卡片视觉偏离纯白底基线，见「设计基底与原型特有调整」</td></tr>
+              <tr><td data-label="日期">2026-10-13</td><td data-label="决策">主规格确认，进入实现并完成首轮验收</td><td data-label="影响">P1–P7 全部落地；质检中动态演示、忽略/点踩/点赞持久化、单项重试、采集失败重试、重复提交提示已验证</td></tr>
+              <tr><td data-label="日期">2026-10-13</td><td data-label="决策">批注要求：为每个质检项卡片注入状态标注（通过/违规/疑似违规）</td><td data-label="影响">详情页挂载 AnnotationViewer；6 张卡片带标注 marker 与「卡片状态」切换控件，演示数据即时生效</td></tr>
+              <tr><td data-label="日期">2026-10-13</td><td data-label="决策">批注调整：卡片标注不展示正文只保留状态控件；修复切换状态后标注点消失；去掉所有卡片的忽略按钮</td><td data-label="影响">标注面板仅显示「卡片状态」切换；卡片就地更新不再重挂，可连续切换；忽略操作入口与 P5 弹窗移除</td></tr>
+              <tr><td data-label="日期">2026-10-13</td><td data-label="决策">批注要求：没有忽略场景了，删除所有「已忽略」相关内容与状态</td><td data-label="影响">忽略状态/操作/弹窗/样式/规则说明/结论计数全部移除，质检项状态只剩 排队/检测中/通过/违规/疑似/建议人工/失败</td></tr>
+              <tr><td data-label="日期">2026-10-13</td><td data-label="决策">批注要求：违规/疑似违规按具体场景拆分逐一展示；去掉「真实状态」选项</td><td data-label="影响">标注控件改为「展示场景」，6 卡片共 23 个场景（含材质属性缺失/属性值缺失/属性值错误等），每场景独立示例数据；卡片默认展示通过场景</td></tr>
+              <tr><td data-label="日期">2026-10-13</td><td data-label="决策">批注 7 项：卡片加重新检测按钮/去编号加粗标题/弹窗关闭右对齐/无折叠不显示展开详情/去查看规则/去多处违规提示条/结论条加状态标注</td><td data-label="影响">卡片头部新增「重新检测」（反馈左侧，进行中隐藏）；标题去序号、加粗；弹窗关闭按钮与内容右边界对齐；通过态卡片无操作按钮；「查看规则」入口仅保留顶部；删除多命中提示条；结论条支持六种状态切换标注（默认不通过）</td></tr>
+              <tr><td data-label="日期">2026-10-13</td><td data-label="决策">批注：状态标注选项文字被截断，要求完整展示或精简文字+标注对照</td><td data-label="影响">标注面板单格约 35–46px，长标签放不下：选项标签精简（材质=违规1/2/3+疑似，结论条=违规/通过/疑似/失败/检测/采集 两字标签）；每个标注的「内容」页新增展示场景/状态对照说明，编号与简称逐一对应全称</td></tr>
+              <tr><td data-label="日期">2026-10-13</td><td data-label="决策">批注：检测时打开页面卡片直接显示，不要延迟出现</td><td data-label="影响">采集/排队阶段即渲染全部 6 张质检项卡片（排队态），不再等采集完成后才出现</td></tr>
+              <tr><td data-label="日期">2026-10-13</td><td data-label="决策">规则说明更新：材质、尺码不校验数据是否存在，仅在数据存在时校验合法性/一致性（只调规则表述，不改界面交互与逻辑）</td><td data-label="影响">规则页材质/尺码校验表述与引言更新；默认演示素材违规示例由「属性缺失」改为「属性值为空（n/a）」；移除材质「属性缺失」展示场景（23→22 个场景，违规编号重排为违规1/违规2）；通过/疑似结论表述同步</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </article>
+
+      <article class="spec-page" data-spec-page="check-items" hidden>
+        <h1>质检项展示规范</h1>
+        <p class="hint">依据 PRD 8.1–8.6，每个质检项卡片的展开区内容。违规必展示：命中原因 + 参考信息 + 建议方案。</p>
+        <table>
+          <thead><tr><th>质检项</th><th>检测对象</th><th>违规展示</th><th>疑似/人工</th><th>参考信息与操作</th></tr></thead>
+          <tbody>
+            <tr><td>1 材质检测</td><td>属性、首张主图</td><td>材质描述错误（属性值为空/null/n/a/无意义值/借用非材质词，原值+原因+建议值）／材质与主图不一致（属性值 vs AI 识别，多材质时给出全部建议值）</td><td>主图缺失/看不清/无法判断 → 建议人工审核</td><td>查看主图、类目材质关键词库、复制建议值</td></tr>
+            <tr><td>2 尺码检测</td><td>SKU 尺码、系统尺码模板、详情图尺码表</td><td>已采集数据的无效行列高亮（尺码标签/参数值为空、0、null、纯符号等）／系统 vs 详情对比表差异高亮（单位归一化）／SKU 与尺码表销售尺码缺少/多出/数值错误</td><td>OCR 失败、采集不到数据、性别尺码未标记 → 人工审核</td><td>查看详情图尺码表、查看系统模板、复制修正建议</td></tr>
+            <tr><td>3 知识产权侵权风险</td><td>文字、图片 + OCR 全图文本 + AI 图片特征</td><td>涂抹痕迹（原图标注区域）／文字命中（字段+原文片段+命中词高亮+词库类型）／OCR 命中（原图+文本高亮）／logo 命中（图库对比+相似度）／混淆词类型与风险等级</td><td>—</td><td>查看原图、查看命中规则、复制整改建议</td></tr>
+            <tr><td>4 类目错放检查</td><td>首张主图</td><td>更匹配类目（当前类目 vs 建议完整路径）／不兼容且无更匹配 → 人工复核</td><td>找不到/找到多个合适类目 → 人工审核</td><td>查看主图、复制建议类目、查看类目库</td></tr>
+            <tr><td>5 价格违规检查</td><td>SKU 价格、批发阶梯价</td><td>最低价、最高价、阈值公式（最低价 ≥ 最高价×10%）与命中结果；阶梯价区间列表</td><td>价格缺失/负数/最高价≤0/最低价&gt;最高价 → 人工</td><td>查看 SKU 价格明细表、复制建议</td></tr>
+            <tr><td>6 违法违规检查</td><td>文字、图片 + OCR + AI 图片特征</td><td>禁售（命中规则+位置+整改方向）／限售（缺失资质项）／赌博网站/赌博机（命中词/网址/图片、涂抹痕迹、相似度）</td><td>—</td><td>依据禁售/限售管理规则、词库、网址库、图片库；查看原图、复制整改建议</td></tr>
+          </tbody>
+        </table>
+        <p>演示组合（默认完成任务）：材质=违规、尺码=疑似错误、知识产权=通过、类目=违规、价格=违规、违法违规=通过；记录页另有「部分失败」（单项检测失败+重试）和「采集失败」示例。</p>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const navItems = [...document.querySelectorAll('[data-page-target]')];
+    const pages = [...document.querySelectorAll('[data-spec-page]')];
+
+    const showPage = (pageId) => {
+      for (const navItem of navItems) {
+        const isCurrent = navItem.dataset.pageTarget === pageId;
+        if (isCurrent) {
+          navItem.setAttribute('aria-current', 'page');
+        } else {
+          navItem.removeAttribute('aria-current');
+        }
+      }
+
+      for (const page of pages) {
+        page.hidden = page.dataset.specPage !== pageId;
+      }
+    };
+
+    for (const navItem of navItems) {
+      navItem.addEventListener('click', () => showPage(navItem.dataset.pageTarget));
+    }
+  </script>
+</body>
+</html>

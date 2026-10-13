@@ -1,0 +1,1582 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "provider": "current-agent",
+  "kind": "text",
+  "note": "视觉 API 未配置（404），由当前 Agent 按文字检测契约补全",
+  "regions": [
+    {
+      "id": "brand-title",
+      "text": "骆驼队长 智慧运营中台（公测版）",
+      "bounds": {
+        "left": 37.66,
+        "top": 18.45,
+        "right": 210.25,
+        "bottom": 57.67
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "nav-home",
+      "text": "首页",
+      "bounds": {
+        "left": 228.03,
+        "top": 25.37,
+        "right": 245.82,
+        "bottom": 50.75
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "nav-goods",
+      "text": "商品",
+      "bounds": {
+        "left": 270.4,
+        "top": 25.37,
+        "right": 289.23,
+        "bottom": 50.75
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "nav-trade",
+      "text": "交易",
+      "bounds": {
+        "left": 313.28,
+        "top": 25.37,
+        "right": 331.07,
+        "bottom": 50.75
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "nav-purchase",
+      "text": "采购",
+      "bounds": {
+        "left": 355.65,
+        "top": 25.37,
+        "right": 373.43,
+        "bottom": 50.75
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "nav-logistics",
+      "text": "物流",
+      "bounds": {
+        "left": 398.01,
+        "top": 25.37,
+        "right": 415.79,
+        "bottom": 50.75
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "nav-report",
+      "text": "报表",
+      "bounds": {
+        "left": 439.85,
+        "top": 25.37,
+        "right": 457.64,
+        "bottom": 50.75
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "nav-system",
+      "text": "系统",
+      "bounds": {
+        "left": 482.22,
+        "top": 25.37,
+        "right": 498.95,
+        "bottom": 50.75
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "nav-toolbox",
+      "text": "工具箱",
+      "bounds": {
+        "left": 518.31,
+        "top": 25.37,
+        "right": 547.07,
+        "bottom": 50.75
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "nav-consult",
+      "text": "即时咨询",
+      "bounds": {
+        "left": 581.59,
+        "top": 25.37,
+        "right": 617.68,
+        "bottom": 50.75
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "vip3",
+      "text": "VIP3",
+      "bounds": {
+        "left": 862.97,
+        "top": 23.07,
+        "right": 889.12,
+        "bottom": 48.44
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "crumb",
+      "text": "商品 / 商品管理 / 我的商品",
+      "bounds": {
+        "left": 9.41,
+        "top": 62.28,
+        "right": 100.42,
+        "bottom": 83.04
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "tab-collect",
+      "text": "商品采集",
+      "bounds": {
+        "left": 27.2,
+        "top": 119.95,
+        "right": 58.58,
+        "bottom": 152.25
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "tab-claim",
+      "text": "认领中心",
+      "bounds": {
+        "left": 84.73,
+        "top": 119.95,
+        "right": 116.11,
+        "bottom": 152.25
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "tab-mine",
+      "text": "我的商品",
+      "bounds": {
+        "left": 138.6,
+        "top": 119.95,
+        "right": 175.21,
+        "bottom": 156.86
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-source-label",
+      "text": "采集源",
+      "bounds": {
+        "left": 14.64,
+        "top": 191.46,
+        "right": 35.56,
+        "bottom": 214.53
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-source-select",
+      "text": "产品编号",
+      "bounds": {
+        "left": 42.89,
+        "top": 184.54,
+        "right": 83.68,
+        "bottom": 219.15
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-search-ph",
+      "text": "双击可批量搜索",
+      "bounds": {
+        "left": 95.19,
+        "top": 189.16,
+        "right": 147.49,
+        "bottom": 216.84
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-price-label",
+      "text": "价格",
+      "bounds": {
+        "left": 178.87,
+        "top": 191.46,
+        "right": 194.56,
+        "bottom": 214.53
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-platform-label",
+      "text": "采集平台",
+      "bounds": {
+        "left": 414.23,
+        "top": 191.46,
+        "right": 442.47,
+        "bottom": 214.53
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-platform-ph",
+      "text": "请选择采集平台",
+      "bounds": {
+        "left": 450.84,
+        "top": 189.16,
+        "right": 497.91,
+        "bottom": 216.84
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-publish-label",
+      "text": "刊登时间",
+      "bounds": {
+        "left": 518.83,
+        "top": 191.46,
+        "right": 547.07,
+        "bottom": 214.53
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-publish-start",
+      "text": "开始日期",
+      "bounds": {
+        "left": 574.27,
+        "top": 189.16,
+        "right": 607.74,
+        "bottom": 216.84
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-publish-to",
+      "text": "至",
+      "bounds": {
+        "left": 623.43,
+        "top": 191.46,
+        "right": 629.71,
+        "bottom": 214.53
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-publish-end",
+      "text": "结束日期",
+      "bounds": {
+        "left": 631.8,
+        "top": 189.16,
+        "right": 665.27,
+        "bottom": 216.84
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-claim-label",
+      "text": "认领时间",
+      "bounds": {
+        "left": 701.88,
+        "top": 191.46,
+        "right": 730.13,
+        "bottom": 214.53
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-claim-start",
+      "text": "开始日期",
+      "bounds": {
+        "left": 757.32,
+        "top": 189.16,
+        "right": 790.79,
+        "bottom": 216.84
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-claim-to",
+      "text": "至",
+      "bounds": {
+        "left": 806.49,
+        "top": 191.46,
+        "right": 812.76,
+        "bottom": 214.53
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-claim-end",
+      "text": "结束日期",
+      "bounds": {
+        "left": 814.85,
+        "top": 189.16,
+        "right": 848.33,
+        "bottom": 216.84
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-mod-label",
+      "text": "修改时间",
+      "bounds": {
+        "left": 14.64,
+        "top": 251.44,
+        "right": 44.98,
+        "bottom": 274.51
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-mod-start",
+      "text": "开始日期",
+      "bounds": {
+        "left": 72.18,
+        "top": 249.13,
+        "right": 105.65,
+        "bottom": 276.82
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-mod-to",
+      "text": "至",
+      "bounds": {
+        "left": 124.48,
+        "top": 251.44,
+        "right": 130.75,
+        "bottom": 274.51
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-mod-end",
+      "text": "结束日期",
+      "bounds": {
+        "left": 132.85,
+        "top": 249.13,
+        "right": 166.32,
+        "bottom": 276.82
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-tag-label",
+      "text": "标签",
+      "bounds": {
+        "left": 202.93,
+        "top": 251.44,
+        "right": 217.57,
+        "bottom": 274.51
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-tag-ph",
+      "text": "请选择标签",
+      "bounds": {
+        "left": 236.4,
+        "top": 249.13,
+        "right": 273.01,
+        "bottom": 276.82
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-shop-label",
+      "text": "店铺",
+      "bounds": {
+        "left": 323.22,
+        "top": 251.44,
+        "right": 337.87,
+        "bottom": 274.51
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "f-shop-ph",
+      "text": "请选择店铺",
+      "bounds": {
+        "left": 356.69,
+        "top": 249.13,
+        "right": 393.31,
+        "bottom": 276.82
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "btn-search",
+      "text": "搜索",
+      "bounds": {
+        "left": 518.83,
+        "top": 246.83,
+        "right": 539.75,
+        "bottom": 279.12
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "btn-reset",
+      "text": "重置",
+      "bounds": {
+        "left": 563.81,
+        "top": 246.83,
+        "right": 584.73,
+        "bottom": 279.12
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "btn-create",
+      "text": "创建新产品",
+      "bounds": {
+        "left": 605.65,
+        "top": 246.83,
+        "right": 650.63,
+        "bottom": 279.12
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "btn-sort",
+      "text": "排序",
+      "bounds": {
+        "left": 673.64,
+        "top": 249.13,
+        "right": 691.42,
+        "bottom": 276.82
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "btn-export",
+      "text": "导出",
+      "bounds": {
+        "left": 853.56,
+        "top": 246.83,
+        "right": 874.48,
+        "bottom": 279.12
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "btn-import",
+      "text": "导入货源",
+      "bounds": {
+        "left": 884.94,
+        "top": 246.83,
+        "right": 919.46,
+        "bottom": 279.12
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "btn-sync",
+      "text": "同步线上",
+      "bounds": {
+        "left": 926.78,
+        "top": 246.83,
+        "right": 961.3,
+        "bottom": 279.12
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-overview",
+      "text": "商品概览",
+      "bounds": {
+        "left": 18.83,
+        "top": 309.11,
+        "right": 52.3,
+        "bottom": 332.18
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-all",
+      "text": "全部商品",
+      "bounds": {
+        "left": 18.83,
+        "top": 363.32,
+        "right": 48.12,
+        "bottom": 386.39
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-all-n",
+      "text": "9027",
+      "bounds": {
+        "left": 73.22,
+        "top": 363.32,
+        "right": 88.91,
+        "bottom": 386.39
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-publish",
+      "text": "发布管理",
+      "bounds": {
+        "left": 18.83,
+        "top": 417.53,
+        "right": 48.12,
+        "bottom": 440.6
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-pending",
+      "text": "待发布",
+      "bounds": {
+        "left": 18.83,
+        "top": 467.13,
+        "right": 41.84,
+        "bottom": 490.2
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-pending-n",
+      "text": "173",
+      "bounds": {
+        "left": 78.45,
+        "top": 467.13,
+        "right": 88.91,
+        "bottom": 490.2
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-ing",
+      "text": "发布中",
+      "bounds": {
+        "left": 18.83,
+        "top": 514.42,
+        "right": 41.84,
+        "bottom": 537.49
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-ing-n",
+      "text": "0",
+      "bounds": {
+        "left": 84.73,
+        "top": 514.42,
+        "right": 88.91,
+        "bottom": 537.49
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-loop",
+      "text": "循环刊登",
+      "bounds": {
+        "left": 18.83,
+        "top": 561.71,
+        "right": 46.03,
+        "bottom": 584.78
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-loop-n",
+      "text": "8",
+      "bounds": {
+        "left": 84.73,
+        "top": 561.71,
+        "right": 88.91,
+        "bottom": 584.78
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-fail",
+      "text": "发布失败",
+      "bounds": {
+        "left": 18.83,
+        "top": 609,
+        "right": 46.03,
+        "bottom": 632.06
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-fail-n",
+      "text": "41",
+      "bounds": {
+        "left": 79.5,
+        "top": 609,
+        "right": 88.91,
+        "bottom": 632.06
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-sale",
+      "text": "销售状态",
+      "bounds": {
+        "left": 18.83,
+        "top": 663.21,
+        "right": 48.12,
+        "bottom": 686.27
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-on",
+      "text": "已上架",
+      "bounds": {
+        "left": 18.83,
+        "top": 710.5,
+        "right": 41.84,
+        "bottom": 733.56
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-on-n",
+      "text": "2736",
+      "bounds": {
+        "left": 69.04,
+        "top": 710.5,
+        "right": 88.91,
+        "bottom": 733.56
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-off",
+      "text": "已下架",
+      "bounds": {
+        "left": 18.83,
+        "top": 757.79,
+        "right": 41.84,
+        "bottom": 780.85
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-off-n",
+      "text": "3076",
+      "bounds": {
+        "left": 69.04,
+        "top": 757.79,
+        "right": 88.91,
+        "bottom": 780.85
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-risk",
+      "text": "审核与风险",
+      "bounds": {
+        "left": 18.83,
+        "top": 812,
+        "right": 52.3,
+        "bottom": 835.06
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-review",
+      "text": "待审核",
+      "bounds": {
+        "left": 18.83,
+        "top": 859.28,
+        "right": 41.84,
+        "bottom": 882.35
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-review-n",
+      "text": "1",
+      "bounds": {
+        "left": 84.73,
+        "top": 859.28,
+        "right": 88.91,
+        "bottom": 882.35
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-reject",
+      "text": "审核未通过",
+      "bounds": {
+        "left": 18.83,
+        "top": 906.57,
+        "right": 52.3,
+        "bottom": 929.64
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-reject-n",
+      "text": "2818",
+      "bounds": {
+        "left": 69.04,
+        "top": 906.57,
+        "right": 88.91,
+        "bottom": 929.64
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-violation",
+      "text": "内容违规",
+      "bounds": {
+        "left": 18.83,
+        "top": 953.86,
+        "right": 46.03,
+        "bottom": 976.93
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-violation-n",
+      "text": "173",
+      "bounds": {
+        "left": 78.45,
+        "top": 953.86,
+        "right": 88.91,
+        "bottom": 976.93
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-infringe",
+      "text": "侵权违规",
+      "bounds": {
+        "left": 18.83,
+        "top": 982.7,
+        "right": 46.03,
+        "bottom": 1000
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "side-infringe-n",
+      "text": "0",
+      "bounds": {
+        "left": 84.73,
+        "top": 982.7,
+        "right": 88.91,
+        "bottom": 1000
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "th-img",
+      "text": "图片",
+      "bounds": {
+        "left": 197.7,
+        "top": 306.81,
+        "right": 212.34,
+        "bottom": 329.87
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "th-info",
+      "text": "商品信息",
+      "bounds": {
+        "left": 231.17,
+        "top": 306.81,
+        "right": 258.37,
+        "bottom": 329.87
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "th-code",
+      "text": "产品编号",
+      "bounds": {
+        "left": 596.23,
+        "top": 306.81,
+        "right": 625.52,
+        "bottom": 329.87
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "th-price",
+      "text": "售价",
+      "bounds": {
+        "left": 657.95,
+        "top": 306.81,
+        "right": 673.64,
+        "bottom": 329.87
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "th-tag",
+      "text": "标签",
+      "bounds": {
+        "left": 738.49,
+        "top": 306.81,
+        "right": 754.18,
+        "bottom": 329.87
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "th-time",
+      "text": "时间/版本",
+      "bounds": {
+        "left": 809.62,
+        "top": 306.81,
+        "right": 846.23,
+        "bottom": 329.87
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "th-source",
+      "text": "来源",
+      "bounds": {
+        "left": 941.42,
+        "top": 306.81,
+        "right": 957.11,
+        "bottom": 329.87
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-title",
+      "text": "High Quality luxury designer bag 2026 Women Viral Quilted Chain Bucket Bag Large Capacity Shoulder Underarm Motorcycle Style Purse Trendy Top Hot Soft Free Shipping",
+      "bounds": {
+        "left": 231.17,
+        "top": 359.86,
+        "right": 541.32,
+        "bottom": 408.3
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-cat",
+      "text": "箱包及箱包辅料 < 时装包 < 单肩包",
+      "bounds": {
+        "left": 231.17,
+        "top": 435.99,
+        "right": 377.62,
+        "bottom": 454.44
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-pill",
+      "text": "待审核",
+      "bounds": {
+        "left": 478.56,
+        "top": 419.84,
+        "right": 509.94,
+        "bottom": 449.83
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-store",
+      "text": "包包",
+      "bounds": {
+        "left": 530.86,
+        "top": 422.15,
+        "right": 549.16,
+        "bottom": 447.52
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-code",
+      "text": "1129618766",
+      "bounds": {
+        "left": 585.77,
+        "top": 401.38,
+        "right": 625.52,
+        "bottom": 419.84
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-price",
+      "text": "$ 3999",
+      "bounds": {
+        "left": 650.63,
+        "top": 399.08,
+        "right": 675.73,
+        "bottom": 422.15
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-t1",
+      "text": "认领：2026-10-10 10:53:56",
+      "bounds": {
+        "left": 808.05,
+        "top": 355.25,
+        "right": 884.94,
+        "bottom": 373.7
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-t2",
+      "text": "修改：2026-10-10 16:07:03",
+      "bounds": {
+        "left": 808.05,
+        "top": 376.01,
+        "right": 884.94,
+        "bottom": 394.46
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-t3",
+      "text": "刊登：2026-10-10 11:34:54",
+      "bounds": {
+        "left": 808.05,
+        "top": 396.77,
+        "right": 884.94,
+        "bottom": 415.22
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-t4",
+      "text": "认领版本号：1",
+      "bounds": {
+        "left": 808.05,
+        "top": 417.53,
+        "right": 847.28,
+        "bottom": 435.99
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-t5",
+      "text": "当前版本号：2",
+      "bounds": {
+        "left": 808.05,
+        "top": 438.29,
+        "right": 847.28,
+        "bottom": 456.75
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-dash",
+      "text": "-",
+      "bounds": {
+        "left": 956.07,
+        "top": 401.38,
+        "right": 960.25,
+        "bottom": 419.84
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-btn-edit",
+      "text": "编辑",
+      "bounds": {
+        "left": 156.9,
+        "top": 475.2,
+        "right": 177.82,
+        "bottom": 502.88
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-btn-republish",
+      "text": "更新发布",
+      "bounds": {
+        "left": 184.1,
+        "top": 475.2,
+        "right": 225.94,
+        "bottom": 502.88
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-btn-tag",
+      "text": "标签",
+      "bounds": {
+        "left": 232.74,
+        "top": 475.2,
+        "right": 253.66,
+        "bottom": 502.88
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-btn-del",
+      "text": "删除",
+      "bounds": {
+        "left": 259.94,
+        "top": 475.2,
+        "right": 280.86,
+        "bottom": 502.88
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r1-btn-clone",
+      "text": "AI一键克隆",
+      "bounds": {
+        "left": 287.66,
+        "top": 475.2,
+        "right": 345.19,
+        "bottom": 502.88
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r2-title",
+      "text": "Shoulder Bags For Woman Handbag Classic Monogram Pattern Zipper Crossbody Bag Brown White Daily Commute Casual Travel",
+      "bounds": {
+        "left": 231.17,
+        "top": 532.87,
+        "right": 541.32,
+        "bottom": 581.31
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r2-cat",
+      "text": "箱包及箱包辅料 < 时装包 < 单肩包",
+      "bounds": {
+        "left": 231.17,
+        "top": 609,
+        "right": 377.62,
+        "bottom": 627.45
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r2-pill",
+      "text": "审核未通过",
+      "bounds": {
+        "left": 447.18,
+        "top": 585.93,
+        "right": 489.02,
+        "bottom": 615.92
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r2-store",
+      "text": "sneakerhub8",
+      "bounds": {
+        "left": 505.23,
+        "top": 588.24,
+        "right": 557.01,
+        "bottom": 613.61
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r2-code",
+      "text": "1129637301",
+      "bounds": {
+        "left": 585.77,
+        "top": 569.78,
+        "right": 625.52,
+        "bottom": 588.24
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r2-price",
+      "text": "$ 61.03",
+      "bounds": {
+        "left": 650.63,
+        "top": 567.47,
+        "right": 677.82,
+        "bottom": 590.54
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r2-t1",
+      "text": "认领：2026-10-10 14:20:50",
+      "bounds": {
+        "left": 808.05,
+        "top": 523.64,
+        "right": 884.94,
+        "bottom": 542.1
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r2-t2",
+      "text": "修改：2026-10-10 14:41:03",
+      "bounds": {
+        "left": 808.05,
+        "top": 544.41,
+        "right": 884.94,
+        "bottom": 562.86
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r2-t3",
+      "text": "刊登：2026-10-10 14:39:16",
+      "bounds": {
+        "left": 808.05,
+        "top": 565.17,
+        "right": 884.94,
+        "bottom": 583.62
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r2-t4",
+      "text": "认领版本号：-",
+      "bounds": {
+        "left": 808.05,
+        "top": 585.93,
+        "right": 847.28,
+        "bottom": 604.38
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r2-t5",
+      "text": "当前版本号：4",
+      "bounds": {
+        "left": 808.05,
+        "top": 606.69,
+        "right": 847.28,
+        "bottom": 625.14
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r2-dash",
+      "text": "-",
+      "bounds": {
+        "left": 956.07,
+        "top": 569.78,
+        "right": 960.25,
+        "bottom": 588.24
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-title",
+      "text": "Women's bag retro vintage vintage floral large capacity floral bag new Boston pillow bag single shoulder er crossbody bag",
+      "bounds": {
+        "left": 231.17,
+        "top": 659.75,
+        "right": 541.32,
+        "bottom": 708.19
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-cat",
+      "text": "箱包及箱包辅料 < 时装包 < 单肩包",
+      "bounds": {
+        "left": 231.17,
+        "top": 735.87,
+        "right": 377.62,
+        "bottom": 754.33
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-error",
+      "text": "产品首图不能重复，请选择其他的图作为产品首图！",
+      "bounds": {
+        "left": 156.9,
+        "top": 752.02,
+        "right": 346.23,
+        "bottom": 779.7
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-pill",
+      "text": "发布失败",
+      "bounds": {
+        "left": 449.79,
+        "top": 692.04,
+        "right": 499.48,
+        "bottom": 722.03
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-store",
+      "text": "sneakerhub8",
+      "bounds": {
+        "left": 505.23,
+        "top": 696.66,
+        "right": 557.01,
+        "bottom": 722.03
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-code",
+      "text": "116416160",
+      "bounds": {
+        "left": 587.87,
+        "top": 696.66,
+        "right": 623.43,
+        "bottom": 715.11
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-price",
+      "text": "$ 61.03",
+      "bounds": {
+        "left": 650.63,
+        "top": 694.35,
+        "right": 677.82,
+        "bottom": 717.42
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-t1",
+      "text": "认领：2026-10-10 10:48:13",
+      "bounds": {
+        "left": 808.05,
+        "top": 650.52,
+        "right": 884.94,
+        "bottom": 668.97
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-t2",
+      "text": "修改：2026-10-10 10:49:01",
+      "bounds": {
+        "left": 808.05,
+        "top": 671.28,
+        "right": 884.94,
+        "bottom": 689.73
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-t3",
+      "text": "刊登：-",
+      "bounds": {
+        "left": 808.05,
+        "top": 692.04,
+        "right": 847.28,
+        "bottom": 710.5
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-t4",
+      "text": "认领版本号：-",
+      "bounds": {
+        "left": 808.05,
+        "top": 712.8,
+        "right": 847.28,
+        "bottom": 731.26
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-t5",
+      "text": "当前版本号：4",
+      "bounds": {
+        "left": 808.05,
+        "top": 733.56,
+        "right": 847.28,
+        "bottom": 752.02
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r3-dash",
+      "text": "-",
+      "bounds": {
+        "left": 956.07,
+        "top": 696.66,
+        "right": 960.25,
+        "bottom": 715.11
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-title",
+      "text": "Mens Shorts And Tshirt Cartoon Print Elastic Waist Casual Beach Shorts For Men Grey White Daily Wear",
+      "bounds": {
+        "left": 231.17,
+        "top": 788.93,
+        "right": 541.32,
+        "bottom": 837.37
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-cat",
+      "text": "女士短裤",
+      "bounds": {
+        "left": 231.17,
+        "top": 862.75,
+        "right": 262.55,
+        "bottom": 881.2
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-error",
+      "text": "请填写产品的腰型属性。",
+      "bounds": {
+        "left": 156.9,
+        "top": 881.2,
+        "right": 252.09,
+        "bottom": 908.88
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-pill",
+      "text": "发布失败",
+      "bounds": {
+        "left": 465.48,
+        "top": 822.38,
+        "right": 504.71,
+        "bottom": 852.36
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-store",
+      "text": "clothes",
+      "bounds": {
+        "left": 521.97,
+        "top": 826.99,
+        "right": 553.35,
+        "bottom": 852.36
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-code1",
+      "text": "BAL-781e80d1-6002-4c24-",
+      "bounds": {
+        "left": 570.08,
+        "top": 814.3,
+        "right": 643.31,
+        "bottom": 832.76
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-code2",
+      "text": "b0b7-3b99ebe8c74e",
+      "bounds": {
+        "left": 570.08,
+        "top": 835.06,
+        "right": 643.31,
+        "bottom": 853.52
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-price",
+      "text": "$ 120",
+      "bounds": {
+        "left": 650.63,
+        "top": 821.22,
+        "right": 673.64,
+        "bottom": 844.29
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-t1",
+      "text": "认领：2026-09-30 15:40:35",
+      "bounds": {
+        "left": 808.05,
+        "top": 777.39,
+        "right": 884.94,
+        "bottom": 795.85
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-t2",
+      "text": "修改：2026-10-10 15:45:25",
+      "bounds": {
+        "left": 808.05,
+        "top": 798.15,
+        "right": 884.94,
+        "bottom": 816.61
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-t3",
+      "text": "刊登：-",
+      "bounds": {
+        "left": 808.05,
+        "top": 818.92,
+        "right": 847.28,
+        "bottom": 837.37
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-t4",
+      "text": "认领版本号：1",
+      "bounds": {
+        "left": 808.05,
+        "top": 839.68,
+        "right": 847.28,
+        "bottom": 858.13
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-t5",
+      "text": "当前版本号：1",
+      "bounds": {
+        "left": 808.05,
+        "top": 860.44,
+        "right": 847.28,
+        "bottom": 878.89
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r4-dash",
+      "text": "-",
+      "bounds": {
+        "left": 956.07,
+        "top": 823.53,
+        "right": 960.25,
+        "bottom": 841.98
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "r5-title",
+      "text": "Laurel Shoulder Bag Elegant Handbag Croc Embossed Flap Front Gold Hardware Detachable Strap Oli",
+      "bounds": {
+        "left": 231.17,
+        "top": 966.55,
+        "right": 695.61,
+        "bottom": 987.31
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "pg-total",
+      "text": "共 8 条",
+      "bounds": {
+        "left": 790.79,
+        "top": 957.32,
+        "right": 820.08,
+        "bottom": 978.09
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "pg-size",
+      "text": "10条/页",
+      "bounds": {
+        "left": 832.64,
+        "top": 952.71,
+        "right": 872.38,
+        "bottom": 982.7
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "pg-prev",
+      "text": "<",
+      "bounds": {
+        "left": 883.89,
+        "top": 952.71,
+        "right": 897.49,
+        "bottom": 982.7
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "pg-1",
+      "text": "1",
+      "bounds": {
+        "left": 909,
+        "top": 952.71,
+        "right": 922.59,
+        "bottom": 982.7
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "pg-next",
+      "text": ">",
+      "bounds": {
+        "left": 934.1,
+        "top": 952.71,
+        "right": 947.7,
+        "bottom": 982.7
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "pg-goto",
+      "text": "前往",
+      "bounds": {
+        "left": 951.88,
+        "top": 957.32,
+        "right": 967.57,
+        "bottom": 978.09
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "pg-input",
+      "text": "1",
+      "bounds": {
+        "left": 970.71,
+        "top": 952.71,
+        "right": 987.45,
+        "bottom": 982.7
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "pg-page",
+      "text": "页",
+      "bounds": {
+        "left": 990.59,
+        "top": 957.32,
+        "right": 998.95,
+        "bottom": 978.09
+      },
+      "confidence": 0.95
+    },
+    {
+      "id": "float-contact",
+      "text": "联系我们",
+      "bounds": {
+        "left": 975.94,
+        "top": 604.38,
+        "right": 997.91,
+        "bottom": 622.84
+      },
+      "confidence": 0.95
+    }
+  ]
+}

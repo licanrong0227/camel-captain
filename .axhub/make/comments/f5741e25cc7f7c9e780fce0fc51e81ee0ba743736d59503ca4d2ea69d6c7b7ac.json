@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 3,
+  "kind": "document-edit-comments",
+  "resource": {
+    "id": "f5741e25cc7f7c9e780fce0fc51e81ee0ba743736d59503ca4d2ea69d6c7b7ac",
+    "targetPath": "src/prototypes/my-products-bi/.spec/spec.html",
+    "filePath": ".axhub/make/comments/f5741e25cc7f7c9e780fce0fc51e81ee0ba743736d59503ca4d2ea69d6c7b7ac.json"
+  },
+  "comments": [],
+  "images": [],
+  "documentPath": "src/prototypes/my-products-bi/.spec/spec.html"
+}

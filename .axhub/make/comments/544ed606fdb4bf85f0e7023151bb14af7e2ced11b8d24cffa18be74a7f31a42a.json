@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "batch-image-white-bg",
+    "targetPath": "prototypes/batch-image-white-bg",
+    "filePath": ".axhub/make/comments/544ed606fdb4bf85f0e7023151bb14af7e2ced11b8d24cffa18be74a7f31a42a.json"
+  },
+  "comments": [],
+  "images": []
+}

@@ -1,0 +1,75 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "presentation": {
+    "layerSelectors": [".emd-mask", ".cp-mask"]
+  },
+  "data": {
+    "version": 2,
+    "prototypeName": "edit-product-dialog-media",
+    "pageId": "edit-product-dialog-media",
+    "nodes": [
+      {
+        "id": "collage-embed-source",
+        "index": 1,
+        "title": "主图拼图弹窗来源",
+        "pageId": "edit-product-dialog-media",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"collage-embed-source\"]"],
+          "fingerprint": "div|data-annotation-id=collage-embed-source",
+          "path": ["body > div > div > div:nth-of-type(2) > div > div:nth-of-type(1)"]
+        },
+        "aiPrompt": "根据标注正文说明主图拼图弹窗的内容来源与相对原生项目的改造点。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#33C276",
+        "images": [],
+        "createdAt": 1791887654158,
+        "updatedAt": 1791887654158
+      },
+      {
+        "id": "collage-slot-interaction",
+        "index": 2,
+        "title": "画布格子交互",
+        "pageId": "edit-product-dialog-media",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"collage-slot-interaction\"]"],
+          "fingerprint": "div|data-annotation-id=collage-slot-interaction",
+          "path": ["body > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(1) > div > div > div:nth-of-type(1)"]
+        },
+        "aiPrompt": "根据标注正文说明画布格子的交互方式。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#33C276",
+        "images": [],
+        "createdAt": 1791887654158,
+        "updatedAt": 1791887654158
+      },
+      {
+        "id": "collage-sample-interaction",
+        "index": 3,
+        "title": "可选图片交互",
+        "pageId": "edit-product-dialog-media",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"collage-sample-interaction\"]"],
+          "fingerprint": "div|data-annotation-id=collage-sample-interaction",
+          "path": ["body > div > div > div:nth-of-type(2) > div > aside:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(1)"]
+        },
+        "aiPrompt": "根据标注正文说明可选图片区域的交互方式。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#33C276",
+        "images": [],
+        "createdAt": 1791887654158,
+        "updatedAt": 1791887654158
+      }
+    ],
+    "updatedAt": 1791887654158
+  },
+  "markdownMap": {
+    "collage-embed-source": "「主图拼图」弹窗的内容嵌入自开源项目 **easy-collage**（简单拼图）。\n\n- GitHub 仓库：https://github.com/goku-open/easy-collage\n- 在线预览 Demo：https://easy-collage.gokuscraper.com\n\n**改造说明（相对原生项目）：**\n- 调整了界面，移除了原生项目的多处功能。\n- 保留：模板选择、传图、以及拖动改变图片露出部位。\n- 增加：图片候选，载入时自动引用主图图片。\n- 新增：编辑后直接上传到主图的功能。\n\n**待确认：** 需评估原生项目的拼图模板是否可编辑——原生提供的模板可能无法完全覆盖实际场景的用途。",
+    "collage-slot-interaction": "画布格子的交互：\n\n- 空格子：点击可上传并添加图片，支持一次选择多张；上传数量不超过当前空格子数，提交后图片按顺序依次填入空格子。也可从右侧「可选图片」拖拽图片到某个格子放入。\n- 已放图片的格子：鼠标滚轮缩放图片；放大后按住并拖动，可改变图片露出的部位。\n- 悬停格子时右上角出现清空按钮，点击移除该格子中的图片。",
+    "collage-sample-interaction": "「可选图片」的交互：\n\n- 拖拽缩略图到某个格子：把图片放入该格子。\n- 悬停缩略图时右上角出现删除按钮，点击移除这张可选图片。"
+  },
+  "assetMap": {}
+}

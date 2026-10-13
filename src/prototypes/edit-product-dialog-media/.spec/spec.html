@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>编辑产品弹窗（视频/主图/站外推广图） - 主规格</title>
+<style>
+    :root {
+      font-family:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --brand: #008f5d;
+      --brand-ink: #007a50;
+      --brand-soft: #e6f5ef;
+      --brand-surface: #f2faf7;
+      --brand-border: #b7ddcf;
+      --text: #222832;
+      --text-secondary: #4b5565;
+      --text-muted: #6f7888;
+      --text-placeholder: #8b94a3;
+      color: var(--text);
+      background: #f5f7fb;
+      scrollbar-gutter: stable;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px 20px 64px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 32px;
+      padding: 18px 14px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .sidebar-title {
+      margin: 0 8px 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .page-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .page-nav button {
+      width: 100%;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .page-nav button:hover,
+    .page-nav button[aria-current="page"] {
+      color: var(--brand-ink);
+      background: var(--brand-soft);
+    }
+
+    .page-nav button[aria-current="page"] { font-weight: 600; }
+
+    main {
+      min-width: 0;
+      padding: 40px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 16px rgb(30 45 75 / 6%);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.3;
+    }
+
+    h2 {
+      margin: 44px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e7eaf0;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    h3 {
+      margin: 28px 0 12px;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    p,
+    li {
+      font-size: 15px;
+      line-height: 2;
+    }
+
+    p { margin: 20px 0; }
+
+    td,
+    th {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .definition {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-left: 3px solid var(--brand);
+      color: var(--text-secondary);
+      background: var(--brand-surface);
+    }
+
+    .hint { color: var(--text-muted); }
+
+    ul {
+      margin: 10px 0 20px;
+      padding-left: 22px;
+    }
+
+    .placeholder-list { padding-left: 0; }
+
+    .placeholder-list li {
+      list-style: none;
+      color: var(--text-placeholder);
+    }
+
+    .placeholder-list li::before {
+      margin-right: 8px;
+      color: #b2bac6;
+      content: "—";
+    }
+
+    table {
+      width: 100%;
+      margin-top: 14px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 1px solid #dfe4ee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f6f8fb; }
+
+    td:empty::after {
+      content: "待补充";
+      color: var(--text-placeholder);
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #eef1f6;
+    }
+
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--brand-border);
+      border-radius: 8px;
+      background: var(--brand-surface);
+    }
+
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .spec-page[hidden] { display: none; }
+
+    @media (max-width: 720px) {
+      body { padding: 0 8px 40px; }
+      .shell { display: block; }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        margin: 0 -8px 12px;
+        padding: 10px 8px;
+        border-width: 0 0 1px;
+        border-radius: 0;
+      }
+
+      .sidebar-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .page-nav {
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .page-nav::-webkit-scrollbar { display: none; }
+
+      .page-nav button {
+        width: auto;
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 24px 18px;
+        border-radius: 8px;
+      }
+
+      .table-wrap { overflow: visible; }
+
+      table,
+      tbody,
+      tr,
+      td {
+        display: block;
+        width: 100%;
+      }
+
+      thead { display: none; }
+
+      tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      tr {
+        overflow: hidden;
+        border: 1px solid #dfe4ee;
+        border-radius: 6px;
+        background: #fff;
+      }
+
+      td {
+        display: grid;
+        grid-template-columns: minmax(96px, 36%) minmax(0, 1fr);
+        gap: 12px;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 0;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      td:last-child { border-bottom: 0; }
+
+      td::before {
+        content: attr(data-label);
+        color: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+    }
+  </style><<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}button{margin:0;padding:0;border:0;font:inherit}.reconstruction-stage{position:relative;overflow:hidden;width:1912px;height:867px;background:#fff}img{display:block}
+.stage-scroll{overflow-x:auto;margin-top:16px}
+.reconstruction-stage{width:1912px;height:867px;background:#7f7f7f}
+main.reconstruction-stage{margin:0}</style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <p class="sidebar-title">目录</p>
+      <nav class="page-nav" aria-label="规格文档页面">
+        <button type="button" data-page-target="overview" aria-current="page">当前方案</button>
+        <button type="button" data-page-target="visual-1to1">1:1 视觉主规格</button>
+      </nav>
+    </aside>
+
+    <main>
+      <article class="spec-page" data-spec-page="overview">
+        <h1>编辑产品弹窗（视频/主图/站外推广图） · 截图还原主规格</h1>
+        <p class="definition">本文档是用户与 Agent 围绕当前原型进行方案沟通、确认和持续生成的事实依据。只维护当前有效方案，并简短记录会影响当前原型的重要用户决策和变更。</p>
+
+        <section id="current-plan">
+          <h2>当前方案</h2>
+          <ul>
+            <li>原型意图：按源截图 1:1 精准还原「我的商品 - 骆驼队长BI」页面上「编辑产品」弹窗在滚动到 视频 / 主图 / 站外推广图 区域时的视觉状态，供评审与后续 React 原型实现使用。</li>
+            <li>使用场景：ERP 运营人员在编辑产品弹窗中维护视频、主图与站外推广图。</li>
+            <li>当前表达：1912×867 viewport 下的静态高保真还原；仅还原弹窗本体，弹窗外一律以灰色遮罩（#7f7f7f）表达，不还原背景页面内容；无交互。</li>
+            <li>叠加层：「主图拼图」弹窗（<code>components/CollageDialog.tsx</code> + <code>collage.css</code>，z-index 20），以开源 easy-collage 页面为基底改造而来；外层带 44px 弹窗标题栏「主图拼图」+ 右上角关闭按钮，无底部操作按钮；<strong>默认隐藏</strong>，由 <code>&lt;CollageDialog open={collageOpen} onClose={...} /&gt;</code> 的 <code>open</code> 控制，后续由用户在其他按钮上接入调起。</li>
+            <li>拼图弹窗当前结构（2026-10-13 批注后）：无开源站顶栏；左栏「选择模板」保持原样；中间 3×3 画布 + 底栏仅「导出」（浅灰）与「上传到主图」（绿色主按钮）；右栏收窄至 216px，改名「可选图片」，标题右侧「上传」按钮，下方两列已上传图片示例（复用 <code>assets/main-*.png</code>，带分辨率角标），原参数调整内容与「重置所有参数」底栏已删除。</li>
+            <li>拼图交互（2026-10-13 第 6 轮批注后）：空画布格文案「点击添加图片或从可选图片拖放到此处」，点击空格触发文件选择、可一次上传多张，数量不超过当前空格子数，提交后按顺序依次填入空格子；可选图片为 1:1 方形、仅支持拖拽落入指定格（不再点击入格）；已填格显示图片，鼠标滚轮缩放（1–3 倍）、放大后可按住拖拽平移可视区域；可选图片与已填格均在悬停时右上角显示删除按钮，分别删除该示例图 / 清空该格图像。状态由 <code>CollageDialog</code> 内 <code>slots</code>、<code>samples</code> 与隐藏 <code>&lt;input type=file multiple&gt;</code> 管理。</li>
+            <li>上传替换确认弹窗（<code>CollageDialog</code> 内 <code>confirmOpen</code>，z-index 50）：点击「上传到主图」弹出「提示」，内容为「主图上传数量已达上限，是否继续上传并替换掉最后一张主图」，底部「关闭」与「上传并替换」两按钮及右上角 × 均关闭本弹窗。</li>
+            <li>上传图片弹窗（<code>components/UploadImageDialog.tsx</code> + <code>upload-image.css</code>，z-index 40）：复用 <code>auto-edit-dialog</code> 的「上传图片」样式，ERP 橙色主题；含 本地/URL/引用 侧栏、单个/批量上传单选、拖拽上传区、取消/确认底栏；由拼图弹窗「可选图片」标题右侧「上传」按钮打开，取消/确认/关闭均关闭本弹窗；仅样式，选项不可切换。</li>
+          </ul>
+        </section>
+
+        <section id="facts-inputs">
+          <h2>事实与输入</h2>
+          <h3>用户确认事实</h3>
+          <ul>
+            <li>还原目标：「编辑产品」弹窗（截图所示滚动位置），只要弹窗样式与截图内容，弹窗外无需实现，只要样式无需交互。</li>
+            <li>落点决策：新建独立原型 <code>edit-product-dialog-media</code>，不改动既有 <code>edit-product-dialog</code> 原型。</li>
+            <li>样式信息文件：<code>D:\Users\admin\Downloads\编辑产品弹窗样式.txt</code>（cssVariables、typography、colors 设计基底）。</li>
+            <li>「简单拼图」还原输入：1920×867 截图 + <code>D:\Users\admin\Downloads\开源项目-简单拼图样式.txt</code>；绿色主色 #33c276、字体 Poppins。原站顶栏与 logo 已按批注移除（<code>assets/app-logo.svg</code> 已删除），仅保留其布局与配色作为基底。拼图弹窗内容嵌入自开源项目 easy-collage（GitHub：<code>https://github.com/goku-open/easy-collage</code>，Demo：<code>https://easy-collage.gokuscraper.com</code>），已在标题栏 <code>.cp-chrome</code>（<code>data-annotation-id="collage-embed-source"</code>）挂载来源标注。</li>
+          </ul>
+          <h3>参考资料</h3>
+          <ul>
+            <li>源截图：1912×867 PNG（sha256 202abc18…953e），弹窗区域唯一视觉事实来源。</li>
+            <li>素材裁片：16 张（10 商品缩略图、5 主图照片、1 站外推广图），位于 <code>src/prototypes/edit-product-dialog-media/assets/</code>；24 个 SVG 图标位于 <code>assets/icons/</code>。</li>
+          </ul>
+          <h3>当前假设</h3>
+          <ul>
+            <li>弹窗内容区处于滚动中间态：「视频」区块标题被裁切，仅保留顶部 2px 残片；上方区块不完整可见属截图事实，不补全。</li>
+            <li>页面为静态还原，数据为截图中的示例数据。</li>
+          </ul>
+        </section>
+
+        <section id="prototype-scope">
+          <h2>原型范围</h2>
+          <h3>本次呈现</h3>
+          <ul>
+            <li>弹窗骨架：标题「编辑产品」、右上关闭钮、1720×780 圆角容器与投影。</li>
+            <li>左侧商品列表：10 行（缩略图 + 标题 + 未编辑状态；首行选中态含橙色描边卡片、删除/邮件图标）、底部翻页钮。</li>
+            <li>中部区块菜单：« 收起、基本/详情/日志页签、15 项区块菜单（「视频」选中：橙色 + 右侧指示条）。</li>
+            <li>右侧内容区：视频区块（裁切标题、视频名称/描述输入框 + 计数、上传视频虚线框）、主图区块（5/8、批量美图/下载图片、上传虚线格、5 张带分辨率角标的照片）、站外推广图区块（1/1、批量美图、1 张照片）。</li>
+            <li>底部按钮：关闭 / 保存 / 保存并发布。</li>
+          </ul>
+          <h3>本次不呈现</h3>
+          <ul>
+            <li>弹窗外的页面内容（顶栏、筛选区、表格等），仅以灰色遮罩表达。</li>
+            <li>任何真实交互（上传、切换区块、翻页、弹窗滚动）与后端数据。</li>
+          </ul>
+        </section>
+
+        <section id="pages-content">
+          <h2>页面与内容方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>页面/视图</th><th>页面作用</th><th>主要模块与内容</th><th>示例数据或素材</th><th>与其他页面的关系</th></tr></thead>
+              <tbody><tr>
+                <td data-label="页面/视图">编辑产品弹窗（视频/主图/站外推广图）</td>
+                <td data-label="页面作用">商品编辑弹窗滚动至媒体维护区域</td>
+                <td data-label="主要模块与内容">商品列表 / 区块菜单 / 视频表单 / 主图列表 / 站外推广图 / 底部按钮</td>
+                <td data-label="示例数据或素材">截图内 10 条商品、5 张主图、1 张推广图；assets/ 16 裁片 + 24 SVG</td>
+                <td data-label="与其他页面的关系">独立单页，无跳转</td>
+              </tr></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="interaction-states">
+          <h2>交互与状态方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr></thead>
+              <tbody>
+                <tr><td data-label="对象/场景">商品列表首行</td><td data-label="前置状态">当前编辑对象</td><td data-label="用户操作">—</td><td data-label="原型表现">#ffb366 描边 + #fffaf5 底卡片，行内显示删除/邮件图标</td><td data-label="后续状态">静态展示</td></tr>
+                <tr><td data-label="对象/场景">区块菜单「视频」</td><td data-label="前置状态">内容区滚动至视频区块</td><td data-label="用户操作">—</td><td data-label="原型表现">橙色文字 + 橙色摄像机图标 + 右缘 4×40 指示条</td><td data-label="后续状态">静态展示</td></tr>
+                <tr><td data-label="对象/场景">主图/推广图照片</td><td data-label="前置状态">已上传素材</td><td data-label="用户操作">—</td><td data-label="原型表现">照片底部叠加半透明分辨率角标（1200*1600 / 600*800）</td><td data-label="后续状态">静态展示</td></tr>
+                <tr><td data-label="对象/场景">主图拼图弹窗</td><td data-label="前置状态">默认隐藏（<code>open=false</code>）</td><td data-label="用户操作">外部按钮把 <code>open</code> 置 true；点标题栏右上 ×</td><td data-label="原型表现">无顶栏的拼图界面覆盖在编辑产品弹窗之上，44px 标题栏 + 灰遮罩，无底部操作按钮</td><td data-label="后续状态">关闭后回到隐藏</td></tr>
+                <tr><td data-label="对象/场景">拼图弹窗底栏 / 右栏</td><td data-label="前置状态">弹窗已打开</td><td data-label="用户操作">—</td><td data-label="原型表现">底栏只有「导出」（浅色）和「上传到主图」（绿色）；右栏「可选图片」列 5 张 1:1 示例图 + 标题右侧「上传」</td><td data-label="后续状态">静态展示</td></tr>
+                <tr><td data-label="对象/场景">可选图片</td><td data-label="前置状态">右栏有示例图</td><td data-label="用户操作">拖拽到某格 / 悬停点右上删除</td><td data-label="原型表现">拖拽落入目标格；悬停右上角出现删除按钮，点击移除该示例图（不再支持点击入格）</td><td data-label="后续状态">图进入画布格 / 示例图减少</td></tr>
+                <tr><td data-label="对象/场景">画布空格</td><td data-label="前置状态">格内无图</td><td data-label="用户操作">点击上传 / 接收拖拽</td><td data-label="原型表现">文案「点击添加图片或从可选图片拖放到此处」，点击触发文件选择可一次多张、数量不超过空格子数、按顺序填入空格子；拖拽落点填入图片</td><td data-label="后续状态">变为已填格</td></tr>
+                <tr><td data-label="对象/场景">画布已填格</td><td data-label="前置状态">格内有图</td><td data-label="用户操作">滚轮 / 按住拖拽 / 悬停点右上删除</td><td data-label="原型表现">滚轮缩放 1–3 倍，放大后可拖拽平移可视区域；悬停右上角删除按钮清空该格图像</td><td data-label="后续状态">缩放平移 / 变回空格</td></tr>
+                <tr><td data-label="对象/场景">「上传到主图」</td><td data-label="前置状态">弹窗已打开</td><td data-label="用户操作">点击按钮</td><td data-label="原型表现">弹出「提示」确认框：主图上传数量已达上限，是否继续上传并替换掉最后一张主图；「关闭」/「上传并替换」/ × 均关闭</td><td data-label="后续状态">回到拼图弹窗</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="design-basis">
+          <h2>设计基底与原型特有调整</h2>
+          <ul>
+            <li>采用的设计基底：<code>编辑产品弹窗样式.txt</code> 的 cssVariables（primary #ff781f、文字 #303133/#606266/#909399/#c0c4cc、边框 #dcdfe6/#ebeef5、danger #ff4949、按钮圆角 8px）。</li>
+            <li>继承方式：以截图实测像素为准，样式文件作为 token 参照。</li>
+            <li>实测与样式文件的偏差（保留截图事实）：批量美图/下载图片按钮圆角实测 4px（非 8px）；翻页「下一页」描边为蓝色 #409eff（线上遗留样式）；邮件图标为绿色 #67c23a 系。</li>
+          </ul>
+        </section>
+
+        <section id="asset-decisions">
+          <h2>素材取舍</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>素材</th><th>路线</th><th>决策理由</th></tr></thead>
+              <tbody>
+                <tr><td data-label="素材">10 商品缩略图、5 主图照片、1 站外推广图</td><td data-label="路线">clean-crop 直接复用（reuse，自原图裁切）</td><td data-label="决策理由">照片类素材无法 CSS 复刻，裁片目检干净、无需去底或再生成</td></tr>
+                <tr><td data-label="素材">关闭/收起/删除/邮件/翻页/摄像机/云上传/15 个菜单图标</td><td data-label="路线">SVG 矢量复刻</td><td data-label="决策理由">规则线性图标，可无损缩放</td></tr>
+                <tr><td data-label="素材">全部界面文字（含被裁切的「视频」标题残片）</td><td data-label="路线">HTML 文本渲染 + overflow 裁切</td><td data-label="决策理由">普通 UI 字体即可匹配，无艺术字；残片用 2px 高容器裁切还原</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="open-questions">
+          <h2>当前待确认事项</h2>
+          <ul>
+            <li>云上传图标按线性复刻（原图为面性小图标，1:1 尺寸下差异极小），是否接受？</li>
+            <li>商品标题省略号断词位置与截图存在 1–2 字符差异（字体度量所致），是否接受？</li>
+            <li>「简单拼图」左栏模板缩略图按栅格块示意重建（非官方图标），7 张组内前两个模板的分格与官方略有出入，是否需要逐一对齐？</li>
+          </ul>
+        </section>
+
+        <section id="decision-history">
+          <h2>用户重要决策与变更</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr></thead>
+              <tbody>
+                <tr><td data-label="日期">2026-10-13</td><td data-label="用户决策或变更">要求精准还原弹窗样式；确认落点为新建独立原型</td><td data-label="对当前原型的影响">创建 <code>edit-product-dialog-media</code>，弹窗外仅灰遮罩，无交互</td></tr>
+                <tr><td data-label="日期">2026-10-13</td><td data-label="用户决策或变更">要求把开源「简单拼图」页面复刻后放进本原型的弹窗内，只还原样式、不考虑交互</td><td data-label="对当前原型的影响">新增 <code>components/CollageDialog.tsx</code>、<code>collage.css</code>、<code>assets/app-logo.svg</code>；拼图弹窗默认展开并覆盖在编辑产品弹窗之上</td></tr>
+                <tr><td data-label="日期">2026-10-13</td><td data-label="用户决策或变更">拼图弹窗改为带状态栏和关闭按钮、不要操作按钮、默认隐藏，由用户在其他按钮上调起</td><td data-label="对当前原型的影响">新增 44px 标题栏「主图拼图」+ 右上 ×；<code>CollageDialog</code> 改为 <code>open/onClose</code> 受控，<code>index.tsx</code> 持有 <code>collageOpen</code>（初始 false）；页面内容整体下移，画布行高压缩到 156px</td></tr>
+                <tr><td data-label="日期">2026-10-13</td><td data-label="用户决策或变更">四条批注：去掉开源站顶栏；底栏只留导出（改浅色）并新增「上传到主图」；删除「重置所有参数」；右栏宽度缩 1/3、清空内容改名「可选图片」并加「上传」按钮和示例图</td><td data-label="对当前原型的影响">删除 <code>.cp-header</code> 相关结构与样式、<code>assets/app-logo.svg</code>、参数面板（宽高比/滑块/背景色）与 <code>.cp-panel__foot</code>；<code>.cp-panel</code> 324→216px，新增 <code>.cp-panel__head/.cp-panel__upload/.cp-samples/.cp-sample</code>；底栏按钮改为 <code>.cp-tool--light</code> + <code>.cp-tool--primary</code>；三栏上移 44px，画布行高增至 206px</td></tr>
+                <tr><td data-label="日期">2026-10-13</td><td data-label="用户决策或变更">要求「上传」按钮点击后弹出「上传图片」弹窗，优先复用项目已有实现，按截图实现样式即可</td><td data-label="对当前原型的影响">复用 <code>auto-edit-dialog</code> 的上传图片弹窗，新增 <code>components/UploadImageDialog.tsx</code> + <code>upload-image.css</code>（自包含，z-index 40）；<code>CollageDialog</code> 内 <code>uploadOpen</code> 状态，「可选图片」标题右侧「上传」按钮打开，取消/确认/× 关闭</td></tr>
+                <tr><td data-label="日期">2026-10-13</td><td data-label="用户决策或变更">四条批注：空格文案改为「点击添加图片或从可选图片点击或拖放到此处」；「上传到主图」点击弹出替换上限确认框（关闭 / 上传并替换）；可选图片改 1:1、悬停右上删除、实现拖拽入格；已填格显示图片、滚轮缩放 + 拖拽平移、悬停右上删除清空该格</td><td data-label="对当前原型的影响"><code>CollageDialog</code> 新增 <code>slots</code>/<code>samples</code>/<code>confirmOpen</code> 状态与 <code>SlotCell</code> 组件（点击/拖拽落格、<code>onWheel</code> 缩放 1–3 倍、pointer 拖拽平移、悬停删除）；<code>collage.css</code> 新增 <code>.cp-slot--filled/.cp-slot__img/.cp-del</code>、<code>.cp-sample</code> 3/4→1/1、<code>.cp-confirm*</code> 确认弹窗（z-index 50）；「上传到主图」按钮接入 <code>onClick</code></td></tr>
+                <tr><td data-label="日期">2026-10-13</td><td data-label="用户决策或变更">五条批注：为画布格子和可选图片「标注交互」；「上传到主图」悬停要手型光标；已填格「清空按钮功能无效」需修复；补充 easy-collage 来源标注的改造说明（移除原生多处功能、保留模板/传图/拖动改露出、增加候选图自动引用主图、新增编辑后直传主图，并提示评估原生模板可编辑性）</td><td data-label="对当前原型的影响"><code>collage.css</code> 给 <code>.cp-tool</code> 加 <code>cursor: pointer</code>；<code>SlotCell</code> 已填格删除按钮加 <code>onPointerDown/onClick</code> 的 <code>stopPropagation</code>，修复放大后父格 <code>setPointerCapture</code> 抢走点击导致清空无效；<code>annotation-source.json</code> 新增 <code>collage-slot-interaction</code>/<code>collage-sample-interaction</code> 两个标注节点并扩写 <code>collage-embed-source</code> 正文，<code>.cp-canvas__grid</code>/<code>.cp-samples</code> 补 <code>data-annotation-id</code> 锚点</td></tr>
+                <tr><td data-label="日期">2026-10-13</td><td data-label="用户决策或变更">三条批注：可选图片交互标注「不是」（改为仅拖拽、去掉点击入格）；画布空格点击上传应支持一次多张、数量不超过空格子、提交后按序填入；空格文案删掉「点击或」</td><td data-label="对当前原型的影响"><code>CollageDialog</code> 隐藏 <code>&lt;input type=file multiple accept=image/*&gt;</code>，空格 <code>onPick</code> 改为触发文件选择、<code>onFilesChosen</code> 按 <code>emptyCount</code> 截断并用 <code>URL.createObjectURL</code> 顺序填入；移除 <code>addToFirstEmpty</code> 与可选图片 <code>onClick</code>（仅保留 <code>draggable</code>）；空格文案改为「点击添加图片或从可选图片拖放到此处」；<code>annotation-source.json</code> 改写 <code>collage-slot-interaction</code>/<code>collage-sample-interaction</code> 正文</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+
+      <article class="spec-page" data-spec-page="visual-1to1" hidden>
+        <h1>1:1 视觉主规格</h1>
+        <p class="hint">以下舞台保持源截图 viewport（1912×867，deviceScaleFactor 1）下的 1:1 尺寸；窄屏时横向滚动查看。</p>
+        <div class="stage-scroll">
+          <main class="reconstruction-stage" data-renderer="reconstruction-review-v1" data-model-calls-during-render="0">
+<div data-reconstruction-id="bg-dim" data-asset-action="reconstruct-css" style="position:absolute;left:0px;top:0px;width:1912px;height:867px;background-color:#7f7f7f;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:1"></div>
+<div data-reconstruction-id="dialog" data-asset-action="reconstruct-css" style="position:absolute;left:96px;top:52px;width:1720px;height:780px;background-color:#ffffff;border-radius:8px;box-shadow:rgba(0, 0, 0, 0.25) 0px 6px 28px 0px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:2"></div>
+<div data-reconstruction-id="dlg-title" data-asset-action="none" style="position:absolute;left:115px;top:70px;width:80px;height:24px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:16px;font-weight:500;line-height:24px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">编辑产品</div>
+<img data-reconstruction-id="dlg-close" data-asset-action="reconstruct-svg" style="position:absolute;left:1783px;top:75px;width:15px;height:15px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/close.svg" alt="">
+<div data-reconstruction-id="prod-1-card" data-asset-action="reconstruct-css" style="position:absolute;left:116px;top:120px;width:220px;height:60px;background-color:#fffaf5;border:1px solid #ffb366;border-radius:8px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<img data-reconstruction-id="thumb-1" data-asset-action="reuse" style="position:absolute;left:125px;top:129px;width:40px;height:40px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/thumb-1.png" alt="">
+<div data-reconstruction-id="prod-1-title" data-asset-action="none" style="position:absolute;left:163px;top:132px;width:172px;height:16px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:6" data-text-role="ui-text" data-render-mode="html-text">Shoulder Bags For Woma…</div>
+<div data-reconstruction-id="prod-1-state" data-asset-action="none" style="position:absolute;left:185px;top:153px;width:40px;height:16px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<img data-reconstruction-id="prod-trash" data-asset-action="reconstruct-svg" style="position:absolute;left:292px;top:153px;width:12px;height:16px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/trash.svg" alt="">
+<img data-reconstruction-id="prod-mail" data-asset-action="reconstruct-svg" style="position:absolute;left:311px;top:153px;width:16px;height:16px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/mail.svg" alt="">
+<img data-reconstruction-id="thumb-2" data-asset-action="reuse" style="position:absolute;left:125px;top:191px;width:40px;height:40px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/thumb-2.png" alt="">
+<div data-reconstruction-id="prod-2-title" data-asset-action="none" style="position:absolute;left:163px;top:195px;width:172px;height:16px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:6" data-text-role="ui-text" data-render-mode="html-text">【老方子】全身结星节蒲…</div>
+<div data-reconstruction-id="prod-2-state" data-asset-action="none" style="position:absolute;left:185px;top:216px;width:40px;height:16px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<img data-reconstruction-id="thumb-3" data-asset-action="reuse" style="position:absolute;left:125px;top:253px;width:40px;height:40px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/thumb-3.png" alt="">
+<div data-reconstruction-id="prod-3-title" data-asset-action="none" style="position:absolute;left:163px;top:258px;width:172px;height:16px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:6" data-text-role="ui-text" data-render-mode="html-text">Totes Luxury Handbag Qu…</div>
+<div data-reconstruction-id="prod-3-state" data-asset-action="none" style="position:absolute;left:185px;top:279px;width:40px;height:16px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<img data-reconstruction-id="thumb-4" data-asset-action="reuse" style="position:absolute;left:125px;top:315px;width:40px;height:40px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/thumb-4.png" alt="">
+<div data-reconstruction-id="prod-4-title" data-asset-action="none" style="position:absolute;left:163px;top:321px;width:172px;height:16px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:6" data-text-role="ui-text" data-render-mode="html-text">Large U-Back Tank Top for…</div>
+<div data-reconstruction-id="prod-4-state" data-asset-action="none" style="position:absolute;left:185px;top:342px;width:40px;height:16px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<img data-reconstruction-id="thumb-5" data-asset-action="reuse" style="position:absolute;left:125px;top:377px;width:40px;height:40px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/thumb-5.png" alt="">
+<div data-reconstruction-id="prod-5-title" data-asset-action="none" style="position:absolute;left:163px;top:384px;width:172px;height:16px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:6" data-text-role="ui-text" data-render-mode="html-text">4-Pack Extra Large Bath T…</div>
+<div data-reconstruction-id="prod-5-state" data-asset-action="none" style="position:absolute;left:185px;top:405px;width:40px;height:16px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<img data-reconstruction-id="thumb-6" data-asset-action="reuse" style="position:absolute;left:125px;top:439px;width:40px;height:40px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/thumb-6.png" alt="">
+<div data-reconstruction-id="prod-6-title" data-asset-action="none" style="position:absolute;left:163px;top:447px;width:172px;height:16px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:6" data-text-role="ui-text" data-render-mode="html-text">Extra Deep Pocket Bamboo…</div>
+<div data-reconstruction-id="prod-6-state" data-asset-action="none" style="position:absolute;left:185px;top:468px;width:40px;height:16px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<img data-reconstruction-id="thumb-7" data-asset-action="reuse" style="position:absolute;left:125px;top:501px;width:40px;height:40px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/thumb-7.png" alt="">
+<div data-reconstruction-id="prod-7-title" data-asset-action="none" style="position:absolute;left:163px;top:510px;width:172px;height:16px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:6" data-text-role="ui-text" data-render-mode="html-text">Autumn/Winter Fashion C…</div>
+<div data-reconstruction-id="prod-7-state" data-asset-action="none" style="position:absolute;left:185px;top:531px;width:40px;height:16px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<img data-reconstruction-id="thumb-8" data-asset-action="reuse" style="position:absolute;left:125px;top:563px;width:40px;height:40px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/thumb-8.png" alt="">
+<div data-reconstruction-id="prod-8-title" data-asset-action="none" style="position:absolute;left:163px;top:573px;width:172px;height:16px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:6" data-text-role="ui-text" data-render-mode="html-text">MCRG Walking Pad with I…</div>
+<div data-reconstruction-id="prod-8-state" data-asset-action="none" style="position:absolute;left:185px;top:594px;width:40px;height:16px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<img data-reconstruction-id="thumb-9" data-asset-action="reuse" style="position:absolute;left:125px;top:625px;width:40px;height:40px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/thumb-9.png" alt="">
+<div data-reconstruction-id="prod-9-title" data-asset-action="none" style="position:absolute;left:163px;top:636px;width:172px;height:16px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:6" data-text-role="ui-text" data-render-mode="html-text">14-inch Lightweight Foldin…</div>
+<div data-reconstruction-id="prod-9-state" data-asset-action="none" style="position:absolute;left:185px;top:657px;width:40px;height:16px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<img data-reconstruction-id="thumb-10" data-asset-action="reuse" style="position:absolute;left:125px;top:687px;width:40px;height:40px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/thumb-10.png" alt="">
+<div data-reconstruction-id="prod-10-title" data-asset-action="none" style="position:absolute;left:163px;top:699px;width:172px;height:16px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:6" data-text-role="ui-text" data-render-mode="html-text">2pcs Chain Design Shoe …</div>
+<div data-reconstruction-id="prod-10-state" data-asset-action="none" style="position:absolute;left:185px;top:720px;width:40px;height:16px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">未编辑</div>
+<div data-reconstruction-id="pager-prev" data-asset-action="reconstruct-css" style="position:absolute;left:190px;top:746px;width:28px;height:28px;background-color:#ffffff;border:1px solid #e4e7ed;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<img data-reconstruction-id="pager-prev-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:199px;top:752px;width:10px;height:12px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/pager-prev.svg" alt="">
+<div data-reconstruction-id="pager-next" data-asset-action="reconstruct-css" style="position:absolute;left:234px;top:746px;width:28px;height:28px;background-color:#ffffff;border:1px solid #409eff;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<img data-reconstruction-id="pager-next-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:243px;top:752px;width:10px;height:12px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/pager-next.svg" alt="">
+<img data-reconstruction-id="tabs-collapse" data-asset-action="reconstruct-svg" style="position:absolute;left:346px;top:119px;width:14px;height:16px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/collapse.svg" alt="">
+<div data-reconstruction-id="tab-basic" data-asset-action="none" style="position:absolute;left:371px;top:118px;width:30px;height:20px;color:#ff781f;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:20px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">基本</div>
+<div data-reconstruction-id="tab-sep-1" data-asset-action="reconstruct-css" style="position:absolute;left:412px;top:124px;width:1px;height:12px;background-color:#dcdfe6;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<div data-reconstruction-id="tab-detail" data-asset-action="none" style="position:absolute;left:425px;top:120px;width:30px;height:20px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:20px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">详情</div>
+<div data-reconstruction-id="tab-sep-2" data-asset-action="reconstruct-css" style="position:absolute;left:467px;top:124px;width:1px;height:12px;background-color:#dcdfe6;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<div data-reconstruction-id="tab-log" data-asset-action="none" style="position:absolute;left:480px;top:120px;width:30px;height:20px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:20px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">日志</div>
+<img data-reconstruction-id="menu-1-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:161px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-grid.svg" alt="">
+<div data-reconstruction-id="menu-1" data-asset-action="none" style="position:absolute;left:386px;top:159px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">状态/类目</div>
+<img data-reconstruction-id="menu-2-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:201px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-doc.svg" alt="">
+<div data-reconstruction-id="menu-2" data-asset-action="none" style="position:absolute;left:386px;top:199px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">产品信息</div>
+<img data-reconstruction-id="menu-3-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:241px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-tag.svg" alt="">
+<div data-reconstruction-id="menu-3" data-asset-action="none" style="position:absolute;left:386px;top:239px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">关键词</div>
+<img data-reconstruction-id="menu-4-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:281px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-edit.svg" alt="">
+<div data-reconstruction-id="menu-4" data-asset-action="none" style="position:absolute;left:386px;top:279px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">短描</div>
+<img data-reconstruction-id="menu-5-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:321px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-table.svg" alt="">
+<div data-reconstruction-id="menu-5" data-asset-action="none" style="position:absolute;left:386px;top:319px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">产品属性</div>
+<img data-reconstruction-id="menu-6-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:361px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-video.svg" alt="">
+<div data-reconstruction-id="menu-6" data-asset-action="none" style="position:absolute;left:386px;top:359px;width:96px;height:18px;color:#ff781f;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:500;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">视频</div>
+<img data-reconstruction-id="menu-7-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:401px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-image.svg" alt="">
+<div data-reconstruction-id="menu-7" data-asset-action="none" style="position:absolute;left:386px;top:399px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">主图</div>
+<img data-reconstruction-id="menu-8-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:441px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-image-o.svg" alt="">
+<div data-reconstruction-id="menu-8" data-asset-action="none" style="position:absolute;left:386px;top:439px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">站外推广图</div>
+<img data-reconstruction-id="menu-9-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:481px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-box.svg" alt="">
+<div data-reconstruction-id="menu-9" data-asset-action="none" style="position:absolute;left:386px;top:479px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">产品规格</div>
+<img data-reconstruction-id="menu-10-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:521px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-money.svg" alt="">
+<div data-reconstruction-id="menu-10" data-asset-action="none" style="position:absolute;left:386px;top:519px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">价格 USD</div>
+<img data-reconstruction-id="menu-11-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:561px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-gem.svg" alt="">
+<div data-reconstruction-id="menu-11" data-asset-action="none" style="position:absolute;left:386px;top:559px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">定制商品</div>
+<img data-reconstruction-id="menu-12-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:601px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-plan.svg" alt="">
+<div data-reconstruction-id="menu-12" data-asset-action="none" style="position:absolute;left:386px;top:599px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">销售方案</div>
+<img data-reconstruction-id="menu-13-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:641px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-headset.svg" alt="">
+<div data-reconstruction-id="menu-13" data-asset-action="none" style="position:absolute;left:386px;top:639px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">服务</div>
+<img data-reconstruction-id="menu-14-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:681px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-weight.svg" alt="">
+<div data-reconstruction-id="menu-14" data-asset-action="none" style="position:absolute;left:386px;top:679px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">重量/包装</div>
+<img data-reconstruction-id="menu-15-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:362px;top:721px;width:14px;height:14px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/m-link.svg" alt="">
+<div data-reconstruction-id="menu-15" data-asset-action="none" style="position:absolute;left:386px;top:719px;width:96px;height:18px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;font-weight:400;line-height:18px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">货源/系统信息</div>
+<div data-reconstruction-id="menu-active-bar" data-asset-action="reconstruct-css" style="position:absolute;left:510px;top:348px;width:4px;height:40px;background-color:#ff781f;border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<div data-reconstruction-id="content-bg" data-asset-action="reconstruct-css" style="position:absolute;left:514px;top:148px;width:1282px;height:629px;background-color:#f5f5f5;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:3"></div>
+<div data-reconstruction-id="video-card" data-asset-action="reconstruct-css" style="position:absolute;left:526px;top:148px;width:1258px;height:210px;background-color:#ffffff;border-radius:8px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:4"></div>
+<div data-reconstruction-id="video-title-clip" data-asset-action="none" style="position:absolute;left:546px;top:148px;width:34px;height:2px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:16px;font-weight:700;line-height:14px;overflow:hidden;z-index:6" data-text-role="ui-text" data-render-mode="html-text">视频</div>
+<div data-reconstruction-id="video-divider" data-asset-action="reconstruct-css" style="position:absolute;left:546px;top:165px;width:1218px;height:1px;background-color:#ebeef5;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<div data-reconstruction-id="video-name-label" data-asset-action="none" style="position:absolute;left:545px;top:185px;width:56px;height:16px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">视频名称</div>
+<div data-reconstruction-id="video-name-input" data-asset-action="reconstruct-css" style="position:absolute;left:614px;top:179px;width:250px;height:32px;background-color:#ffffff;border:1px solid #dcdfe6;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<div data-reconstruction-id="video-name-ph" data-asset-action="none" style="position:absolute;left:630px;top:187px;width:110px;height:16px;color:#c0c4cc;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;white-space:nowrap;z-index:6" data-text-role="ui-text" data-render-mode="html-text">请输入视频名称</div>
+<div data-reconstruction-id="video-name-count" data-asset-action="none" style="position:absolute;left:831px;top:188px;width:26px;height:12px;color:#c0c4cc;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:12px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">0/30</div>
+<div data-reconstruction-id="video-desc-label" data-asset-action="none" style="position:absolute;left:887px;top:185px;width:56px;height:16px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">视频描述</div>
+<div data-reconstruction-id="video-desc-input" data-asset-action="reconstruct-css" style="position:absolute;left:956px;top:179px;width:808px;height:32px;background-color:#ffffff;border:1px solid #dcdfe6;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<div data-reconstruction-id="video-desc-ph" data-asset-action="none" style="position:absolute;left:972px;top:187px;width:110px;height:16px;color:#c0c4cc;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;white-space:nowrap;z-index:6" data-text-role="ui-text" data-render-mode="html-text">请输入视频描述</div>
+<div data-reconstruction-id="video-desc-count" data-asset-action="none" style="position:absolute;left:1725px;top:188px;width:32px;height:12px;color:#c0c4cc;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:12px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">0/200</div>
+<div data-reconstruction-id="video-upload-box" data-asset-action="reconstruct-css" style="position:absolute;left:546px;top:221px;width:160px;height:120px;background-color:#ffffff;border:1px dashed #dcdfe6;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<img data-reconstruction-id="video-cam-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:612px;top:259px;width:26px;height:20px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/camera-video.svg" alt="">
+<div data-reconstruction-id="video-upload-text" data-asset-action="none" style="position:absolute;left:599px;top:289px;width:56px;height:16px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">上传视频</div>
+<div data-reconstruction-id="main-card" data-asset-action="reconstruct-css" style="position:absolute;left:526px;top:369px;width:1258px;height:232px;background-color:#ffffff;border-radius:8px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:4"></div>
+<div data-reconstruction-id="main-star" data-asset-action="none" style="position:absolute;left:540px;top:381px;width:10px;height:22px;color:#ff4949;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:16px;line-height:22px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">*</div>
+<div data-reconstruction-id="main-title" data-asset-action="none" style="position:absolute;left:552px;top:378px;width:34px;height:22px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:16px;font-weight:700;line-height:22px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">主图</div>
+<div data-reconstruction-id="main-count" data-asset-action="none" style="position:absolute;left:589px;top:385px;width:24px;height:14px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:14px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">5/8</div>
+<div data-reconstruction-id="main-divider" data-asset-action="reconstruct-css" style="position:absolute;left:546px;top:415px;width:1218px;height:1px;background-color:#ebeef5;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<button data-reconstruction-id="btn-batch-1" data-asset-action="none" style="position:absolute;left:546px;top:428px;width:80px;height:28px;background-color:#ff781f;border-radius:4px;color:#ffffff;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;letter-spacing:2px;line-height:28px;text-align:center;z-index:6" data-text-role="ui-text" data-render-mode="html-text">批量美图</button>
+<button data-reconstruction-id="btn-download" data-asset-action="none" style="position:absolute;left:636px;top:428px;width:80px;height:28px;background-color:#ff781f;border-radius:4px;color:#ffffff;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;letter-spacing:2px;line-height:28px;text-align:center;z-index:6" data-text-role="ui-text" data-render-mode="html-text">下载图片</button>
+<div data-reconstruction-id="main-upload-tile" data-asset-action="reconstruct-css" style="position:absolute;left:546px;top:471px;width:100px;height:100px;background-color:#ffffff;border:1px dashed #dcdfe6;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<img data-reconstruction-id="main-cloud-ic" data-asset-action="reconstruct-svg" style="position:absolute;left:585px;top:498px;width:22px;height:18px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/icons/cloud.svg" alt="">
+<div data-reconstruction-id="main-upload-text" data-asset-action="none" style="position:absolute;left:553px;top:519px;width:98px;height:16px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:16px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">点击/Ctrl+V粘贴</div>
+<div data-reconstruction-id="main-frame-1" data-asset-action="reconstruct-css" style="position:absolute;left:656px;top:471px;width:100px;height:100px;background-color:#ffffff;border:2px solid #e6e6e6;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<img data-reconstruction-id="main-1" data-asset-action="reuse" style="position:absolute;left:658px;top:473px;width:96px;height:96px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/main-1.png" alt="">
+<div data-reconstruction-id="main-badge-bg-1" data-asset-action="reconstruct-css" style="position:absolute;left:663px;top:550px;width:66px;height:17px;background-color:rgba(255, 255, 255, 0.45);border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:7"></div>
+<div data-reconstruction-id="main-badge-1" data-asset-action="none" style="position:absolute;left:663px;top:550px;width:66px;height:17px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:17px;text-align:center;z-index:8" data-text-role="ui-text" data-render-mode="html-text">1200*1600</div>
+<div data-reconstruction-id="main-frame-2" data-asset-action="reconstruct-css" style="position:absolute;left:766px;top:471px;width:100px;height:100px;background-color:#ffffff;border:2px solid #e6e6e6;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<img data-reconstruction-id="main-2" data-asset-action="reuse" style="position:absolute;left:768px;top:473px;width:96px;height:96px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/main-2.png" alt="">
+<div data-reconstruction-id="main-badge-bg-2" data-asset-action="reconstruct-css" style="position:absolute;left:773px;top:550px;width:66px;height:17px;background-color:rgba(255, 255, 255, 0.45);border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:7"></div>
+<div data-reconstruction-id="main-badge-2" data-asset-action="none" style="position:absolute;left:773px;top:550px;width:66px;height:17px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:17px;text-align:center;z-index:8" data-text-role="ui-text" data-render-mode="html-text">1200*1600</div>
+<div data-reconstruction-id="main-frame-3" data-asset-action="reconstruct-css" style="position:absolute;left:876px;top:471px;width:100px;height:100px;background-color:#ffffff;border:2px solid #e6e6e6;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<img data-reconstruction-id="main-3" data-asset-action="reuse" style="position:absolute;left:878px;top:473px;width:96px;height:96px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/main-3.png" alt="">
+<div data-reconstruction-id="main-badge-bg-3" data-asset-action="reconstruct-css" style="position:absolute;left:883px;top:550px;width:66px;height:17px;background-color:rgba(255, 255, 255, 0.45);border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:7"></div>
+<div data-reconstruction-id="main-badge-3" data-asset-action="none" style="position:absolute;left:883px;top:550px;width:66px;height:17px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:17px;text-align:center;z-index:8" data-text-role="ui-text" data-render-mode="html-text">1200*1600</div>
+<div data-reconstruction-id="main-frame-4" data-asset-action="reconstruct-css" style="position:absolute;left:986px;top:471px;width:100px;height:100px;background-color:#ffffff;border:2px solid #e6e6e6;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<img data-reconstruction-id="main-4" data-asset-action="reuse" style="position:absolute;left:988px;top:473px;width:96px;height:96px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/main-4.png" alt="">
+<div data-reconstruction-id="main-badge-bg-4" data-asset-action="reconstruct-css" style="position:absolute;left:993px;top:550px;width:54px;height:17px;background-color:rgba(255, 255, 255, 0.45);border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:7"></div>
+<div data-reconstruction-id="main-badge-4" data-asset-action="none" style="position:absolute;left:993px;top:550px;width:54px;height:17px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:17px;text-align:center;z-index:8" data-text-role="ui-text" data-render-mode="html-text">600*800</div>
+<div data-reconstruction-id="main-frame-5" data-asset-action="reconstruct-css" style="position:absolute;left:1096px;top:471px;width:100px;height:100px;background-color:#ffffff;border:2px solid #e6e6e6;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<img data-reconstruction-id="main-5" data-asset-action="reuse" style="position:absolute;left:1098px;top:473px;width:96px;height:96px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/main-5.png" alt="">
+<div data-reconstruction-id="main-badge-bg-5" data-asset-action="reconstruct-css" style="position:absolute;left:1103px;top:550px;width:54px;height:17px;background-color:rgba(255, 255, 255, 0.45);border-radius:2px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:7"></div>
+<div data-reconstruction-id="main-badge-5" data-asset-action="none" style="position:absolute;left:1103px;top:550px;width:54px;height:17px;color:#606266;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:17px;text-align:center;z-index:8" data-text-role="ui-text" data-render-mode="html-text">600*800</div>
+<div data-reconstruction-id="promo-card" data-asset-action="reconstruct-css" style="position:absolute;left:526px;top:612px;width:1258px;height:165px;background-color:#ffffff;border-radius:8px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:4"></div>
+<div data-reconstruction-id="promo-star" data-asset-action="none" style="position:absolute;left:540px;top:624px;width:10px;height:22px;color:#ff4949;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:16px;line-height:22px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">*</div>
+<div data-reconstruction-id="promo-title" data-asset-action="none" style="position:absolute;left:552px;top:622px;width:80px;height:22px;color:#303133;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:16px;font-weight:700;line-height:22px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">站外推广图</div>
+<div data-reconstruction-id="promo-count" data-asset-action="none" style="position:absolute;left:624px;top:629px;width:20px;height:14px;color:#909399;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:12px;line-height:14px;z-index:6" data-text-role="ui-text" data-render-mode="html-text">1/1</div>
+<div data-reconstruction-id="promo-divider" data-asset-action="reconstruct-css" style="position:absolute;left:546px;top:659px;width:1218px;height:1px;background-color:#ebeef5;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<button data-reconstruction-id="btn-batch-2" data-asset-action="none" style="position:absolute;left:546px;top:674px;width:80px;height:28px;background-color:#ff781f;border-radius:4px;color:#ffffff;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;letter-spacing:2px;line-height:28px;text-align:center;z-index:6" data-text-role="ui-text" data-render-mode="html-text">批量美图</button>
+<div data-reconstruction-id="promo-frame-1" data-asset-action="reconstruct-css" style="position:absolute;left:546px;top:715px;width:100px;height:100px;background-color:#ffffff;border:2px solid #e6e6e6;border-radius:4px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<img data-reconstruction-id="promo-1" data-asset-action="reuse" style="position:absolute;left:548px;top:717px;width:96px;height:60px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:6" src="../assets/promo-1.png" alt="">
+<div data-reconstruction-id="footer-bar" data-asset-action="reconstruct-css" style="position:absolute;left:96px;top:777px;width:1720px;height:55px;background-color:#ffffff;border-radius:0 0 8px 8px;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;z-index:5"></div>
+<button data-reconstruction-id="btn-close" data-asset-action="none" style="position:absolute;left:816px;top:786px;width:74px;height:36px;background-color:#ffffff;border:1px solid #ff781f;border-radius:8px;color:#ff781f;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;letter-spacing:4px;line-height:34px;text-align:center;z-index:6" data-text-role="ui-text" data-render-mode="html-text">关闭</button>
+<button data-reconstruction-id="btn-save" data-asset-action="none" style="position:absolute;left:900px;top:786px;width:74px;height:36px;background-color:#ff781f;border-radius:8px;color:#ffffff;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;letter-spacing:4px;line-height:36px;text-align:center;z-index:6" data-text-role="ui-text" data-render-mode="html-text">保存</button>
+<button data-reconstruction-id="btn-save-publish" data-asset-action="none" style="position:absolute;left:984px;top:786px;width:112px;height:36px;background-color:#ff781f;border-radius:8px;color:#ffffff;font-family:&quot;Helvetica Neue&quot;, Helvetica, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif;font-size:14px;line-height:36px;text-align:center;z-index:6" data-text-role="ui-text" data-render-mode="html-text">保存并发布</button>
+</main>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const navItems = [...document.querySelectorAll('[data-page-target]')];
+    const pages = [...document.querySelectorAll('[data-spec-page]')];
+
+    const showPage = (pageId) => {
+      for (const navItem of navItems) {
+        const isCurrent = navItem.dataset.pageTarget === pageId;
+        if (isCurrent) {
+          navItem.setAttribute('aria-current', 'page');
+        } else {
+          navItem.removeAttribute('aria-current');
+        }
+      }
+
+      for (const page of pages) {
+        page.hidden = page.dataset.specPage !== pageId;
+      }
+    };
+
+    for (const navItem of navItems) {
+      navItem.addEventListener('click', () => showPage(navItem.dataset.pageTarget));
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "columns": 4,
+  "rows": 4,
+  "cellWidth": 123,
+  "cellHeight": 124,
+  "width": 492,
+  "height": 496,
+  "transparentBackground": true,
+  "cells": [
+    {
+      "id": "thumb-1",
+      "x": 35,
+      "y": 37,
+      "width": 52,
+      "height": 50,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-2",
+      "x": 158,
+      "y": 42,
+      "width": 52,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-3",
+      "x": 281,
+      "y": 41,
+      "width": 52,
+      "height": 41,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-4",
+      "x": 404,
+      "y": 42,
+      "width": 52,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-5",
+      "x": 35,
+      "y": 166,
+      "width": 52,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-6",
+      "x": 158,
+      "y": 166,
+      "width": 52,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-7",
+      "x": 281,
+      "y": 166,
+      "width": 52,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-8",
+      "x": 404,
+      "y": 166,
+      "width": 52,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-9",
+      "x": 35,
+      "y": 290,
+      "width": 52,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-10",
+      "x": 158,
+      "y": 290,
+      "width": 52,
+      "height": 40,
+      "sourcePass": 1
+    },
+    {
+      "id": "main-1",
+      "x": 269,
+      "y": 260,
+      "width": 77,
+      "height": 100,
+      "sourcePass": 1
+    },
+    {
+      "id": "main-2",
+      "x": 393,
+      "y": 260,
+      "width": 75,
+      "height": 100,
+      "sourcePass": 1
+    },
+    {
+      "id": "main-3",
+      "x": 23,
+      "y": 384,
+      "width": 77,
+      "height": 100,
+      "sourcePass": 1
+    },
+    {
+      "id": "main-4",
+      "x": 146,
+      "y": 384,
+      "width": 77,
+      "height": 100,
+      "sourcePass": 1
+    },
+    {
+      "id": "main-5",
+      "x": 268,
+      "y": 384,
+      "width": 79,
+      "height": 100,
+      "sourcePass": 1
+    },
+    {
+      "id": "promo-1",
+      "x": 381,
+      "y": 403,
+      "width": 99,
+      "height": 62,
+      "sourcePass": 1
+    }
+  ]
+}

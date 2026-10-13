@@ -1,0 +1,1836 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "source": "current-agent",
+  "regions": [
+    {
+      "id": "dlg-title",
+      "text": "编辑产品",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 60,
+        "top": 83,
+        "right": 97,
+        "bottom": 106
+      },
+      "points": [
+        [
+          114,
+          71
+        ],
+        [
+          185,
+          71
+        ],
+        [
+          185,
+          91
+        ],
+        [
+          114,
+          91
+        ]
+      ]
+    },
+    {
+      "id": "tab-basic",
+      "text": "基本",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 194,
+        "top": 140,
+        "right": 209,
+        "bottom": 161
+      },
+      "points": [
+        [
+          370,
+          121
+        ],
+        [
+          399,
+          121
+        ],
+        [
+          399,
+          139
+        ],
+        [
+          370,
+          139
+        ]
+      ]
+    },
+    {
+      "id": "tab-detail",
+      "text": "详情",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 228,
+        "top": 140,
+        "right": 242,
+        "bottom": 161
+      },
+      "points": [
+        [
+          435,
+          121
+        ],
+        [
+          462,
+          121
+        ],
+        [
+          462,
+          139
+        ],
+        [
+          435,
+          139
+        ]
+      ]
+    },
+    {
+      "id": "tab-log",
+      "text": "日志",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 251,
+        "top": 140,
+        "right": 265,
+        "bottom": 161
+      },
+      "points": [
+        [
+          479,
+          121
+        ],
+        [
+          506,
+          121
+        ],
+        [
+          506,
+          139
+        ],
+        [
+          479,
+          139
+        ]
+      ]
+    },
+    {
+      "id": "menu-1",
+      "text": "状态/类目",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 183,
+        "right": 238,
+        "bottom": 204
+      },
+      "points": [
+        [
+          384,
+          158
+        ],
+        [
+          455,
+          158
+        ],
+        [
+          455,
+          176
+        ],
+        [
+          384,
+          176
+        ]
+      ]
+    },
+    {
+      "id": "menu-2",
+      "text": "产品信息",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 234,
+        "right": 233,
+        "bottom": 255
+      },
+      "points": [
+        [
+          384,
+          202
+        ],
+        [
+          445,
+          202
+        ],
+        [
+          445,
+          221
+        ],
+        [
+          384,
+          221
+        ]
+      ]
+    },
+    {
+      "id": "menu-3",
+      "text": "关键词",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 285,
+        "right": 222,
+        "bottom": 306
+      },
+      "points": [
+        [
+          384,
+          247
+        ],
+        [
+          424,
+          247
+        ],
+        [
+          424,
+          265
+        ],
+        [
+          384,
+          265
+        ]
+      ]
+    },
+    {
+      "id": "menu-4",
+      "text": "短描",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 336,
+        "right": 217,
+        "bottom": 356
+      },
+      "points": [
+        [
+          384,
+          291
+        ],
+        [
+          414,
+          291
+        ],
+        [
+          414,
+          308
+        ],
+        [
+          384,
+          308
+        ]
+      ]
+    },
+    {
+      "id": "menu-5",
+      "text": "产品属性",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 386,
+        "right": 233,
+        "bottom": 407
+      },
+      "points": [
+        [
+          384,
+          334
+        ],
+        [
+          445,
+          334
+        ],
+        [
+          445,
+          352
+        ],
+        [
+          384,
+          352
+        ]
+      ]
+    },
+    {
+      "id": "menu-6",
+      "text": "视频",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 437,
+        "right": 217,
+        "bottom": 458
+      },
+      "points": [
+        [
+          384,
+          378
+        ],
+        [
+          414,
+          378
+        ],
+        [
+          414,
+          397
+        ],
+        [
+          384,
+          397
+        ]
+      ]
+    },
+    {
+      "id": "menu-7",
+      "text": "主图",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 488,
+        "right": 217,
+        "bottom": 509
+      },
+      "points": [
+        [
+          384,
+          423
+        ],
+        [
+          414,
+          423
+        ],
+        [
+          414,
+          441
+        ],
+        [
+          384,
+          441
+        ]
+      ]
+    },
+    {
+      "id": "menu-8",
+      "text": "站外推广图",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 539,
+        "right": 241,
+        "bottom": 559
+      },
+      "points": [
+        [
+          384,
+          467
+        ],
+        [
+          460,
+          467
+        ],
+        [
+          460,
+          484
+        ],
+        [
+          384,
+          484
+        ]
+      ]
+    },
+    {
+      "id": "menu-9",
+      "text": "产品规格",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 589,
+        "right": 233,
+        "bottom": 610
+      },
+      "points": [
+        [
+          384,
+          510
+        ],
+        [
+          445,
+          510
+        ],
+        [
+          445,
+          528
+        ],
+        [
+          384,
+          528
+        ]
+      ]
+    },
+    {
+      "id": "menu-10",
+      "text": "价格 USD",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 640,
+        "right": 235,
+        "bottom": 661
+      },
+      "points": [
+        [
+          384,
+          554
+        ],
+        [
+          449,
+          554
+        ],
+        [
+          449,
+          573
+        ],
+        [
+          384,
+          573
+        ]
+      ]
+    },
+    {
+      "id": "menu-11",
+      "text": "定制商品",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 691,
+        "right": 233,
+        "bottom": 712
+      },
+      "points": [
+        [
+          384,
+          599
+        ],
+        [
+          445,
+          599
+        ],
+        [
+          445,
+          617
+        ],
+        [
+          384,
+          617
+        ]
+      ]
+    },
+    {
+      "id": "menu-12",
+      "text": "销售方案",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 742,
+        "right": 233,
+        "bottom": 762
+      },
+      "points": [
+        [
+          384,
+          643
+        ],
+        [
+          445,
+          643
+        ],
+        [
+          445,
+          660
+        ],
+        [
+          384,
+          660
+        ]
+      ]
+    },
+    {
+      "id": "menu-13",
+      "text": "服务",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 792,
+        "right": 217,
+        "bottom": 813
+      },
+      "points": [
+        [
+          384,
+          686
+        ],
+        [
+          414,
+          686
+        ],
+        [
+          414,
+          704
+        ],
+        [
+          384,
+          704
+        ]
+      ]
+    },
+    {
+      "id": "menu-14",
+      "text": "重量/包装",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 843,
+        "right": 235,
+        "bottom": 864
+      },
+      "points": [
+        [
+          384,
+          730
+        ],
+        [
+          449,
+          730
+        ],
+        [
+          449,
+          749
+        ],
+        [
+          384,
+          749
+        ]
+      ]
+    },
+    {
+      "id": "menu-15",
+      "text": "货源/系统信息",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 201,
+        "top": 894,
+        "right": 248,
+        "bottom": 915
+      },
+      "points": [
+        [
+          384,
+          775
+        ],
+        [
+          474,
+          775
+        ],
+        [
+          474,
+          793
+        ],
+        [
+          384,
+          793
+        ]
+      ]
+    },
+    {
+      "id": "prod-1-title",
+      "text": "Shoulder Bags For Woma…",
+      "confidence": 0.95,
+      "bounds": {
+        "left": 97,
+        "top": 152,
+        "right": 174,
+        "bottom": 171
+      },
+      "points": [
+        [
+          185,
+          131
+        ],
+        [
+          332,
+          131
+        ],
+        [
+          332,
+          148
+        ],
+        [
+          185,
+          148
+        ]
+      ]
+    },
+    {
+      "id": "prod-1-state",
+      "text": "未编辑",
+      "confidence": 0.97,
+      "bounds": {
+        "left": 97,
+        "top": 179,
+        "right": 116,
+        "bottom": 197
+      },
+      "points": [
+        [
+          185,
+          155
+        ],
+        [
+          221,
+          155
+        ],
+        [
+          221,
+          170
+        ],
+        [
+          185,
+          170
+        ]
+      ]
+    },
+    {
+      "id": "prod-2-title",
+      "text": "【老方子】全身结星节蒲…",
+      "confidence": 0.93,
+      "bounds": {
+        "left": 97,
+        "top": 226,
+        "right": 172,
+        "bottom": 245
+      },
+      "points": [
+        [
+          185,
+          195
+        ],
+        [
+          328,
+          195
+        ],
+        [
+          328,
+          212
+        ],
+        [
+          185,
+          212
+        ]
+      ]
+    },
+    {
+      "id": "prod-2-state",
+      "text": "未编辑",
+      "confidence": 0.97,
+      "bounds": {
+        "left": 97,
+        "top": 253,
+        "right": 116,
+        "bottom": 271
+      },
+      "points": [
+        [
+          185,
+          219
+        ],
+        [
+          221,
+          219
+        ],
+        [
+          221,
+          234
+        ],
+        [
+          185,
+          234
+        ]
+      ]
+    },
+    {
+      "id": "prod-3-title",
+      "text": "Totes Luxury Handbag Qu…",
+      "confidence": 0.95,
+      "bounds": {
+        "left": 97,
+        "top": 300,
+        "right": 174,
+        "bottom": 318
+      },
+      "points": [
+        [
+          185,
+          260
+        ],
+        [
+          332,
+          260
+        ],
+        [
+          332,
+          275
+        ],
+        [
+          185,
+          275
+        ]
+      ]
+    },
+    {
+      "id": "prod-3-state",
+      "text": "未编辑",
+      "confidence": 0.97,
+      "bounds": {
+        "left": 97,
+        "top": 326,
+        "right": 116,
+        "bottom": 345
+      },
+      "points": [
+        [
+          185,
+          282
+        ],
+        [
+          221,
+          282
+        ],
+        [
+          221,
+          299
+        ],
+        [
+          185,
+          299
+        ]
+      ]
+    },
+    {
+      "id": "prod-4-title",
+      "text": "Large U-Back Tank Top for…",
+      "confidence": 0.95,
+      "bounds": {
+        "left": 97,
+        "top": 374,
+        "right": 175,
+        "bottom": 392
+      },
+      "points": [
+        [
+          185,
+          324
+        ],
+        [
+          334,
+          324
+        ],
+        [
+          334,
+          339
+        ],
+        [
+          185,
+          339
+        ]
+      ]
+    },
+    {
+      "id": "prod-4-state",
+      "text": "未编辑",
+      "confidence": 0.97,
+      "bounds": {
+        "left": 97,
+        "top": 400,
+        "right": 116,
+        "bottom": 419
+      },
+      "points": [
+        [
+          185,
+          346
+        ],
+        [
+          221,
+          346
+        ],
+        [
+          221,
+          363
+        ],
+        [
+          185,
+          363
+        ]
+      ]
+    },
+    {
+      "id": "prod-5-title",
+      "text": "4-Pack Extra Large Bath T…",
+      "confidence": 0.95,
+      "bounds": {
+        "left": 97,
+        "top": 448,
+        "right": 173,
+        "bottom": 466
+      },
+      "points": [
+        [
+          185,
+          388
+        ],
+        [
+          330,
+          388
+        ],
+        [
+          330,
+          404
+        ],
+        [
+          185,
+          404
+        ]
+      ]
+    },
+    {
+      "id": "prod-5-state",
+      "text": "未编辑",
+      "confidence": 0.97,
+      "bounds": {
+        "left": 97,
+        "top": 474,
+        "right": 116,
+        "bottom": 493
+      },
+      "points": [
+        [
+          185,
+          410
+        ],
+        [
+          221,
+          410
+        ],
+        [
+          221,
+          427
+        ],
+        [
+          185,
+          427
+        ]
+      ]
+    },
+    {
+      "id": "prod-6-title",
+      "text": "Extra Deep Pocket Bamboo…",
+      "confidence": 0.95,
+      "bounds": {
+        "left": 97,
+        "top": 521,
+        "right": 173,
+        "bottom": 540
+      },
+      "points": [
+        [
+          185,
+          451
+        ],
+        [
+          330,
+          451
+        ],
+        [
+          330,
+          468
+        ],
+        [
+          185,
+          468
+        ]
+      ]
+    },
+    {
+      "id": "prod-6-state",
+      "text": "未编辑",
+      "confidence": 0.97,
+      "bounds": {
+        "left": 97,
+        "top": 548,
+        "right": 116,
+        "bottom": 566
+      },
+      "points": [
+        [
+          185,
+          475
+        ],
+        [
+          221,
+          475
+        ],
+        [
+          221,
+          490
+        ],
+        [
+          185,
+          490
+        ]
+      ]
+    },
+    {
+      "id": "prod-7-title",
+      "text": "Autumn/Winter Fashion C…",
+      "confidence": 0.95,
+      "bounds": {
+        "left": 97,
+        "top": 595,
+        "right": 171,
+        "bottom": 614
+      },
+      "points": [
+        [
+          185,
+          515
+        ],
+        [
+          326,
+          515
+        ],
+        [
+          326,
+          532
+        ],
+        [
+          185,
+          532
+        ]
+      ]
+    },
+    {
+      "id": "prod-7-state",
+      "text": "未编辑",
+      "confidence": 0.97,
+      "bounds": {
+        "left": 97,
+        "top": 622,
+        "right": 116,
+        "bottom": 640
+      },
+      "points": [
+        [
+          185,
+          539
+        ],
+        [
+          221,
+          539
+        ],
+        [
+          221,
+          554
+        ],
+        [
+          185,
+          554
+        ]
+      ]
+    },
+    {
+      "id": "prod-8-title",
+      "text": "MCRG Walking Pad with I…",
+      "confidence": 0.95,
+      "bounds": {
+        "left": 97,
+        "top": 669,
+        "right": 173,
+        "bottom": 687
+      },
+      "points": [
+        [
+          185,
+          580
+        ],
+        [
+          330,
+          580
+        ],
+        [
+          330,
+          595
+        ],
+        [
+          185,
+          595
+        ]
+      ]
+    },
+    {
+      "id": "prod-8-state",
+      "text": "未编辑",
+      "confidence": 0.97,
+      "bounds": {
+        "left": 97,
+        "top": 696,
+        "right": 116,
+        "bottom": 714
+      },
+      "points": [
+        [
+          185,
+          603
+        ],
+        [
+          221,
+          603
+        ],
+        [
+          221,
+          619
+        ],
+        [
+          185,
+          619
+        ]
+      ]
+    },
+    {
+      "id": "prod-9-title",
+      "text": "14-inch Lightweight Foldin…",
+      "confidence": 0.95,
+      "bounds": {
+        "left": 97,
+        "top": 743,
+        "right": 175,
+        "bottom": 761
+      },
+      "points": [
+        [
+          185,
+          644
+        ],
+        [
+          334,
+          644
+        ],
+        [
+          334,
+          659
+        ],
+        [
+          185,
+          659
+        ]
+      ]
+    },
+    {
+      "id": "prod-9-state",
+      "text": "未编辑",
+      "confidence": 0.97,
+      "bounds": {
+        "left": 97,
+        "top": 769,
+        "right": 116,
+        "bottom": 788
+      },
+      "points": [
+        [
+          185,
+          666
+        ],
+        [
+          221,
+          666
+        ],
+        [
+          221,
+          683
+        ],
+        [
+          185,
+          683
+        ]
+      ]
+    },
+    {
+      "id": "prod-10-title",
+      "text": "2pcs Chain Design Shoe …",
+      "confidence": 0.95,
+      "bounds": {
+        "left": 97,
+        "top": 817,
+        "right": 173,
+        "bottom": 835
+      },
+      "points": [
+        [
+          185,
+          708
+        ],
+        [
+          330,
+          708
+        ],
+        [
+          330,
+          723
+        ],
+        [
+          185,
+          723
+        ]
+      ]
+    },
+    {
+      "id": "prod-10-state",
+      "text": "未编辑",
+      "confidence": 0.97,
+      "bounds": {
+        "left": 97,
+        "top": 843,
+        "right": 116,
+        "bottom": 862
+      },
+      "points": [
+        [
+          185,
+          730
+        ],
+        [
+          221,
+          730
+        ],
+        [
+          221,
+          747
+        ],
+        [
+          185,
+          747
+        ]
+      ]
+    },
+    {
+      "id": "sec-video-title",
+      "text": "视频",
+      "confidence": 0.9,
+      "bounds": {
+        "left": 285,
+        "top": 153,
+        "right": 301,
+        "bottom": 179
+      },
+      "points": [
+        [
+          544,
+          132
+        ],
+        [
+          575,
+          132
+        ],
+        [
+          575,
+          155
+        ],
+        [
+          544,
+          155
+        ]
+      ]
+    },
+    {
+      "id": "video-name-label",
+      "text": "视频名称",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 285,
+        "top": 213,
+        "right": 314,
+        "bottom": 232
+      },
+      "points": [
+        [
+          544,
+          184
+        ],
+        [
+          600,
+          184
+        ],
+        [
+          600,
+          201
+        ],
+        [
+          544,
+          201
+        ]
+      ]
+    },
+    {
+      "id": "video-name-ph",
+      "text": "请输入视频名称",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 332,
+        "top": 213,
+        "right": 372,
+        "bottom": 232
+      },
+      "points": [
+        [
+          634,
+          184
+        ],
+        [
+          711,
+          184
+        ],
+        [
+          711,
+          201
+        ],
+        [
+          634,
+          201
+        ]
+      ]
+    },
+    {
+      "id": "video-name-count",
+      "text": "0/30",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 438,
+        "top": 215,
+        "right": 450,
+        "bottom": 231
+      },
+      "points": [
+        [
+          837,
+          186
+        ],
+        [
+          860,
+          186
+        ],
+        [
+          860,
+          200
+        ],
+        [
+          837,
+          200
+        ]
+      ]
+    },
+    {
+      "id": "video-desc-label",
+      "text": "视频描述",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 465,
+        "top": 213,
+        "right": 495,
+        "bottom": 232
+      },
+      "points": [
+        [
+          889,
+          184
+        ],
+        [
+          946,
+          184
+        ],
+        [
+          946,
+          201
+        ],
+        [
+          889,
+          201
+        ]
+      ]
+    },
+    {
+      "id": "video-desc-ph",
+      "text": "请输入视频描述",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 510,
+        "top": 213,
+        "right": 555,
+        "bottom": 232
+      },
+      "points": [
+        [
+          975,
+          184
+        ],
+        [
+          1061,
+          184
+        ],
+        [
+          1061,
+          201
+        ],
+        [
+          975,
+          201
+        ]
+      ]
+    },
+    {
+      "id": "video-desc-count",
+      "text": "0/200",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 902,
+        "top": 215,
+        "right": 917,
+        "bottom": 231
+      },
+      "points": [
+        [
+          1724,
+          186
+        ],
+        [
+          1753,
+          186
+        ],
+        [
+          1753,
+          200
+        ],
+        [
+          1724,
+          200
+        ]
+      ]
+    },
+    {
+      "id": "video-upload-text",
+      "text": "上传视频",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 320,
+        "top": 336,
+        "right": 349,
+        "bottom": 354
+      },
+      "points": [
+        [
+          611,
+          291
+        ],
+        [
+          667,
+          291
+        ],
+        [
+          667,
+          306
+        ],
+        [
+          611,
+          306
+        ]
+      ]
+    },
+    {
+      "id": "main-title",
+      "text": "主图",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 285,
+        "top": 437,
+        "right": 304,
+        "bottom": 460
+      },
+      "points": [
+        [
+          544,
+          378
+        ],
+        [
+          581,
+          378
+        ],
+        [
+          581,
+          398
+        ],
+        [
+          544,
+          398
+        ]
+      ]
+    },
+    {
+      "id": "main-count",
+      "text": "5/8",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 309,
+        "top": 442,
+        "right": 321,
+        "bottom": 458
+      },
+      "points": [
+        [
+          590,
+          383
+        ],
+        [
+          613,
+          383
+        ],
+        [
+          613,
+          397
+        ],
+        [
+          590,
+          397
+        ]
+      ]
+    },
+    {
+      "id": "btn-batch-1",
+      "text": "批量美图",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 296,
+        "top": 498,
+        "right": 326,
+        "bottom": 519
+      },
+      "points": [
+        [
+          565,
+          431
+        ],
+        [
+          623,
+          431
+        ],
+        [
+          623,
+          449
+        ],
+        [
+          565,
+          449
+        ]
+      ]
+    },
+    {
+      "id": "btn-download",
+      "text": "下载图片",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 344,
+        "top": 498,
+        "right": 374,
+        "bottom": 519
+      },
+      "points": [
+        [
+          657,
+          431
+        ],
+        [
+          715,
+          431
+        ],
+        [
+          715,
+          449
+        ],
+        [
+          657,
+          449
+        ]
+      ]
+    },
+    {
+      "id": "upload-tile-text",
+      "text": "点击/Ctrl+V粘贴",
+      "confidence": 0.96,
+      "bounds": {
+        "left": 289,
+        "top": 606,
+        "right": 335,
+        "bottom": 624
+      },
+      "points": [
+        [
+          552,
+          525
+        ],
+        [
+          640,
+          525
+        ],
+        [
+          640,
+          541
+        ],
+        [
+          552,
+          541
+        ]
+      ]
+    },
+    {
+      "id": "badge-1",
+      "text": "1200*1600",
+      "confidence": 0.96,
+      "bounds": {
+        "left": 349,
+        "top": 636,
+        "right": 385,
+        "bottom": 654
+      },
+      "points": [
+        [
+          667,
+          551
+        ],
+        [
+          736,
+          551
+        ],
+        [
+          736,
+          567
+        ],
+        [
+          667,
+          567
+        ]
+      ]
+    },
+    {
+      "id": "badge-2",
+      "text": "1200*1600",
+      "confidence": 0.96,
+      "bounds": {
+        "left": 407,
+        "top": 636,
+        "right": 443,
+        "bottom": 654
+      },
+      "points": [
+        [
+          778,
+          551
+        ],
+        [
+          847,
+          551
+        ],
+        [
+          847,
+          567
+        ],
+        [
+          778,
+          567
+        ]
+      ]
+    },
+    {
+      "id": "badge-3",
+      "text": "1200*1600",
+      "confidence": 0.96,
+      "bounds": {
+        "left": 464,
+        "top": 636,
+        "right": 501,
+        "bottom": 654
+      },
+      "points": [
+        [
+          887,
+          551
+        ],
+        [
+          957,
+          551
+        ],
+        [
+          957,
+          567
+        ],
+        [
+          887,
+          567
+        ]
+      ]
+    },
+    {
+      "id": "badge-4",
+      "text": "600*800",
+      "confidence": 0.96,
+      "bounds": {
+        "left": 522,
+        "top": 636,
+        "right": 550,
+        "bottom": 654
+      },
+      "points": [
+        [
+          998,
+          551
+        ],
+        [
+          1051,
+          551
+        ],
+        [
+          1051,
+          567
+        ],
+        [
+          998,
+          567
+        ]
+      ]
+    },
+    {
+      "id": "badge-5",
+      "text": "600*800",
+      "confidence": 0.96,
+      "bounds": {
+        "left": 579,
+        "top": 636,
+        "right": 608,
+        "bottom": 654
+      },
+      "points": [
+        [
+          1107,
+          551
+        ],
+        [
+          1162,
+          551
+        ],
+        [
+          1162,
+          567
+        ],
+        [
+          1107,
+          567
+        ]
+      ]
+    },
+    {
+      "id": "promo-title",
+      "text": "站外推广图",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 285,
+        "top": 723,
+        "right": 323,
+        "bottom": 749
+      },
+      "points": [
+        [
+          544,
+          626
+        ],
+        [
+          617,
+          626
+        ],
+        [
+          617,
+          649
+        ],
+        [
+          544,
+          649
+        ]
+      ]
+    },
+    {
+      "id": "promo-count",
+      "text": "1/1",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 327,
+        "top": 729,
+        "right": 337,
+        "bottom": 745
+      },
+      "points": [
+        [
+          625,
+          632
+        ],
+        [
+          644,
+          632
+        ],
+        [
+          644,
+          645
+        ],
+        [
+          625,
+          645
+        ]
+      ]
+    },
+    {
+      "id": "btn-batch-2",
+      "text": "批量美图",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 296,
+        "top": 782,
+        "right": 326,
+        "bottom": 803
+      },
+      "points": [
+        [
+          565,
+          677
+        ],
+        [
+          623,
+          677
+        ],
+        [
+          623,
+          696
+        ],
+        [
+          565,
+          696
+        ]
+      ]
+    },
+    {
+      "id": "btn-close",
+      "text": "关闭",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 448,
+        "top": 915,
+        "right": 465,
+        "bottom": 937
+      },
+      "points": [
+        [
+          856,
+          793
+        ],
+        [
+          889,
+          793
+        ],
+        [
+          889,
+          812
+        ],
+        [
+          856,
+          812
+        ]
+      ]
+    },
+    {
+      "id": "btn-save",
+      "text": "保存",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 482,
+        "top": 915,
+        "right": 499,
+        "bottom": 937
+      },
+      "points": [
+        [
+          921,
+          793
+        ],
+        [
+          954,
+          793
+        ],
+        [
+          954,
+          812
+        ],
+        [
+          921,
+          812
+        ]
+      ]
+    },
+    {
+      "id": "btn-save-publish",
+      "text": "保存并发布",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 526,
+        "top": 915,
+        "right": 560,
+        "bottom": 937
+      },
+      "points": [
+        [
+          1005,
+          793
+        ],
+        [
+          1070,
+          793
+        ],
+        [
+          1070,
+          812
+        ],
+        [
+          1005,
+          812
+        ]
+      ]
+    }
+  ],
+  "sourceImage": "C:\\Users\\admin\\.qoder-cn\\tmp\\D--projects-CAMEL-CAPTAIN\\images\\6710385f-0d10-4e9a-9c2a-5e8a599ccb70\\02635610-e965-4299-aa2d-a6705a13054c.png",
+  "sourceSha256": "202abc1870d1bd0107b6d5e2dc4b86de89538017a077dc53fa923fd957e8953e"
+}

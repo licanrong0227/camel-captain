@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "provider": "current-agent",
+  "kind": "assets",
+  "reason": "对遮蔽图第二轮召回：弹窗内位图素材均已在第一轮召回并遮蔽；剩余可见对象为线性图标、虚线上传框、纯色圆角按钮，可由 SVG/CSS 复现；弹窗外背景页面按用户要求不还原，仅以灰色遮罩呈现",
+  "sourceImage": "masked-pass-2.png",
+  "ocrSubmitted": false,
+  "regions": []
+}

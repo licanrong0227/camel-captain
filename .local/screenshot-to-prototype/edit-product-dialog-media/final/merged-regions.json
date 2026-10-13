@@ -1,0 +1,243 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "source": "C:\\Users\\admin\\.qoder-cn\\tmp\\D--projects-CAMEL-CAPTAIN\\images\\6710385f-0d10-4e9a-9c2a-5e8a599ccb70\\02635610-e965-4299-aa2d-a6705a13054c.png",
+  "sourceSha256": "202abc1870d1bd0107b6d5e2dc4b86de89538017a077dc53fa923fd957e8953e",
+  "ocrSubmitted": false,
+  "padding": 0,
+  "summary": {
+    "pass1": 16,
+    "pass2": 0,
+    "textRegionCount": 63,
+    "duplicatesRemoved": 0,
+    "skipped": 0,
+    "merged": 16
+  },
+  "regions": [
+    {
+      "id": "thumb-1",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 146,
+        "right": 92,
+        "bottom": 204
+      },
+      "referencePath": "references/thumb-1.png",
+      "width": 52,
+      "height": 50
+    },
+    {
+      "id": "thumb-2",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 219,
+        "right": 92,
+        "bottom": 265
+      },
+      "referencePath": "references/thumb-2.png",
+      "width": 52,
+      "height": 40
+    },
+    {
+      "id": "thumb-3",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 293,
+        "right": 92,
+        "bottom": 340
+      },
+      "referencePath": "references/thumb-3.png",
+      "width": 52,
+      "height": 41
+    },
+    {
+      "id": "thumb-4",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 362,
+        "right": 92,
+        "bottom": 408
+      },
+      "referencePath": "references/thumb-4.png",
+      "width": 52,
+      "height": 40
+    },
+    {
+      "id": "thumb-5",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 435,
+        "right": 92,
+        "bottom": 481
+      },
+      "referencePath": "references/thumb-5.png",
+      "width": 52,
+      "height": 40
+    },
+    {
+      "id": "thumb-6",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 505,
+        "right": 92,
+        "bottom": 551
+      },
+      "referencePath": "references/thumb-6.png",
+      "width": 52,
+      "height": 40
+    },
+    {
+      "id": "thumb-7",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 578,
+        "right": 92,
+        "bottom": 624
+      },
+      "referencePath": "references/thumb-7.png",
+      "width": 52,
+      "height": 40
+    },
+    {
+      "id": "thumb-8",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 648,
+        "right": 92,
+        "bottom": 694
+      },
+      "referencePath": "references/thumb-8.png",
+      "width": 52,
+      "height": 40
+    },
+    {
+      "id": "thumb-9",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 721,
+        "right": 92,
+        "bottom": 767
+      },
+      "referencePath": "references/thumb-9.png",
+      "width": 52,
+      "height": 40
+    },
+    {
+      "id": "thumb-10",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 65,
+        "top": 791,
+        "right": 92,
+        "bottom": 837
+      },
+      "referencePath": "references/thumb-10.png",
+      "width": 52,
+      "height": 40
+    },
+    {
+      "id": "main-1",
+      "sourcePass": 1,
+      "confidence": 0.98,
+      "normalizedBounds": {
+        "left": 348,
+        "top": 542,
+        "right": 388,
+        "bottom": 657
+      },
+      "referencePath": "references/main-1.png",
+      "width": 77,
+      "height": 100
+    },
+    {
+      "id": "main-2",
+      "sourcePass": 1,
+      "confidence": 0.98,
+      "normalizedBounds": {
+        "left": 406,
+        "top": 542,
+        "right": 445,
+        "bottom": 657
+      },
+      "referencePath": "references/main-2.png",
+      "width": 75,
+      "height": 100
+    },
+    {
+      "id": "main-3",
+      "sourcePass": 1,
+      "confidence": 0.98,
+      "normalizedBounds": {
+        "left": 463,
+        "top": 542,
+        "right": 503,
+        "bottom": 657
+      },
+      "referencePath": "references/main-3.png",
+      "width": 77,
+      "height": 100
+    },
+    {
+      "id": "main-4",
+      "sourcePass": 1,
+      "confidence": 0.98,
+      "normalizedBounds": {
+        "left": 520,
+        "top": 542,
+        "right": 560,
+        "bottom": 657
+      },
+      "referencePath": "references/main-4.png",
+      "width": 77,
+      "height": 100
+    },
+    {
+      "id": "main-5",
+      "sourcePass": 1,
+      "confidence": 0.98,
+      "normalizedBounds": {
+        "left": 577,
+        "top": 542,
+        "right": 618,
+        "bottom": 657
+      },
+      "referencePath": "references/main-5.png",
+      "width": 79,
+      "height": 100
+    },
+    {
+      "id": "promo-1",
+      "sourcePass": 1,
+      "confidence": 0.96,
+      "normalizedBounds": {
+        "left": 286,
+        "top": 825,
+        "right": 337,
+        "bottom": 896
+      },
+      "referencePath": "references/promo-1.png",
+      "width": 99,
+      "height": 62
+    }
+  ],
+  "skipped": []
+}

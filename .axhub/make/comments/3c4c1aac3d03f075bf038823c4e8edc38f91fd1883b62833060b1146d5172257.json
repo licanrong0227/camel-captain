@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 3,
+  "kind": "document-edit-comments",
+  "resource": {
+    "id": "3c4c1aac3d03f075bf038823c4e8edc38f91fd1883b62833060b1146d5172257",
+    "targetPath": "src/prototypes/dhgate-compliance-check/.spec/spec.html",
+    "filePath": ".axhub/make/comments/3c4c1aac3d03f075bf038823c4e8edc38f91fd1883b62833060b1146d5172257.json"
+  },
+  "comments": [],
+  "images": [],
+  "documentPath": "src/prototypes/dhgate-compliance-check/.spec/spec.html"
+}

@@ -1,72 +1,110 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-30T08:23:17.477Z",
+  "updatedAt": "2026-10-13T09:43:02.302Z",
   "prototypes": [
     {
-      "id": "folder-1790060254620-0uhxj0",
+      "id": "folder-1791797215018-7mge1v",
       "kind": "folder",
-      "title": "前台",
+      "title": "骆驼 BI",
       "children": [
         {
-          "id": "item:prototypes:help-center-copy",
+          "id": "item:prototypes:dhgate-compliance-check",
           "kind": "item",
-          "title": "帮助中心",
-          "itemKey": "prototypes/help-center-copy"
-        },
-        {
-          "id": "item:prototypes:batch-image",
-          "kind": "item",
-          "title": "批量美图",
-          "itemKey": "prototypes/batch-image"
-        },
-        {
-          "id": "item:prototypes:instant-consultation",
-          "kind": "item",
-          "title": "即时咨询",
-          "itemKey": "prototypes/instant-consultation"
-        },
-        {
-          "id": "item:prototypes:auto-edit-dialog",
-          "kind": "item",
-          "title": "批量编辑弹窗",
-          "itemKey": "prototypes/auto-edit-dialog"
-        },
-        {
-          "id": "item:prototypes:edit-product-dialog",
-          "kind": "item",
-          "title": "编辑产品弹窗",
-          "itemKey": "prototypes/edit-product-dialog"
-        },
-        {
-          "id": "item:prototypes:operation-log",
-          "kind": "item",
-          "title": "算力明细",
-          "itemKey": "prototypes/operation-log"
-        },
-        {
-          "id": "item:prototypes:personal-center-bi",
-          "kind": "item",
-          "title": "购买权益弹窗",
-          "itemKey": "prototypes/personal-center-bi"
-        },
-        {
-          "id": "item:prototypes:personal-center-page",
-          "kind": "item",
-          "title": "个人中心 - 骆驼队长BI",
-          "itemKey": "prototypes/personal-center-page"
+          "title": "敦煌网商品合规检测原型主规格",
+          "itemKey": "prototypes/dhgate-compliance-check"
         }
       ]
     },
     {
-      "id": "folder-1790060258684-sqx4mu",
+      "id": "folder-1791797225251-v7bq5e",
       "kind": "folder",
-      "title": "后台",
+      "title": "骆驼队长 ERP",
       "children": [
         {
-          "id": "item:prototypes:help-center-admin-copy",
-          "kind": "item",
-          "title": "帮助中心",
-          "itemKey": "prototypes/help-center-admin-copy"
+          "id": "folder-1790060254620-0uhxj0",
+          "kind": "folder",
+          "title": "前台",
+          "children": [
+            {
+              "id": "item:prototypes:help-center-copy",
+              "kind": "item",
+              "title": "帮助中心",
+              "itemKey": "prototypes/help-center-copy"
+            },
+            {
+              "id": "item:prototypes:batch-image",
+              "kind": "item",
+              "title": "批量美图-加水印",
+              "itemKey": "prototypes/batch-image"
+            },
+            {
+              "id": "item:prototypes:instant-consultation",
+              "kind": "item",
+              "title": "即时咨询",
+              "itemKey": "prototypes/instant-consultation"
+            },
+            {
+              "id": "item:prototypes:auto-edit-dialog",
+              "kind": "item",
+              "title": "批量编辑弹窗-图片视频",
+              "itemKey": "prototypes/auto-edit-dialog"
+            },
+            {
+              "id": "item:prototypes:edit-product-dialog",
+              "kind": "item",
+              "title": "编辑产品弹窗-详情",
+              "itemKey": "prototypes/edit-product-dialog"
+            },
+            {
+              "id": "item:prototypes:operation-log",
+              "kind": "item",
+              "title": "算力明细",
+              "itemKey": "prototypes/operation-log"
+            },
+            {
+              "id": "item:prototypes:personal-center-bi",
+              "kind": "item",
+              "title": "购买权益弹窗",
+              "itemKey": "prototypes/personal-center-bi"
+            },
+            {
+              "id": "item:prototypes:personal-center-page",
+              "kind": "item",
+              "title": "个人中心",
+              "itemKey": "prototypes/personal-center-page"
+            },
+            {
+              "id": "item:prototypes:my-products-bi",
+              "kind": "item",
+              "title": "我的商品 - 循环刊登",
+              "itemKey": "prototypes/my-products-bi"
+            },
+            {
+              "id": "item:prototypes:batch-image-white-bg",
+              "kind": "item",
+              "title": "批量美图-转白底-停止处理",
+              "itemKey": "prototypes/batch-image-white-bg"
+            },
+            {
+              "id": "item:prototypes:edit-product-dialog-media",
+              "kind": "item",
+              "title": "编辑产品弹窗-主图拼图",
+              "itemKey": "prototypes/edit-product-dialog-media"
+            }
+          ]
+        },
+        {
+          "id": "folder-1790060258684-sqx4mu",
+          "kind": "folder",
+          "title": "后台",
+          "children": [
+            {
+              "id": "item:prototypes:help-center-admin-copy",
+              "kind": "item",
+              "title": "帮助中心",
+              "itemKey": "prototypes/help-center-admin-copy"
+            }
+          ]
         }
       ]
     }

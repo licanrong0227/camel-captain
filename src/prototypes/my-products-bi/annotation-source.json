@@ -1,0 +1,119 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "my-products-bi",
+    "pageId": "my-products-bi",
+    "nodes": [
+      {
+        "id": "annotation-1",
+        "index": 1,
+        "locator": {
+          "selectors": [
+            "div > div > div:nth-of-type(2) > div:nth-of-type(3) > div > div:nth-of-type(2) > span:nth-of-type(3) > span:nth-of-type(3)"
+          ],
+          "fingerprint": "span",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "div",
+              "index": 2
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "span",
+              "index": 2
+            },
+            {
+              "tag": "span",
+              "index": 2
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "createdAt": 1791771193669,
+        "updatedAt": 1791881855166
+      },
+      {
+        "id": "annotation-2",
+        "index": 2,
+        "locator": {
+          "selectors": [
+            "div > div > div:nth-of-type(2) > div:nth-of-type(3) > div > div:nth-of-type(4) > span:nth-of-type(3) > span:nth-of-type(4)"
+          ],
+          "fingerprint": "span",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "div",
+              "index": 2
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 3
+            },
+            {
+              "tag": "span",
+              "index": 2
+            },
+            {
+              "tag": "span",
+              "index": 3
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "createdAt": 1791784313034,
+        "updatedAt": 1791784313034
+      }
+    ],
+    "updatedAt": 1791881855166
+  },
+  "markdownMap": {
+    "annotation-1": "按照最近一次发起的循环次数来算：如果最近一次要求循环5次，则显示「循环刊登次数：5」，剩余刊登次数根据实际剩余数量显示。",
+    "annotation-2": "失败原因显示的是最后一次刊登失败的原因"
+  },
+  "assetMap": {}
+}

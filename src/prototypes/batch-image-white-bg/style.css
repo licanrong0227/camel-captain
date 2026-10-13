@@ -1,0 +1,370 @@
+/* 批量美图弹窗 - 转白底状态（静态样式还原） */
+
+.biw-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #b7b8ba;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", Arial, sans-serif;
+}
+
+.biw-modal {
+  width: 990px;
+  height: 636px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+  color: #606266;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+/* ===== 标题栏 ===== */
+
+.biw-header {
+  height: 56px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.biw-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #303133;
+  line-height: 1;
+}
+
+.biw-close {
+  border: none;
+  background: transparent;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  color: #909399;
+  cursor: pointer;
+}
+
+/* ===== 主体：左侧 Tab + 右侧内容 ===== */
+
+.biw-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.biw-tabs {
+  width: 130px;
+  flex: none;
+  border-right: 1px solid #ebeef5;
+  padding-top: 14px;
+}
+
+.biw-tab {
+  height: 40px;
+  line-height: 40px;
+  padding-left: 40px;
+  font-size: 14px;
+  color: #606266;
+}
+
+.biw-tab--active {
+  color: #ff781f;
+  font-weight: 500;
+}
+
+.biw-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 18px 20px 24px;
+}
+
+/* ===== 工具行：全选 / 开始处理 ===== */
+
+.biw-toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.biw-selection {
+  display: flex;
+  align-items: center;
+}
+
+.biw-checkbox {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: #ff781f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.biw-select-all {
+  margin-left: 8px;
+  color: #ff781f;
+}
+
+.biw-count {
+  margin-left: 12px;
+  color: #606266;
+}
+
+.biw-start-btn {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 8px;
+  background: #ff781f;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.biw-help {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  font-size: 11px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.95;
+}
+
+/* ===== 图片网格 ===== */
+
+.biw-grid {
+  flex: none;
+  display: flex;
+  gap: 18px;
+}
+
+.biw-card {
+  position: relative;
+  width: 108px;
+  height: 132px;
+  border: 2px solid #ff781f;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f2f3f5;
+}
+
+.biw-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.biw-card-check {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ff781f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.biw-card-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.5);
+  font-size: 12px;
+}
+
+.biw-card-size {
+  color: #fff;
+}
+
+.biw-card-done {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #13ce66;
+}
+
+.biw-card-title {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 12px;
+  color: #606266;
+}
+
+/* ===== 底部按钮 ===== */
+
+.biw-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.biw-btn {
+  height: 36px;
+  min-width: 76px;
+  padding: 0 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.biw-btn--cancel {
+  background: #fff;
+  border: 1px solid #ff781f;
+  color: #ff781f;
+}
+
+.biw-btn--confirm {
+  background: #ff781f;
+  border: 1px solid #ff781f;
+  color: #fff;
+}
+
+/* ===== Loading 状态 ===== */
+
+@keyframes biw-spin {
+  to { transform: rotate(360deg); }
+}
+
+.biw-flower {
+  display: inline-block;
+  flex: none;
+  animation: biw-spin 1.2s linear infinite;
+}
+
+.biw-btn--loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0.65;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.biw-start-btn--processing {
+  background: #ff4949;
+}
+
+.biw-tabs--disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ===== 确认按钮上方气泡 ===== */
+
+.biw-confirm-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.biw-bubble {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 9px);
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid #ffc29a;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+  font-size: 12px;
+  color: #ff781f;
+  white-space: nowrap;
+}
+
+.biw-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 8px;
+  height: 8px;
+  transform: translateX(-50%) rotate(45deg);
+  background: #fff;
+  border-right: 1px solid #ffc29a;
+  border-bottom: 1px solid #ffc29a;
+}
+
+/* ===== 退出确认弹窗 ===== */
+
+.biw-exit-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.biw-exit-dialog {
+  width: 420px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+  padding: 18px 20px 20px;
+}
+
+.biw-exit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.biw-exit-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #303133;
+  line-height: 1;
+}
+
+.biw-exit-body {
+  margin: 18px 0 26px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #606266;
+}
+
+.biw-exit-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}

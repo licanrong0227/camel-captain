@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "source": "C:\\Users\\admin\\.qoder-cn\\tmp\\D--projects-CAMEL-CAPTAIN\\images\\aa9f2a3f-3554-4558-a31f-ce9dba92e2cb\\73a957aa-fec3-4b1b-a127-933540b0ca1a.png",
+  "sourceSha256": "6ce02782ec1293f03559b5f53c14974f2c1b697c70140a93657bf2f76948c4ac",
+  "ocrSubmitted": false,
+  "padding": 0,
+  "summary": {
+    "pass1": 9,
+    "pass2": 0,
+    "textRegionCount": 143,
+    "duplicatesRemoved": 0,
+    "skipped": 0,
+    "merged": 9
+  },
+  "regions": [
+    {
+      "id": "logo-badge",
+      "sourcePass": 1,
+      "confidence": 0.95,
+      "normalizedBounds": {
+        "left": 2,
+        "top": 2,
+        "right": 25,
+        "bottom": 58
+      },
+      "referencePath": "references/logo-badge.png",
+      "width": 45,
+      "height": 48
+    },
+    {
+      "id": "thumb-1",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 181,
+        "top": 354,
+        "right": 222,
+        "bottom": 446
+      },
+      "referencePath": "references/thumb-1.png",
+      "width": 79,
+      "height": 80
+    },
+    {
+      "id": "thumb-2",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 181,
+        "top": 521,
+        "right": 222,
+        "bottom": 615
+      },
+      "referencePath": "references/thumb-2.png",
+      "width": 79,
+      "height": 81
+    },
+    {
+      "id": "thumb-3",
+      "sourcePass": 1,
+      "confidence": 0.97,
+      "normalizedBounds": {
+        "left": 181,
+        "top": 648,
+        "right": 222,
+        "bottom": 740
+      },
+      "referencePath": "references/thumb-3.png",
+      "width": 79,
+      "height": 80
+    },
+    {
+      "id": "thumb-4",
+      "sourcePass": 1,
+      "confidence": 0.95,
+      "normalizedBounds": {
+        "left": 181,
+        "top": 781,
+        "right": 222,
+        "bottom": 873
+      },
+      "referencePath": "references/thumb-4.png",
+      "width": 79,
+      "height": 80
+    },
+    {
+      "id": "dh-badge-1",
+      "sourcePass": 1,
+      "confidence": 0.9,
+      "normalizedBounds": {
+        "left": 514,
+        "top": 419,
+        "right": 527,
+        "bottom": 446
+      },
+      "referencePath": "references/dh-badge-1.png",
+      "width": 26,
+      "height": 24
+    },
+    {
+      "id": "dh-badge-2",
+      "sourcePass": 1,
+      "confidence": 0.9,
+      "normalizedBounds": {
+        "left": 490,
+        "top": 586,
+        "right": 503,
+        "bottom": 615
+      },
+      "referencePath": "references/dh-badge-2.png",
+      "width": 26,
+      "height": 25
+    },
+    {
+      "id": "dh-badge-3",
+      "sourcePass": 1,
+      "confidence": 0.9,
+      "normalizedBounds": {
+        "left": 490,
+        "top": 693,
+        "right": 503,
+        "bottom": 722
+      },
+      "referencePath": "references/dh-badge-3.png",
+      "width": 26,
+      "height": 25
+    },
+    {
+      "id": "dh-badge-4",
+      "sourcePass": 1,
+      "confidence": 0.9,
+      "normalizedBounds": {
+        "left": 507,
+        "top": 825,
+        "right": 519,
+        "bottom": 852
+      },
+      "referencePath": "references/dh-badge-4.png",
+      "width": 24,
+      "height": 24
+    }
+  ],
+  "skipped": []
+}

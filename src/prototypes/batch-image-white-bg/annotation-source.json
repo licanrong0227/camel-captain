@@ -1,0 +1,75 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "presentation": {
+    "layerSelectors": [".biw-modal", ".biw-exit-dialog"]
+  },
+  "data": {
+    "version": 2,
+    "prototypeName": "batch-image-white-bg",
+    "pageId": "batch-image-white-bg",
+    "updatedAt": 1791878937575,
+    "nodes": [
+      {
+        "id": "exit-save-guide",
+        "index": 1,
+        "title": "退出保存引导",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"exit-save-guide\"]"],
+          "fingerprint": "button|data-annotation-id=exit-save-guide",
+          "path": []
+        },
+        "aiPrompt": "根据退出保存引导标注生成实现说明。",
+        "annotationText": "点击「取消」或右上角「×」关闭弹窗时，若存在已处理未保存的图片，先弹出「提示」框引导保存：文案为「当前有已处理未保存的图片，退出后，已处理的图片将不会保存，是否继续退出？」，主操作「保存并退出」，次操作「退出」，点击任意一个即退出弹窗；提示框右上角「×」仅关闭提示，停留在批量美图弹窗。",
+        "hasMarkdown": false,
+        "color": "#D97706",
+        "images": [],
+        "createdAt": 1791878937575,
+        "updatedAt": 1791878937575
+      },
+      {
+        "id": "unsaved-bubble",
+        "index": 2,
+        "title": "未保存图片气泡",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"unsaved-bubble\"]"],
+          "fingerprint": "div|data-annotation-id=unsaved-bubble",
+          "path": []
+        },
+        "aiPrompt": "根据未保存图片气泡标注生成实现说明。",
+        "annotationText": "该气泡在首次对图片开始处理后出现，出现后一直显示，直到关闭弹窗；用于提醒用户当前有已处理未保存的图片。",
+        "hasMarkdown": false,
+        "color": "#D97706",
+        "images": [],
+        "createdAt": 1791878937575,
+        "updatedAt": 1791878937575
+      },
+      {
+        "id": "tabs-switch-disable",
+        "index": 3,
+        "title": "处理中禁用选项切换",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"tabs-switch-disable\"]"],
+          "fingerprint": "aside|data-annotation-id=tabs-switch-disable",
+          "path": []
+        },
+        "aiPrompt": "根据处理中禁用选项切换标注生成实现说明。",
+        "annotationText": "图片处理中时，禁用左侧选项（转白底 / 翻译 / 加水印 / 去水印 / 裁剪缩放）的切换，防止处理失败。",
+        "hasMarkdown": false,
+        "color": "#D97706",
+        "images": [],
+        "createdAt": 1791878937575,
+        "updatedAt": 1791878937575
+      }
+    ]
+  },
+  "markdownMap": {},
+  "assetMap": {},
+  "targets": [],
+  "directory": {
+    "nodes": []
+  },
+  "documents": {
+    "nodes": []
+  }
+}

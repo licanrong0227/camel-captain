@@ -1,0 +1,117 @@
+{
+  "status": "ok",
+  "input": "C:/Users/admin/.qoder-cn/tmp/D--projects-CAMEL-CAPTAIN/images/6710385f-0d10-4e9a-9c2a-5e8a599ccb70/02635610-e965-4299-aa2d-a6705a13054c.png",
+  "sha256": "202abc1870d1bd0107b6d5e2dc4b86de89538017a077dc53fa923fd957e8953e",
+  "width": 1912,
+  "height": 867,
+  "dimensions": {
+    "width": 1912,
+    "height": 867
+  },
+  "viewport": {
+    "width": 1912,
+    "height": 867,
+    "deviceScaleFactor": 1
+  },
+  "color": {
+    "sampledPixels": 1657704,
+    "meanRgb": [
+      224,
+      222,
+      221
+    ],
+    "meanHex": "#e0dedd",
+    "dominant": [
+      {
+        "hex": "#f8f8f8",
+        "rgb": [
+          248,
+          248,
+          248
+        ],
+        "pixels": 1241141,
+        "ratio": 0.7487108675613982
+      },
+      {
+        "hex": "#787878",
+        "rgb": [
+          120,
+          120,
+          120
+        ],
+        "pixels": 293230,
+        "ratio": 0.1768892395747371
+      },
+      {
+        "hex": "#f87818",
+        "rgb": [
+          248,
+          120,
+          24
+        ],
+        "pixels": 11750,
+        "ratio": 0.007088117058292675
+      },
+      {
+        "hex": "#686868",
+        "rgb": [
+          104,
+          104,
+          104
+        ],
+        "pixels": 7790,
+        "ratio": 0.004699270798646803
+      },
+      {
+        "hex": "#e8e8e8",
+        "rgb": [
+          232,
+          232,
+          232
+        ],
+        "pixels": 6787,
+        "ratio": 0.004094217061670841
+      },
+      {
+        "hex": "#e8e8f8",
+        "rgb": [
+          232,
+          232,
+          248
+        ],
+        "pixels": 4145,
+        "ratio": 0.002500446400563671
+      },
+      {
+        "hex": "#383838",
+        "rgb": [
+          56,
+          56,
+          56
+        ],
+        "pixels": 3866,
+        "ratio": 0.0023321413231795303
+      },
+      {
+        "hex": "#080808",
+        "rgb": [
+          8,
+          8,
+          8
+        ],
+        "pixels": 3441,
+        "ratio": 0.002075762621071072
+      }
+    ]
+  },
+  "alpha": {
+    "hasAlphaChannel": false,
+    "transparentPixels": 0,
+    "translucentPixels": 0,
+    "opaquePixels": 1657704,
+    "transparentRatio": 0,
+    "translucentRatio": 0,
+    "opaqueRatio": 1,
+    "meanAlpha": 255
+  }
+}

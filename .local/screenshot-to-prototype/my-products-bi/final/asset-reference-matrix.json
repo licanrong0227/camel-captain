@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "columns": 3,
+  "rows": 3,
+  "cellWidth": 103,
+  "cellHeight": 105,
+  "width": 309,
+  "height": 315,
+  "transparentBackground": true,
+  "cells": [
+    {
+      "id": "logo-badge",
+      "x": 29,
+      "y": 28,
+      "width": 45,
+      "height": 48,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-1",
+      "x": 115,
+      "y": 12,
+      "width": 79,
+      "height": 80,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-2",
+      "x": 218,
+      "y": 12,
+      "width": 79,
+      "height": 81,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-3",
+      "x": 12,
+      "y": 117,
+      "width": 79,
+      "height": 80,
+      "sourcePass": 1
+    },
+    {
+      "id": "thumb-4",
+      "x": 115,
+      "y": 117,
+      "width": 79,
+      "height": 80,
+      "sourcePass": 1
+    },
+    {
+      "id": "dh-badge-1",
+      "x": 244,
+      "y": 145,
+      "width": 26,
+      "height": 24,
+      "sourcePass": 1
+    },
+    {
+      "id": "dh-badge-2",
+      "x": 38,
+      "y": 250,
+      "width": 26,
+      "height": 25,
+      "sourcePass": 1
+    },
+    {
+      "id": "dh-badge-3",
+      "x": 141,
+      "y": 250,
+      "width": 26,
+      "height": 25,
+      "sourcePass": 1
+    },
+    {
+      "id": "dh-badge-4",
+      "x": 245,
+      "y": 250,
+      "width": 24,
+      "height": 24,
+      "sourcePass": 1
+    }
+  ]
+}

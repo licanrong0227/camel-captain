@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "provider": "current-agent",
+  "kind": "assets",
+  "reason": "Make 视觉代理端点 /api/ai/vision/analyze 返回 HTTP 404（未配置），由当前 Agent 按同一契约补全",
+  "sourceImage": "C:/Users/admin/.qoder-cn/tmp/D--projects-CAMEL-CAPTAIN/images/aa9f2a3f-3554-4558-a31f-ce9dba92e2cb/73a957aa-fec3-4b1b-a127-933540b0ca1a.png",
+  "ocrSubmitted": false,
+  "regions": [
+    { "id": "logo-badge", "label": "顶部导航左侧骆驼队长圆形品牌徽标", "bounds": { "left": 2, "top": 3, "right": 25, "bottom": 57 }, "confidence": 0.95, "route": "reuse-crop" },
+    { "id": "thumb-1", "label": "商品列表第 1 行商品缩略图（棕色链条包实拍）", "bounds": { "left": 181, "top": 355, "right": 222, "bottom": 446 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "thumb-2", "label": "商品列表第 2 行商品缩略图（棕色字母组合手提包实拍）", "bounds": { "left": 181, "top": 522, "right": 222, "bottom": 614 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "thumb-3", "label": "商品列表第 3 行商品缩略图（棕色字母组合手提包实拍）", "bounds": { "left": 181, "top": 649, "right": 222, "bottom": 740 }, "confidence": 0.97, "route": "reuse-crop" },
+    { "id": "thumb-4", "label": "商品列表第 4 行商品缩略图（白色印花短裤白底图）", "bounds": { "left": 181, "top": 782, "right": 222, "bottom": 873 }, "confidence": 0.95, "route": "reuse-crop" },
+    { "id": "dh-badge-1", "label": "第 1 行 DHgate 平台小徽标", "bounds": { "left": 514, "top": 419, "right": 527, "bottom": 446 }, "confidence": 0.9, "route": "reuse-crop" },
+    { "id": "dh-badge-2", "label": "第 2 行 DHgate 平台小徽标", "bounds": { "left": 490, "top": 586, "right": 503, "bottom": 614 }, "confidence": 0.9, "route": "reuse-crop" },
+    { "id": "dh-badge-3", "label": "第 3 行 DHgate 平台小徽标", "bounds": { "left": 490, "top": 694, "right": 503, "bottom": 722 }, "confidence": 0.9, "route": "reuse-crop" },
+    { "id": "dh-badge-4", "label": "第 4 行 DHgate 平台小徽标", "bounds": { "left": 507, "top": 825, "right": 519, "bottom": 852 }, "confidence": 0.9, "route": "reuse-crop" }
+  ]
+}
