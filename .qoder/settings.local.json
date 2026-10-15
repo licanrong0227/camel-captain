@@ -76,7 +76,9 @@
       "Bash(cd \"d:/projects/CAMEL CAPTAIN\" && git status --short -- \"src/prototypes/update-publish-dialog/\")",
       "Bash(cd \"d:/projects/CAMEL CAPTAIN\" && find \"src/prototypes/update-publish-dialog/\" -type f | head -30)",
       "Bash(cd \"d:/projects/CAMEL CAPTAIN\" && cat \"src/prototypes/update-publish-dialog/.spec/spec.html\" | head -100)",
-      "Bash(cd \"d:/projects/CAMEL CAPTAIN\" && cat \"src/prototypes/update-publish-dialog/index.tsx\" | head -80)"
+      "Bash(cd \"d:/projects/CAMEL CAPTAIN\" && cat \"src/prototypes/update-publish-dialog/index.tsx\" | head -80)",
+      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git log -1 --stat)",
+      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git diff HEAD~1 --name-only)"
     ]
   }
 }
