@@ -78,7 +78,9 @@
       "Bash(cd \"d:/projects/CAMEL CAPTAIN\" && cat \"src/prototypes/update-publish-dialog/.spec/spec.html\" | head -100)",
       "Bash(cd \"d:/projects/CAMEL CAPTAIN\" && cat \"src/prototypes/update-publish-dialog/index.tsx\" | head -80)",
       "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git log -1 --stat)",
-      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git diff HEAD~1 --name-only)"
+      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git diff HEAD~1 --name-only)",
+      "Bash(cd \"d:/projects/camel captain\" && git diff --stat && echo \"---\" && git diff --name-only)",
+      "Bash(cd \"d:/projects/camel captain\" && git diff src/prototypes/update-publish-dialog/index.tsx src/prototypes/update-publish-dialog/.spec/spec.html src/prototypes/update-publish-dialog/annotation-source.json)"
     ]
   }
 }

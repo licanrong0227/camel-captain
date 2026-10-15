@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-15T07:07:21.991Z",
+  "updatedAt": "2026-10-15T09:41:05.263Z",
   "prototypes": [
     {
       "id": "folder-1791797215018-7mge1v",
@@ -118,27 +118,27 @@
   "docs": [],
   "themesTree": [
     {
-      "id": "item-themes-element-ui",
+      "id": "item:themes:camel-captain-erp",
       "kind": "item",
-      "title": "element ui",
-      "itemKey": "themes/element-ui"
-    },
-    {
-      "id": "item-themes-camel-captain-erp",
-      "kind": "item",
-      "title": "camel captain erp",
+      "title": "camel-captain-erp",
       "itemKey": "themes/camel-captain-erp"
     },
     {
-      "id": "item-themes-localhost",
+      "id": "item:themes:element-ui",
+      "kind": "item",
+      "title": "element-ui",
+      "itemKey": "themes/element-ui"
+    },
+    {
+      "id": "item:themes:localhost",
       "kind": "item",
       "title": "localhost",
       "itemKey": "themes/localhost"
     }
   ],
   "themes": [
-    "element-ui",
-    "camel-captain-erp"
+    "camel-captain-erp",
+    "element-ui"
   ],
   "data": [],
   "templates": [

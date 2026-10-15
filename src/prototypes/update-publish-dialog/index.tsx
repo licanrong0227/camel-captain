@@ -639,7 +639,7 @@ const UpdatePublishDialog = () => {
                   <div className="up-upl-tabs">
                     <span className="up-upl-tab is-active">本地</span>
                     <span className="up-upl-tab">URL</span>
-                    <span className="up-upl-tab">引用</span>
+                    <div className="up-upl-tab" data-annotation-id="upload-ref-tab">引用</div>
                   </div>
                   <div className="up-upl-content">
                     <div className="up-radio-group up-upl-radios">

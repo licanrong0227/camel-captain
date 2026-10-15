@@ -165,9 +165,29 @@
         "images": [],
         "createdAt": 1760486400000,
         "updatedAt": 1760486400000
+      },
+      {
+        "id": "upload-ref-tab",
+        "index": 11,
+        "title": "上传图片弹窗-引用页签",
+        "pageId": "update-publish-dialog",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"upload-ref-tab\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=upload-ref-tab",
+          "path": []
+        },
+        "aiPrompt": "说明引用页签在单个商品更新发布与批量更新发布两种弹窗里的启用/禁用差别。",
+        "annotationText": "「引用」用来从平台已有的图片里选图，不用重新上传。单个商品的更新发布中，「引用」是启用状态，可以正常引用；批量更新发布的弹窗打开时，「引用」禁用，不可选择。",
+        "hasMarkdown": false,
+        "color": "#2F6FED",
+        "images": [],
+        "createdAt": 1792060262629,
+        "updatedAt": 1792060271521
       }
     ],
-    "updatedAt": 1792053809603
+    "updatedAt": 1792060262629
   },
   "markdownMap": {},
   "assetMap": {},
