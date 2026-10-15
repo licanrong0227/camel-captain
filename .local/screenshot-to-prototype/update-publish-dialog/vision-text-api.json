@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "status": "fallback-required",
+  "fallback": "current-agent",
+  "reason": "vision-config-incomplete",
+  "kind": "text",
+  "ocrSubmitted": false,
+  "regions": [],
+  "promptFile": "D:\\projects\\CAMEL CAPTAIN\\.local\\screenshot-to-prototype\\update-publish-dialog\\prompt-text.txt",
+  "image": "C:\\Users\\admin\\.qoder-cn\\tmp\\D--projects-CAMEL-CAPTAIN\\images\\44036eb2-054a-4ca2-a940-4ca6fb7bc4aa\\03596652-d0ef-41e0-a7dd-4d47bb78ae0a.png"
+}

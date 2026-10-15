@@ -36,7 +36,10 @@ export interface Task {
   scenario: ScenarioKey;
   collectFailedReason?: string;
   collectRetryAt?: number;
+  collectOnlyAt?: number; // 仅重新采集信息：采集 loading 起点
+  checkRetryAt?: number;
   canceledAt?: number;
+  stuckChecking?: boolean;
   overrides: Partial<Record<ItemCode, ItemOverride>>;
 }
 
@@ -63,6 +66,7 @@ const STORAGE_KEY = 'dcc-tasks-v1';
 
 const COLLECT_MS = 2800;
 const RETRY_COLLECT_MS = 2000;
+const INFO_COLLECT_MS = 2000;
 const ITEM_RETRY_MS = 4000;
 // 每个质检项相对采集完成时间的 [起始偏移ms, 持续ms]
 const ITEM_PLAN: Record<ItemCode, [number, number]> = {
@@ -126,12 +130,22 @@ export function validateDhgateUrl(raw: string): { ok: boolean; error?: string; p
   return { ok: true, productId: match[1] };
 }
 
+// 演示用「永远检测中」任务：这两项固定在检测中，任务不会进入完成态
+const STUCK_RUNNING: ItemCode[] = ['price', 'legal'];
+
 export function computeTaskView(task: Task, now: number): TaskView {
   if (task.canceledAt) {
     return buildView(task, 'canceled', [], now);
   }
   if (task.collectFailedReason && !task.collectRetryAt) {
     return buildView(task, 'collect-failed', [], now);
+  }
+  // 仅重新采集信息：采集 loading 期间质检项保持原状态
+  if (task.collectOnlyAt && now < task.collectOnlyAt + INFO_COLLECT_MS) {
+    const checkStart = Math.max((task.collectRetryAt ?? task.submitTime) + (task.collectRetryAt ? RETRY_COLLECT_MS : COLLECT_MS), task.checkRetryAt ?? 0);
+    if (task.collectOnlyAt >= checkStart) {
+      return buildView(task, 'collecting', computeTaskView({ ...task, collectOnlyAt: undefined }, task.collectOnlyAt).items, now);
+    }
   }
   const base = task.collectRetryAt ?? task.submitTime;
   const collectMs = task.collectRetryAt ? RETRY_COLLECT_MS : COLLECT_MS;
@@ -148,7 +162,7 @@ export function computeTaskView(task: Task, now: number): TaskView {
     return buildView(task, now < base + 400 ? 'pending' : 'collecting', items, now);
   }
 
-  const checkStart = base + collectMs;
+  const checkStart = Math.max(base + collectMs, task.checkRetryAt ?? 0);
   let allTerminal = true;
   let anyFail = false;
   const items: ItemView[] = ITEM_DEFS.map((def) => {
@@ -159,7 +173,10 @@ export function computeTaskView(task: Task, now: number): TaskView {
     let status: ItemStatus;
     let outcome: ItemOutcome | undefined;
 
-    if (override?.retryAt) {
+    if (task.stuckChecking && STUCK_RUNNING.includes(def.code)) {
+      status = 'running';
+      allTerminal = false;
+    } else if (override?.retryAt) {
       const retryEnd = override.retryAt + ITEM_RETRY_MS;
       if (now < retryEnd) {
         status = 'running';
@@ -202,52 +219,83 @@ function buildView(task: Task, status: TaskStatus, items: ItemView[], now: numbe
   else if (hit > 0) conclusion = { level: 'reject', text: hit > 1 ? `不通过：商品存在 ${hit} 处违规，请逐项处理` : '不通过：商品存在违规项', hitCount: hit };
   else if (suspect > 0) conclusion = { level: 'manual', text: '建议人工审核：存在疑似错误项', hitCount: 0 };
   else if (fail > 0) conclusion = { level: 'partial', text: '部分质检项失败，请查看详情并重试', hitCount: 0 };
-  else conclusion = { level: 'pass', text: '通过：全部质检项未命中违规', hitCount: 0 };
+  else conclusion = { level: 'pass', text: '通过：全部质检项均未发现违规', hitCount: 0 };
 
   return { task, status, items, progress: { done, total }, summary: { hit, pass, suspect, fail }, conclusion };
 }
 
 /* ---------------- 持久化 ---------------- */
 
+const DEMO_SUIT_TITLE =
+  "Men's Slim Fit Wedding Suit Jacket Two Piece Formal Business Office Suits For Men With Notch Lapel Button Down Coat And Pants Set For Winter Banquet";
+
+// 商品标题按敦煌真实标题长度写满两行以上，用于演示列表里的两行截断
+const SEED_TITLES: Record<string, string> = {
+  't-seed-live': DEMO_SUIT_TITLE,
+  't-seed-suit': DEMO_SUIT_TITLE,
+  't-seed-bag': 'Vintage Quilted Chain Bucket Bag Women Large Capacity Shoulder Purse With Drawstring Top Handle Tote Handbag For Daily Travel Commute',
+  't-seed-tee': 'Premium Cotton Tee Streetwear Vintage Print Short Sleeve Shirt Unisex Retro Graphic Crew Neck Oversized Top For Summer Casual Wear',
+  't-seed-shoe': 'Unisex Casual Low Top Sneaker Lightweight Walking Shoes Breathable Mesh Running Trainers Non Slip Lace Up Court Shoes For Men Women',
+  't-seed-dress': 'Women Floral Print Summer Dress Casual Beach Midi Dress With Short Sleeve Elastic Waist Sundress For Vacation Holiday Party',
+  't-seed-draft': '（草稿）Womens Retro Sneakers',
+  't-seed-timeout': 'Summer Floral Dress (采集超时商品)',
+  't-seed-stuck': 'Handmade Woven Raffia Crossbody Bag With Beaded Trim Adjustable Strap Boho Beach Tote For Women Travel Daily Summer Vacation',
+};
+
 function seedTasks(now: number): Task[] {
   const hour = 3600_000;
-  const base = (id: string, url: string, productId: string, title: string, image: string, category: string, priceRange: string, skuCount: number, submitTime: number, scenario: ScenarioKey): Task => ({
-    id, url, productId, title, image, category, priceRange, skuCount, submitTime, scenario,
+  const base = (id: string, url: string, productId: string, image: string, category: string, priceRange: string, skuCount: number, submitTime: number, scenario: ScenarioKey): Task => ({
+    id, url, productId, title: SEED_TITLES[id], image, category, priceRange, skuCount, submitTime, scenario,
     collectedAt: submitTime + COLLECT_MS,
     overrides: {},
   });
   return [
     base('t-seed-live', 'https://www.dhgate.com/product/mens-slim-fit-wedding-suit/942718556.html', '942718556',
-      "Men's Slim Fit Wedding Suit Jacket Two Piece Formal Business Office Suits For Men",
-      'suit', '服装 > 男装 > 男士外套', '$10 - $99', 12, now - 9000, 'default'),
+      'suit', '服装 > 男装 > 男士外套', '$10 - $99', 12, now - 9000, 'all-pass'),
     base('t-seed-suit', 'https://www.dhgate.com/product/mens-slim-fit-wedding-suit/942718556.html', '942718556',
-      "Men's Slim Fit Wedding Suit Jacket Two Piece Formal Business Office Suits For Men",
       'suit', '服装 > 男装 > 男士外套', '$10 - $99', 12, now - 26 * hour, 'default'),
     base('t-seed-bag', 'https://www.dhgate.com/product/quilted-chain-bucket-bag/887654321.html', '887654321',
-      'Vintage Quilted Chain Bucket Bag Women Large Capacity Shoulder Purse',
       'bag', '箱包及箱包辅料 > 时装包 > 单肩包', '$18 - $45', 6, now - 21 * hour, 'all-pass'),
     base('t-seed-tee', 'https://www.dhgate.com/product/classic-streetwear-cotton-tee/771203994.html', '771203994',
-      'Premium Cotton Tee Streetwear Vintage Print Short Sleeve Shirt',
       'tee', '服装 > 男装 > T 恤', '$6 - $12', 8, now - 9 * hour, 'tee-ipr'),
     {
       ...base('t-seed-shoe', 'https://www.dhgate.com/product/casual-low-top-sneaker/665091832.html', '665091832',
-        'Unisex Casual Low Top Sneaker Lightweight Walking Shoes',
         'sneaker', '鞋 > 运动户外 > 休闲运动鞋', '$9 - $89', 10, now - 7 * hour, 'sneaker-partial'),
     },
     base('t-seed-dress', 'https://www.dhgate.com/product/floral-summer-dress/552390177.html', '552390177',
-      'Women Floral Print Summer Dress Casual Beach Midi Dress',
       'dress', '服装 > 女装 > 半身裙', '$14 - $16', 4, now - 5 * hour, 'dress'),
     {
       ...base('t-seed-draft', 'https://www.dhgate.com/product/draft-womens-sneakers/440012345.html', '440012345',
-        '（草稿）Womens Retro Sneakers', 'sneaker', '鞋 > 运动户外 > 休闲运动鞋', '-', 0, now - 3 * hour, 'all-pass'),
+        'sneaker', '鞋 > 运动户外 > 休闲运动鞋', '-', 0, now - 3 * hour, 'all-pass'),
       collectFailedReason: '该商品为草稿或无效商品，无法采集',
     },
     {
       ...base('t-seed-timeout', 'https://www.dhgate.com/product/floral-summer-dress/551100222.html', '551100222',
-        'Summer Floral Dress (采集超时商品)', 'dress', '服装 > 女装 > 连衣裙', '-', 0, now - 1 * hour, 'all-pass'),
+        'dress', '服装 > 女装 > 连衣裙', '-', 0, now - 1 * hour, 'all-pass'),
       collectFailedReason: '敦煌接口响应超时，采集失败，可重试',
     },
+    stuckTask(now),
   ];
+}
+
+// 「永远检测中」示例任务：价格与违法违规两项持续处于检测中，任务不会走到完成态
+function stuckTask(now: number): Task {
+  const submitTime = now - 2 * 3600_000;
+  return {
+    id: 't-seed-stuck',
+    url: 'https://www.dhgate.com/product/woven-raffia-crossbody-bag/338774612.html',
+    productId: '338774612',
+    title: SEED_TITLES['t-seed-stuck'],
+    image: 'bag',
+    category: '箱包及箱包辅料 > 时装包 > 编织包',
+    priceRange: '$12 - $26',
+    skuCount: 5,
+    submitTime,
+    collectedAt: submitTime + COLLECT_MS,
+    scenario: 'all-pass',
+    stuckChecking: true,
+    overrides: {},
+  };
 }
 
 let cache: Task[] | null = null;
@@ -258,6 +306,9 @@ export function loadTasks(): Task[] {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       cache = JSON.parse(raw) as Task[];
+      migrateDefaultPassDemo(cache);
+      migrateSeedTitles(cache);
+      migrateStuckChecking(cache);
       return cache;
     }
   } catch {
@@ -266,6 +317,48 @@ export function loadTasks(): Task[] {
   cache = seedTasks(Date.now());
   persist();
   return cache;
+}
+
+// 旧版演示数据里直播任务默认判为违规；迁移为全部通过并重播检测流程
+function migrateDefaultPassDemo(tasks: Task[]) {
+  const live = tasks.find((task) => task.id === 't-seed-live');
+  if (!live || live.scenario !== 'default') return;
+  live.scenario = 'all-pass';
+  live.submitTime = Date.now();
+  live.collectedAt = live.submitTime + COLLECT_MS;
+  live.overrides = {};
+  persist();
+}
+
+// 旧版演示数据的标题不足两行；按种子清单刷新为超长标题，保证两行截断效果可复现
+const LEGACY_TITLE_UPGRADE: Record<string, string> = {
+  "Men's Slim Fit Wedding Suit Jacket Two Piece Formal Business Office Suits For Men": DEMO_SUIT_TITLE,
+  'Vintage Quilted Chain Bucket Bag Women Large Capacity Shoulder Purse': SEED_TITLES['t-seed-bag'],
+  'Premium Cotton Tee Streetwear Vintage Print Short Sleeve Shirt': SEED_TITLES['t-seed-tee'],
+  'Unisex Casual Low Top Sneaker Lightweight Walking Shoes': SEED_TITLES['t-seed-shoe'],
+  'Women Floral Print Summer Dress Casual Beach Midi Dress': SEED_TITLES['t-seed-dress'],
+};
+
+function migrateSeedTitles(tasks: Task[]) {
+  let changed = false;
+  tasks.forEach((task) => {
+    const seedTitle = SEED_TITLES[task.id];
+    if (seedTitle && task.title !== seedTitle) {
+      task.title = seedTitle;
+      changed = true;
+    } else if (LEGACY_TITLE_UPGRADE[task.title]) {
+      task.title = LEGACY_TITLE_UPGRADE[task.title];
+      changed = true;
+    }
+  });
+  if (changed) persist();
+}
+
+// 旧版演示数据没有「永远检测中」示例；补一条，让质检中状态在列表里始终可看
+function migrateStuckChecking(tasks: Task[]) {
+  if (tasks.some((task) => task.id === 't-seed-stuck')) return;
+  tasks.push(stuckTask(Date.now()));
+  persist();
 }
 
 function persist() {
@@ -294,13 +387,13 @@ export function createTask(url: string, productId: string): Task {
     id: nextId(),
     url,
     productId,
-    title: "Men's Slim Fit Wedding Suit Jacket Two Piece Formal Business Office Suits For Men",
+    title: DEMO_SUIT_TITLE,
     image: 'suit',
     category: '服装 > 男装 > 男士外套',
     priceRange: '$10 - $99',
     skuCount: 12,
     submitTime: Date.now(),
-    scenario: 'default',
+    scenario: 'all-pass',
     overrides: {},
   };
   loadTasks().unshift(task);
@@ -311,21 +404,38 @@ export function createTask(url: string, productId: string): Task {
 export function recheckTask(sourceId: string): Task | undefined {
   const source = getTask(sourceId);
   if (!source) return undefined;
-  const copy: Task = { ...source, id: nextId(), submitTime: Date.now(), canceledAt: undefined, collectFailedReason: undefined, collectRetryAt: undefined, overrides: {} };
+  const copy: Task = { ...source, id: nextId(), submitTime: Date.now(), canceledAt: undefined, collectFailedReason: undefined, collectRetryAt: undefined, collectOnlyAt: undefined, checkRetryAt: undefined, overrides: {} };
   loadTasks().unshift(copy);
   persist();
   return copy;
 }
 
-export function cancelTask(id: string) {
+// 就地重新检测：沿用已采集的商品信息，在当前记录上重新执行全部质检项
+export function recheckInPlace(id: string) {
   mutateTask(id, (task) => {
-    task.canceledAt = Date.now();
+    task.checkRetryAt = Date.now();
+    Object.values(task.overrides).forEach((override) => {
+      if (override) override.retryAt = undefined;
+    });
   });
 }
 
 export function retryCollect(id: string) {
   mutateTask(id, (task) => {
     task.collectRetryAt = Date.now();
+    task.collectedAt = task.collectRetryAt + RETRY_COLLECT_MS;
+    task.collectFailedReason = undefined;
+    Object.values(task.overrides).forEach((override) => {
+      if (override) override.retryAt = undefined;
+    });
+  });
+}
+
+// 仅重新采集：只更新商品信息（先走采集 loading），不重新检测各质检项
+export function recollectInfo(id: string) {
+  mutateTask(id, (task) => {
+    task.collectOnlyAt = Date.now();
+    task.collectedAt = task.collectOnlyAt + INFO_COLLECT_MS;
   });
 }
 

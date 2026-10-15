@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "status": "completed",
+  "kind": "assets",
+  "fallback": "current-agent",
+  "reason": "vision-config-incomplete",
+  "ocrSubmitted": false,
+  "regions": []
+}

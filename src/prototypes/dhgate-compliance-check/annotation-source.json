@@ -10,7 +10,7 @@
     "version": 2,
     "prototypeName": "dhgate-compliance-check",
     "pageId": "launch",
-    "updatedAt": 1791856369516,
+    "updatedAt": 1791962088441,
     "nodes": [
       {
         "id": "dcc-item-material",
@@ -25,33 +25,38 @@
           "path": []
         },
         "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
-        "annotationText": "展示场景对照：\n\n通过＝材质属性值合法且与主图一致\n\n违规1＝属性值缺失（材质属性值为空或无意义）\n\n违规2＝属性值错误（属性值与主图材质不符）\n\n疑似＝疑似违规，需人工复核\n\n材质仅校验已填写的属性数据。",
+        "annotationText": "展示场景对照：\n\n通过＝跟随质检流程动态演示，完成后展示：材质属性值合法且与主图一致\n\n无效＝违规，材质属性值无效\n\n错误＝违规，材质属性值与主图材质不符\n\n疑似＝疑似违规，需人工复核\n\n失败＝检测服务异常，本项未产生结果，展示失败原因并可重新检测\n\n材质无效包含以下场景（缺失只是其中一种，卡片演示的是取值为空这一种）：\n\n属性值为空，即根本没有填写\n\n属性值填的是 null、n/a、none、- 之类占位内容\n\n属性值填的是和材质无关的词，例如风格、用途描述\n\n主图下载失败或无法访问",
         "hasMarkdown": false,
         "color": "#FF7D29",
         "images": [],
         "controls": [
           {
-            "type": "segmented",
+            "type": "select",
             "attributeId": "item_state_material",
             "displayName": "展示场景",
-            "info": "切换本卡片展示的通过/违规/疑似违规场景，每种场景有独立的展示数据。",
-            "initialValue": "pass",
+            "info": "「通过」跟随质检流程动态演示（排队→检测中→通过）；切换后本卡片展示对应的违规/疑似违规/检测失败场景，每种场景有独立的展示数据。",
+            "placeholder": "通过（跟随进度）",
+            "initialValue": "flow",
             "options": [
               {
                 "label": "通过",
-                "value": "pass"
+                "value": "flow"
               },
               {
-                "label": "违规1",
+                "label": "无效",
                 "value": "value_missing"
               },
               {
-                "label": "违规2",
+                "label": "错误",
                 "value": "value_wrong"
               },
               {
                 "label": "疑似",
                 "value": "suspect"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
               }
             ]
           }
@@ -72,29 +77,46 @@
           "path": []
         },
         "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
-        "annotationText": "展示场景对照：\n\n通过＝尺码表一致\n\n尺码表不一致＝违规，填写的尺码表与图片尺码表矛盾\n\n疑似违规＝尺码数据不完整，需人工复核",
+        "annotationText": "展示场景对照：\n\n通过＝跟随质检流程动态演示，完成后展示：尺码表一致\n\n尺码表无效＝违规，尺码表缺少尺码标签列、实际尺码或参数列，或不具备可用尺码行（尺码标签为空、0、null、纯符号等无意义值、核心列全部无有效值、部分尺码行无有效值）\n\n尺码表不一致＝违规，详情尺码表与系统尺码模板的数值不一致（两者都存在时才比对）\n\n未按性别区分＝违规，看 SKU 里男女款的尺码是不是同一套：男女款尺码不同、而尺码表只给一组通用数据（没标男款/女款）即判违规，判定不看商品属性和标题\n\n男女款尺码相同、只是图案有区别时，尺码表提供通用数据没问题，应判通过\n\n在售尺码不一致＝违规，SKU 在售尺码与系统尺码模板或商品详情尺码表缺少、多出或数值错误（对应关系、参数关系不一致）\n\n疑似＝尺码数据不完整，需人工复核\n\n失败＝图片文字识别服务异常，尺码比对未完成，展示失败原因并可重新检测\n\n检测顺序：先确认系统尺码表或商品详情图中是否找到尺码表，未找到即判通过；找到后依次校验尺码表是否有效、两个尺码表是否一致、是否按性别区分、在售尺码与尺码表是否一致，任一步不通过就输出对应问题\n\n可能的检测失败原因：\n\n详情图尺码表图片文字识别服务异常\n\nSKU 尺码数据格式异常，无法完成比对\n\n系统尺码模板未能获取",
         "hasMarkdown": false,
         "color": "#FF7D29",
         "images": [],
         "controls": [
           {
-            "type": "segmented",
+            "type": "select",
             "attributeId": "item_state_size",
             "displayName": "展示场景",
-            "info": "切换本卡片展示的通过/违规/疑似违规场景，每种场景有独立的展示数据。",
-            "initialValue": "pass",
+            "info": "「通过」跟随质检流程动态演示（排队→检测中→通过）；切换后本卡片展示对应的违规/疑似违规/检测失败场景，每种场景有独立的展示数据。",
+            "placeholder": "通过（跟随进度）",
+            "initialValue": "flow",
             "options": [
               {
                 "label": "通过",
-                "value": "pass"
+                "value": "flow"
+              },
+              {
+                "label": "尺码表无效",
+                "value": "chart_invalid"
               },
               {
                 "label": "尺码表不一致",
                 "value": "table_mismatch"
               },
               {
-                "label": "疑似违规",
+                "label": "未按性别区分",
+                "value": "gender_unmarked"
+              },
+              {
+                "label": "在售尺码不一致",
+                "value": "sku_mismatch"
+              },
+              {
+                "label": "疑似",
                 "value": "suspect"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
               }
             ]
           }
@@ -115,33 +137,34 @@
           "path": []
         },
         "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
-        "annotationText": "展示场景对照：\n\n通过＝未发现侵权特征\n\n标题品牌词＝违规，标题含受保护品牌词\n\n图片logo＝违规，主图含品牌 logo\n\n疑似违规＝疑似商标元素，需人工复核",
+        "annotationText": "展示场景对照：\n\n通过＝跟随质检流程动态演示，完成后展示：未发现侵权特征\n\n多项违规＝标题品牌词 + 图片 logo 两处判定违规，另外再出 1 条疑似违规待人工确认（品牌词与 logo 不再拆成两个场景）\n\n涉及图库比对时，会把图库里的样本图片一并展示，供人工比对\n\n疑似违规＝同时出现两项待复核：标题形近品牌词 + 主图疑似商标元素\n\n失败＝检测服务不可用，本项未产生结果，展示失败原因并可重新检测\n\n可能的检测失败原因：\n\n图片特征检测服务不可用\n\n品牌词库更新失败或比对任务中断\n\n图片内文字识别服务超时",
         "hasMarkdown": false,
         "color": "#FF7D29",
         "images": [],
         "controls": [
           {
-            "type": "segmented",
+            "type": "select",
             "attributeId": "item_state_ipr",
             "displayName": "展示场景",
-            "info": "切换本卡片展示的通过/违规/疑似违规场景，每种场景有独立的展示数据。",
-            "initialValue": "pass",
+            "info": "「通过」跟随质检流程动态演示（排队→检测中→通过）；切换后本卡片展示对应的违规/疑似违规/检测失败场景，每种场景有独立的展示数据。",
+            "placeholder": "通过（跟随进度）",
+            "initialValue": "flow",
             "options": [
               {
                 "label": "通过",
-                "value": "pass"
+                "value": "flow"
               },
               {
-                "label": "标题品牌词",
-                "value": "title_word"
-              },
-              {
-                "label": "图片logo",
-                "value": "image_logo"
+                "label": "多项违规",
+                "value": "multi_violation"
               },
               {
                 "label": "疑似违规",
                 "value": "suspect"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
               }
             ]
           }
@@ -162,21 +185,22 @@
           "path": []
         },
         "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
-        "annotationText": "展示场景对照：\n\n通过＝类目与商品一致\n\n类目错放＝违规，商品与所在类目明显不符\n\n疑似违规＝存在跨类目特征，需人工复核",
+        "annotationText": "展示场景对照：\n\n通过＝跟随质检流程动态演示，完成后展示：类目与商品一致\n\n类目错放＝违规，检测到多个可选类目，单选目标类目后可复制建议\n\n疑似违规＝存在跨类目特征，需人工复核\n\n失败＝类目推荐接口调用失败，未产生结果，可重新检测\n\n可能的检测失败原因：\n\n类目推荐服务调用失败，未返回候选类目\n\n商品标题或主图未能获取，无法完成识别",
         "hasMarkdown": false,
         "color": "#FF7D29",
         "images": [],
         "controls": [
           {
-            "type": "segmented",
+            "type": "select",
             "attributeId": "item_state_category",
             "displayName": "展示场景",
-            "info": "切换本卡片展示的通过/违规/疑似违规场景，每种场景有独立的展示数据。",
-            "initialValue": "pass",
+            "info": "「通过」跟随质检流程动态演示（排队→检测中→通过）；切换后本卡片展示对应的违规/疑似违规/检测失败场景，每种场景有独立的展示数据。",
+            "placeholder": "通过（跟随进度）",
+            "initialValue": "flow",
             "options": [
               {
                 "label": "通过",
-                "value": "pass"
+                "value": "flow"
               },
               {
                 "label": "类目错放",
@@ -185,6 +209,10 @@
               {
                 "label": "疑似违规",
                 "value": "suspect"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
               }
             ]
           }
@@ -205,21 +233,22 @@
           "path": []
         },
         "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
-        "annotationText": "展示场景对照：\n\n通过＝价格合规\n\n阶梯价低＝违规，批发阶梯价低于最低价线\n\nSKU价低＝违规，SKU 价格低于最低价线\n\n疑似违规＝价格接近阈值，需人工复核",
+        "annotationText": "展示场景对照：\n\n通过＝跟随质检流程动态演示，完成后展示：价格合规\n\n阶梯价低＝违规，批发阶梯价低于最低价线\n\nSKU价低＝违规，SKU 价格低于最低价线\n\n疑似违规＝价格接近阈值，需人工复核\n\n失败＝价格数据解析异常，本项未产生结果，展示失败原因并可重新检测\n\n可能的检测失败原因：\n\n批发阶梯价数据不完整，无法完成计算\n\nSKU 价格数据缺失或币种格式异常\n\n平台最低价规则未能获取",
         "hasMarkdown": false,
         "color": "#FF7D29",
         "images": [],
         "controls": [
           {
-            "type": "segmented",
+            "type": "select",
             "attributeId": "item_state_price",
             "displayName": "展示场景",
-            "info": "切换本卡片展示的通过/违规/疑似违规场景，每种场景有独立的展示数据。",
-            "initialValue": "pass",
+            "info": "「通过」跟随质检流程动态演示（排队→检测中→通过）；切换后本卡片展示对应的违规/疑似违规/检测失败场景，每种场景有独立的展示数据。",
+            "placeholder": "通过（跟随进度）",
+            "initialValue": "flow",
             "options": [
               {
                 "label": "通过",
-                "value": "pass"
+                "value": "flow"
               },
               {
                 "label": "阶梯价低",
@@ -232,6 +261,10 @@
               {
                 "label": "疑似违规",
                 "value": "suspect"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
               }
             ]
           }
@@ -252,39 +285,40 @@
           "path": []
         },
         "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
-        "annotationText": "展示场景对照：\n\n通过＝无违规内容\n\n禁售商品＝违规，命中禁售词库/图片库\n\n赌博类＝违规，涉赌博词库/网址库\n\n疑似违规＝图片相似度接近阈值，需人工复核",
+        "annotationText": "展示场景对照：\n\n通过＝跟随质检流程动态演示，完成后展示：未发现违反禁售规则、限售资质要求或赌博类违规\n\n多项违规＝禁售（详情文字出现电子烟烟弹描述，对应《禁止销售产品规则》烟酒类规则条目）+ 限售资质不全（按「资质项/适用市场/规则要求/当前状态」列出缺失资质）+ 赌博词、赌博网址、销售赌博机同时出现，另外再出 1 条疑似违规待人工确认（禁售与赌博不再拆成两个场景；赌博词＝商品文字本身出现，参考信息召回命中文字所在段落；赌博网址＝图片中的文字识别后出现，展示对应图片与文字识别片段，建议修改或删除图片；赌博机＝商品实物即赌博机，展示命中的商品图片和库内对比样本图，要求下架商品）\n\n疑似违规＝同时存在两项待复核条件：主图金属扣件形似手铐（待确认是否属于管制器具禁售）+ 标题含 Tactical Style（可能对应美国市场军警用品地区禁售，仅提示美国市场限制）\n\n禁售/限售比对没有图片库，展示规则库条目和资质要求表：禁售规则说明什么地区禁止销售什么产品（分全网禁售和地区禁售），限售规则说明什么地区销售什么产品需要什么资质\n\n失败＝规则库比对任务中断，本项未产生结果，展示失败原因并可重新检测\n\n可能的检测失败原因：\n\n禁售/限售规则库比对任务中断\n\n赌博词、网址等词库暂时不可用",
         "hasMarkdown": false,
         "color": "#FF7D29",
         "images": [],
         "controls": [
           {
-            "type": "segmented",
+            "type": "select",
             "attributeId": "item_state_legal",
             "displayName": "展示场景",
-            "info": "切换本卡片展示的通过/违规/疑似违规场景，每种场景有独立的展示数据。",
-            "initialValue": "pass",
+            "info": "「通过」跟随质检流程动态演示（排队→检测中→通过）；切换后本卡片展示对应场景。违规与疑似均为多条件同时检查、可能同时出现多项的展示效果；检测失败场景展示失败原因。",
+            "placeholder": "通过（跟随进度）",
+            "initialValue": "flow",
             "options": [
               {
                 "label": "通过",
-                "value": "pass"
+                "value": "flow"
               },
               {
-                "label": "禁售商品",
-                "value": "banned"
-              },
-              {
-                "label": "赌博类",
-                "value": "gambling"
+                "label": "多项违规",
+                "value": "multi_violation"
               },
               {
                 "label": "疑似违规",
                 "value": "suspect"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
               }
             ]
           }
         ],
         "createdAt": 1791800000000,
-        "updatedAt": 1791856369516
+        "updatedAt": 1791949915282
       },
       {
         "id": "dcc-conclusion-bar",
@@ -299,47 +333,244 @@
           "path": []
         },
         "aiPrompt": "根据总体结论条标注生成实现说明。",
-        "annotationText": "展示状态对照：\n\n违规＝不通过（存在违规，需整改）\n\n通过＝全部合规\n\n疑似＝待人工复核（存在疑似违规）\n\n失败＝部分质检项检测失败，结论不完整\n\n检测＝检测中（结果逐项返回）\n\n采集＝采集失败（未获取到商品数据）",
+        "annotationText": "展示状态对照：\n\n通过＝跟随任务真实进度（采集中→质检中逐项返回→完成后全部通过）\n\n违规＝不通过（存在违规，需整改）\n\n疑似＝待人工复核（存在疑似违规）\n\n部分失败＝部分质检项检测失败，结论不完整\n\n检测中＝检测中（结果逐项返回）\n\n（以上场景由标注面板直接切换展示；未切换时，结论按下方「结论判定逻辑」由 6 个质检项结果实时推导）\n\n结论判定逻辑：\n\n一次检测中，通过、违规、疑似、失败四项可能同时有数（如 通过3/违规1/疑似0/失败2），但总结论只有一个：按 6 个质检项的结果汇总，依下述优先级取第一个命中的；各质检项自身的判定规则见对应质检项卡片标注\n\n四项计数含义：通过＝该质检项未发现违规；违规＝该质检项明确检出违反平台规则的问题，需整改；疑似＝该质检项发现疑似违规、需人工复核（含「疑似违规」与「建议人工」两种质检项状态）；失败＝该质检项因服务异常未产生结果，只表示没检出，不算违规\n\n判定顺序（自上而下，命中即停）：\n\n1. 仍有质检项未出结果（排队中/检测中）→ 检测中：质检进行中，已完成 X/6 项，各质检项独立并行执行、结果逐项返回，暂不出总结论（蓝色，带加载动画）\n\n2. 违规数 > 0 → 不通过：商品存在 N 处违规，请逐项处理（红色）\n\n3. 无违规、疑似数 > 0 → 建议人工审核：存在疑似错误项（橙色）\n\n4. 无违规、无疑似、失败数 > 0 → 部分完成：N 项检测失败，结论不完整、仅供参考，请重试失败项（橙色）\n\n5. 6 项全部通过 → 通过：全部质检项均未发现违规（绿色）\n\n示例：\n\n通过3/违规1/疑似0/失败2 → 存在违规，结论为「不通过」（失败项仍需重试，重试后结论可能变化）\n\n通过3/违规0/疑似1/失败2 → 无违规、有疑似，结论为「建议人工审核」\n\n通过4/违规0/疑似0/失败2 → 无违规、无疑似、有失败，结论为「部分完成」，结论仅供参考\n\n通过6/违规0/疑似0/失败0 → 全部通过\n\n隐含逻辑：\n\n通过/违规/疑似/失败四项统计卡片任何场景都展示，没有该项数据时计 0；统计卡片在上、结论文字在下；计数里的「失败」指质检项因服务异常未产生结果，失败本身不算违规\n\n部分失败时结论不完整，需要用户对失败项重新检测后才能给出最终结论\n\n采集失败时本页不展示结论条",
         "hasMarkdown": false,
         "color": "#FF7D29",
         "images": [],
         "controls": [
           {
-            "type": "segmented",
+            "type": "select",
             "attributeId": "conclusion_state",
             "displayName": "展示状态",
-            "info": "切换总体结论条展示的状态，每种状态有独立的底色、计数与结论文案：不通过（红色）、通过（绿色）、待人工确认/部分失败（橙色）、检测中（蓝色，带加载动画）、采集失败（红色，无计数）。",
-            "initialValue": "reject",
+            "info": "「通过」跟随任务真实进度动态展示（质检中→通过）；切换后结论条展示对应状态的底色、计数与文案：不通过（红色）、待人工确认/部分失败（橙色）、检测中（蓝色，带加载动画）。",
+            "placeholder": "通过（跟随进度）",
+            "initialValue": "flow",
             "options": [
+              {
+                "label": "通过",
+                "value": "flow"
+              },
               {
                 "label": "违规",
                 "value": "reject"
-              },
-              {
-                "label": "通过",
-                "value": "pass"
               },
               {
                 "label": "疑似",
                 "value": "manual"
               },
               {
-                "label": "失败",
+                "label": "部分失败",
                 "value": "partial"
               },
               {
-                "label": "检测",
+                "label": "检测中",
                 "value": "checking"
-              },
-              {
-                "label": "采集",
-                "value": "failed"
               }
             ]
           }
         ],
         "createdAt": 1791800000000,
-        "updatedAt": 1791856369516
+        "updatedAt": 1792049135024
+      },
+      {
+        "id": "dcc-launch-card",
+        "index": 8,
+        "title": "发起检测表单",
+        "pageId": "launch",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-launch-card\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-launch-card",
+          "path": []
+        },
+        "aiPrompt": "根据发起检测表单标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n输入框右下角的「演示链接」是演示入口，正式环境没有，用于一键填入有效/无效链接验证校验逻辑\n\n仅允许敦煌网商品详情链接，非敦煌链接在提交时才报错，输入过程中不拦截\n\n输入框非空才允许点「开始检测」；回车等同点击\n\n「清空」按钮只在内容有值时显示，为空时隐藏\n\n同一链接已有任务还在检测中时再次提交，不新建任务，弹重复检测确认框，确认后跳到进行中的任务\n\n提交成功后自动跳转该任务的质检详情页",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791960000000,
+        "updatedAt": 1791960000000
+      },
+      {
+        "id": "dcc-recent-card",
+        "index": 9,
+        "title": "最近检测列表",
+        "pageId": "launch",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-recent-card\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-recent-card",
+          "path": []
+        },
+        "aiPrompt": "根据最近检测列表标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n列表与「质检记录」页共用同一张任务表格（列、字段、操作完全一致），这里只是只取最近提交的 5 条任务（按提交时间倒序），不是全部记录\n\n总记录数超过 5 条时，标题右侧才出现「查看更多>>」，点击跳转「质检记录」页；未超过时不显示\n\n表中状态是实时计算的：任务在后台仍会排队→采集→逐项检测，状态标签与进度会随时间自动刷新\n\n「查看」或点击整行打开该任务的质检详情；「复制」仅复制商品链接；进行中的任务可在本列表直接「取消」",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791960000000,
+        "updatedAt": 1791960000000
+      },
+      {
+        "id": "dcc-records-filter",
+        "index": 10,
+        "title": "筛选栏",
+        "pageId": "records",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-records-filter\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-records-filter",
+          "path": []
+        },
+        "aiPrompt": "根据筛选栏标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n四个条件之间是「且」的关系，只会改变列表显示，不会重新发起检测\n\n状态里的「检测中」合并了 排队中 / 采集中 / 质检中 三种进行中状态\n\n时间按提交时间距今的滑动窗口计算：「今天」= 最近 24 小时，不是自然日\n\n结果看的是质检项计数：有违规=违规数>0，有疑似=疑似数>0，无违规=违规与疑似都为 0（仍可能包含检测失败或尚未出结果的项）\n\n搜索匹配商品标题或敦煌链接，不区分大小写",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791960896588,
+        "updatedAt": 1791962088441
+      },
+      {
+        "id": "dcc-records-table",
+        "index": 11,
+        "title": "质检记录列表",
+        "pageId": "records",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-records-table\"]"
+          ],
+          "fingerprint": "table|data-annotation-id=dcc-records-table",
+          "path": []
+        },
+        "aiPrompt": "根据质检记录列表标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n按提交时间倒序，最新任务在最上面；每页固定 6 条\n\n任务状态、进度条和质检概览计数都不是存死的结果，而是按提交时间在时间轴上实时推导，页面每秒刷新一次，所以进行中的任务会自己往前走\n\n概览四项（通过/违规/疑似/失败）统计的是质检项数量；只要有一项已出结果就四项一起展示，某项为 0 时显示 0（不再因为「没有失败项」就不显示失败）；四项都是 0 时（还没有任何质检结果：排队/采集中/采集失败/已取消）整列显示占位符「-」\n\n进度条表示这条任务的质检项完成了多少：6 个质检项里完成 4 个，进度条就走到 4/6 的长度；只在「采集中」「质检中」显示，排队中不显示\n\n各质检项并行独立返回结果，所以同一任务里有的项已出结果、有的项还在检测中\n\n列表里有一条固定在「质检中」的演示数据：价格违规检查和违法违规检查两项一直检测中，专门用于查看该状态下的字段内容，永远不会走到完成态\n\n点击整行任意位置进入质检详情，只有「复制」按钮不会触发行点击\n\n操作列只有「查看」，进行中的任务也不提供取消入口",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791960896588,
+        "updatedAt": 1791962088441
+      },
+      {
+        "id": "dcc-records-pager",
+        "index": 12,
+        "title": "分页",
+        "pageId": "records",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-records-pager\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-records-pager",
+          "path": []
+        },
+        "aiPrompt": "根据分页标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n「共 N 条」是筛选之后的条数，不是全部记录数\n\n切换筛选不会重置页码：当前页超出范围时自动回退到最后一页，只有搜索关键字变化才回到第 1 页\n\n页码按钮一次性全部列出，不做省略号折叠",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791960896588,
+        "updatedAt": 1791960896588
+      },
+      {
+        "id": "dcc-recheck-entry",
+        "index": 13,
+        "title": "详情页顶部操作",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-recheck-entry\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-recheck-entry",
+          "path": []
+        },
+        "aiPrompt": "根据详情页顶部操作标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n「重新检测」弹窗提供两种方式：\n\n就地重新检测＝沿用已采集的商品信息，在当前这条记录上重跑全部质检项，结果就地更新，不新增记录\n\n重新采集并检测＝保留当前记录，新建一条任务重新采集后再质检\n\n同一商品链接还有任务在进行中时，新建任务会被拦截并提示稍后，避免重复检测\n\n新建任务成功后自动跳到新任务的详情页，旧记录仍可在质检记录里查看\n\n「复制链接」只复制商品链接，不影响任务",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791970000000,
+        "updatedAt": 1791970000000
+      },
+      {
+        "id": "dcc-recollect-entry",
+        "index": 14,
+        "title": "重新采集入口",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-recollect-entry\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-recollect-entry",
+          "path": []
+        },
+        "aiPrompt": "根据重新采集入口标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n商品信息过时（如卖家改了标题、价格）时用「重新采集」更新概况\n\n弹窗两种方式：\n\n仅重新采集信息＝只刷新商品信息和采集时间，各质检项结果保持不变\n\n采集后重新检测＝按最新商品信息在当前记录上重跑全部质检项，不创建新记录\n\n采集失败的可能原因：链接失效或填写错误、商品已下架或被删除、网站访问限制、外部页面改版导致未能取到数据",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791970000000,
+        "updatedAt": 1791970000000
+      },
+      {
+        "id": "dcc-item-actions",
+        "index": 15,
+        "title": "卡片顶部操作（每张卡片相同）",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-actions-material\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-item-actions-material",
+          "path": []
+        },
+        "aiPrompt": "根据质检项卡片顶部操作标注生成实现说明。",
+        "annotationText": "每张卡片右上角都有这组操作，逻辑一致：\n\n「重新检测」只重跑当前这一个质检项，其他项结果不受影响，完成后就地更新本卡片\n\n排队中、检测中的卡片不显示该项的重新检测按钮\n\n👍＝对该项检测结果表示满意，再点一次取消\n\n👎＝弹出反馈原因选择框，可多选（误报、漏报、原因不准、建议不准、参考信息缺失、其他），还能补充说明\n\n标记不满意后卡片底部会显示已选的原因和补充内容，再点 👎 直接取消不满意\n\n满意和不满意只用于评估质检功能的检测质量，不会改变检测结果本身",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791970000000,
+        "updatedAt": 1791970000000
+      },
+      {
+        "id": "dcc-summary-card",
+        "index": 16,
+        "title": "商品概况与采集状态",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-summary-card\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-summary-card",
+          "path": []
+        },
+        "aiPrompt": "根据商品概况与采集状态标注生成实现说明。",
+        "annotationText": "展示状态对照（整页随采集状态切换）：\n\n首次采集＝任务还没拿到任何商品数据，概况卡只有加载占位（转圈 + 骨架条），标题、链接、类目、价格、SKU 都不出现；采集完成后信息才出现（与下方质检项先骨架后出结果的节奏一致）\n\n重新采集（采集后重新检测）＝跟初始采集一样：采集期间只有当前卡片 loading（转圈 + 骨架条），结论条与质检项卡片整列隐藏，采集完成后商品信息与质检结果一同出现\n\n仅重新采集信息＝沿用已有商品信息 + 标题旁「排队等待采集… / 正在采集…」转圈，完成后收敛为绿底「采集成功」标签，各质检项结果保持不变\n\n成功＝跟随任务真实的采集结果，采集成功：商品信息齐全，下方质检项正常展示\n\n失败＝采集失败：商品概况整卡换成「采集失败」卡片（失败原因 + 重新采集入口），不展示价格、SKU 等信息，也不展示结论条，各质检项不会开始检测，质检项卡片整列隐藏\n\n采集失败的可能原因：\n\n链接失效或填写错误\n\n商品已下架或被卖家删除\n\n网站访问限制\n\n外部页面改版导致未能取到数据",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "collect_state",
+            "displayName": "采集状态",
+            "info": "成功＝跟随任务真实采集状态（正常任务为采集成功）；切「失败」演示采集失败页面（采集失败卡片 + 重试入口，质检项不出现）。",
+            "placeholder": "成功（跟随任务状态）",
+            "initialValue": "flow",
+            "options": [
+              {
+                "label": "成功",
+                "value": "flow"
+              },
+              {
+                "label": "失败",
+                "value": "failed"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791972000000,
+        "updatedAt": 1792048565940
       }
     ]
   },

@@ -1,6 +1,6 @@
 /**
  * 主图拼图弹窗：以开源 easy-collage 页面为基底改造。
- * 支持可选图片点击/拖拽入格、格内滚轮缩放与拖拽平移、悬停删除。
+ * 支持可选图片选中/拖拽入格、格内滚轮缩放与拖拽平移、格子间拖拽换位、悬停删除。
  */
 
 import React from 'react';
@@ -8,11 +8,39 @@ import '../collage.css';
 
 import UploadImageDialog from './UploadImageDialog';
 
-import main1 from '../assets/main-1.png';
-import main2 from '../assets/main-2.png';
-import main3 from '../assets/main-3.png';
-import main4 from '../assets/main-4.png';
-import main5 from '../assets/main-5.png';
+import sample01 from '../assets/samples/sample-01.jpg';
+import sample02 from '../assets/samples/sample-02.jpg';
+import sample03 from '../assets/samples/sample-03.jpg';
+import sample04 from '../assets/samples/sample-04.jpg';
+import sample05 from '../assets/samples/sample-05.jpg';
+import sample06 from '../assets/samples/sample-06.jpg';
+import sample07 from '../assets/samples/sample-07.jpg';
+import sample08 from '../assets/samples/sample-08.jpg';
+import sample09 from '../assets/samples/sample-09.jpg';
+import sample10 from '../assets/samples/sample-10.jpg';
+import sample11 from '../assets/samples/sample-11.jpg';
+import sample12 from '../assets/samples/sample-12.jpg';
+import sample13 from '../assets/samples/sample-13.jpg';
+import sample14 from '../assets/samples/sample-14.jpg';
+import sample15 from '../assets/samples/sample-15.jpg';
+
+const SAMPLE_IMAGES = [
+  { id: 'sample-01', src: sample01, size: '800*800' },
+  { id: 'sample-02', src: sample02, size: '800*800' },
+  { id: 'sample-03', src: sample03, size: '800*800' },
+  { id: 'sample-04', src: sample04, size: '800*800' },
+  { id: 'sample-05', src: sample05, size: '800*800' },
+  { id: 'sample-06', src: sample06, size: '800*800' },
+  { id: 'sample-07', src: sample07, size: '800*800' },
+  { id: 'sample-08', src: sample08, size: '800*800' },
+  { id: 'sample-09', src: sample09, size: '800*800' },
+  { id: 'sample-10', src: sample10, size: '800*800' },
+  { id: 'sample-11', src: sample11, size: '800*800' },
+  { id: 'sample-12', src: sample12, size: '800*800' },
+  { id: 'sample-13', src: sample13, size: '800*800' },
+  { id: 'sample-14', src: sample14, size: '800*800' },
+  { id: 'sample-15', src: sample15, size: '800*800' },
+];
 
 type IconProps = { size?: number; stroke?: number };
 
@@ -62,13 +90,22 @@ function IconTrash({ size = 12, stroke = 1.8 }: IconProps) {
   );
 }
 
-const SAMPLE_IMAGES = [
-  { id: 'main-1', src: main1, size: '1200*1600' },
-  { id: 'main-2', src: main2, size: '1200*1600' },
-  { id: 'main-3', src: main3, size: '1200*1600' },
-  { id: 'main-4', src: main4, size: '600*800' },
-  { id: 'main-5', src: main5, size: '600*800' },
-];
+function IconMove({ size = 14, stroke = 1.8 }: IconProps) {
+  return (
+    <svg className="cp-icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2v20M2 12h20" />
+      <path d="m8 6 4-4 4 4M8 18l4 4 4-4M6 8l-4 4 4 4M18 8l4 4-4 4" />
+    </svg>
+  );
+}
+
+function IconCheck({ size = 12, stroke = 2.4 }: IconProps) {
+  return (
+    <svg className="cp-icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
 
 type Cell = { flex?: number };
 type Row = { flex?: number; cells: Cell[] };
@@ -160,31 +197,60 @@ type Slot = { src: string; scale: number; x: number; y: number } | null;
 
 const emptySlots = (): Slot[] => Array.from({ length: SLOT_COUNT }, () => null);
 
+function parseDrop(e: React.DragEvent): { sampleSrc?: string; fromIndex?: number } {
+  const from = e.dataTransfer.getData('text/cp-slot');
+  if (from !== '') return { fromIndex: Number(from) };
+  const src = e.dataTransfer.getData('text/cp-sample');
+  if (src) return { sampleSrc: src };
+  return {};
+}
+
 function SlotCell({
+  index,
   slot,
   onDropSrc,
+  onDropFromSlot,
   onRemove,
   onSetView,
   onPick,
 }: {
+  index: number;
   slot: Slot;
   onDropSrc: (src: string) => void;
+  onDropFromSlot: (fromIndex: number) => void;
   onRemove: () => void;
   onSetView: (patch: { scale?: number; x?: number; y?: number }) => void;
   onPick: () => void;
 }) {
   const dragRef = React.useRef<{ startX: number; startY: number; baseX: number; baseY: number } | null>(null);
+  const boxRef = React.useRef<HTMLDivElement>(null);
+  const imgRef = React.useRef<HTMLImageElement>(null);
+
+  const clamp = (s: number, x: number, y: number) => {
+    const el = boxRef.current;
+    if (!el) return { x: 0, y: 0 };
+    const r = el.getBoundingClientRect();
+    const mx = Math.max(0, (r.width * (s - 1)) / 2);
+    const my = Math.max(0, (r.height * (s - 1)) / 2);
+    return { x: Math.min(mx, Math.max(-mx, x)), y: Math.min(my, Math.max(-my, y)) };
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    const { sampleSrc, fromIndex } = parseDrop(e);
+    if (fromIndex !== undefined) {
+      if (fromIndex !== index) onDropFromSlot(fromIndex);
+    } else if (sampleSrc) {
+      onDropSrc(sampleSrc);
+    }
+  };
 
   if (!slot) {
     return (
       <div
         className="cp-slot"
         onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => {
-          e.preventDefault();
-          const src = e.dataTransfer.getData('text/cp-sample');
-          if (src) onDropSrc(src);
-        }}
+        onDrop={handleDrop}
         onClick={onPick}
       >
         <span className="cp-slot__plus">+</span>
@@ -195,10 +261,14 @@ function SlotCell({
 
   return (
     <div
+      ref={boxRef}
       className="cp-slot cp-slot--filled"
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={handleDrop}
       onWheel={(e) => {
         const next = Math.min(3, Math.max(1, slot.scale + (e.deltaY < 0 ? 0.1 : -0.1)));
-        onSetView(next === 1 ? { scale: 1, x: 0, y: 0 } : { scale: next });
+        if (next === 1) onSetView({ scale: 1, x: 0, y: 0 });
+        else onSetView({ scale: next, ...clamp(next, slot.x, slot.y) });
       }}
       onPointerDown={(e) => {
         if (slot.scale <= 1) return;
@@ -208,19 +278,36 @@ function SlotCell({
       onPointerMove={(e) => {
         const d = dragRef.current;
         if (!d) return;
-        onSetView({ x: d.baseX + (e.clientX - d.startX), y: d.baseY + (e.clientY - d.startY) });
+        onSetView(clamp(slot.scale, d.baseX + (e.clientX - d.startX), d.baseY + (e.clientY - d.startY)));
       }}
       onPointerUp={() => {
         dragRef.current = null;
       }}
     >
       <img
+        ref={imgRef}
         className="cp-slot__img"
         src={slot.src}
         alt=""
         draggable={false}
         style={{ transform: `translate(${slot.x}px, ${slot.y}px) scale(${slot.scale})` }}
       />
+      <span
+        className="cp-drag"
+        draggable
+        aria-label="拖拽到其它格子"
+        onPointerDown={(e) => e.stopPropagation()}
+        onDragStart={(e) => {
+          e.dataTransfer.setData('text/cp-slot', String(index));
+          const img = imgRef.current;
+          if (img) {
+            const r = img.getBoundingClientRect();
+            e.dataTransfer.setDragImage(img, r.width / 2, r.height / 2);
+          }
+        }}
+      >
+        <IconMove />
+      </span>
       <button
         className="cp-del"
         type="button"
@@ -237,31 +324,31 @@ function SlotCell({
   );
 }
 
-export default function CollageDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+export default function CollageDialog({ open, onClose, mainCount = 5, mainLimit = 8 }: { open: boolean; onClose: () => void; mainCount?: number; mainLimit?: number }) {
   const [uploadOpen, setUploadOpen] = React.useState(false);
   const [confirmOpen, setConfirmOpen] = React.useState(false);
   const [slots, setSlots] = React.useState<Slot[]>(emptySlots);
-  const [samples, setSamples] = React.useState(SAMPLE_IMAGES);
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [samples, setSamples] = React.useState<{ id: string; src: string; size: string }[]>(SAMPLE_IMAGES);
+  const [selected, setSelected] = React.useState<string[]>([]);
 
   if (!open) return null;
 
-  const openFilePicker = () => fileInputRef.current?.click();
-
-  const onFilesChosen = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files ?? []).filter((f) => f.type.startsWith('image/'));
-    e.target.value = '';
-    if (!files.length) return;
-    setSlots((prev) => {
-      const emptyCount = prev.filter((s) => s === null).length;
-      const take = files.slice(0, emptyCount);
-      let k = 0;
-      return prev.map((s) => (s === null && k < take.length ? { src: URL.createObjectURL(take[k++]), scale: 1, x: 0, y: 0 } : s));
-    });
-  };
+  const emptyCount = slots.filter((s) => s === null).length;
+  const selectableCount = Math.min(emptyCount, samples.length);
+  const allSelected = selectableCount > 0 && selected.length >= selectableCount;
 
   const placeInSlot = (index: number, src: string) => {
     setSlots((prev) => prev.map((s, i) => (i === index ? { src, scale: 1, x: 0, y: 0 } : s)));
+  };
+
+  const moveOrSwap = (fromIndex: number, toIndex: number) => {
+    setSlots((prev) => {
+      const next = [...prev];
+      const tmp = next[toIndex];
+      next[toIndex] = next[fromIndex];
+      next[fromIndex] = tmp;
+      return next;
+    });
   };
 
   const removeSlot = (index: number) => {
@@ -274,6 +361,34 @@ export default function CollageDialog({ open, onClose }: { open: boolean; onClos
 
   const deleteSample = (id: string) => {
     setSamples((prev) => prev.filter((s) => s.id !== id));
+    setSelected((prev) => prev.filter((x) => x !== id));
+  };
+
+  const toggleSelect = (id: string) => {
+    setSelected((prev) => {
+      if (prev.includes(id)) return prev.filter((x) => x !== id);
+      if (prev.length >= emptyCount) return prev;
+      return [...prev, id];
+    });
+  };
+
+  const toggleSelectAll = () => {
+    setSelected(() => (allSelected ? [] : samples.slice(0, selectableCount).map((s) => s.id)));
+  };
+
+  const importSelected = () => {
+    if (!selected.length) return;
+    const srcById = new Map(samples.map((s) => [s.id, s.src]));
+    const picked = selected.map((id) => srcById.get(id)).filter(Boolean) as string[];
+    setSlots((prev) => {
+      const next = [...prev];
+      let k = 0;
+      for (let i = 0; i < next.length && k < picked.length; i++) {
+        if (next[i] === null) next[i] = { src: picked[k++], scale: 1, x: 0, y: 0 };
+      }
+      return next;
+    });
+    setSelected([]);
   };
 
   return (
@@ -320,11 +435,13 @@ export default function CollageDialog({ open, onClose }: { open: boolean; onClos
                 {slots.map((slot, i) => (
                   <SlotCell
                     key={i}
+                    index={i}
                     slot={slot}
                     onDropSrc={(src) => placeInSlot(i, src)}
+                    onDropFromSlot={(from) => moveOrSwap(from, i)}
                     onRemove={() => removeSlot(i)}
                     onSetView={(patch) => setSlotView(i, patch)}
-                    onPick={openFilePicker}
+                    onPick={() => setUploadOpen(true)}
                   />
                 ))}
               </div>
@@ -332,11 +449,20 @@ export default function CollageDialog({ open, onClose }: { open: boolean; onClos
           </div>
 
           <div className="cp-toolbar">
+            <button className="cp-tool cp-tool--light" type="button" onClick={() => setSlots(emptySlots())}>
+              <span>清空</span>
+            </button>
             <button className="cp-tool cp-tool--light" type="button">
               <IconDownload />
               <span>导出</span>
             </button>
-            <button className="cp-tool cp-tool--primary" type="button" onClick={() => setConfirmOpen(true)}>
+            <button className="cp-tool cp-tool--primary" type="button" data-annotation-id="collage-upload-main" onClick={() => {
+              if (mainCount >= mainLimit) {
+                setConfirmOpen(true);
+              } else {
+                onClose();
+              }
+            }}>
               <IconUpload />
               <span>上传到主图</span>
             </button>
@@ -353,44 +479,69 @@ export default function CollageDialog({ open, onClose }: { open: boolean; onClos
               </button>
             </div>
 
+            <label className={selectableCount > 0 ? 'cp-selectall' : 'cp-selectall cp-selectall--off'}>
+              <span
+                className={allSelected ? 'cp-check cp-check--on' : 'cp-check'}
+                role="checkbox"
+                aria-checked={allSelected}
+                onClick={toggleSelectAll}
+              >
+                {allSelected && <IconCheck />}
+              </span>
+              <span onClick={toggleSelectAll}>全选</span>
+            </label>
+
             <div className="cp-samples" data-annotation-id="collage-sample-interaction">
-              {samples.map((img) => (
-                <div
-                  className="cp-sample"
-                  key={img.id}
-                  draggable
-                  onDragStart={(e) => e.dataTransfer.setData('text/cp-sample', img.src)}
-                >
-                  <img className="cp-sample__img" src={img.src} alt="" />
-                  <span className="cp-sample__badge">{img.size}</span>
-                  <button
-                    className="cp-del"
-                    type="button"
-                    aria-label="删除可选图片"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteSample(img.id);
-                    }}
+              {samples.map((img) => {
+                const isSelected = selected.includes(img.id);
+                const isDisabled = !isSelected && selected.length >= emptyCount;
+                const cls = ['cp-sample'];
+                if (isSelected) cls.push('cp-sample--selected');
+                if (isDisabled) cls.push('cp-sample--disabled');
+                return (
+                  <div
+                    className={cls.join(' ')}
+                    key={img.id}
+                    draggable={!isDisabled}
+                    onDragStart={(e) => e.dataTransfer.setData('text/cp-sample', img.src)}
+                    onClick={() => !isDisabled && toggleSelect(img.id)}
                   >
-                    <IconTrash />
-                  </button>
-                </div>
-              ))}
+                    <img className="cp-sample__img" src={img.src} alt="" />
+                    <span className="cp-sample__badge">{img.size}</span>
+                    <span className={isSelected ? 'cp-check cp-check--on' : 'cp-check'}>
+                      {isSelected && <IconCheck />}
+                    </span>
+                    <button
+                      className="cp-del"
+                      type="button"
+                      aria-label="删除可选图片"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteSample(img.id);
+                      }}
+                    >
+                      <IconTrash />
+                    </button>
+                  </div>
+                );
+              })}
             </div>
+          </div>
+
+          <div className="cp-panel__foot">
+            <button
+              className="cp-import"
+              type="button"
+              disabled={selected.length === 0}
+              onClick={importSelected}
+            >
+              导入已选图片
+            </button>
           </div>
         </aside>
       </div>
 
       <UploadImageDialog open={uploadOpen} onClose={() => setUploadOpen(false)} />
-
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        multiple
-        style={{ display: 'none' }}
-        onChange={onFilesChosen}
-      />
 
       {confirmOpen && (
         <div className="cp-confirm-mask">

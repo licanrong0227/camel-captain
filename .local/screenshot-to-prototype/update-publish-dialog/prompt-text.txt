@@ -1,0 +1,4 @@
+检测附图中的全部可见文字区域。只做文字区域检测，不判断素材、组件或布局。
+每个区域返回独立 id、原文 text、视觉完整边界 bounds 和 confidence；不要把相邻但独立的文字合并。
+bounds 包含 left、top、right、bottom，均为相对于整张图片的 0–1000 整数。
+仅返回只含 regions 数组的 JSON；不要输出说明、Markdown 或代码围栏。

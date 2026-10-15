@@ -6,49 +6,6 @@
     "targetPath": "prototypes/dhgate-compliance-check",
     "filePath": ".axhub/make/comments/82f67b540f2547e7e8e98e537f98ffac6770e3729677b5d8fa30f76555e7b83e.json"
   },
-  "comments": [
-    {
-      "label": "section#dcc-rule-material",
-      "locator": {
-        "selectors": [
-          "#dcc-rule-material",
-          "body > div > div > main > div > section:nth-of-type(1)",
-          "#root div > main > div > section:nth-of-type(1)"
-        ],
-        "fingerprint": "section|id=dcc-rule-material|class=dcc-card.dcc-rule-section|text=1材质检测商品信息规范检查检测对象：属性、首张主图校验规则：不校",
-        "path": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          2
-        ]
-      },
-      "marker": {
-        "clientX": 382,
-        "clientY": 339,
-        "documentX": 382,
-        "documentY": 339,
-        "xPercent": 19.97907949790795,
-        "y": 339,
-        "isFixed": false,
-        "offsetX": 126,
-        "offsetY": 93,
-        "dirtySince": 1791886445418
-      },
-      "id": "dac4e16b-26fc-41de-87b9-3a4f5c929bee",
-      "state": "idle",
-      "comment": "全局检查一下，类似那种不校验的东西，就不用写出来，只写校验什么东西",
-      "pageScope": "prototypes/dhgate-compliance-check::page::rules",
-      "provider": null,
-      "requestId": null,
-      "sessionId": null,
-      "updatedAt": null,
-      "message": null,
-      "code": null
-    }
-  ],
+  "comments": [],
   "images": []
 }

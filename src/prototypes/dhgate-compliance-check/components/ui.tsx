@@ -7,6 +7,10 @@ import dressImg from '../assets/product-dress.png';
 import teeImg from '../assets/product-tee.png';
 import sneakerImg from '../assets/product-sneaker.png';
 import sizeChartImg from '../assets/size-chart.png';
+import logoA1Img from '../assets/ref-logo-a-1.png';
+import logoA2Img from '../assets/ref-logo-a-2.png';
+import gamblingSlot1Img from '../assets/ref-gambling-slot-1.png';
+import gamblingSlot2Img from '../assets/ref-gambling-slot-2.png';
 
 export const IMAGES: Record<ImageKey, string> = {
   suit: suitImg,
@@ -15,6 +19,10 @@ export const IMAGES: Record<ImageKey, string> = {
   tee: teeImg,
   sneaker: sneakerImg,
   'size-chart': sizeChartImg,
+  'logo-a-1': logoA1Img,
+  'logo-a-2': logoA2Img,
+  'gambling-slot-1': gamblingSlot1Img,
+  'gambling-slot-2': gamblingSlot2Img,
 };
 
 /* ---------- Toast ---------- */

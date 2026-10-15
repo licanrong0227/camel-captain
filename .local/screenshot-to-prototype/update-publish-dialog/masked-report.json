@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "source": "C:/Users/admin/.qoder-cn/tmp/D--projects-CAMEL-CAPTAIN/images/44036eb2-054a-4ca2-a940-4ca6fb7bc4aa/03596652-d0ef-41e0-a7dd-4d47bb78ae0a.png",
+  "sourceSha256": "63fa208358750b5cbb9074cbb89249aaaba68cfecb28cf2d20a8e404e188b103",
+  "output": "masked-pass-2.png",
+  "padding": 0,
+  "ocrSubmitted": false,
+  "regionCount": 0,
+  "ocrCount": 10,
+  "textRegionCount": 10,
+  "maskedCount": 10,
+  "boxes": [
+    {
+      "source": "ocr",
+      "id": "t-title",
+      "bounds": {
+        "x": 24,
+        "y": 25,
+        "right": 104,
+        "bottom": 48,
+        "width": 80,
+        "height": 23
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "t-close",
+      "bounds": {
+        "x": 691,
+        "y": 26,
+        "right": 709,
+        "bottom": 42,
+        "width": 18,
+        "height": 16
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "t-auto-list",
+      "bounds": {
+        "x": 49,
+        "y": 111,
+        "right": 111,
+        "bottom": 127,
+        "width": 62,
+        "height": 16
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "t-publish-now",
+      "bounds": {
+        "x": 74,
+        "y": 138,
+        "right": 137,
+        "bottom": 154,
+        "width": 63,
+        "height": 16
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "t-publish-scheduled",
+      "bounds": {
+        "x": 183,
+        "y": 138,
+        "right": 247,
+        "bottom": 154,
+        "width": 64,
+        "height": 16
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "t-cancel",
+      "bounds": {
+        "x": 154,
+        "y": 280,
+        "right": 190,
+        "bottom": 297,
+        "width": 36,
+        "height": 17
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "t-confirm",
+      "bounds": {
+        "x": 231,
+        "y": 280,
+        "right": 272,
+        "bottom": 297,
+        "width": 41,
+        "height": 17
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "t-fail-relist",
+      "bounds": {
+        "x": 315,
+        "y": 280,
+        "right": 407,
+        "bottom": 297,
+        "width": 92,
+        "height": 17
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "t-loop-count",
+      "bounds": {
+        "x": 409,
+        "y": 280,
+        "right": 473,
+        "bottom": 297,
+        "width": 64,
+        "height": 17
+      }
+    },
+    {
+      "source": "ocr",
+      "id": "t-loop-value",
+      "bounds": {
+        "x": 512,
+        "y": 281,
+        "right": 520,
+        "bottom": 289,
+        "width": 8,
+        "height": 8
+      }
+    }
+  ]
+}

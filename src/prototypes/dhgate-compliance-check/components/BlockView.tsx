@@ -26,7 +26,35 @@ export function BlockView({ block }: { block: Block }) {
         </div>
       );
     case 'image':
-      return <ImageView label={block.label} srcKey={block.src} boxes={block.boxes} caption={block.caption} />;
+      return <ImageView label={block.label} srcKey={block.src} caption={block.caption} />;
+    case 'gallery':
+      return (
+        <div className="dcc-block dcc-block--gallery">
+          <div className="dcc-block-label">
+            {block.label}
+            {block.note ? <span className="dcc-gallery-note">{block.note}</span> : null}
+          </div>
+          {block.groups.map((group) => (
+            <div className="dcc-gallery-group" key={group.label}>
+              <div className="dcc-gallery-group-label">{group.label}</div>
+              <div className="dcc-gallery-list">
+                {group.images.map((image) => (
+                  <figure className="dcc-gallery-item" key={image.src}>
+                    <img
+                      className="dcc-gallery-thumb"
+                      src={IMAGES[image.src]}
+                      alt={image.caption ?? group.label}
+                      title={image.caption ?? group.label}
+                      loading="lazy"
+                    />
+                    {image.caption ? <figcaption className="dcc-gallery-caption">{image.caption}</figcaption> : null}
+                  </figure>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
     case 'ocr':
       return (
         <div className="dcc-block dcc-block--ocr">
@@ -88,12 +116,10 @@ function highlight(text: string, word?: string): React.ReactNode {
 export function ImageView({
   label,
   srcKey,
-  boxes,
   caption,
 }: {
   label: string;
   srcKey: string;
-  boxes?: { x: number; y: number; w: number; h: number; label: string }[];
   caption?: string;
 }) {
   const [failed, setFailed] = useState(false);
@@ -109,15 +135,6 @@ export function ImageView({
       ) : (
         <div className="dcc-image-wrap">
           <img className="dcc-image" src={src} alt={label} onError={() => setFailed(true)} loading="lazy" />
-          {boxes?.map((box, index) => (
-            <div
-              key={index}
-              className="dcc-anno-box"
-              style={{ left: `${box.x}%`, top: `${box.y}%`, width: `${box.w}%`, height: `${box.h}%` }}
-            >
-              <span className="dcc-anno-label">{box.label}</span>
-            </div>
-          ))}
         </div>
       )}
       {caption ? <div className="dcc-image-caption">{caption}</div> : null}

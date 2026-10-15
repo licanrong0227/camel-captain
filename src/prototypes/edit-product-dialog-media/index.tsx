@@ -214,7 +214,7 @@ export default function Prototype() {
               </footer>
             </div>
       
-            <CollageDialog open={collageOpen} onClose={() => setCollageOpen(false)} />
+            <CollageDialog open={collageOpen} onClose={() => setCollageOpen(false)} mainCount={8} mainLimit={8} />
           </div>
       <AnnotationViewer
         source={annotationSourceDocument as unknown as AnnotationSourceDocument}

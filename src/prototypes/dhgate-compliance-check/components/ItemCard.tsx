@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { ItemView } from '../lib/store';
 import { PreviewScenario } from '../lib/previewScenarios';
 import { BlockView } from './BlockView';
+import { DISLIKE_REASONS } from './Dialogs';
 import { ItemStatusTag, copyText } from './ui';
+
+const reasonIndex = (reason: string) => {
+  const index = DISLIKE_REASONS.indexOf(reason);
+  return index < 0 ? DISLIKE_REASONS.length : index;
+};
 
 export function ItemCard({
   view,
@@ -24,15 +30,25 @@ export function ItemCard({
   const collapsedDefault = status === 'pass' || status === 'fail' || status === 'queued' || status === 'running';
   const [expanded, setExpanded] = useState(!collapsedDefault);
   const [showDetail, setShowDetail] = useState(false);
+  const [pickedSuggestion, setPickedSuggestion] = useState<string | undefined>(undefined);
+  const [collapsedHits, setCollapsedHits] = useState<number[]>([]);
   const [lastStatus, setLastStatus] = useState(status);
   if (lastStatus !== status) {
     setLastStatus(status);
     setExpanded(!collapsedDefault);
     setShowDetail(false);
+    setPickedSuggestion(undefined);
+    setCollapsedHits([]);
   }
 
   const feedback = override?.feedback ?? null;
+  const orderedReasons = [...(override?.feedbackReasons ?? [])].sort((a, b) => reasonIndex(a) - reasonIndex(b));
   const hasExpandable = emphasis || (outcome?.detail?.length ?? 0) > 0;
+  const options = outcome?.suggestionOptions;
+  const activeSuggestion =
+    options?.find((option) => option.value === pickedSuggestion)?.value ??
+    options?.find((option) => option.recommended)?.value ??
+    outcome?.suggestionValue;
 
   return (
     <section
@@ -46,7 +62,7 @@ export function ItemCard({
             <ItemStatusTag status={status} />
           </div>
         </div>
-        <div className="dcc-item-head-actions">
+        <div className="dcc-item-head-actions" data-annotation-id={`dcc-item-actions-${view.code}`}>
           {status !== 'queued' && status !== 'running' && (
             <button type="button" className="dcc-btn dcc-btn--text" onClick={onRetry}>重新检测</button>
           )}
@@ -55,13 +71,13 @@ export function ItemCard({
               type="button"
               className={`dcc-fb-btn${feedback === 'up' ? ' is-active' : ''}`}
               onClick={onLike}
-              title={feedback === 'up' ? '取消点赞' : '点赞'}
+              title={feedback === 'up' ? '取消满意' : '满意'}
             >👍</button>
             <button
               type="button"
               className={`dcc-fb-btn${feedback === 'down' ? ' is-active' : ''}`}
               onClick={onDislike}
-              title={feedback === 'down' ? '修改点踩反馈' : '点踩'}
+              title={feedback === 'down' ? '取消不满意' : '不满意'}
             >👎</button>
           </div>
         </div>
@@ -91,11 +107,54 @@ export function ItemCard({
 
           {expanded && (status === 'violation' || status === 'suspect' || status === 'manual') && (
             <>
-              {outcome.hitReason && (
-                <div className="dcc-item-row"><span className="dcc-row-label">命中原因</span>
+              {(outcome.hits?.length ?? 0) > 0 ? (
+                <div className="dcc-hit-list">
+                  {outcome.hits!.map((hit, index) => {
+                    const collapsed = collapsedHits.includes(index);
+                    // 一次检测里可同时有违规与疑似违规，类型按单条记录判定，不跟卡片整体状态走
+                    const hitSeverity = hit.severity ?? (status === 'violation' ? 'violation' : 'suspect');
+                    const violationHit = hitSeverity === 'violation';
+                    return (
+                      <div key={index} className={`dcc-hit-card${violationHit ? ' is-violation' : ' is-suspect'}`}>
+                        <div className="dcc-hit-card-head">
+                          <div className="dcc-hit-card-title">
+                            <span className="dcc-item-no">{index + 1}</span>
+                            <span>{violationHit ? '违规' : '疑似违规'}</span>
+                          </div>
+                          <button
+                            type="button"
+                            className="dcc-btn dcc-btn--text"
+                            onClick={() => setCollapsedHits((prev) => collapsed ? prev.filter((i) => i !== index) : [...prev, index])}
+                          >{collapsed ? '展开' : '收起'}</button>
+                        </div>
+                        {!collapsed && (
+                          <>
+                            <div className="dcc-item-row"><span className="dcc-row-label">{violationHit ? '违规原因' : '疑似原因'}</span>
+                              <span>{hit.reason}{hit.position ? <span className="dcc-hit-position">（{hit.position}）</span> : null}</span>
+                            </div>
+                            {hit.reference && hit.reference.length > 0 && (
+                              <div className="dcc-item-section">
+                                <div className="dcc-row-label">参考信息</div>
+                                <div className="dcc-ref-list">{hit.reference.map((block, refIndex) => <BlockView key={refIndex} block={block} />)}</div>
+                              </div>
+                            )}
+                            {hit.suggestion && (
+                              <div className="dcc-suggestion">
+                                <div className="dcc-row-label">建议方案</div>
+                                <div>{hit.suggestion}</div>
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : outcome.hitReason ? (
+                <div className="dcc-item-row"><span className="dcc-row-label">{status === 'violation' ? '违规原因' : '疑似原因'}</span>
                   <span>{outcome.hitReason}{outcome.hitPosition ? <span className="dcc-hit-position">（{outcome.hitPosition}）</span> : null}</span>
                 </div>
-              )}
+              ) : null}
               {outcome.reference && outcome.reference.length > 0 && (
                 <div className="dcc-item-section">
                   <div className="dcc-row-label">参考信息</div>
@@ -106,6 +165,32 @@ export function ItemCard({
                 <div className="dcc-suggestion">
                   <div className="dcc-row-label">建议方案</div>
                   <div>{outcome.suggestion}</div>
+                  {options && options.length > 0 && (
+                    <div className="dcc-option-list">
+                      {options.map((option) => (
+                        <div
+                          key={option.value}
+                          role="radio"
+                          aria-checked={option.value === activeSuggestion}
+                          tabIndex={0}
+                          className={`dcc-option${option.value === activeSuggestion ? ' is-selected' : ''}`}
+                          onClick={() => setPickedSuggestion(option.value)}
+                          onKeyDown={(event) => {
+                            if (event.key === 'Enter' || event.key === ' ') setPickedSuggestion(option.value);
+                          }}
+                        >
+                          <span className="dcc-option-radio" />
+                          <div>
+                            <div className="dcc-option-title">
+                              {option.value}
+                              {option.recommended ? <span className="dcc-option-badge">推荐</span> : null}
+                            </div>
+                            {option.note ? <div className="dcc-option-desc">{option.note}</div> : null}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </>
@@ -118,7 +203,7 @@ export function ItemCard({
             </div>
           )}
 
-          {hasExpandable || outcome.suggestionValue || feedback === 'down' ? (
+          {hasExpandable || activeSuggestion || feedback === 'down' ? (
           <footer className="dcc-item-foot">
             {hasExpandable && (
               <button type="button" className="dcc-btn dcc-btn--text" onClick={() => setExpanded((prev) => !prev)}>
@@ -130,12 +215,12 @@ export function ItemCard({
                 {showDetail ? '隐藏详细数据' : '查看详细数据'}
               </button>
             )}
-            {outcome.suggestionValue && (
-              <button type="button" className="dcc-btn dcc-btn--text" onClick={() => copyText(outcome.suggestionValue!, '已复制建议值')}>复制建议</button>
+            {activeSuggestion && (
+              <button type="button" className="dcc-btn dcc-btn--text" onClick={() => copyText(activeSuggestion, '已复制建议值')}>复制建议</button>
             )}
             {feedback === 'down' && (
               <span className="dcc-feedback-note">
-                已点踩{override?.feedbackReasons?.length ? `：${override.feedbackReasons.join('、')}` : ''}
+                已标记不满意{orderedReasons.length ? `：${orderedReasons.join('、')}` : ''}
                 {override?.feedbackText ? `（${override.feedbackText}）` : ''}
               </span>
             )}

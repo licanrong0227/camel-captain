@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "update-publish-dialog",
+    "targetPath": "prototypes/update-publish-dialog",
+    "filePath": ".axhub/make/comments/159433fbfdeea86de619862f29cef160652eab60095f8ae12e2fea9e5a423a63.json"
+  },
+  "comments": [
+    {
+      "elementKey": "div_100",
+      "label": "div(\"选择次日继续刊登时间\")",
+      "locator": {
+        "selectors": [
+          ".is-focused",
+          ".up-picker__input.is-focused",
+          "body > div > div > div > div:nth-of-type(2) > div:nth-of-type(4) > div > div > div > div:nth-of-type(1)",
+          "#root div > div > div:nth-of-type(2) > div:nth-of-type(4) > div > div > div > div:nth-of-type(1)"
+        ],
+        "fingerprint": "div|class=up-picker__input.is-focused|text=选择次日继续刊登时间",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          3,
+          1,
+          0,
+          2,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 1061,
+        "clientY": 467,
+        "documentX": 1061,
+        "documentY": 467,
+        "xPercent": 55.49163179916318,
+        "y": 467,
+        "isFixed": true,
+        "offsetX": 8,
+        "offsetY": 0.8125,
+        "dirtySince": 1792052772033
+      },
+      "id": "10fb4585-7025-4b50-8bcc-9f1243acbcd5",
+      "state": "idle",
+      "comment": "放到选项底下，宽度与“定时发布时间”控件相同",
+      "pageScope": "/prototypes/update-publish-dialog",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    },
+    {
+      "elementKey": "div_84",
+      "label": "div(\"选择定时发布时间\")",
+      "locator": {
+        "selectors": [
+          ".up-picker__input",
+          "body > div > div > div > div:nth-of-type(2) > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div",
+          "#root div > div > div:nth-of-type(2) > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div"
+        ],
+        "fingerprint": "div|class=up-picker__input|text=选择定时发布时间",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 977,
+        "clientY": 186,
+        "documentX": 977,
+        "documentY": 186,
+        "xPercent": 51.09832635983263,
+        "y": 186,
+        "isFixed": true,
+        "offsetX": 184,
+        "offsetY": 17.8125,
+        "dirtySince": 1792052733713
+      },
+      "id": "28613293-b0d5-4a23-8dad-73bf94c5ad32",
+      "state": "idle",
+      "comment": "放到“定时发布”选项右侧",
+      "pageScope": "/prototypes/update-publish-dialog",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    },
+    {
+      "elementKey": "div_1",
+      "label": "div[aria-label=\"更新发布\"]",
+      "locator": {
+        "selectors": [
+          "[aria-label=\"更新发布\"]",
+          ".up-dialog",
+          "body > div > div > div"
+        ],
+        "fingerprint": "div|class=up-dialog|text=更新发布×发布时间立即发布定时发布选择定时发布时间循环刊登循环次",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "skillIds": [
+        "prototype-annotation"
+      ],
+      "marker": {
+        "clientX": 1245,
+        "clientY": 111,
+        "documentX": 1245,
+        "documentY": 111,
+        "xPercent": 65.11506276150628,
+        "y": 111,
+        "isFixed": true,
+        "offsetX": 649,
+        "offsetY": 49.8125,
+        "dirtySince": 1792052814234
+      },
+      "id": "9bb5b3db-6ec6-478d-b17d-fcb88c28b7cb",
+      "state": "idle",
+      "comment": "给控件的一些隐形逻辑添加备注，可以通过界面看出来的就不用写了",
+      "pageScope": "/prototypes/update-publish-dialog",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null,
+      "author": null,
+      "readOnly": false
+    }
+  ],
+  "images": []
+}

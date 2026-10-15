@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "source": "C:\\Users\\admin\\.qoder-cn\\tmp\\D--projects-CAMEL-CAPTAIN\\images\\44036eb2-054a-4ca2-a940-4ca6fb7bc4aa\\03596652-d0ef-41e0-a7dd-4d47bb78ae0a.png",
+  "sourceSha256": "63fa208358750b5cbb9074cbb89249aaaba68cfecb28cf2d20a8e404e188b103",
+  "ocrSubmitted": false,
+  "padding": 0,
+  "summary": {
+    "pass1": 0,
+    "pass2": 0,
+    "textRegionCount": 10,
+    "duplicatesRemoved": 0,
+    "skipped": 0,
+    "merged": 0
+  },
+  "regions": [],
+  "skipped": []
+}

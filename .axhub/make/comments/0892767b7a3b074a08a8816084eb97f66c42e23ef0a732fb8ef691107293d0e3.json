@@ -6,6 +6,52 @@
     "targetPath": "prototypes/edit-product-dialog-media",
     "filePath": ".axhub/make/comments/0892767b7a3b074a08a8816084eb97f66c42e23ef0a732fb8ef691107293d0e3.json"
   },
-  "comments": [],
+  "comments": [
+    {
+      "label": "div(\"+点击添加图片或从可选图片拖放到此处\")",
+      "locator": {
+        "selectors": [
+          "body > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(1) > div > div > div:nth-of-type(2)",
+          "#root div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(1) > div > div > div:nth-of-type(2)"
+        ],
+        "fingerprint": "div|class=cp-slot|text=+点击添加图片或从可选图片拖放到此处",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          2,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "marker": {
+        "clientX": 1010,
+        "clientY": 179,
+        "documentX": 1010,
+        "documentY": 179,
+        "xPercent": 52.82426778242678,
+        "y": 179,
+        "isFixed": true,
+        "offsetX": 97.5,
+        "offsetY": 53.5,
+        "dirtySince": 1791974441347
+      },
+      "id": "8540ff6c-f091-45b4-a8f6-67dd1a9f2f28",
+      "state": "idle",
+      "comment": "点击上传的功能错了，应该是与右侧一样，弹出上传弹窗",
+      "pageScope": "/prototypes/edit-product-dialog-media",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    }
+  ],
   "images": []
 }

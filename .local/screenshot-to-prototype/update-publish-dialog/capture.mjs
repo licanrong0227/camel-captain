@@ -1,0 +1,13 @@
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+const cache = path.join(process.env.USERPROFILE || require?.module?.uri || '', '');
+const pwPath = path.join(process.env.USERPROFILE, '.cache', 'axure-extractor', 'node_modules', 'playwright', 'index.mjs');
+const { chromium } = await import(pathToFileURL(pwPath).href);
+const [,, url, out, w, h] = process.argv;
+const browser = await chromium.launch({ args: ['--allow-file-access-from-files', '--no-sandbox'] });
+const page = await browser.newPage({ viewport: { width: Number(w || 733), height: Number(h || 345) } });
+await page.goto(url.startsWith('file') || url.startsWith('http') ? url : pathToFileURL(path.resolve(url)).href);
+await page.waitForTimeout(6000);
+await page.screenshot({ path: out });
+await browser.close();
+console.log('captured', out);

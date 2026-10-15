@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>更新发布弹窗 - 主规格</title>
+  <style>
+    :root {
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --brand: #008f5d;
+      --brand-ink: #007a50;
+      --brand-soft: #e6f5ef;
+      --brand-surface: #f2faf7;
+      --brand-border: #b7ddcf;
+      --text: #222832;
+      --text-secondary: #4b5565;
+      --text-muted: #6f7888;
+      --text-placeholder: #8b94a3;
+      color: var(--text);
+      background: #f5f7fb;
+      scrollbar-gutter: stable;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 32px 20px 64px; }
+    main { width: min(1200px, 100%); margin: 0 auto; padding: 40px; border: 1px solid #dfe4ee; border-radius: 8px; background: #fff; box-shadow: 0 4px 16px rgb(30 45 75 / 6%); }
+    h1 { margin: 0; font-size: 32px; line-height: 1.3; }
+    h2 { margin: 44px 0 20px; padding-bottom: 8px; border-bottom: 1px solid #e7eaf0; font-size: 21px; line-height: 1.55; }
+    h3 { margin: 28px 0 12px; font-size: 17px; line-height: 1.5; }
+    p, li { font-size: 15px; line-height: 2; }
+    p { margin: 20px 0; }
+    td, th { font-size: 14px; line-height: 1.65; }
+    .definition { margin: 16px 0 0; padding: 14px 16px; border-left: 3px solid var(--brand); color: var(--text-secondary); background: var(--brand-surface); }
+    .hint { color: var(--text-muted); }
+    ul { margin: 10px 0 20px; padding-left: 22px; }
+    table { width: 100%; margin-top: 14px; border-collapse: collapse; }
+    th, td { min-width: 90px; padding: 10px 12px; border: 1px solid #dfe4ee; text-align: left; vertical-align: top; }
+    th { background: #f6f8fb; }
+    code { padding: 2px 5px; border-radius: 5px; background: #eef1f6; }
+    .table-wrap { overflow-x: auto; }
+    button { font: inherit; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>更新发布弹窗 · 主规格</h1>
+    <p class="definition">本文档是「更新发布弹窗」当前有效方案的事实依据。原型最初由截图 1:1 还原，2026-10-15 按用户批注完成结构化改版，同日按第二批批注完成「循环刊登开关联动 + 备选首图上传弹窗」修订；当前方案以本文件与 <code>src/prototypes/update-publish-dialog/index.tsx</code> 为准。</p>
+
+    <section id="current-plan">
+      <h2>当前方案</h2>
+      <ul>
+        <li><strong>原型意图</strong>：ERP 商品「更新发布」确认弹窗，配置发布时间与循环刊登策略（标题 / 主图），并约定当日刊登量达上限后的处理方式。</li>
+        <li><strong>使用场景</strong>：批量更新商品后确认发布；开启循环刊登后可配置循环次数与自动刊登策略，标题/主图策略决定每轮重试时如何变换内容。</li>
+        <li><strong>当前表达</strong>：Element UI 风格表单弹窗（宽 720px，内容超高时体内滚动），灰遮罩独立承载，不还原背景页面；控件包括单选、开关、日期时间选择器、时/分/秒时间选择器、卡片式增量配置、多行备选标题、图片上传（弹窗式）。</li>
+        <li><strong>联动规则</strong>：「循环刊登」开关关闭时，其下方的循环次数限制以外的内容——自动刊登策略区块与当日上限处理策略——全部隐藏；打开开关后才逐级展示。</li>
+      </ul>
+    </section>
+
+    <section id="facts-inputs">
+      <h2>事实与输入</h2>
+      <h3>用户确认事实</h3>
+      <ul>
+        <li>原型命名为：<strong>更新发布弹窗</strong>。</li>
+        <li>还原范围：仅弹窗本体；背景以灰色遮罩承载。</li>
+        <li>改版要点（2026-10-15 第一批批注）：去掉「自动刊登」复选框，发布时间直接给出两个选项；「失败自动刊登」改为 Switch 并置于发布时间下方；新增必填大标题「自动刊登策略」，下分「标题策略」「主图策略」两个开关区块；底部新增「刊登数量达到当日上限的处理策略」。</li>
+        <li>修订要点（2026-10-15 第二批批注）：
+          <ul>
+            <li>「失败自动刊登」开关改名为「循环刊登」；开关打开后才显示循环次数限制、自动刊登策略区块与当日上限处理策略（含达到上限的处理策略）。</li>
+            <li>上限处理策略文案改为「刊登数量达到当日上限时：」。</li>
+            <li>「选择次日继续刊登时间」改用 Element UI 任意时间点组件（时/分/秒三列，可选取任意时间，替代原 48 个半小时档位）。</li>
+            <li>标题策略 / 主图策略下的单选项由纵向改为横向排列。</li>
+            <li>主图策略的「备选首图」单选项默认选中。</li>
+            <li>备选首图区预置一张已上传示例图（1024×1024）；图片角标不再显示文件大小，改为左下角显示分辨率（宽*高）。</li>
+            <li>点击上传按钮不再直接唤起资源管理器，而是打开「上传图片」弹窗（左侧本地/URL/引用页签 + 单个/批量上传单选 + 拖拽/点击上传区 + Ctrl+V 粘贴提示，样式参照 <code>src/prototypes/auto-edit-dialog</code> 主图置换上传弹窗）。</li>
+            <li>上传按钮文字改为「点击 / Ctrl+V粘贴」（两行展示）。</li>
+          </ul>
+        </li>
+        <li>修订要点（2026-10-15 第三批批注）：
+          <ul>
+            <li>「选择定时发布时间」的日期时间选择器中，时间部分由自由文本输入改为 Element UI 任意时间点组件（时/分/秒三列滚动选择，与次日继续刊登时间一致）。</li>
+            <li>「增量起始值」为必填项：卡片启用时留空即红字提示「增量起始值不能为空」，输入框描红边，点「确定」会被拦截。</li>
+            <li>弹窗内所有输入框文字统一左对齐（数字输入框不再居中）。</li>
+            <li>「备选标题策略」「备选首图策略」去掉圆形问号，提示文字改为标题下方的副标题直接展示。</li>
+          </ul>
+        </li>
+        <li>修订要点（2026-10-15 第四批批注）：
+          <ul>
+            <li>标题策略的 4 个单选项固定同行展示，选中项的配置详情改为另起一行整块展示，不再把后续选项挤到下一行。</li>
+            <li>「备选标题策略」选中「插入增量前、后缀」时展开与标题策略一致的增量配置（前/后缀卡片 + 示例标题），且与标题策略的增量配置相互独立。</li>
+            <li>「备选首图策略」的「随机打乱」不再禁用，保持默认选中。</li>
+            <li>增量卡片默认状态改为后缀开启、前缀关闭；当另一项已关闭时不允许关闭最后一项，出现红字提示「至少启用一项」。</li>
+            <li>示例标题不再显示「增量前缀 / 增量后缀 / 1」占位词，对应输入为空时该段整体不出现。</li>
+            <li>备选首图的「+ 点击 / Ctrl+V粘贴」添加按钮始终排在最前，新上传的图片依次往后追加。</li>
+            <li>「刊登数量达到当日上限时：」与上方各行共用同一标签列（176px），标题与选项列对齐。</li>
+            <li>「次日继续刊登」的时间选择器移到该单选项右侧同行展示（宽度 140px），不再另起一行。</li>
+          </ul>
+        </li>
+        <li>修订要点（2026-10-15 第五批批注）：
+          <ul>
+            <li>增量前缀、增量后缀输入框的提示文字（placeholder）去掉，保持空白。</li>
+            <li>「循环次数限制」「增量起始值」改为数值控件（Element UI <code>el-input-number</code> 风格，左右 − / + 步进按钮），只能输入正整数：非数字字符与负号被过滤，前导 0 去掉，输入 0 视为清空，步进最小值为 1。</li>
+            <li>主图策略默认选中「随机打乱」（反转第二批「备选首图默认选中」的理解；「备选首图策略」子区块仍默认选中「随机打乱」且可点击）。</li>
+          </ul>
+        </li>
+        <li>修订要点（2026-10-15 第六批批注）：
+          <ul>
+            <li>「次日继续刊登」的时间选择器回到选项下方独立一行，宽度与「定时发布时间」控件一致（同为 240px，左缘对齐），取消第五批的同行窄控件形式。</li>
+            <li>为控件补充隐形逻辑标注：发布时间、循环刊登与循环次数、自动刊登策略必填校验、标题策略四种方式差异、两份增量配置、备选标题顶替顺序、主图策略默认项、备选首图队列规则、当日上限两种处理、底部按钮校验时机，共 11 条（界面上已能看出的规则不重复写）。</li>
+          </ul>
+        </li>
+        <li>备选标题：可添加/删除多个输入框，至少保留一个；循环刊登时一个标题未通过则换下一个重试。</li>
+        <li>备选首图：可上传多张图片，一张未通过则换另一张重试；「备选首图策略」仅有「随机打乱」一项，默认选中且可点击（不再禁用）。</li>
+        <li>增量前后缀示例标题中，启用的前/后缀文字用主体色（橙 <code>#ff781f</code>）突出显示。</li>
+      </ul>
+      <h3>参考资料</h3>
+      <ul>
+        <li>源截图（初版还原依据，结构已被改版批注取代）：<code>.local/screenshot-to-prototype/update-publish-dialog/</code> 及原始 tmp 图片。</li>
+        <li>还原中间产物：<code>src/prototypes/update-publish-dialog/.spec/reconstruction/</code>。</li>
+      </ul>
+      <h3>当前假设</h3>
+      <ul>
+        <li>用户批注写「点击立即发布时显示日期时间选择器，提示文字为：选择定时发布时间」；因提示文字含「定时」，实现为 <strong>选中「定时发布」时显示日期时间选择器</strong>，待用户确认。</li>
+        <li>「备选标题策略」选中「插入增量前、后缀」时展开自己独立的增量配置（第四批批注要求），默认后缀开启、前缀关闭。</li>
+        <li>循环次数限制为纯数字输入，默认 1，未设上限。</li>
+        <li>第二批批注仅要求去掉「失败自动刊登」选项并「在发布时间下面新增 Switch 开关」，未给出开关命名；结合「打开了循环刊登之后才显示」的表述，开关命名为 <strong>「循环刊登」</strong>，待用户确认。</li>
+        <li>「备选首图策略默认选中」按第五批批注落定为：<strong>主图策略默认选中「随机打乱」</strong>，其下「备选首图策略」子区块的「随机打乱」也默认选中且可点击。</li>
+        <li>上传弹窗内「本地 / URL / 引用」页签与「单个 / 批量上传」单选为样式展示（不可切换），参照 auto-edit-dialog 上传弹窗；点击上传区可真实选图并追加到备选首图列表。</li>
+      </ul>
+    </section>
+
+    <section id="prototype-scope">
+      <h2>原型范围</h2>
+      <h3>本次呈现</h3>
+      <ul>
+        <li>发布时间（立即/定时 + Element 风格日期时间选择器，时间部分为时/分/秒任意时间点三列）。</li>
+        <li>循环刊登 Switch 与循环次数限制（数值控件，仅正整数）；开关打开后才展示下方的自动刊登策略区块与当日上限处理策略。</li>
+        <li>自动刊登策略（*必填）：标题策略（随机打乱 / 插入增量前后缀 / AI 重新生成 / 备选标题 + 备选标题策略）、主图策略（随机打乱 / 备选首图上传 + 备选首图策略）；单选项横向同行排列、详情块另起一行，标题策略与主图策略均默认选中「随机打乱」。</li>
+        <li>备选首图：预置示例图 + 上传按钮（点击/Ctrl+V粘贴），点击后打开上传图片弹窗；缩略图左下角显示分辨率。</li>
+        <li>当日刊登上限处理策略（直接终止 / 次日继续 + Element 任意时间点选择器）。</li>
+        <li>提交校验：循环刊登开启时至少启用一项策略，否则红字提示并阻止关闭。</li>
+      </ul>
+      <h3>本次不呈现</h3>
+      <ul>
+        <li>背景页面真实内容、真实发布请求与审核结果（均为前端演示态）。</li>
+      </ul>
+    </section>
+
+    <section id="pages-content">
+      <h2>页面与内容方案</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>页面/视图</th><th>页面作用</th><th>主要模块与内容</th><th>示例数据或素材</th><th>与其他页面的关系</th></tr></thead>
+          <tbody><tr>
+            <td data-label="页面/视图">更新发布弹窗</td>
+            <td data-label="页面作用">确认发布方式并配置循环刊登重试策略</td>
+            <td data-label="主要模块与内容">标题栏；发布时间；循环刊登开关（含循环次数限制）；自动刊登策略（标题策略、主图策略两个开关区块，仅循环刊登开启后显示）；当日上限处理策略（仅循环刊登开启后显示）；取消/确定</td>
+            <td data-label="示例数据或素材">发布时间默认立即发布；循环刊登默认关闭；循环次数为数值控件默认 1；标题策略与主图策略默认选中「随机打乱」；增量卡片默认后缀开启、前缀关闭且起始值数值控件默认 1；备选标题初始 1 个空输入框；备选首图预置 1 张 1024×1024 示例图，添加按钮排在图片之前</td>
+            <td data-label="与其他页面的关系">独立弹窗原型，灰遮罩承载；关闭后页面中央提供重新打开按钮</td>
+          </tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="interaction-states">
+      <h2>交互与状态方案</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr></thead>
+          <tbody>
+            <tr><td data-label="对象/场景">发布时间</td><td data-label="前置状态">默认立即发布</td><td data-label="用户操作">选「定时发布」</td><td data-label="原型表现">下方出现日期时间选择器（占位「选择定时发布时间」），点开为 Element 风格日历 + 时/分/秒三列任意时间点面板 + 清除/确定</td><td data-label="后续状态">确定后回填 <code>YYYY-MM-DD HH:mm:ss</code>；选「立即发布」则隐藏选择器</td></tr>
+            <tr><td data-label="对象/场景">循环刊登</td><td data-label="前置状态">开关关闭（默认），策略区块与上限策略行隐藏</td><td data-label="用户操作">打开开关</td><td data-label="原型表现">同行出现「循环次数限制」数值控件（默认 1，左右 − / + 步进，只能填正整数）；下方展开「自动刊登策略」区块与「刊登数量达到当日上限时：」行</td><td data-label="后续状态">关闭开关则隐藏循环次数限制以外的全部下方内容，并清除策略必填报错</td></tr>
+            <tr><td data-label="对象/场景">标题策略</td><td data-label="前置状态">开关关闭</td><td data-label="用户操作">打开开关</td><td data-label="原型表现">4 个单选项同行横向展示（不随详情展开而换行）；同时清除策略必填报错</td><td data-label="后续状态">选「插入增量前、后缀」在选项行下方整块展开前/后缀两张卡片与示例标题；选「备选标题」整块展开输入框列表与备选标题策略</td></tr>
+            <tr><td data-label="对象/场景">增量前后缀卡片</td><td data-label="前置状态">增量选项选中，默认后缀卡开、前缀卡关（标题策略与备选标题策略各自一份配置）</td><td data-label="用户操作">切换卡片开关 / 填写三个控件</td><td data-label="原型表现">卡片关闭时三个控件禁用；增量前缀、增量后缀为无提示文字的普通文本框；「增量起始值」为数值控件（默认 1，左右 − / + 步进，只能填正整数，输入 0 视为清空）并带必填星号，卡片启用且留空时控件描红、下方出现红字「增量起始值不能为空」；另一项已关闭时再关当前项会被阻止，并在卡片下方出现红字「至少启用一项」（重新开启任一项或修改输入后消失）；示例标题只拼接启用卡片中已填写的内容，为空的输入项整段不显示（不再出现灰色占位词），启用段主体色高亮</td><td data-label="后续状态">至少一项保持启用；填入起始值后红字消失</td></tr>
+            <tr><td data-label="对象/场景">备选标题</td><td data-label="前置状态">备选标题选中，1 个输入框</td><td data-label="用户操作">添加 / 删除</td><td data-label="原型表现">「+ 添加备选标题」新增行；仅剩 1 行时不显示删除按钮；下方出现「备选标题策略」区块（标题下以副标题直显说明文案），3 个单选项横向同行；选「插入增量前、后缀」时区块内继续整块展开一套增量卡片与示例标题，交互与标题策略一致、配置彼此独立</td><td data-label="后续状态">至少保留 1 个输入框</td></tr>
+            <tr><td data-label="对象/场景">主图策略</td><td data-label="前置状态">开关关闭；打开后默认选中「随机打乱」</td><td data-label="用户操作">打开开关 / 切换单选项</td><td data-label="原型表现">「随机打乱 / 备选首图」两个单选项同行，详情块另起一行；选「备选首图」时上传区首位固定是添加按钮（两行文案「点击 / Ctrl+V粘贴」），其后依次为预置示例图（缩略图左下角分辨率角标 1024*1024）和后续新增图片；下方出现「备选首图策略」（标题下副标题直显说明文案，仅「随机打乱」，默认选中且可点击）</td><td data-label="后续状态">选「随机打乱」则隐藏上传区与子策略</td></tr>
+            <tr><td data-label="对象/场景">上传图片弹窗</td><td data-label="前置状态">备选首图选中</td><td data-label="用户操作">点击上传按钮</td><td data-label="原型表现">弹出「上传图片」弹窗（覆盖于更新发布弹窗之上）：左侧本地/URL/引用页签（本地高亮，不可切换）；单个/批量上传单选（单个选中，不可切换）；中部图片占位 + 「将文件拖到此处，或点击上传」+「按 Ctrl+V 可从剪贴板上传」；底部取消/确认。点击上传区可真实选图，选图后追加到备选首图列表并关闭弹窗</td><td data-label="后续状态">取消/确认/× 关闭弹窗，不改变已选图片</td></tr>
+            <tr><td data-label="对象/场景">当日上限处理策略</td><td data-label="前置状态">默认直接终止刊登</td><td data-label="用户操作">选「次日继续刊登」</td><td data-label="原型表现">该行标题与其他表单行共用同一标签列（176px），标题与选项左对齐；「次日继续刊登」下方独立一行出现时间选择器（宽 240px，与定时发布时间控件同宽同左缘，占位「选择次日继续刊登时间」），点开为 Element 风格时/分/秒三列面板，可选取任意时间点，回填 <code>HH:mm:ss</code></td><td data-label="后续状态">切回终止则隐藏</td></tr>
+            <tr><td data-label="对象/场景">提交校验</td><td data-label="前置状态">循环刊登开启，且标题策略与主图策略均关闭；或标题策略选中「插入增量前、后缀」且某张启用卡片的增量起始值为空</td><td data-label="用户操作">点「确定」</td><td data-label="原型表现">策略区块内出现红字「请至少启用一项自动刊登策略（标题策略 / 主图策略）」或「增量起始值不能为空」，弹窗不关闭</td><td data-label="后续状态">补齐条件后报错清除，确定可关闭；循环刊登关闭时不受该校验；取消/× 不受校验限制</td></tr>
+            <tr><td data-label="对象/场景">关闭弹窗</td><td data-label="前置状态">弹窗打开</td><td data-label="用户操作">取消 / 确定 / ×</td><td data-label="原型表现">弹窗关闭，页面中央出现「打开更新发布弹窗」按钮</td><td data-label="后续状态">重新打开时表单状态保留</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="design-basis">
+      <h2>设计基底与原型特有调整</h2>
+      <ul>
+        <li>采用的设计基底：项目主题 <code>camel-captain-erp</code>；控件样式沿用初版还原实测的 Element 风格色板。</li>
+        <li>实测令牌：主橙 <code>#ff781f</code>（按钮）、主蓝 <code>#1890ff</code>（选中态/开关/链接）、文字 <code>#303133 / #606266 / #909399 / #c0c4cc</code>、边框 <code>#dcdfe6 / #dfe4ed</code>、禁用底 <code>#f5f7fa</code>、报错红 <code>#f56c6c</code>。</li>
+        <li>本原型特有调整：弹窗由固定高 334px 改为自适应高度、体内滚动；增量卡片、备选标题列表、上传格为改版新增的复合控件；上传图片弹窗（页签 + 拖拽区）与时/分/秒三列时间面板为第二批修订新增。</li>
+      </ul>
+    </section>
+
+    <section id="open-questions">
+      <h2>当前待确认事项</h2>
+      <ul>
+        <li>日期时间选择器随「定时发布」显示是否符合预期（批注原文为「点击立即发布时显示」，但提示文字为「选择定时发布时间」）。</li>
+        <li>循环刊登开关的命名是否为「循环刊登」（批注仅要求去掉「失败自动刊登」并新增 Switch）。</li>
+        <li>循环次数限制是否需要上限约束。</li>
+      </ul>
+    </section>
+
+    <section id="decision-history">
+      <h2>用户重要决策与变更</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr></thead>
+          <tbody>
+            <tr><td data-label="日期">2026-10-15</td><td data-label="用户决策或变更">提供截图，要求复刻弹窗并命名为「更新发布弹窗」</td><td data-label="对当前原型的影响">新建独立原型 update-publish-dialog，1:1 还原旧结构（自动刊登复选框 + 底部失败自动刊登）</td></tr>
+            <tr><td data-label="日期">2026-10-15</td><td data-label="用户决策或变更">确认规格，生成 React 原型</td><td data-label="对当前原型的影响">React 版按还原结构交付并通过验收</td></tr>
+            <tr><td data-label="日期">2026-10-15</td><td data-label="用户决策或变更">结构化改版批注：去复选框直接给发布时间选项；失败自动刊登改 Switch + 循环次数限制；新增必填「自动刊登策略」（标题策略/主图策略，含增量卡片、备选标题、备选首图、两级子策略与悬停提示）；新增当日上限处理策略</td><td data-label="对当前原型的影响">index.tsx / style.css 全量重写，旧还原结构废弃；本规格同步为改版后方案</td></tr>
+            <tr><td data-label="日期">2026-10-15</td><td data-label="用户决策或变更">第二批批注：上限文案改「刊登数量达到当日上限时：」；次日时间改 Element 任意时间点组件；策略选项横向；「失败自动刊登」改为「循环刊登」开关，其下策略区块与上限策略行仅在开关打开后显示；备选首图默认选中；备选首图区预置示例图、角标改为左下角分辨率；上传改为打开上传弹窗（样式参照 auto-edit-dialog）；上传按钮文案改「点击 / Ctrl+V粘贴」</td><td data-label="对当前原型的影响">index.tsx 状态与结构重构（loopOn 联动、imageMode 默认 backup、UploadedImage 增加宽高、新增 up-upl-* 上传弹窗、TimePicker 改时/分/秒三列）；style.css 新增横向选项、上传弹窗与时间面板样式；新增 assets/main-image-sample-1.png；提交校验改为仅循环刊登开启时生效</td></tr>
+            <tr><td data-label="日期">2026-10-15</td><td data-label="用户决策或变更">第三批批注：定时发布的日期时间选择器也改用 Element 任意时间点组件；增量起始值必填；输入框统一左对齐；备选标题/首图策略去掉问号、说明文案改为副标题直显</td><td data-label="对当前原型的影响">抽出共用 TimeColumns 组件供日期时间选择器与次日时间选择器复用，删除 <code>.up-dt__time-row/-input</code> 样式；SegmentCard 起始值必填校验 + 提交拦截；<code>.up-input--number</code> 改为左对齐；删除 QuestionTip 组件与 <code>.up-qtip</code> 样式，新增 <code>.up-sub-strategy__head/__desc</code></td></tr>
+            <tr><td data-label="日期">2026-10-15</td><td data-label="用户决策或变更">第四批批注：标题策略 4 个选项同行不被挤换行；备选标题策略选增量时要有与上方一致的配置项；备选首图策略「随机打乱」取消禁用仅默认选中；增量卡默认后缀开、前缀关且关最后一项要提示「至少启用一项」；示例标题空值不显示占位词；备选首图添加按钮固定最前、新图往后追加；上限行标题与选项对齐；次日时间选择器移到选项右侧同行</td><td data-label="对当前原型的影响">抽出 IncrementGroup（含两张 SegmentCard、示例标题、至少启用一项提示），标题策略与备选标题策略各持一份 IncrementValue 状态；单选项与详情块拆为兄弟节点；示例段去掉 <code>.up-sample__ph</code> 占位；上传添加按钮移到列表首位；<code>.up-form-label</code> 统一 176px 并删除 <code>.up-form-label--limit</code> 覆盖；TimePicker 并入 radio 行并加 <code>.up-picker--time</code> 140px 宽；新增 backupImageStrategy 状态</td></tr>
+            <tr><td data-label="日期">2026-10-15</td><td data-label="用户决策或变更">第五批批注：增量前缀/后缀去掉提示文字；循环次数限制与增量起始值改为数值控件（只能填正整数）；主图策略默认选中「随机打乱」</td><td data-label="对当前原型的影响">新增 NumberField 组件与 <code>.up-num</code> 样式，替换 <code>.up-input--number</code>（该样式已删除）并过滤非数字/前导 0、步进下限 1；SegmentCard 前/后缀输入框去掉 placeholder；imageMode 初值由 backup 改为 shuffle，第二批「备选首图默认选中」的理解同步更正</td></tr>
+            <tr><td data-label="日期">2026-10-15</td><td data-label="用户决策或变更">第六批批注：次日继续刊登时间控件放回选项下方并与定时发布控件同宽；要求为控件补充隐形逻辑的标注</td><td data-label="对当前原型的影响">TimePicker 移出 .up-radio-group 放回 .up-picker-row，删除 <code>.up-picker--time</code> 宽度覆盖；index.tsx 为 11 个区块补 <code>data-annotation-id</code>（IncrementGroup 新增 annotationId 入参区分两份增量配置），annotation-source.json 写入 11 条组件标注</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hint">只记录会改变页面范围、结构、流程、内容口径或设计表达的重要决定，不保存完整讨论过程。</p>
+    </section>
+  </main>
+</body>
+</html>

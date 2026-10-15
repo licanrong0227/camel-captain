@@ -1,0 +1,180 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "update-publish-dialog",
+    "pageId": "update-publish-dialog",
+    "nodes": [
+      {
+        "id": "strategy-section",
+        "index": 3,
+        "title": "自动刊登策略（必填）",
+        "pageId": "update-publish-dialog",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"strategy-section\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=strategy-section",
+          "path": []
+        },
+        "aiPrompt": "根据自动刊登策略区块的标注，说明必填校验与两项策略同时启用的关系。",
+        "annotationText": "循环刊登打开后，标题策略和主图策略至少要打开一项，否则点「确定」会被拦下并出现红字提示。两项同时打开时互不影响：每一轮重试，标题按标题策略更换、主图按主图策略更换。整块内容只在循环刊登打开后出现。",
+        "hasMarkdown": false,
+        "color": "#D97706",
+        "images": [],
+        "createdAt": 1760486400000,
+        "updatedAt": 1760486400000
+      },
+      {
+        "id": "title-strategy-block",
+        "index": 4,
+        "title": "标题策略",
+        "pageId": "update-publish-dialog",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"title-strategy-block\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=title-strategy-block",
+          "path": []
+        },
+        "aiPrompt": "根据标题策略的标注，说明四种标题更换方式的差别。",
+        "annotationText": "四个方式每一轮只会生效一种。随机打乱：将现有标题按照空格作为分隔符随机打乱顺序。插入增量前、后缀：每轮把增量数字加一次再拼成新标题。AI 重新生成：每轮重新生成一条标题。备选标题：按你预先准备的备选标题依次顶替。",
+        "hasMarkdown": false,
+        "color": "#D97706",
+        "images": [],
+        "createdAt": 1760486400000,
+        "updatedAt": 1760486400000
+      },
+      {
+        "id": "title-increment",
+        "index": 5,
+        "title": "增量前缀、后缀配置",
+        "pageId": "update-publish-dialog",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"title-increment\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=title-increment",
+          "path": []
+        },
+        "aiPrompt": "根据增量配置区的标注，说明起始值递增规则与示例标题的作用。",
+        "annotationText": "「增量起始值」是这一批第一次使用的数字，之后每重试一轮自动加一，只能填正整数且不能为空。前缀、后缀哪边留空，拼出来的标题里就没有那一段。示例标题只用来预览效果，不会写进真正刊登的标题。前缀卡和后缀卡不能同时关闭。",
+        "hasMarkdown": false,
+        "color": "#7C3AED",
+        "images": [],
+        "createdAt": 1760486400000,
+        "updatedAt": 1760486400000
+      },
+      {
+        "id": "backup-titles",
+        "index": 6,
+        "title": "备选标题",
+        "pageId": "update-publish-dialog",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"backup-titles\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=backup-titles",
+          "path": []
+        },
+        "aiPrompt": "根据备选标题的标注，说明顶替顺序与空行的处理。",
+        "annotationText": "备选标题按从上到下的排列顺序依次顶替，没有填内容的行会被跳过，不参与重试。只有把备选标题全部用完仍未通过审核，才会启用下面的「备选标题策略」继续变换。",
+        "hasMarkdown": false,
+        "color": "#7C3AED",
+        "images": [],
+        "createdAt": 1760486400000,
+        "updatedAt": 1760486400000
+      },
+      {
+        "id": "backup-title-increment",
+        "index": 7,
+        "title": "备选标题的增量配置",
+        "pageId": "update-publish-dialog",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"backup-title-increment\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=backup-title-increment",
+          "path": []
+        },
+        "aiPrompt": "根据备选标题策略下增量配置的标注，说明它与标题策略增量配置的关系。",
+        "annotationText": "这一份增量配置专门给「备选标题策略」使用，和上面标题策略里的增量配置是两套，互不覆盖：上面改了，这里不会跟着变。数字同样是每轮加一次，起始值必填正整数。",
+        "hasMarkdown": false,
+        "color": "#7C3AED",
+        "images": [],
+        "createdAt": 1760486400000,
+        "updatedAt": 1760486400000
+      },
+      {
+        "id": "image-strategy-block",
+        "index": 8,
+        "title": "主图策略",
+        "pageId": "update-publish-dialog",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"image-strategy-block\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=image-strategy-block",
+          "path": []
+        },
+        "aiPrompt": "根据主图策略的标注，说明默认选中项与更换逻辑。",
+        "annotationText": "默认选中「随机打乱」，此时不出现上传区。选「备选首图」才会展示图片队列。主图策略只决定每轮换用哪张首图，不会改动标题内容，两者在同一次重试里各自生效。",
+        "hasMarkdown": false,
+        "color": "#0F9D66",
+        "images": [],
+        "createdAt": 1760486400000,
+        "updatedAt": 1760486400000
+      },
+      {
+        "id": "backup-images",
+        "index": 9,
+        "title": "备选首图队列",
+        "pageId": "update-publish-dialog",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"backup-images\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=backup-images",
+          "path": []
+        },
+        "aiPrompt": "根据备选首图队列的标注，说明换图顺序、上传方式和策略启用时机。",
+        "annotationText": "换图按队列顺序依次往后取，排在最前面的先上用。添加按钮固定在首位，新上传或粘贴进来的图片依次追加到队列末尾，可以一次选多张，也能直接从剪贴板粘贴。图片缩略图上的数字是它的分辨率，只作参考。全部备选首图用完仍未通过审核时，才启用「备选首图策略」。",
+        "hasMarkdown": false,
+        "color": "#0F9D66",
+        "images": [],
+        "createdAt": 1760486400000,
+        "updatedAt": 1760486400000
+      },
+      {
+        "id": "daily-limit-row",
+        "index": 10,
+        "title": "当日刊登数量达到上限",
+        "pageId": "update-publish-dialog",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"daily-limit-row\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=daily-limit-row",
+          "path": []
+        },
+        "aiPrompt": "根据当日上限处理策略的标注，说明两种处理方式的差别。",
+        "annotationText": "这里的「上限」指平台当天还能刊登的商品数量。超过上限后，选「直接终止刊登」，当前正在处理的商品不会再继续刊登；选「次日继续刊登」，系统会在次日你设定的时间点再次循环刊登。时间只选第二天的钟点，不选日期。这一行也属于循环刊登的配置，开关关闭时同样不生效。",
+        "hasMarkdown": false,
+        "color": "#2F6FED",
+        "images": [],
+        "createdAt": 1760486400000,
+        "updatedAt": 1760486400000
+      }
+    ],
+    "updatedAt": 1792053809603
+  },
+  "markdownMap": {},
+  "assetMap": {},
+  "directory": {
+    "nodes": []
+  },
+  "documents": {
+    "nodes": []
+  }
+}

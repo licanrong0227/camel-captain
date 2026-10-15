@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "kind": "generation-tasks",
+  "targetPath": "prototypes/update-publish-dialog",
+  "limit": 200,
+  "tasks": [
+    {
+      "id": "git-commit-message-mv9c01bp-6guptl",
+      "taskId": "git-commit-message-mv9c01bp-6guptl",
+      "conversationId": "git-commit-message-mv9c01bp-6guptl",
+      "runId": "git-commit-message-mv9c01bp-6guptl",
+      "threadId": "git-commit-message-mv9c01bp-6guptl",
+      "scene": "direct",
+      "prompt": "这是一次性的非交互式版本记录生成任务。\n你不能与用户继续交互，不要追问用户，不要请求用户补充信息。\n只返回版本记录正文，不要返回 Markdown 包裹、额外标题、解释或前后缀。\n输出格式必须是：第一行作为版本标题；空一行；随后输出“变更内容：”；再用短条目列出重点变更。\n变更内容最多 3 条，需要归纳总结，合并相近内容，不要逐文件罗列。\n不要输出“回归关注”，不要输出发布说明、风险项或测试建议。\n\n你的目标：根据当前 Git 变更摘要生成一条准确、克制、可直接用于提交的版本记录。\n\n当前上下文：\n- 目标范围：当前原型\n- 目标名称：更新发布弹窗-循环刊登策略\n- 目标路径：prototypes/update-publish-dialog\n- 当前分支：master\n- 未提交变更文件数：8\n\n结构化变更摘要：\n- 原型：更新发布弹窗-循环刊登策略（8 个文件）\n\n用户已有输入：\n无\n\n请输出可直接放入提交输入框的版本记录。",
+      "params": {},
+      "context": {},
+      "targetPath": "prototypes/update-publish-dialog",
+      "status": "done",
+      "artifactIds": [],
+      "createdAt": 1792056215254,
+      "updatedAt": 1792056250859,
+      "metadata": {},
+      "output": "更新发布弹窗-循环刊登策略\n\n变更内容：\n- 完成循环刊登开关联动改版：开关打开后逐级展示循环次数、自动刊登策略（标题/主图）与当日上限处理策略，关闭时全部隐藏\n- 新增备选首图上传弹窗（本地/URL/引用页签 + 拖拽上传 + Ctrl+V 粘贴），替换原直接唤起资源管理器的交互\n- 修订时间选择器为时/分/秒三列滚动组件，增量卡片、数值控件与标题策略布局按批注逐项对齐",
+      "finishedAt": 1792056250859
+    },
+    {
+      "id": "git-commit-message-mv970cew-dz45v0",
+      "taskId": "git-commit-message-mv970cew-dz45v0",
+      "conversationId": "git-commit-message-mv970cew-dz45v0",
+      "runId": "git-commit-message-mv970cew-dz45v0",
+      "threadId": "git-commit-message-mv970cew-dz45v0",
+      "scene": "direct",
+      "prompt": "这是一次性的非交互式版本记录生成任务。\n你不能与用户继续交互，不要追问用户，不要请求用户补充信息。\n只返回版本记录正文，不要返回 Markdown 包裹、额外标题、解释或前后缀。\n输出格式必须是：第一行作为版本标题；空一行；随后输出“变更内容：”；再用短条目列出重点变更。\n变更内容最多 3 条，需要归纳总结，合并相近内容，不要逐文件罗列。\n不要输出“回归关注”，不要输出发布说明、风险项或测试建议。\n\n你的目标：根据当前 Git 变更摘要生成一条准确、克制、可直接用于提交的版本记录。\n\n当前上下文：\n- 目标范围：当前原型\n- 目标名称：更新发布弹窗-循环刊登策略\n- 目标路径：prototypes/update-publish-dialog\n- 当前分支：master\n- 未提交变更文件数：6\n\n结构化变更摘要：\n- 原型：更新发布弹窗-循环刊登策略（6 个文件）\n\n用户已有输入：\n无\n\n请输出可直接放入提交输入框的版本记录。",
+      "params": {},
+      "context": {},
+      "targetPath": "prototypes/update-publish-dialog",
+      "status": "done",
+      "output": "更新发布弹窗-循环刊登策略\n\n变更内容：\n- 重构弹窗表单结构：发布时间改为立即/定时直接单选，失败自动刊登改为 Switch 并联动循环次数限制输入\n- 新增必填「自动刊登策略」区块，包含标题策略（随机打乱/增量前后缀/AI 重生成/备选标题）和主图策略（随机打乱/备选首图上传），各带子策略配置\n- 新增「当日刊登上限处理策略」，支持直接终止或次日继续刊登并选择具体时间",
+      "artifactIds": [],
+      "createdAt": 1792047831571,
+      "updatedAt": 1792047868584,
+      "finishedAt": 1792047868584,
+      "metadata": {}
+    }
+  ]
+}

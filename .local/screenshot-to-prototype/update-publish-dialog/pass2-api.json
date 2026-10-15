@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "status": "fallback-required",
+  "fallback": "current-agent",
+  "reason": "vision-config-incomplete",
+  "kind": "assets",
+  "ocrSubmitted": false,
+  "regions": [],
+  "promptFile": "D:\\projects\\CAMEL CAPTAIN\\.local\\screenshot-to-prototype\\update-publish-dialog\\prompt-assets.txt",
+  "image": "D:\\projects\\CAMEL CAPTAIN\\.local\\screenshot-to-prototype\\update-publish-dialog\\masked-pass-2.png"
+}

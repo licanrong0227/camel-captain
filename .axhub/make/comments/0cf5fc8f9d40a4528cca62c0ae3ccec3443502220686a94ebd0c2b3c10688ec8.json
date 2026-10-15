@@ -6,43 +6,6 @@
     "targetPath": "prototypes/auto-edit-dialog",
     "filePath": ".axhub/make/comments/0cf5fc8f9d40a4528cca62c0ae3ccec3443502220686a94ebd0c2b3c10688ec8.json"
   },
-  "comments": [
-    {
-      "label": "Annotation Panel",
-      "locator": {
-        "selectors": [
-          "[data-axhub-annotation-panel-node-id=\"main-mode-append\"]"
-        ],
-        "fingerprint": "annotation-panel:main-mode-append",
-        "path": [],
-        "shadowHostChain": []
-      },
-      "skillIds": [
-        "prototype-annotation"
-      ],
-      "marker": {
-        "clientX": 1223,
-        "clientY": 599,
-        "documentX": 1223,
-        "documentY": 599,
-        "xPercent": 63.96443514644351,
-        "y": 599,
-        "isFixed": true,
-        "offsetX": 293,
-        "offsetY": 32.15625,
-        "dirtySince": 1791536158840
-      },
-      "id": "19a343cc-136f-4bd5-914a-6930ceae26aa",
-      "state": "idle",
-      "comment": "追加说明主图数量上限的",
-      "pageScope": "/prototypes/auto-edit-dialog",
-      "provider": null,
-      "requestId": null,
-      "sessionId": null,
-      "updatedAt": null,
-      "message": null,
-      "code": null
-    }
-  ],
+  "comments": [],
   "images": []
 }

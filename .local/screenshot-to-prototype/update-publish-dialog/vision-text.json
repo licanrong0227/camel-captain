@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "status": "completed",
+  "kind": "text",
+  "fallback": "current-agent",
+  "reason": "vision-config-incomplete",
+  "ocrSubmitted": false,
+  "regions": [
+    { "id": "t-title", "text": "更新发布", "bounds": { "left": 34, "top": 75, "right": 141, "bottom": 139 }, "confidence": 0.98 },
+    { "id": "t-close", "text": "×", "bounds": { "left": 944, "top": 78, "right": 966, "bottom": 119 }, "confidence": 0.95 },
+    { "id": "t-auto-list", "text": "自动刊登", "bounds": { "left": 68, "top": 322, "right": 151, "bottom": 368 }, "confidence": 0.98 },
+    { "id": "t-publish-now", "text": "立即发布", "bounds": { "left": 101, "top": 400, "right": 186, "bottom": 446 }, "confidence": 0.98 },
+    { "id": "t-publish-scheduled", "text": "定时发布", "bounds": { "left": 251, "top": 400, "right": 336, "bottom": 446 }, "confidence": 0.98 },
+    { "id": "t-cancel", "text": "取消", "bounds": { "left": 211, "top": 812, "right": 258, "bottom": 858 }, "confidence": 0.98 },
+    { "id": "t-confirm", "text": "确定", "bounds": { "left": 316, "top": 812, "right": 371, "bottom": 858 }, "confidence": 0.95 },
+    { "id": "t-fail-relist", "text": "失败自动刊登", "bounds": { "left": 431, "top": 812, "right": 554, "bottom": 858 }, "confidence": 0.98 },
+    { "id": "t-loop-count", "text": "循环次数", "bounds": { "left": 559, "top": 812, "right": 644, "bottom": 858 }, "confidence": 0.98 },
+    { "id": "t-loop-value", "text": "1", "bounds": { "left": 699, "top": 817, "right": 709, "bottom": 835 }, "confidence": 0.9 }
+  ]
+}

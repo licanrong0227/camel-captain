@@ -1,0 +1,299 @@
+{
+  "schemaVersion": 1,
+  "status": "ok",
+  "source": "current-agent",
+  "regions": [
+    {
+      "id": "t-title",
+      "text": "更新发布",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 34,
+        "top": 75,
+        "right": 141,
+        "bottom": 139
+      },
+      "points": [
+        [
+          24,
+          25
+        ],
+        [
+          103,
+          25
+        ],
+        [
+          103,
+          47
+        ],
+        [
+          24,
+          47
+        ]
+      ]
+    },
+    {
+      "id": "t-close",
+      "text": "×",
+      "confidence": 0.95,
+      "bounds": {
+        "left": 944,
+        "top": 78,
+        "right": 966,
+        "bottom": 119
+      },
+      "points": [
+        [
+          691,
+          26
+        ],
+        [
+          708,
+          26
+        ],
+        [
+          708,
+          41
+        ],
+        [
+          691,
+          41
+        ]
+      ]
+    },
+    {
+      "id": "t-auto-list",
+      "text": "自动刊登",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 68,
+        "top": 322,
+        "right": 151,
+        "bottom": 368
+      },
+      "points": [
+        [
+          49,
+          111
+        ],
+        [
+          110,
+          111
+        ],
+        [
+          110,
+          126
+        ],
+        [
+          49,
+          126
+        ]
+      ]
+    },
+    {
+      "id": "t-publish-now",
+      "text": "立即发布",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 101,
+        "top": 400,
+        "right": 186,
+        "bottom": 446
+      },
+      "points": [
+        [
+          74,
+          138
+        ],
+        [
+          136,
+          138
+        ],
+        [
+          136,
+          153
+        ],
+        [
+          74,
+          153
+        ]
+      ]
+    },
+    {
+      "id": "t-publish-scheduled",
+      "text": "定时发布",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 251,
+        "top": 400,
+        "right": 336,
+        "bottom": 446
+      },
+      "points": [
+        [
+          183,
+          138
+        ],
+        [
+          246,
+          138
+        ],
+        [
+          246,
+          153
+        ],
+        [
+          183,
+          153
+        ]
+      ]
+    },
+    {
+      "id": "t-cancel",
+      "text": "取消",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 211,
+        "top": 812,
+        "right": 258,
+        "bottom": 858
+      },
+      "points": [
+        [
+          154,
+          280
+        ],
+        [
+          189,
+          280
+        ],
+        [
+          189,
+          296
+        ],
+        [
+          154,
+          296
+        ]
+      ]
+    },
+    {
+      "id": "t-confirm",
+      "text": "确定",
+      "confidence": 0.95,
+      "bounds": {
+        "left": 316,
+        "top": 812,
+        "right": 371,
+        "bottom": 858
+      },
+      "points": [
+        [
+          231,
+          280
+        ],
+        [
+          271,
+          280
+        ],
+        [
+          271,
+          296
+        ],
+        [
+          231,
+          296
+        ]
+      ]
+    },
+    {
+      "id": "t-fail-relist",
+      "text": "失败自动刊登",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 431,
+        "top": 812,
+        "right": 554,
+        "bottom": 858
+      },
+      "points": [
+        [
+          315,
+          280
+        ],
+        [
+          406,
+          280
+        ],
+        [
+          406,
+          296
+        ],
+        [
+          315,
+          296
+        ]
+      ]
+    },
+    {
+      "id": "t-loop-count",
+      "text": "循环次数",
+      "confidence": 0.98,
+      "bounds": {
+        "left": 559,
+        "top": 812,
+        "right": 644,
+        "bottom": 858
+      },
+      "points": [
+        [
+          409,
+          280
+        ],
+        [
+          472,
+          280
+        ],
+        [
+          472,
+          296
+        ],
+        [
+          409,
+          296
+        ]
+      ]
+    },
+    {
+      "id": "t-loop-value",
+      "text": "1",
+      "confidence": 0.9,
+      "bounds": {
+        "left": 699,
+        "top": 817,
+        "right": 709,
+        "bottom": 835
+      },
+      "points": [
+        [
+          512,
+          281
+        ],
+        [
+          519,
+          281
+        ],
+        [
+          519,
+          288
+        ],
+        [
+          512,
+          288
+        ]
+      ]
+    }
+  ],
+  "sourceImage": "C:\\Users\\admin\\.qoder-cn\\tmp\\D--projects-CAMEL-CAPTAIN\\images\\44036eb2-054a-4ca2-a940-4ca6fb7bc4aa\\03596652-d0ef-41e0-a7dd-4d47bb78ae0a.png",
+  "sourceSha256": "63fa208358750b5cbb9074cbb89249aaaba68cfecb28cf2d20a8e404e188b103"
+}
