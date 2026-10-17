@@ -1,0 +1,1363 @@
+/* 创建新产品弹窗：尺寸与配色取自导出包 structure/doms.json 的实测值 */
+
+.cpd-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(0, 0, 0, 0.28);
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  color: #606266;
+  font-size: 14px;
+}
+
+.cpd-dialog {
+  position: absolute;
+  top: 54.42px;
+  left: 95.6px;
+  right: 95.6px;
+  bottom: 0;
+  height: calc(100vh - 50.7px);
+  min-height: 560px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ---------- 头部 ---------- */
+
+.cpd-header {
+  flex: none;
+  padding: 20px 20px 10px;
+  position: relative;
+}
+
+.cpd-header__title {
+  margin: 0;
+  font-size: 18px;
+  line-height: 24px;
+  color: #303133;
+  font-weight: 400;
+}
+
+.cpd-header__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.cpd-header__close .cpd-ico {
+  width: 16px;
+  height: 16px;
+  background-color: #909399;
+}
+
+.cpd-header__close:hover .cpd-ico {
+  background-color: #303133;
+}
+
+/* ---------- 主体 ---------- */
+
+.cpd-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cpd-topbar {
+  flex: none;
+  height: 22px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.cpd-topbar__tab {
+  border: 0;
+  background: none;
+  padding: 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: #606266;
+  cursor: pointer;
+}
+
+.cpd-topbar__tab--active {
+  color: #ff781f;
+}
+
+.cpd-topbar__sep {
+  margin: 0 12px;
+  color: #dcdfe6;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.cpd-main {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* ---------- 左侧目录 ---------- */
+
+.cpd-side {
+  flex: none;
+  width: 168px;
+}
+
+.cpd-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.cpd-menu__item {
+  height: 40px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #606266;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cpd-menu__item:hover {
+  background: #f5f7fa;
+}
+
+.cpd-menu__item--active {
+  color: #ff781f;
+}
+
+.cpd-menu__item .cpd-ico {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  flex: none;
+  background-color: #909399;
+}
+
+.cpd-menu__item--active .cpd-ico {
+  background-color: #ff781f;
+}
+
+/* ---------- 右侧表单区 ---------- */
+
+.cpd-pane {
+  flex: 1 1 0;
+  min-width: 0;
+  position: relative;
+  background: #f5f5f5;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.cpd-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1290;
+}
+
+.cpd-mask-icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex: none;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.cpd-form {
+  display: block;
+}
+
+/* ---------- 详情页签：富文本编辑区（复刻自 edit-product-dialog 详情界面） ---------- */
+
+.cpd-detail {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cpd-detail__toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding-left: 8px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.cpd-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: none;
+  white-space: nowrap;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.cpd-tool img {
+  display: block;
+}
+
+.cpd-tool:hover {
+  background: #eef1f6;
+}
+
+.cpd-tool--text {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #444;
+}
+
+.cpd-tool--italic {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.cpd-tool--underline {
+  text-decoration: underline;
+  font-weight: 400;
+}
+
+.cpd-tool--size {
+  width: 64px;
+  margin-left: 23px;
+  gap: 4px;
+  font-size: 12px;
+  color: #444;
+}
+
+.cpd-tool--size img {
+  width: 10px;
+  height: 14px;
+}
+
+.cpd-tool--icon img {
+  width: 14px;
+  height: 14px;
+}
+
+.cpd-tool--font-color {
+  margin-left: 19px;
+}
+
+.cpd-tool--ul {
+  margin-left: 15px;
+}
+
+.cpd-tool--align {
+  margin-left: 15px;
+}
+
+.cpd-tool--clear {
+  margin-left: 14px;
+}
+
+.cpd-tool--image {
+  margin-left: 20px;
+}
+
+.cpd-tool--image img {
+  width: 28px;
+  height: 28px;
+  filter: grayscale(1) opacity(0.5);
+}
+
+.cpd-tool--image-on img {
+  filter: none;
+}
+
+.cpd-detail__tpl-bar {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 8px;
+}
+
+.cpd-detail__tpl-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 200px;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 12px;
+  color: #c0c4cc;
+}
+
+.cpd-detail__tpl-select img {
+  width: 10px;
+  height: 14px;
+  flex: none;
+}
+
+.cpd-detail__btn {
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.cpd-detail__tpl-bar .cpd-btn + .cpd-btn {
+  margin-left: 0;
+}
+
+.cpd-btn--ghost {
+  background: #fff;
+  color: #ff781f;
+}
+
+.cpd-btn--ghost:hover {
+  background: #fff8f2;
+}
+
+.cpd-detail__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 12px 0 0 15px;
+  overflow: auto;
+}
+
+.cpd-detail__poster {
+  display: block;
+  width: 1000px;
+  height: 570px;
+}
+
+.cpd-detail__float {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cpd-detail__float-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.cpd-detail__float-btn img {
+  display: block;
+  width: 28px;
+  height: 28px;
+}
+
+.cpd-sec {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 0 0 12px;
+}
+
+.cpd-sec__title {
+  font-size: 16px;
+  line-height: 19px;
+  color: #303133;
+  padding-bottom: 12px;
+  margin: 0 0 12px;
+  border-bottom: 1px solid #ebeef5;
+  display: flex;
+  align-items: center;
+}
+
+.cpd-req {
+  color: red;
+  margin-right: 4px;
+}
+
+.cpd-count {
+  margin-left: 5px;
+  font-size: 12px;
+  color: #909399;
+  font-weight: 400;
+}
+
+.cpd-sec__title .cpd-icon-btn {
+  margin-left: 10px;
+}
+
+.cpd-category {
+  line-height: 32px;
+}
+
+.cpd-sku-specs {
+  margin-top: 10px;
+}
+
+.cpd-vtable__body {
+  min-height: 0;
+}
+
+.cpd-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0 24px;
+}
+
+.cpd-row--cols {
+  gap: 0 12px;
+  margin-bottom: 12px;
+}
+
+.cpd-row.cpd-row--cols {
+  align-items: stretch;
+}
+
+.cpd-row--cols > .cpd-sec {
+  flex: 1 1 0;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.cpd-row--cols .cpd-sec--channel {
+  flex: 0 0 320px;
+}
+
+.cpd-row--stretch {
+  align-items: stretch;
+}
+
+.cpd-item {
+  display: flex;
+  align-items: flex-start;
+  margin: 0 0 10px;
+}
+
+.cpd-item__label {
+  flex: none;
+  padding-right: 12px;
+  line-height: 32px;
+  font-size: 14px;
+  color: #606266;
+  text-align: left;
+}
+
+.cpd-item__content {
+  flex: 1 1 0;
+  min-width: 0;
+  line-height: 32px;
+  position: relative;
+}
+
+.cpd-sec--label-align .cpd-item__label {
+  width: 110px;
+  min-width: 110px;
+}
+
+.cpd-item--grow {
+  min-width: 240px;
+  flex: 1 1 auto;
+}
+
+.cpd-item--tail {
+  margin-bottom: 0;
+}
+
+.cpd-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cpd-muted {
+  font-size: 12px;
+  color: #909399;
+}
+
+.cpd-hint {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #909399;
+  line-height: 18px;
+}
+
+.cpd-plain-text {
+  font-size: 14px;
+  color: #606266;
+  margin-bottom: 10px;
+}
+
+/* ---------- 输入框 ---------- */
+
+.cpd-input {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.cpd-input--block {
+  display: block;
+}
+
+.cpd-input__inner {
+  display: block;
+  width: 100%;
+  height: 32px;
+  box-sizing: border-box;
+  padding: 0 30px 0 15px;
+  border: 1px solid #dcdfe6;
+  border-radius: 8px;
+  background: #fff;
+  color: #606266;
+  font-size: 13px;
+  line-height: 32px;
+  outline: none;
+}
+
+.cpd-input__inner::placeholder {
+  color: #c0c4cc;
+}
+
+.cpd-input__inner:hover {
+  border-color: #c0c4cc;
+}
+
+.cpd-input__inner:focus {
+  border-color: #ff781f;
+}
+
+.cpd-textarea__inner {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 12px;
+  border: 1px solid #dcdfe6;
+  border-radius: 8px;
+  background: #fff;
+  color: #606266;
+  font-size: 13px;
+  line-height: 20px;
+  font-family: inherit;
+  outline: none;
+  resize: vertical;
+}
+
+.cpd-textarea__inner::placeholder {
+  color: #c0c4cc;
+}
+
+.cpd-textarea__inner:hover {
+  border-color: #c0c4cc;
+}
+
+.cpd-textarea__inner:focus {
+  border-color: #ff781f;
+}
+
+.cpd-input__suffix {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  width: 25px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  color: #c0c4cc;
+  pointer-events: none;
+}
+
+.cpd-input__suffix .cpd-ico {
+  width: 13px;
+  height: 13px;
+  background-color: #c0c4cc;
+  vertical-align: middle;
+}
+
+.cpd-input__count {
+  position: absolute;
+  top: 0;
+  right: 30px;
+  line-height: 32px;
+  font-size: 12px;
+  color: #909399;
+  pointer-events: none;
+}
+
+.cpd-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cpd-title-row .cpd-input {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.cpd-title-row .cpd-input__inner {
+  padding-right: 80px;
+}
+
+.cpd-cat-link {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: #ff781f;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cpd-cat-link .cpd-ico {
+  width: 14px;
+  height: 14px;
+  margin-left: 5px;
+  background-color: #ff781f;
+}
+
+/* ---------- 下拉选择 ---------- */
+
+.cpd-select {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.cpd-select--block {
+  display: block;
+}
+
+.cpd-select .cpd-input__inner {
+  cursor: pointer;
+  background: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.cpd-dropdown {
+  position: fixed;
+  z-index: 1300;
+  box-sizing: border-box;
+  max-height: 248px;
+  overflow-y: auto;
+  padding: 6px 0;
+  margin: 0;
+  background: #fff;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+}
+
+.cpd-dropdown__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0 20px;
+  height: 34px;
+  line-height: 34px;
+  font-size: 14px;
+  color: #606266;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cpd-dropdown__item:hover {
+  background: #f5f7fa;
+}
+
+.cpd-dropdown__item--active {
+  color: #ff781f;
+  font-weight: 700;
+}
+
+.cpd-dropdown__empty {
+  padding: 10px 0;
+  text-align: center;
+  font-size: 14px;
+  color: #909399;
+}
+
+/* ---------- 按钮 ---------- */
+
+.cpd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 15px;
+  border: 1px solid #ff781f;
+  border-radius: 8px;
+  background: #ff781f;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cpd-btn + .cpd-btn {
+  margin-left: 10px;
+}
+
+.cpd-btn:hover {
+  background: #ff8d42;
+  border-color: #ff8d42;
+}
+
+.cpd-btn .cpd-ico {
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+  margin-right: 5px;
+}
+
+.cpd-btn .cpd-btn__caret {
+  width: 10px;
+  height: 10px;
+  margin-right: 0;
+  margin-left: 6px;
+}
+
+.cpd-btn__tip {
+  margin: 0 0 0 4px;
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+}
+
+.cpd-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.cpd-icon-btn .cpd-ico {
+  width: 16px;
+  height: 16px;
+  background-color: #ff781f;
+}
+
+/* ---------- 单选 ---------- */
+
+.cpd-radio-group {
+  display: inline-flex;
+  align-items: center;
+  line-height: 32px;
+}
+
+.cpd-radio {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 30px;
+  cursor: pointer;
+  color: #606266;
+  font-size: 14px;
+}
+
+.cpd-radio:last-child {
+  margin-right: 0;
+}
+
+.cpd-radio__inner {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #dcdfe6;
+  border-radius: 100%;
+  background: #fff;
+  box-sizing: border-box;
+  flex: none;
+}
+
+.cpd-radio__inner::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.15s;
+}
+
+.cpd-radio--checked {
+  color: #ff781f;
+}
+
+.cpd-radio--checked .cpd-radio__inner {
+  border-color: #ff781f;
+  background: #ff781f;
+}
+
+.cpd-radio--checked .cpd-radio__inner::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.cpd-radio__label {
+  padding-left: 10px;
+  line-height: 18px;
+}
+
+/* ---------- 数字输入 ---------- */
+
+.cpd-number {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.cpd-number .cpd-input__inner {
+  padding: 0 39px;
+  text-align: center;
+}
+
+.cpd-number__btn {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  width: 32px;
+  box-sizing: border-box;
+  border: 1px solid #dcdfe6;
+  background: #f5f7fa;
+  color: #606266;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.cpd-number__btn .cpd-ico {
+  width: 13px;
+  height: 13px;
+  background-color: #606266;
+  transform: scale(0.9);
+}
+
+.cpd-number__btn--minus {
+  left: 1px;
+  border-width: 0 1px 0 0;
+  border-radius: 8px 0 0 8px;
+}
+
+.cpd-number__btn--plus {
+  right: 1px;
+  border-width: 0 0 0 1px;
+  border-radius: 0 8px 8px 0;
+}
+
+.cpd-number__btn--disabled {
+  cursor: not-allowed;
+}
+
+.cpd-number__btn--disabled .cpd-ico {
+  background-color: #c0c4cc;
+}
+
+/* ---------- 开关 ---------- */
+
+.cpd-switch {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.cpd-switch__core {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  border: 1px solid #dcdfe6;
+  border-radius: 10px;
+  background: #dcdfe6;
+  box-sizing: border-box;
+  flex: none;
+}
+
+.cpd-switch__core::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: left 0.2s;
+}
+
+.cpd-switch--on .cpd-switch__core {
+  background: #ff781f;
+  border-color: #ff781f;
+}
+
+.cpd-switch--on .cpd-switch__core::after {
+  left: 21px;
+}
+
+.cpd-switch__label {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #606266;
+}
+
+/* ---------- 上传占位 ---------- */
+
+.cpd-video-upload {
+  width: 160px;
+  height: 120px;
+  border: 1px dashed #dcdfe6;
+  border-radius: 4px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #909399;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.cpd-video-upload .cpd-ico {
+  width: 28px;
+  height: 28px;
+  background-color: #909399;
+}
+
+.cpd-images {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.cpd-images--min {
+  min-height: 104px;
+}
+
+.cpd-upload-cloud {
+  width: 100px;
+  height: 100px;
+  border: 2px dashed #d9d9d9;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #909399;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.cpd-upload-cloud .cpd-ico {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 5px;
+  background-color: #909399;
+}
+
+/* ---------- 价格表格 ---------- */
+
+.cpd-vtable {
+  margin-top: 16px;
+  border: 1px solid #ebeef5;
+  border-radius: 2px;
+  min-width: 1180px;
+  overflow: hidden;
+  --cpd-vtable-cols: 60px 110fr 220fr 340fr 200fr 265fr 210fr 265fr 265fr;
+}
+
+.cpd-vtable__head {
+  display: grid;
+  grid-template-columns: var(--cpd-vtable-cols);
+  height: 40px;
+  background: #f5f7fa;
+  align-items: center;
+}
+
+.cpd-vtable__row {
+  display: grid;
+  grid-template-columns: var(--cpd-vtable-cols);
+  min-height: 64px;
+  align-items: center;
+  border-top: 1px solid #ebeef5;
+}
+
+.cpd-vtable__row .cpd-vtable__cell {
+  color: #606266;
+  font-size: 14px;
+}
+
+.cpd-vtable__thumb {
+  display: block;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border: 1px solid #ebeef5;
+  border-radius: 2px;
+}
+
+.cpd-vtable__cell {
+  padding: 4px 6px;
+  border-right: 1px solid #ebeef5;
+  font-size: 12px;
+  color: #424448;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+}
+
+.cpd-vtable__cell:last-child {
+  border-right: 0;
+}
+
+.cpd-vtable__head .cpd-vtable__cell {
+  color: #ff781f;
+}
+
+.cpd-vtable__head .cpd-ico {
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  background-color: #ff781f;
+}
+
+/* ---------- 其他小组件 ---------- */
+
+.cpd-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.cpd-attr-grid {
+  display: grid;
+  gap: 0 24px;
+  margin-top: 8px;
+}
+
+.cpd-attr-add {
+  display: flex;
+  align-items: center;
+}
+
+.cpd-volume {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.cpd-volume__unit {
+  margin: 0 12px 0 8px;
+  line-height: 32px;
+  font-size: 14px;
+  color: #606266;
+}
+
+.cpd-labels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  line-height: 32px;
+}
+
+.cpd-label-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid #ffb366;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cpd-label-btn .cpd-ico {
+  width: 12px;
+  height: 12px;
+  background-color: #ff781f;
+}
+
+.cpd-source-add {
+  margin-bottom: 14px;
+}
+
+/* ---------- 底部 ---------- */
+
+.cpd-footer {
+  flex: none;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.cpd-footer__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 10px 20px;
+  border: 1px solid #ff781f;
+  border-radius: 8px;
+  background: #fff;
+  color: #ff781f;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cpd-footer__btn + .cpd-footer__btn {
+  margin-left: 10px;
+}
+
+.cpd-footer__btn--primary {
+  background: #ff781f;
+  color: #fff;
+}
+
+/* ---------- 表头批量编辑 / 同步图标 ---------- */
+
+.cpd-vtable__edit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 3px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.cpd-vtable__head .cpd-vtable__edit .cpd-ico {
+  width: 12px;
+  height: 12px;
+  margin-left: 0;
+  background-color: #ff781f;
+}
+
+/* ---------- 数字输入自适应单元格 ---------- */
+
+.cpd-number--block {
+  display: block;
+  width: 100%;
+}
+
+/* ---------- 复选框 ---------- */
+
+.cpd-checkbox {
+  display: flex;
+  align-items: center;
+  line-height: 24px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cpd-checkbox + .cpd-checkbox {
+  margin-top: 6px;
+}
+
+.cpd-checkbox__inner {
+  position: relative;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  box-sizing: border-box;
+  border: 1px solid #dcdfe6;
+  border-radius: 2px;
+  background: #fff;
+}
+
+.cpd-checkbox--checked .cpd-checkbox__inner {
+  border-color: #409eff;
+  background: #409eff;
+}
+
+.cpd-checkbox--checked .cpd-checkbox__inner::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #fff;
+  border-top: 0;
+  border-left: 0;
+  transform: rotate(45deg);
+}
+
+.cpd-checkbox__label {
+  font-size: 14px;
+  color: #606266;
+}
+
+/* ---------- 批量修改弹窗 ---------- */
+
+.cpd-batch {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.cpd-batch__panel {
+  width: 620px;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 96px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+}
+
+.cpd-batch__header {
+  position: relative;
+  flex: none;
+  padding: 18px 20px;
+}
+
+.cpd-batch__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+  color: #303133;
+}
+
+.cpd-batch__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.cpd-batch__close .cpd-ico {
+  width: 14px;
+  height: 14px;
+  background-color: #909399;
+}
+
+.cpd-batch__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 0 20px;
+}
+
+.cpd-batch__group {
+  margin-bottom: 16px;
+  border: 1px solid #ebeef5;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.cpd-batch__label {
+  padding: 9px 12px;
+  background: #f5f7fa;
+  border-bottom: 1px solid #ebeef5;
+  font-size: 14px;
+  color: #303133;
+}
+
+.cpd-batch__card {
+  padding: 12px;
+}
+
+.cpd-batch__card .cpd-input__inner,
+.cpd-batch__card .cpd-input__suffix {
+  height: 40px;
+  line-height: 40px;
+}
+
+.cpd-batch__footer {
+  flex: none;
+  padding: 10px 20px 22px;
+  text-align: center;
+}
+
+/* ---------- 轻提示 ---------- */
+
+.cpd-toast {
+  position: fixed;
+  top: 84px;
+  left: 50%;
+  z-index: 1500;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 6px;
+  background: #f0f9eb;
+  border: 1px solid #e1f3d8;
+  color: #67c23a;
+  font-size: 14px;
+  white-space: nowrap;
+}

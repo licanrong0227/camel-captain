@@ -1,10 +1,12 @@
 {
   "server": {
     "host": "localhost",
+    "lanHost": "192.168.110.205",
+    "skipLanPreviewAuth": false,
     "enableCommandAPI": false
   },
   "projectDefaults": {
-    "defaultTheme": null
+    "defaultTheme": "camel-captain-erp"
   },
   "projectInfo": {
     "description": null

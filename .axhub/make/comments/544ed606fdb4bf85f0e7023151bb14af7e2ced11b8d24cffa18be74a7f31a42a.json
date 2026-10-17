@@ -6,6 +6,52 @@
     "targetPath": "prototypes/batch-image-white-bg",
     "filePath": ".axhub/make/comments/544ed606fdb4bf85f0e7023151bb14af7e2ced11b8d24cffa18be74a7f31a42a.json"
   },
-  "comments": [],
+  "comments": [
+    {
+      "elementKey": "button_17",
+      "label": "button(\"开始处理?\")",
+      "locator": {
+        "selectors": [
+          ".biw-start-btn",
+          "body > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(1) > button",
+          "#root div > div > div:nth-of-type(2) > div > div:nth-of-type(1) > button"
+        ],
+        "fingerprint": "button|class=biw-start-btn|text=开始处理?",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1
+        ]
+      },
+      "marker": {
+        "clientX": 1378,
+        "clientY": 210,
+        "documentX": 1378,
+        "documentY": 210,
+        "xPercent": 72.07112970711297,
+        "y": 210,
+        "isFixed": true,
+        "offsetX": 49,
+        "offsetY": 17,
+        "dirtySince": 1792218513168
+      },
+      "id": "282ad70c-5dfa-4356-977c-1d7793cffeb9",
+      "state": "idle",
+      "comment": "调整一下，停止处理时，当前接口调用可能尚未结束，需要把文字改为“停止中”，此时点击toast提示“停止处理中，请等待当前任务处理完成”，将此按钮交互调整一下，点击停止3秒后再停止成功",
+      "pageScope": "/prototypes/batch-image-white-bg",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    }
+  ],
   "images": []
 }

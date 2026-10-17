@@ -1,0 +1,358 @@
+/* ============ Shopify 对接 - 认领中心（截图还原，1912 设计宽） ============ */
+/* token 来源：AI-认领中心-骆驼队长BI-complete/screenshot.png 逐像素实测 + content.md 文案 */
+
+/* ===== 主卡片：页签带与底部栏需要出血到卡片边缘，列表区内部滚动 ===== */
+.cc-card {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 105px);
+  min-height: 620px;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ===== 页签带 ===== */
+.cc-tabs {
+  display: flex;
+  flex: none;
+  align-items: flex-end;
+  height: 50px;
+  padding-left: 33px;
+  background: #f2f3f5;
+}
+
+.cc-tab {
+  padding-bottom: 15px;
+  font-size: 14px;
+  color: #4e5969;
+  white-space: nowrap;
+}
+
+.cc-tab-active {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 191px;
+  height: 50px;
+  margin-left: 43px;
+  padding-right: 13px;
+  padding-bottom: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.cc-tab-last { margin-left: 45px; }
+
+/* 激活页签：白底 + 浅橘描边，两侧凹弧 */
+.cc-tab-shape {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cc-tab-dot,
+.cc-tab-label {
+  position: relative;
+  z-index: 1;
+}
+
+.cc-tab-dot {
+  flex: none;
+  width: 20px;
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(90deg, #ff7d29 0%, #ff7d29 28%, #ff8e45 50%, #ffae7b 68%, #ffe6d5 82%, rgba(255, 125, 41, 0) 100%);
+}
+
+/* ===== 筛选区 ===== */
+.cc-filters { flex: none; padding: 15px 21px 0; }
+
+.cc-filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+
+.cc-filter-row + .cc-filter-row { margin-top: 19px; }
+
+.cc-label { font-size: 13px; color: #606266; white-space: nowrap; }
+
+.cc-filter-spacer { flex: 1; }
+
+.cc-input {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.cc-input-ph { font-size: 13px; color: #606266; white-space: nowrap; }
+.cc-input-text { font-size: 13px; color: #606266; white-space: nowrap; }
+
+.cc-select { justify-content: space-between; cursor: pointer; }
+
+.cc-chev { display: block; flex: none; width: 12px; height: 7px; }
+
+/* 价格：右侧 32px 步进器列 */
+.cc-price { padding-right: 0; }
+
+.cc-stepper {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  height: 30px;
+  width: 32px;
+  margin-left: auto;
+  border-left: 1px solid #dcdfe6;
+  border-radius: 0 4px 4px 0;
+  background: #f5f7fa;
+}
+
+.cc-stepper-cell {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.cc-stepper-cell + .cc-stepper-cell { border-top: 1px solid #dcdfe6; }
+
+.cc-stepper svg { display: block; width: 11px; height: 7px; }
+
+.cc-range-dash { flex: none; margin: -1px -4px; color: #909399; }
+
+/* 采集日期：起止文本各自在半区内居中，「至」居中（实测盒内 8/42 不对称留白） */
+.cc-daterange { gap: 0; padding-left: 8px; padding-right: 42px; }
+
+.cc-cal { width: 15px; height: 15px; flex: none; margin-right: 8px; }
+
+.cc-daterange-half { flex: 1; text-align: center; }
+
+.cc-daterange-to { flex: none; width: 28px; font-size: 13px; color: #606266; text-align: center; }
+
+/* ===== 按钮 ===== */
+.cc-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 16px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 12px;
+  color: #303133;
+  white-space: nowrap;
+}
+
+.cc-btn-search { width: 65px; padding: 0; border-color: #ff781f; border-radius: 8px; background: #ff781f; color: #fff; }
+
+.cc-btn-reset { width: 65px; padding: 0; }
+
+.cc-btn-create { width: 101px; padding: 0; border-color: #1890ff; color: #1890ff; }
+
+.cc-btn-export { width: 53px; padding: 0; }
+
+.cc-btn-import { width: 77px; padding: 0; }
+
+.cc-gear { width: 20px; height: 20px; flex: none; cursor: pointer; }
+
+/* ===== 列表区 ===== */
+.cc-body { flex: 1; min-height: 0; overflow-y: auto; margin: 21px 21px 0; }
+
+.cc-thead,
+.cc-tr {
+  display: grid;
+  grid-template-columns: 61px 90px minmax(0, 1fr) 146px 114px 334px 214px 146px 16px;
+  align-items: center;
+}
+
+.cc-thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 40px;
+  border-radius: 8px;
+  background: #f5f7fa;
+  font-size: 14px;
+  font-weight: 500;
+  color: #606266;
+}
+
+.cc-tr {
+  position: relative;
+  height: 102.33px;
+  padding-bottom: 6px;
+}
+
+/* 分隔线止于滚动条槽之前（源页 41→1860） */
+.cc-tr::after,
+.cc-row-actions::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: #ebeef5;
+}
+
+.cc-th,
+.cc-td { min-width: 0; }
+
+.cc-th-center,
+.cc-td-center { display: flex; align-items: center; justify-content: center; }
+
+.cc-th-left { padding-left: 13px; }
+
+/* ===== 复选框 ===== */
+.cc-check { display: flex; align-items: center; justify-content: center; padding-right: 6px; }
+
+.cc-checkbox {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #dcdfe6;
+  border-radius: 2px;
+  background: #fff;
+}
+
+.cc-checkbox.is-checked,
+.cc-checkbox.is-indeterminate { border-color: #ff781f; background: #ff781f; }
+
+.cc-checkbox.is-checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+
+.cc-checkbox.is-indeterminate::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 5.5px;
+  width: 10px;
+  height: 2px;
+  background: #fff;
+}
+
+/* ===== 单元格内容 ===== */
+.cc-thumb {
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+  object-fit: cover;
+  background: #f5f7fa;
+}
+
+.cc-info { display: flex; flex-direction: column; gap: 11px; padding: 4px 24px 0 13px; }
+
+.cc-title {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  color: #606266;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cc-sku { font-size: 12px; line-height: 18px; color: #666666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.cc-money { font-size: 12px; font-weight: 600; color: #ff781f; }
+
+.cc-status { font-size: 13px; font-weight: 500; color: #ff781f; }
+.cc-status.is-claimed { color: #52c41a; }
+
+.cc-source { font-size: 14px; font-weight: 500; color: #ff781f; }
+
+.cc-account { font-size: 12px; color: #606266; }
+
+/* ===== 勾选行展开的操作条 ===== */
+.cc-row-actions {
+  position: relative;
+  display: flex;
+  gap: 15px;
+  height: 42px;
+  margin-left: 11px;
+  align-items: center;
+}
+
+.cc-mini-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 24px;
+  border: 1px solid #1890ff;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 12px;
+  color: #1890ff;
+  white-space: nowrap;
+}
+
+/* ===== 底部栏：批量操作 + 分页 ===== */
+.cc-footer {
+  display: flex;
+  flex: none;
+  align-items: center;
+  height: 52px;
+  margin-top: 0;
+  padding: 0 27px 0 22px;
+  border-top: 1px solid #e4e7ed;
+}
+
+.cc-selected { font-size: 13px; color: #909399; white-space: nowrap; }
+
+/* .si-page button 的 margin:0 优先级更高，这里用双类选择器覆盖 */
+.cc-btn.cc-batch-btn { margin-left: 10px; }
+
+.cc-pagination { display: flex; align-items: center; gap: 10px; margin-left: auto; font-size: 13px; color: #606266; }
+
+.cc-jump-group { display: flex; align-items: center; gap: 5px; margin-left: 24px; }
+
+.cc-total { margin-right: -1px; }
+
+.cc-page-size { width: 100px; justify-content: space-between; padding: 0 10px; height: 28px; }
+
+.cc-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 26px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 13px;
+  color: #606266;
+}
+
+.cc-page-btn img { width: 12px; height: 12px; }
+
+.cc-page-btn.is-active { border-color: #ff781f; color: #ff781f; }
+
+.cc-page-btn.is-disabled { border-color: #e4e7ed; background: #f4f4f5; color: #c0c4cc; }
+
+.cc-page-ellipsis { width: 30px; }
+
+.cc-jump-input { width: 45px; height: 26px; justify-content: center; padding: 0 8px; }
+
+.cc-jump-unit { margin-left: 0; }

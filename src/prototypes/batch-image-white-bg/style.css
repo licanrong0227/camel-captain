@@ -368,3 +368,26 @@
   justify-content: flex-end;
   gap: 12px;
 }
+
+/* ===== 停止中提示 ===== */
+
+.biw-start-btn--stopping {
+  background: #ff4949;
+  opacity: 0.85;
+}
+
+.biw-toast {
+  position: absolute;
+  left: 50%;
+  top: 48px;
+  transform: translateX(-50%);
+  max-width: 420px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  z-index: 10;
+}

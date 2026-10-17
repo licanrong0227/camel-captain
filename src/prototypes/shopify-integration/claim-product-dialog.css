@@ -1,0 +1,328 @@
+/* ============ 认领商品弹窗（AI-认领中心-骆驼队长BI-complete 数据包还原） ============ */
+/* 尺寸/颜色来源：flat/styles/style_171~217 计算样式，字号一律以计算样式为准 */
+
+.capd-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2001;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.5);
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+  color: #606266;
+}
+
+.capd-dialog {
+  position: relative;
+  width: 700px;
+  margin: 55px auto 0;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== 头部 ===== */
+.capd-header {
+  padding: 20px 20px 10px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.capd-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #303133;
+}
+
+.capd-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 16px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #909399;
+  cursor: pointer;
+}
+
+.capd-close:hover { color: #409eff; }
+.capd-close svg { display: block; width: 16px; height: 16px; }
+
+/* ===== 主体 ===== */
+.capd-body { padding: 20px; }
+
+.capd-cols {
+  display: flex;
+  gap: 16px;
+  min-height: 360px;
+}
+
+/* ----- 左侧商品清单 ----- */
+.capd-products {
+  flex: none;
+  width: 220px;
+  max-height: 384px;
+  padding: 12px;
+  border: 1px solid #e4e7ed;
+  border-radius: 8px;
+  background: #f5f7fa;
+  overflow-y: auto;
+}
+
+.capd-product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.capd-product-img {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #e4e7ed;
+  border-radius: 6px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.capd-product-img img {
+  display: block;
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+}
+
+.capd-product-name {
+  min-width: 0;
+  flex: 1;
+  max-height: 34px;
+  font-size: 12px;
+  line-height: 17px;
+  color: #606266;
+  overflow: hidden;
+}
+
+.capd-products-more {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 12px;
+  color: #909399;
+}
+
+/* ----- 右侧认领设置 ----- */
+.capd-main {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.capd-field { margin-bottom: 18px; }
+
+.capd-field--stores {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.capd-field-label {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  color: #303133;
+}
+
+.capd-field-sub {
+  margin-left: 2px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #909399;
+}
+
+.capd-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 平台卡片 */
+.capd-platforms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.capd-platform {
+  position: relative;
+  display: flex;
+  width: 72px;
+  height: 72px;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px 6px;
+  border: 1px solid #e4e7ed;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.capd-platform.is-selected {
+  border-color: #ff781f;
+  box-shadow: 0 0 0 1px #ff781f;
+}
+
+.capd-platform-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.capd-platform-name {
+  max-width: 100%;
+  padding: 0 2px;
+  font-size: 12px;
+  line-height: 14px;
+  color: #606266;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.capd-platform-check {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  display: flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #ff781f;
+}
+
+.capd-platform-check svg { width: 12px; height: 12px; }
+
+/* 店铺列表 */
+.capd-select-all {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.capd-select-all-box {
+  display: flex;
+  width: 14px;
+  height: 14px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ff781f;
+  border-radius: 2px;
+  background: #fff;
+}
+
+.capd-select-all-text { font-size: 13px; color: #ff781f; }
+
+.capd-stores {
+  display: flex;
+  max-height: 256px;
+  flex-direction: column;
+  gap: 10px;
+  padding: 2px;
+  overflow-y: auto;
+}
+
+.capd-store {
+  display: flex;
+  min-height: 42px;
+  box-sizing: border-box;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #dcdfe6;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.capd-store-check {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid #dcdfe6;
+  border-radius: 3px;
+  background: #fff;
+}
+
+.capd-store-name {
+  min-width: 0;
+  flex: 1;
+  font-size: 14px;
+  line-height: 16px;
+  color: #303133;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== 底部 ===== */
+.capd-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 16px -20px 0;
+  padding: 16px 20px 0;
+  border-top: 1px solid #ebeef5;
+}
+
+.capd-footer-status { font-size: 13px; color: #606266; }
+
+.capd-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.capd-footer-hint { margin-right: 4px; font-size: 13px; color: #ff781f; }
+
+.capd-btn {
+  display: inline-flex;
+  min-width: 110px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px 20px;
+  border: 1px solid #e4e7ed;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  line-height: 14px;
+  color: #c0c4cc;
+  cursor: not-allowed;
+}
+
+.capd-btn svg { width: 14px; height: 14px; }
+
+.capd-btn--direct { opacity: 0.5; }
+
+.capd-btn--auto {
+  border-color: #f3c7a3;
+  background: #f3c7a3;
+  color: #fff;
+}

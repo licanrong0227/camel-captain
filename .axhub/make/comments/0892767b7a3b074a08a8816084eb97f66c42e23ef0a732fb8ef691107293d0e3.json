@@ -8,42 +8,34 @@
   },
   "comments": [
     {
-      "label": "div(\"+点击添加图片或从可选图片拖放到此处\")",
+      "elementKey": "annotation-panel:collage-sample-interaction",
+      "label": "Annotation Panel",
       "locator": {
         "selectors": [
-          "body > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(1) > div > div > div:nth-of-type(2)",
-          "#root div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(1) > div > div > div:nth-of-type(2)"
+          "[data-axhub-annotation-panel-node-id=\"collage-sample-interaction\"]"
         ],
-        "fingerprint": "div|class=cp-slot|text=+点击添加图片或从可选图片拖放到此处",
-        "path": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          2,
-          0,
-          0,
-          0,
-          1
-        ]
+        "fingerprint": "annotation-panel:collage-sample-interaction",
+        "path": [],
+        "shadowHostChain": []
       },
+      "skillIds": [
+        "prototype-annotation"
+      ],
       "marker": {
-        "clientX": 1010,
-        "clientY": 179,
-        "documentX": 1010,
-        "documentY": 179,
-        "xPercent": 52.82426778242678,
-        "y": 179,
+        "clientX": 1701,
+        "clientY": 14.75,
+        "documentX": 1701,
+        "documentY": 14.75,
+        "xPercent": 88.9644351464435,
+        "y": 14.75,
         "isFixed": true,
-        "offsetX": 97.5,
-        "offsetY": 53.5,
-        "dirtySince": 1791974441347
+        "offsetX": 190,
+        "offsetY": 18,
+        "dirtySince": 1792219057495
       },
-      "id": "8540ff6c-f091-45b4-a8f6-67dd1a9f2f28",
+      "id": "e95694f2-16cd-42b7-b873-e3a0c18c5a1d",
       "state": "idle",
-      "comment": "点击上传的功能错了，应该是与右侧一样，弹出上传弹窗",
+      "comment": "修改标注，在图片初始来源中补充：sku图片、商品详情图，只改标注，不改原型",
       "pageScope": "/prototypes/edit-product-dialog-media",
       "provider": null,
       "requestId": null,

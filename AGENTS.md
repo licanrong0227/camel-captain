@@ -1,3 +1,8 @@
+## 项目信息
+
+- 项目名称：骆驼队长
+- 默认设计：camel-captain-erp（`src/themes/camel-captain-erp/DESIGN.md`）
+
 # Agent 工作流程
 
 ## 核心流程

@@ -1,0 +1,662 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "shopify-integration",
+    "pageId": "store-auth",
+    "nodes": [
+      {
+        "id": "sa-col-platform-id",
+        "index": 1,
+        "title": "平台ID：取自 shopify 接口 data.shop.id",
+        "pageId": "store-auth",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"sa-col-platform-id\"]"
+          ],
+          "fingerprint": "th|data-annotation-id=sa-col-platform-id",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792121735536,
+        "updatedAt": 1792121735536
+      },
+      {
+        "id": "sa-col-expire",
+        "index": 2,
+        "title": "到期时间：按 Refresh Token 有效期换算",
+        "pageId": "store-auth",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"sa-col-expire\"]"
+          ],
+          "fingerprint": "th|data-annotation-id=sa-col-expire",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792121735536,
+        "updatedAt": 1792121735536
+      },
+      {
+        "id": "mp-platform-switch",
+        "index": 3,
+        "title": "平台下拉：取店铺后台管理并按排序值排序",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"mp-platform-switch\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=mp-platform-switch",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792121735536,
+        "updatedAt": 1792129909064,
+        "annotationText": ""
+      },
+      {
+        "id": "annotation-4",
+        "index": 4,
+        "locator": {
+          "selectors": [
+            "[aria-label=\"新增店铺\"]",
+            ".asd-dialog",
+            "div > div > main > div:nth-of-type(6) > div"
+          ],
+          "fingerprint": "div",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "main",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 5
+            },
+            {
+              "tag": "div",
+              "index": 0
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "pageId": "store-auth",
+        "createdAt": 1792129835617,
+        "updatedAt": 1792129835617
+      },
+      {
+        "id": "cpd-cat-source",
+        "index": 5,
+        "title": "选择类目：类目树取数方式",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"cpd-cat-source\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=cpd-cat-source",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792130000000,
+        "updatedAt": 1792204315268
+      },
+      {
+        "id": "annotation-6",
+        "index": 6,
+        "locator": {
+          "selectors": [
+            "div > div > main > div:nth-of-type(5) > div > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > form > div:nth-of-type(1) > div > div:nth-of-type(1) > div > div:nth-of-type(1) > input"
+          ],
+          "fingerprint": "input",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "main",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 4
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "form",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "input",
+              "index": 0
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "pageId": "my-products",
+        "createdAt": 1792132850893,
+        "updatedAt": 1792132850893
+      },
+      {
+        "id": "cpd-info-title",
+        "index": 7,
+        "title": "标题：创建商品时对应 productSet 的 input.title",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"cpd-info-title\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=cpd-info-title",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792133200000,
+        "updatedAt": 1792133200000
+      },
+      {
+        "id": "cpd-attr-source",
+        "index": 8,
+        "title": "产品属性：取类目属性并按类型渲染控件",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"cpd-attr-source\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=cpd-attr-source",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792134000000,
+        "updatedAt": 1792204315268
+      },
+      {
+        "id": "cpd-main-image-upload",
+        "index": 9,
+        "title": "主图：Shopify 媒体上传方式",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"cpd-main-image-upload\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=cpd-main-image-upload",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792143962957,
+        "updatedAt": 1792143962957
+      },
+      {
+        "id": "cpd-sku-variant",
+        "index": 10,
+        "title": "SKU 变体怎么传参",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"cpd-sku-variant\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=cpd-sku-variant",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792145275341,
+        "updatedAt": 1792148535903
+      },
+      {
+        "id": "cpd-seo-info",
+        "index": 11,
+        "title": "SEO 信息：通过 input.seo 传入",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"cpd-seo-info\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=cpd-seo-info",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792146400000,
+        "updatedAt": 1792146400000
+      },
+      {
+        "id": "cpd-spec-add-limit",
+        "index": 12,
+        "title": "添加规格：取数方式与 3 个规格上限",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"cpd-spec-add-limit\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=cpd-spec-add-limit",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792203547926,
+        "updatedAt": 1792204315268
+      },
+      {
+        "id": "cpd-weight",
+        "index": 13,
+        "title": "重量：通过 variants 的 measurement.weight 传入",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"cpd-weight\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=cpd-weight",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792204315268,
+        "updatedAt": 1792204315268
+      },
+      {
+        "id": "cpd-header-title",
+        "index": 14,
+        "title": "productSet 的创建与更新规则",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"cpd-header-title\"]"
+          ],
+          "fingerprint": "h2|data-annotation-id=cpd-header-title",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792205000000,
+        "updatedAt": 1792205000000
+      },
+      {
+        "id": "mp-sync-online",
+        "index": 16,
+        "title": "同步线上：仅同步已选平台店铺，走 Bulk Operations",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"mp-sync-online\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=mp-sync-online",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792207193694,
+        "updatedAt": 1792207193694
+      },
+      {
+        "id": "mp-col-product-id",
+        "index": 17,
+        "title": "产品编号：取创建响应 data.productSet.product.id",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"mp-col-product-id\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=mp-col-product-id",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792208708425,
+        "updatedAt": 1792208708425
+      },
+      {
+        "id": "annotation-17",
+        "index": 18,
+        "locator": {
+          "selectors": [
+            ".cpd-detail",
+            "div > div > main > div:nth-of-type(5) > div > div:nth-of-type(2) > div:nth-of-type(2) > div > div"
+          ],
+          "fingerprint": "div",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "main",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 4
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "pageId": "my-products",
+        "createdAt": 1792208837373,
+        "updatedAt": 1792208837373
+      },
+      {
+        "id": "capd-platform-single",
+        "index": 19,
+        "title": "认领平台：只能单选，选项按后台排序值排列",
+        "pageId": "claim-center",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"capd-platform-single\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=capd-platform-single",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792220658213,
+        "updatedAt": 1792220658213
+      },
+      {
+        "id": "capd-platform-shopify",
+        "index": 20,
+        "title": "敦煌网右侧新增 shopify，默认选中 shopify",
+        "pageId": "claim-center",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"capd-platform-shopify\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=capd-platform-shopify",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792220658213,
+        "updatedAt": 1792220658213
+      },
+      {
+        "id": "capd-auto-edit-shared",
+        "index": 21,
+        "title": "自动编辑弹窗共用，仅类目需匹配 shopify",
+        "pageId": "claim-center",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"capd-auto-edit-shared\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=capd-auto-edit-shared",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792220658213,
+        "updatedAt": 1792220658213
+      },
+      {
+        "id": "cpd-publish-channel",
+        "index": 22,
+        "title": "发布渠道：创建时只预填，产品上架成功后再发布",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"cpd-publish-channel\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=cpd-publish-channel",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792222295981,
+        "updatedAt": 1792224353512,
+        "annotationText": ""
+      },
+      {
+        "id": "mp-side-sale-status",
+        "index": 23,
+        "title": "销售状态：已上架=ACTIVE，已下架=UNLISTED",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"mp-side-sale-status\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=mp-side-sale-status",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792223512640,
+        "updatedAt": 1792223512640
+      },
+      {
+        "id": "mp-filter-store",
+        "index": 24,
+        "title": "店铺筛选：只显示当前平台的已授权店铺",
+        "pageId": "my-products",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"mp-filter-store\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=mp-filter-store",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792223600000,
+        "updatedAt": 1792224096372,
+        "annotationText": ""
+      }
+    ],
+    "updatedAt": 1792224353512
+  },
+  "markdownMap": {
+    "sa-col-platform-id": "## 平台ID 从哪来\n\n- 接口地址：`https://{shop}/admin/api/2026-04/graphql.json`\n- 取值路径：`data.shop.id`\n\n授权成功后调用上述接口，把返回的 `data.shop.id` 写入本列。",
+    "sa-col-expire": "## 到期时间怎么算\n\n本列展示的是 **Refresh Token 的换算结果**，不是 Access Token 的过期时刻。\n\n### 换取 Token\n- 接口地址：`https://{shop}.myshopify.com/admin/oauth/access_token`\n- 请求方式：`POST`\n- 请求要求：用授权码换取 Token 时，需要携带 `expiring=1`。\n\n### 响应里的有效期字段\n\n| 含义 | 响应 JSON 完整路径 | 单位 |\n| --- | --- | --- |\n| Access Token 有效期 | `$.expires_in`（根级字段） | 秒 |\n| Refresh Token 有效期 | `$.refresh_token_expires_in`（根级字段） | 秒 |\n\n### 字段含义\n- Refresh Token 有效期是真正的有效期，需要根据平台返回的数据换算成本列的到期时间。\n- Access Token 有效期通常是短期的，到期后由后台刷新换取新的 Access Token，不作为本列的到期时间。",
+    "mp-platform-switch": "## 平台下拉的取值与排序\n\n- 选项来自管理后台的「店铺后台管理」。\n- 排序规则：\n  - 按排序值从小到大排列；\n  - 排序值相同时，按创建时间从先到后排列。\n\n页签名称随所选平台变化，例如「我的商品-shopify」。\n\n选中选项时默认选中第一项，加载对应平台的页面数据",
+    "annotation-4": "授权采用跳转商店安装的形式，原讨论时确定的拼接跳转需要商户填写域名，体验不好且容易出错",
+    "cpd-cat-source": "## 选择类目的类目树怎么取\n\n1. 调用 `taxonomy.categories`，**不传筛选参数**，拿到的即为顶级类目。\n2. 再对每个类目以 `descendantsOf` 作为筛选参数循环调用 `taxonomy.categories`，取该类目下的全部后代类目，逐层拼成完整类目树供「选择类目」使用。\n\n## 类目是否必填\n\nShopify 并不要求必须选择类目，因此「选择类目」不校验必填。",
+    "annotation-6": "只显示当前平台对应的店铺",
+    "cpd-info-title": "## 标题从哪来\n\n创建商品时，本字段写入 `productSet` 的 `input.title`（商品标题）。",
+    "cpd-attr-source": "## 产品属性从哪来\n\n通过 `node(id: $categoryId)` 查询。\n\n## 创建页面的处理流程\n\n1. 用户选择类别，保存该类别的 ID。\n2. 执行上述查询，获取属性及可选值。\n3. 动态生成表单：\n   - `TaxonomyChoiceListAttribute`：使用 `values.nodes` 展示选项。\n   - `TaxonomyMeasurementAttribute`：根据属性信息生成数值/单位输入。\n4. 用户填写后，再创建商品并保存对应元字段。\n\n## 补充备注\n\n创建产品时，通过 `productSet` 的 `input.metafields` 保存这两类属性；产品类别本身通过 `input.category` 设置。\n\n| 参数 | 用途 |\n| --- | --- |\n| `category` | 产品类别的 GID |\n| `metafields[].namespace` | 元字段命名空间 |\n| `metafields[].key` | 元字段键 |\n| `metafields[].type` | 数据类型，必须与定义一致 |\n| `metafields[].value` | 属性值，始终以字符串传入 |\n\n## 未选择类目时\n\n没有选择类目时查不到系统默认属性，此时属性为空，用户可以通过「新增属性」自定义添加。",
+    "cpd-main-image-upload": "## 图片和视频一起传\n\nShopify 不区分视频和主图，二者合在一起上传：使用 `productSet` 的 `input.files` 参数（类型 `[FileSetInput!]`），**不是 `media`**。\n\n同时上传视频和图片时，**先传视频、再传图片**。\n\n上传数量：Shopify 的文件上限较高，本系统目前沿用敦煌网的规则，先限制 8 张。\n\n## 每个文件的常用字段\n\n| 字段 | 用途 |\n| --- | --- |\n| `originalSource` | 文件来源 URL |\n| `contentType` | 图片为 `IMAGE`，视频为 `VIDEO` |\n| `alt` | 文件的替代描述 |\n| `id` | 关联 Shopify 中已有的文件 |\n\n## 图片与视频的传法区别\n\n- **图片**：`originalSource` 可以直接使用 Shopify 能访问的图片 URL。\n- **视频**：先调用 `stagedUploadsCreate` 获取上传目标并上传文件，再把返回的 `resourceUrl` 作为 `originalSource`；不能直接使用普通 MP4 外链代替暂存上传 URL。\n- **已有文件**：通过 `id` 引用。",
+    "cpd-sku-variant": "## SKU 变体\n\n主要传 `input.productOptions` 和 `input.variants`。\n\n| 参数路径 | 作用 |\n| --- | --- |\n| `productOptions` | 定义规格维度及可选值，例如颜色、尺寸 |\n| `variants[].optionValues` | 指定当前变体的规格组合 |\n| `variants[].inventoryItem.sku` | SKU 编码 |\n| `variants[].price` | 变体价格 |\n| `variants[].inventoryItem.tracked` | 是否跟踪库存，不代表设置库存数量 |\n| `variants[].file` | 设置 SKU 图片 |\n\n## 价格和库存\n\n通过 `productSet` 的 `input.variants` 数组传递，每个变体分别设置价格和库存：\n\n| 用途 | 参数路径 | 说明 |\n| --- | --- | --- |\n| 售价 | `input.variants[].price` | 变体售价 |\n| 原价/划线价 | `input.variants[].compareAtPrice` | 可选 |\n| 库存 | `input.variants[].inventoryQuantities` | 按库存地点设置数量 |\n\n## 仓库地点信息获取\n\n通过 `locations` 可获取仓库地点和仓库 GID 列表数据；设置库存时，`input.variants[].inventoryQuantities` 使用的库存地点 ID 来自这份列表。\n",
+    "cpd-seo-info": "## SEO 信息\n\n通过 `productSet` 创建产品时，后台的**「搜索引擎列表」**主要使用 `input.seo` 传入：\n\n| 后台配置 | 接口参数 |\n| --- | --- |\n| 页面标题 | `input.seo.title` |\n| 元描述 | `input.seo.description` |\n| URL 标识名 | `input.handle`，不在 `seo` 内 |\n",
+    "cpd-spec-add-limit": "## 规格选项从哪来\n\n- 系统规格的获取方式和产品属性相同，走的是同一个接口（按所选类目查询属性及可选值）。\n- 因此 Shopify 可以直接引用产品属性，作为产品规格的可选项，不需要另外取一份数据。\n\n## 最多 3 个规格\n\n创建商品时 `productSet` 最多接受 3 个产品规格。\n\n所以已添加的规格达到 3 个时，「添加规格」和「添加自定义规则」按钮禁用。\n\n\n## 未选择类目时\n\n不选类目就拿不到商品属性规格，此时系统规格为空，用户可以通过「添加自定义规则」自行添加规格。",
+    "cpd-weight": "## 重量\n\n通过 `input.variants[].inventoryItem.measurement.weight` 传入：\n\n| 参数 | 说明 |\n| --- | --- |\n| `value` | 重量数值 |\n| `unit` | 默认传 `KILOGRAMS` |",
+    "cpd-header-title": "productSet 既可以创建产品，也可以更新已有产品。更新时，在 input.id 中传入已有产品的 Shopify GID，即可指定要更新的产品。\n\n需要特别注意它的更新规则：\n\n- 普通字段（如标题、描述）：只更新传入的字段，未传入的保持不变。\n- 列表字段（如 variants、collections、metafields）：如果传入该列表，会按完整列表同步，已有但未包含在此次列表中的条目会被删除；完全不传该字段则保持不变。",
+    "mp-sync-online": "## 同步线上做什么\n\n和敦煌网的「同步线上」逻辑一致：把平台上已有的商品数据拉回 ERP，与本地商品做比对后更新。\n\n区别在于：本页签已经选定了平台，所以**只处理已选平台下的店铺数据**，不会把其他平台的店铺一起同步。\n\n## 接口与场景选择\n\nShopify 侧通过 GraphQL Admin API 的 `products` 查询读取商品，按同步场景选择方式：\n\n| 同步场景 | 推荐方式 |\n| --- | --- |\n| 首次同步商品 | 使用 `products` 查询，分页读取商品及其变体 |\n| 商品量很大，全量导入 | 使用 Bulk Operations 批量查询，异步导出数据 |\n| 持续同步商品变化 | 订阅 Webhooks：`products/create`、`products/update`、`products/delete`，收到通知后更新 ERP |\n\n**本页面使用 Bulk Operations**：提交批量查询后异步导出数据，拉取任务在后台运行，完成后再把结果写入 ERP。\n\n## 同步哪些字段\n\n与「创建新产品」弹窗提交给 `productSet` 的字段保持一致，即创建时写入什么，同步时就按同一套字段回读更新：\n\n| 字段 | Shopify 侧 |\n| --- | --- |\n| 类目 | `input.category` |\n| 标题 | `input.title` |\n| 描述 | `input.descriptionHtml` |\n| 产品属性 / 自定义属性 | `input.metafields` |\n| 主图、视频 | `input.files` |\n| 规格及变体 | `input.productOptions`、`input.variants`（含 SKU、价格、变体图片） |\n| 库存 | `input.variants[].inventoryQuantities`（库存地点来自 `locations`） |\n| 重量 | `input.variants[].inventoryItem.measurement.weight` |\n| SEO | `input.seo.title`、`input.seo.description`、`input.handle` |\n",
+    "mp-col-product-id": "## 产品编号从哪来\n\n商品创建成功后，从响应的 `data.productSet.product.id` 获取产品 ID，作为本列「产品编号」展示。",
+    "annotation-17": "使用 input.descriptionHtml 参数，类型是 String，直接传入富文本对应的 HTML 字符串",
+    "capd-platform-single": "## 认领平台只能单选\n\n- 一次只能选中一个平台，点击另一个平台就切换过去，不会出现多个平台同时选中。\n- 选中的平台决定下方店铺列表内容，以及底部「平台 xxx 已选 N 个店铺」的显示。\n\n## 平台选项的排序\n\n1. 按后台配置的排序值从小到大，自左向右排列；\n2. 排序值相同时，按平台创建时间从早到晚，自左向右排列。",
+    "capd-platform-shopify": "## 新增 shopify 平台\n\n- 在敦煌网右侧增加 shopify 平台选项，打开弹窗时默认选中 shopify。\n- 平台只能单选；切换平台后，下方店铺列表按新平台重新加载，只显示该平台下的店铺，并清空此前已勾选的店铺。",
+    "capd-auto-edit-shared": "## 自动编辑弹窗与敦煌网共用\n\n**需要强调**：Shopify 的自动编辑沿用同一个弹窗，只有一处需要调整——商品基本信息中的类目数据要匹配 Shopify 的类目，其余内容、布局和操作保持不变。",
+    "cpd-publish-channel": "## 发布渠道：创建时只预填\n\nShopify 的产品需要发布到对应渠道后才能正常展示，但不能在创建时指定，需要产品上架成功之后才能指定发布渠道。\n\n所以这里只是**预填信息**：等产品上架成功后，再根据系统中预填的渠道，调用对应接口把产品发布到指定渠道。\n\n## 流程\n\n1. **获取可选渠道**：查询 `publications`，用 `catalog.title` 展示渠道名称，用 `Publication` 的 `id` 作为选项值。\n2. **创建商品**：调用 `productCreate`，获取商品 ID。\n3. **发布到选中渠道**：调用 `publishablePublish`，传入商品 ID 和选中的 `Publication` ID。\n\n> 产品需要为 `ACTIVE` 状态才能在渠道中显示，发布渠道可多选。",
+    "mp-side-sale-status": "## 销售状态怎么取数\n\n通过 `product`（单个）或 `products`（批量）查询商品的 `status` 字段，需要 `read_products` 权限。\n\n## status 有 4 种取值\n\n| 状态 | 含义 |\n| --- | --- |\n| `ACTIVE` | 活跃，可以发布到销售渠道，但不代表已经上架到某个渠道 |\n| `DRAFT` | 草稿，尚未准备好销售，客户不可见 |\n| `ARCHIVED` | 已归档，不再销售，客户不可见 |\n| `UNLISTED` | 未列出，可通过直接链接访问，但不出现在搜索、商品系列或推荐中 |\n\n## 和本页两个统计项的对应关系\n\n| 本页统计项 | Shopify 状态 |\n| --- | --- |\n| 已上架 | `ACTIVE` |\n| 已下架 | `UNLISTED` |\n\n`DRAFT`、`ARCHIVED` 不计入本组的「已上架 / 已下架」。",
+    "mp-filter-store": "## 店铺筛选只显示当前平台的店铺\n\n下拉选项只展示当前选中平台下的店铺"
+  },
+  "assetMap": {},
+  "directory": {
+    "nodes": [
+      {
+        "type": "folder",
+        "id": "shopify-pages",
+        "title": "原型页面",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "route",
+            "id": "go-store-auth",
+            "title": "店铺授权",
+            "route": "store-auth"
+          },
+          {
+            "type": "route",
+            "id": "go-claim-center",
+            "title": "认领中心",
+            "route": "claim-center"
+          },
+          {
+            "type": "route",
+            "id": "go-my-products",
+            "title": "我的商品",
+            "route": "my-products"
+          },
+          {
+            "type": "route",
+            "id": "go-my-orders",
+            "title": "我的订单",
+            "route": "my-orders"
+          }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "shopify-documents",
+        "title": "需求文档",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "markdown",
+            "id": "shopify-integration-overview",
+            "title": "Shopify 对接 - 原型说明",
+            "markdown": "# Shopify 对接 - 原型说明\n\n> 本文档由当前原型代码整理，作为可继续调整的基础版。标注中「待确认」的项目尚未在原型里实现，需要产品明确后再补充页面或标注。\n\n## 原型范围\n\n本原型模拟 ERP 中 Shopify 店铺对接相关的三个页面，通过 hash 路由切换（`#page=<pageId>`）：\n\n| pageId | 页面 | 定位 |\n| --- | --- | --- |\n| `store-auth` | 店铺授权 | 系统 / 店铺 / 店铺授权，管理多平台店铺与授权状态 |\n| `my-products` | 我的商品 | 商品 / 商品管理 / 我的商品，商品认领后的发布与管理 |\n| `my-orders` | 我的订单 | 交易 / 订单管理 / 我的订单，平台订单处理与发货跟踪 |\n\n## 店铺授权（store-auth）\n\n- 顶部平台页签：敦煌网（当前激活）、拼多多、Shopify。\n- 筛选：店铺名称输入 + 搜索 / 重置。\n- 操作：新增、店铺分组。\n- 列表字段：平台ID、平台名称、店铺别名、店铺名称、状态、授权状态、到期时间；示例数据均为 `dhgate` 平台店铺，共 4 条。\n- 字段来源（见「平台ID」「到期时间」两处表头标注）：平台ID 取 `https://{shop}/admin/api/2026-04/graphql.json` 返回的 `data.shop.id`；到期时间由 `POST https://{shop}.myshopify.com/admin/oauth/access_token`（换取 Token 时携带 `expiring=1`）响应中的 `$.refresh_token_expires_in`（秒）换算，`$.expires_in` 是短期的 Access Token 有效期，只用于后台刷新换取新 Token。\n- 分页：共 4 条、10 条/页、跳页。\n- 新增店铺弹窗：点「新增」弹出，含店铺名称、店铺别名、平台名称（必填）、子账号、状态（启用/禁用，默认启用）与取消/确定。本轮只还原外观，弹窗内控件为静态占位态，仅打开与关闭可用。\n\n待确认：\n- Shopify 页签激活后的列表字段、授权入口与授权流程（OAuth 跳转 / 填写店铺域名 + token）原型未体现。\n- 授权到期提醒策略（提前几天提醒、到期后是否阻断刊登与拉单）。\n-  Shopify 店铺在「我的商品」「我的订单」中的可选范围是否与授权状态联动。\n\n## 我的商品（my-products）\n\n- 顶部页签：商品采集、认领中心、我的商品（当前激活）；「我的商品」页签带平台后缀（如「我的商品-shopify」），右侧下拉可切换敦煌网 / shopify，选项与排序规则见该页签标注。\n- 筛选：采集源（字段选择 + 输入，支持双击批量搜索）、价格区间、采集平台、刊登时间、认领时间、修改时间、标签、店铺；操作含搜索、重置、创建新产品、排序、导出、导入货源、同步线上、列设置。\n- 左侧统计分组：商品概览（全部商品 9172，可刷新）、发布管理（待发布 266 / 发布中 / 循环刊登 / 发布失败）、销售状态（已上架 / 已下架）、审核与风险（待审核 / 审核未通过 / 内容违规 / 侵权违规）。分组项为单选：点击任一项选中该项，同时取消其他分组已选中项（如点「全部商品」会取消「待发布」的选中）。\n- 列表字段：勾选框、图片、商品信息（标题、类目、状态标签、平台徽标、店铺）、产品编号、售价、标签、时间/版本（认领、修改、刊登、认领版本号、当前版本号）、来源；共 266 条。表头「产品编号」列有标注，说明该值取自创建商品响应 `data.productSet.product.id`。\n\n待确认：\n- Shopify 渠道的商品状态枚举与平台侧状态（active / draft / archived）映射关系。\n- 刊登失败原因展示与重试入口。\n- 循环刊登在 Shopify 渠道的适用性。\n\n## 我的订单（my-orders）\n\n- 顶部状态页签：全部订单 11759、新订单、采购配货、仓库处理、物流运输、已妥投、已作废。\n- 筛选：店铺名称、字段选择（平台订单号）+ 批量搜索输入、搜索、重置；右侧高级筛选、排序、同步店铺订单、导入/导出、设置。\n- 列表字段：序号与勾选、订单号/状态（含店铺、ID、行内操作图标、同步图标）、产品信息（图片与编辑货品、标题、规格、USD 单价×数量、SkuCode、线上产品编号、本地配对、买家/卖家/拣货备注、采购状态）、买家信息（姓名、国家、省/州、邮编）、时间节点（创建/付款/审核/采购/单号/发货/出库/上网/截止，表头 hover 有说明浮层）、发货过程预警（采购预警、发货预警、上网状态、轨迹断更）、物流信息、数据（销售额与收入的 USD/CNY）；共 11759 条。\n- 底部批量操作：一键出库、处理申报信息、修改买家邮箱、修改买家信息、修改物流渠道、提交到平台、标记、邀约采购、删除；已选 0 项。\n\n待确认：\n- Shopify 订单号格式、订单状态到本页 7 个页签的映射规则。\n- 「提交到平台」在 Shopify 侧调用的接口与失败处理。\n- 物流渠道、跟踪号回传（fulfillment）与「上网状态 / 轨迹断更」的数据来源。\n- 费用项构成（平台佣金、支付手续费等）与「收入」计算口径。\n\n## 数据说明\n\n原型内所有列表、统计数据均为静态演示数据，未接入真实接口；示例数据沿用 DHgate 店铺，Shopify 相关字段尚未填充。"
+          }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "shopify-external-links",
+        "title": "外部链接",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "link",
+            "id": "shopify-dev-docs",
+            "title": "Shopify 开发者文档",
+            "href": "https://shopify.dev/docs",
+            "target": "blank"
+          },
+          {
+            "type": "link",
+            "id": "shopify-admin-api",
+            "title": "Shopify Admin API",
+            "href": "https://shopify.dev/docs/api/admin-graphql",
+            "target": "blank"
+          },
+          {
+            "type": "link",
+            "id": "shopify-auth-docs",
+            "title": "Shopify 应用授权文档",
+            "href": "https://shopify.dev/docs/apps/build/authentication-authorization",
+            "target": "blank"
+          }
+        ]
+      }
+    ]
+  },
+  "documents": {
+    "nodes": []
+  }
+}

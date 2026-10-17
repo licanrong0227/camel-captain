@@ -1,0 +1,164 @@
+.pp-page {
+  min-height: 100vh;
+  padding: 20px;
+  background: #f7f8fa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+  color: #1d2129;
+}
+
+.pp-card {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e5e6eb;
+  border-radius: 8px;
+}
+
+.pp-card__header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pp-title {
+  margin: 0;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 500;
+  color: #1d2129;
+}
+
+.pp-count {
+  font-size: 12px;
+  line-height: 20px;
+  color: #86909c;
+}
+
+.pp-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #e5e6eb;
+  font-size: 14px;
+}
+
+.pp-table th,
+.pp-table td {
+  padding: 8px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.pp-table thead th {
+  background: #f7f8fa;
+  color: #4e5969;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+.pp-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.pp-table tbody tr:hover td {
+  background: #f7f8fa;
+}
+
+.pp-table__col-name {
+  width: 160px;
+}
+
+.pp-table__col-url {
+  width: 380px;
+}
+
+.pp-table__url-cell {
+  white-space: nowrap;
+}
+
+.pp-table__url-cell .pp-table__link {
+  display: inline-block;
+  max-width: 300px;
+  vertical-align: middle;
+  white-space: normal;
+}
+
+.pp-copy-btn {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border: 1px solid #e5e6eb;
+  border-radius: 4px;
+  background: #fff;
+  color: #4e5969;
+  font-size: 12px;
+  line-height: 18px;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.pp-copy-btn:hover {
+  color: #ff7d29;
+  border-color: #ff9148;
+}
+
+.pp-copy-btn:active {
+  color: #d25909;
+  border-color: #d25909;
+}
+
+.pp-copy-btn.is-copied {
+  color: #0bb861;
+  border-color: #b6ead0;
+  background: #e2f6ec;
+}
+
+.pp-table__col-time {
+  width: 132px;
+  white-space: nowrap;
+}
+
+.pp-table__time {
+  color: #4e5969;
+  line-height: 22px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.pp-table__name {
+  color: #1d2129;
+  line-height: 22px;
+}
+
+.pp-table__summary ol {
+  margin: 0;
+  padding-left: 20px;
+  color: #1d2129;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.pp-table__summary li + li {
+  margin-top: 2px;
+}
+
+.pp-table__link {
+  color: #ff7d29;
+  line-height: 22px;
+  text-decoration: none;
+  word-break: break-all;
+  font-variant-numeric: tabular-nums;
+}
+
+.pp-table__link:hover {
+  color: #ff9148;
+}
+
+.pp-table__link:active {
+  color: #d25909;
+}

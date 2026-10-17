@@ -1,0 +1,208 @@
+/* ============ 新增店铺弹窗（截图还原） ============ */
+/* 尺寸来源：源截图逐像素实测 —— 面板 500×470、控件高 36、行距 58、按钮 62×36 居中 */
+
+.asd-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.asd-dialog {
+  width: 500px;
+  max-height: calc(100vh - 60px);
+  min-height: 530px;
+  padding: 20px;
+  border-radius: var(--si-radius);
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: var(--si-text-regular);
+  overflow-y: auto;
+}
+
+.asd-header {
+  position: relative;
+  flex: none;
+}
+
+.asd-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--si-text-primary);
+}
+
+.asd-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--si-text-secondary);
+  line-height: 1;
+}
+
+.asd-close:hover {
+  color: var(--si-text-primary);
+}
+
+.asd-close-ico {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.asd-form {
+  margin-top: 40px;
+}
+
+.asd-item {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  margin-bottom: 22px;
+}
+
+.asd-label {
+  flex: none;
+  width: 100px;
+  padding-right: 13px;
+  text-align: right;
+  color: var(--si-text-regular);
+}
+
+.asd-label.is-required::before {
+  content: '*';
+  margin-right: 2px;
+  color: #ff5252;
+}
+
+.asd-field {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 15px;
+  border: 1px solid var(--si-border);
+  border-radius: var(--si-radius);
+  background: #fff;
+}
+
+.asd-field--input {
+  flex: 1 1 auto;
+}
+
+.asd-field--select {
+  width: 217px;
+  padding-right: 11px;
+}
+
+.asd-ph {
+  color: var(--si-placeholder);
+}
+
+.asd-caret {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin-left: auto;
+  color: var(--si-placeholder);
+}
+
+.asd-radios {
+  display: flex;
+  align-items: center;
+  column-gap: 30px;
+}
+
+.asd-radio-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.asd-dot {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--si-border);
+  border-radius: 50%;
+  background: #fff;
+}
+
+.asd-radio-item.is-checked .asd-dot {
+  border-color: #1890ff;
+  background: #1890ff;
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+.asd-radio-text {
+  margin-left: 10px;
+  color: var(--si-text-regular);
+}
+
+.asd-radio-item.is-checked .asd-radio-text {
+  color: #1890ff;
+}
+
+.asd-auth-section {
+  margin-top: 8px;
+  margin-bottom: 22px;
+}
+
+.asd-auth-tip {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: var(--si-radius);
+  background: #e6f7ff;
+  border: 1px solid #91d5ff;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.asd-auth-icon {
+  flex: none;
+  margin-right: 8px;
+  color: #1890ff;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.asd-auth-text {
+  color: var(--si-text-regular);
+}
+
+.asd-footer {
+  display: flex;
+  justify-content: center;
+  column-gap: 18px;
+  margin-top: auto;
+}
+
+.asd-btn {
+  width: 62px;
+  height: 36px;
+  border-radius: var(--si-radius);
+  font-size: 14px;
+}
+
+.asd-btn--ghost {
+  border: 1px solid var(--si-primary);
+  background: #fff;
+  color: var(--si-primary);
+}
+
+.asd-btn--primary {
+  border: 1px solid var(--si-primary);
+  background: var(--si-primary);
+  color: #fff;
+}
+

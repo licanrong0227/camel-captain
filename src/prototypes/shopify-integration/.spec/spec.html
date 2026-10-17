@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shopify 对接 · 店铺授权 - 原型主规格</title>
+  <style>
+    :root {
+      font-family:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --brand: #008f5d;
+      --brand-ink: #007a50;
+      --brand-soft: #e6f5ef;
+      --brand-surface: #f2faf7;
+      --brand-border: #b7ddcf;
+      --text: #222832;
+      --text-secondary: #4b5565;
+      --text-muted: #6f7888;
+      --text-placeholder: #8b94a3;
+      color: var(--text);
+      background: #f5f7fb;
+      scrollbar-gutter: stable;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px 20px 64px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 32px;
+      padding: 18px 14px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .sidebar-title {
+      margin: 0 8px 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .page-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .page-nav button {
+      width: 100%;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .page-nav button:hover,
+    .page-nav button[aria-current="page"] {
+      color: var(--brand-ink);
+      background: var(--brand-soft);
+    }
+
+    .page-nav button[aria-current="page"] { font-weight: 600; }
+
+    main {
+      min-width: 0;
+      padding: 40px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 16px rgb(30 45 75 / 6%);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.3;
+    }
+
+    h2 {
+      margin: 44px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e7eaf0;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    h3 {
+      margin: 28px 0 12px;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    p,
+    li {
+      font-size: 15px;
+      line-height: 2;
+    }
+
+    p { margin: 20px 0; }
+
+    td,
+    th {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .definition {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-left: 3px solid var(--brand);
+      color: var(--text-secondary);
+      background: var(--brand-surface);
+    }
+
+    .hint { color: var(--text-muted); }
+
+    ul {
+      margin: 10px 0 20px;
+      padding-left: 22px;
+    }
+
+    .placeholder-list { padding-left: 0; }
+
+    .placeholder-list li {
+      list-style: none;
+      color: var(--text-placeholder);
+    }
+
+    .placeholder-list li::before {
+      margin-right: 8px;
+      color: #b2bac6;
+      content: "—";
+    }
+
+    table {
+      width: 100%;
+      margin-top: 14px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 1px solid #dfe4ee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f6f8fb; }
+
+    td:empty::after {
+      content: "待补充";
+      color: var(--text-placeholder);
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #eef1f6;
+    }
+
+    .spec-page[hidden] { display: none; }
+
+    @media (max-width: 720px) {
+      body { padding: 0 8px 40px; }
+      .shell { display: block; }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        margin: 0 -8px 12px;
+        padding: 10px 8px;
+        border-width: 0 0 1px;
+        border-radius: 0;
+      }
+
+      .sidebar-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .page-nav {
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .page-nav::-webkit-scrollbar { display: none; }
+
+      .page-nav button {
+        width: auto;
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 24px 18px;
+        border-radius: 8px;
+      }
+
+      .table-wrap { overflow: visible; }
+
+      table,
+      tbody,
+      tr,
+      td {
+        display: block;
+        width: 100%;
+      }
+
+      thead { display: none; }
+
+      tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      tr {
+        overflow: hidden;
+        border: 1px solid #dfe4ee;
+        border-radius: 6px;
+        background: #fff;
+      }
+
+      td {
+        display: grid;
+        grid-template-columns: minmax(96px, 36%) minmax(0, 1fr);
+        gap: 12px;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 0;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      td:last-child { border-bottom: 0; }
+
+      td::before {
+        content: attr(data-label);
+        color: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <p class="sidebar-title">目录</p>
+      <nav class="page-nav" aria-label="规格文档页面">
+        <button type="button" data-page-target="overview" aria-current="page">当前方案</button>
+      </nav>
+    </aside>
+
+    <main>
+      <article class="spec-page" data-spec-page="overview">
+        <h1>Shopify 对接 · 店铺授权</h1>
+        <p class="definition">本文档是用户与 Agent 围绕当前原型进行方案沟通、确认和持续生成的事实依据。只维护当前有效方案，并简短记录会影响当前原型的重要用户决策和变更。</p>
+
+        <section id="current-plan">
+          <h2>当前方案</h2>
+          <p>本原型按线上「骆驼队长BI」页面做高保真还原，当前包含店铺授权、我的商品、我的订单和认领中心四个子页面；页面内容以截图实测像素和线上样式变量为准，不引入新的视觉语言。</p>
+          <ul>
+            <li>原型意图：复刻 ERP 中管理多平台店铺授权关系的列表页，作为后续 Shopify 相关子页面的承载框架。</li>
+            <li>使用场景：运营在「系统 / 店铺 / 店铺授权」下查看各平台店铺的授权状态与到期时间。</li>
+            <li>当前表达：1912 设计宽的单页静态还原，包含顶栏、面包屑、主卡片（平台页签 / 搜索行 / 操作行 / 店铺列表 / 分页）和右侧「联系我们」浮窗。</li>
+            <li>认领中心（<code>claim-center</code>）：还原「商品 / 商品管理 / 认领中心」列表页，即采集商品进入「我的商品」之前的认领工作台，含页签带、两行筛选、8 列商品列表、选中行展开的逐条操作条和底部批量操作栏。</li>
+          </ul>
+        </section>
+
+        <section id="facts-inputs">
+          <h2>事实与输入</h2>
+          <h3>用户确认事实</h3>
+          <ul>
+            <li>原型目录 <code>shopify-integration</code>（<code>@name Shopify 对接</code>），子页面 <code>pageId = store-auth</code>，标题「店铺授权」。</li>
+            <li>平台页签（敦煌网 / 拼多多 / Shopify）本轮只还原截图当前态，不做切换。</li>
+            <li>主规格使用 HTML 格式，落在 <code>src/prototypes/shopify-integration/.spec/spec.html</code>。</li>
+            <li>认领中心列表页范围：DOM 中未弹出的「批量查找 / 导入产品 / 统一导出」三个弹窗和「任务处理中」提示不在还原范围；「认领商品」弹窗按 2026-10-17 新一轮要求单独还原。</li>
+            <li>认领商品弹窗挂在本原型的认领中心页：点行内「认领」和底部「批量认领」弹出，背后就是真实列表页 + 半透明遮罩，不另建独立弹窗原型。</li>
+            <li>认领中心表格缩略图复用仓库现有素材（<code>assets/thumb-sneaker.jpg</code>、<code>assets/thumb-bracelet.jpg</code>、<code>assets/order-thumb-*.jpg</code>）；第 1 行「海蓝宝水滴项链」改用线上 CDN 原图 <code>assets/claim-necklace.jpg</code>，与弹窗内的商品图保持一致。</li>
+            <li>认领中心为静态还原：按截图固定第 1 行为勾选态并展开操作条；除「认领 / 批量认领」调起弹窗、弹窗关闭与遮罩点击可关闭外，其余控件不绑定点击响应。</li>
+          </ul>
+          <h3>参考资料</h3>
+          <ul>
+            <li>用户提供的页面截图（1912×867）：布局、文案、示例数据与颜色的唯一视觉基准。</li>
+            <li>《店铺授权页面样式.txt》：<code>cssVariables</code> 提供主色 <code>#ff781f</code>、圆角 <code>8px</code>、表头渐变 <code>#fff5ef → #ffede0</code>、表头 14px / 表体 12px 等 token；<code>assets.images</code> 提供 logo 与平台图标 OSS 直链。</li>
+            <li><code>src/prototypes/my-products-bi/assets/icons/</code>：顶栏图标 SVG 复用来源。</li>
+            <li><code>src/prototypes/shopify-integration/docs/shopify-integration-overview.md</code>：三个子页面的功能说明与待确认清单。</li>
+            <li><code>AI-认领中心-骆驼队长BI-complete.zip</code>（导出版本 3.0，源页 <code>https://test.kuachengjing.com/commodity/claim</code>）：<code>screenshot.png</code> 为 1912×867 视觉基准，<code>content.md</code> 提供筛选项、10 行商品数据与分页文案，<code>index.html/style.css</code> 为参考实现，<code>flat/</code> 提供 614 节点结构与选择器。</li>
+          </ul>
+          <h3>当前假设</h3>
+          <ul>
+            <li>品牌主色取线上实测 <code>#ff781f</code>；项目主题 <code>camel-captain-erp</code> 记录的 <code>#FF7D29</code> 属另一套口径，本页以截图为准。</li>
+            <li>「到期时间」列：表头居中、单元格数值右对齐（按截图实测）。</li>
+            <li>列表 4 行数据与分页「共 4 条 / 10条/页 / 前往 1 页」全部按截图静态写入，不代表真实数据量。</li>
+          </ul>
+        </section>
+
+        <section id="prototype-scope">
+          <h2>原型范围</h2>
+          <h3>本次呈现</h3>
+          <ul>
+            <li>顶栏：logo、智慧运营中台、9 项主导航（「系统」为激活态）、右侧主题/菜单/帮助/VIP3/头像操作区。</li>
+            <li>面包屑：系统 / 店铺 / 店铺授权。</li>
+            <li>主卡片：平台页签、店铺名称搜索行、新增与店铺分组操作行、7 列 × 4 行店铺列表、绿色状态与授权状态标签、分页条。</li>
+            <li>「新增」按钮点击后弹出的「新增店铺」弹窗：店铺名称、店铺别名、平台名称、子账号、状态单选，底部取消 / 确定。</li>
+            <li>右侧固定「联系我们」浮窗。</li>
+            <li>认领中心页：面包屑（商品 / 商品管理 / 认领中心）、「商品采集 / 认领中心 / 我的商品」页签带（中间页签为激活态，白底浅橘描边凹弧 + 双圆点）、两行筛选区、8 列商品列表（10 行）、首行勾选后展开的「编辑 / 认领 / 标签 / 删除」操作条、底部「已选 1 项 + 编辑货源 / 批量认领 / 批量标签 / 批量删除」与分页条。</li>
+            <li>「认领商品」弹窗：左侧已选商品清单（缩略图 + 标题 + 共 1 个商品）、右侧「选择认领平台」敦煌网卡片（选中态橙描边 + 右下角勾选徽标）与「选择店铺（可多选）已选择0个店铺 / 全选」店铺卡片列表、底部「平台 敦煌网 已选0个店铺」+「请至少选择 1 个店铺」+「直接认领」「自动编辑」。</li>
+          </ul>
+          <h3>本次不呈现</h3>
+          <ul>
+            <li>平台页签切换，以及拼多多 / Shopify 页签下的不同列表内容。</li>
+            <li>搜索、重置、店铺分组、分页按钮的真实交互与结果反馈。</li>
+            <li>「新增店铺」弹窗内的填写、下拉选项展开、必填校验和提交结果（本轮按用户决策只还原外观，弹窗内控件为静态呈现，打开与关闭可用）。</li>
+            <li>Shopify 授权流程（OAuth 跳转或填写店铺域名 + token）与授权到期提醒。</li>
+            <li>移动端/侧边栏收起等窄屏形态；本页只保证 1280 以上宽度可用，窄于 1400 时表格改为内部横向滚动。</li>
+            <li>认领中心的「批量查找」「导入产品」「统一导出」弹窗与「任务处理中」浮层：源页面 DOM 中存在但处于隐藏态，无截图视觉依据，本轮不还原。</li>
+            <li>认领中心筛选下拉的选项展开面板（采集源字段、认领状态、采集平台、采集日期、标签）与搜索 / 重置 / 分页的真实结果反馈。</li>
+            <li>「认领商品」弹窗内的可选态与业务逻辑：店铺勾选与「全选」联动、平台切换、已选店铺计数、「直接认领 / 自动编辑」的启用条件与点击结果、店铺清单为空 / 加载中状态。截图给出的是未选店铺的禁用态，本轮按该态静态还原。</li>
+          </ul>
+        </section>
+
+        <section id="pages-content">
+          <h2>页面与内容方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>页面/视图</th><th>页面作用</th><th>主要模块与内容</th><th>示例数据或素材</th><th>与其他页面的关系</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td data-label="页面/视图"><code>store-auth</code> 店铺授权</td>
+                  <td data-label="页面作用">查看并维护各平台店铺的授权状态与到期时间，是 Shopify 对接的入口页。</td>
+                  <td data-label="主要模块与内容">平台页签 → 店铺名称搜索 → 新增 / 店铺分组 → 店铺列表（平台ID、平台名称、店铺别名、店铺名称、状态、授权状态、到期时间）→ 分页。</td>
+                  <td data-label="示例数据或素材">4 条 <code>dhgate</code> 店铺记录，取自源截图；logo、敦煌网 / Shopify 图标来自样式 txt 的 OSS 直链，拼多多图标从截图裁切。</td>
+                  <td data-label="与其他页面的关系">默认页（<code>#page=store-auth</code>）；授权结果是「我的商品」「我的订单」按店铺取数的前置条件。</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图"><code>新增店铺</code> 弹窗</td>
+                  <td data-label="页面作用">在店铺授权页新增一个平台店铺并设置启用状态。</td>
+                  <td data-label="主要模块与内容">标题「新增店铺」+ 关闭 × → 店铺名称 / 店铺别名（必填，宽 360）→ 平台名称（必填，下拉，宽 217）→ 子账号（下拉，宽 217）→ 状态（启用 / 禁用单选，默认启用）→ 底部居中「取消」「确定」。</td>
+                  <td data-label="示例数据或素材">按用户提供的弹窗截图逐像素还原，全部为占位态，无已填数据。</td>
+                  <td data-label="与其他页面的关系">由 <code>store-auth</code> 的「新增」按钮调起，背后是店铺授权列表加半透明遮罩。</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图"><code>claim-center</code> 认领中心</td>
+                  <td data-label="页面作用">查看采集到的源商品并决定是否认领，是「商品采集 → 认领中心 → 我的商品」链路的中间环节。</td>
+                  <td data-label="主要模块与内容">页签带（商品采集 / 认领中心 / 我的商品）→ 筛选第 1 行（采集源字段下拉 + 批量搜索框 + 认领状态 + 价格区间 + 采集平台 + 采集日期）→ 筛选第 2 行（标签 + 搜索 / 重置 / 创建新产品，右侧导出 / 导入产品 / 列设置齿轮）→ 列表（勾选、图片、标题＋父SKU＋类目、售价、状态、标签、来源、采集账号）→ 首行展开操作条（编辑 / 认领 / 标签 / 删除）→ 底部批量栏与分页。</td>
+                  <td data-label="示例数据或素材">10 行商品（9 条 1688 + 1 条亚马逊）、共 1679 条 / 168 页，全部取自 <code>content.md</code>；缩略图复用仓库现有素材。</td>
+                  <td data-label="与其他页面的关系"><code>#page=claim-center</code>；与 <code>my-products</code> 共用同一页签带与筛选视觉规范，认领后的商品进入「我的商品」。</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图"><code>认领商品</code> 弹窗</td>
+                  <td data-label="页面作用">把选中的采集商品认领到敦煌网店铺，可选择直接认领或先进入自动编辑。</td>
+                  <td data-label="主要模块与内容">标题「认领商品」+ 关闭 × → 左栏已选商品清单（44×44 缩略图 + 两行标题 + 「共 1 个商品」）→ 右栏「选择认领平台」（敦煌网 72×72 卡片，选中态）→「选择店铺（可多选）已选择0个店铺」+ 右侧「全选」→ 4 张店铺卡片 → 底部「平台 敦煌网 已选0个店铺」+「请至少选择 1 个店铺」+「直接认领」（禁用白底）+「自动编辑」（禁用浅橙底）。</td>
+                  <td data-label="示例数据或素材">商品与店铺名取自数据包 <code>content.md</code>；商品图用线上 CDN 原图 <code>assets/claim-necklace.jpg</code>，平台图标复用 <code>assets/icon-dhgate.png</code>。</td>
+                  <td data-label="与其他页面的关系">由 <code>claim-center</code> 行内「认领」与底部「批量认领」调起，背后是认领中心列表加 <code>rgba(0,0,0,.5)</code> 遮罩。</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图"><code>my-products</code> 我的商品</td>
+                  <td data-label="页面作用">商品认领后的发布与管理列表。</td>
+                  <td data-label="主要模块与内容">由其他轮次补充，功能说明见 <code>docs/shopify-integration-overview.md</code>。</td>
+                  <td data-label="示例数据或素材"></td>
+                  <td data-label="与其他页面的关系"><code>#page=my-products</code>。</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图"><code>my-orders</code> 我的订单</td>
+                  <td data-label="页面作用">平台订单处理与发货跟踪。</td>
+                  <td data-label="主要模块与内容">由其他轮次补充，功能说明见 <code>docs/shopify-integration-overview.md</code>。</td>
+                  <td data-label="示例数据或素材"></td>
+                  <td data-label="与其他页面的关系"><code>#page=my-orders</code>。</td>
+                </tr>
+                <tr><td data-label="日期">2026-10-17</td><td data-label="用户决策或变更">还原完成后逐像素比对验收，未再提出新变更。</td><td data-label="对当前原型的影响">以数据包 <code>flat/styles/style_N.json</code> 的计算样式为字号字色基准（墨迹宽度反查校验），修正标题 / 父SKU / 售价 / 采集账号为 12px、状态 13px、来源 14px、按钮 12px、非激活页签 <code>#4e5969</code>；行高改为 102.33 使分隔线落在 401 / 442 / 544 / 647 / 749；价格输入 120＋32px 双格步进器；页签圆点改 20×14 左实右透渐变胶囊；下拉箭头改为朝上的浅灰细箭头。屏蔽缩略列与顶栏后差异像素约 3%。</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>店铺授权列表字段取数口径</h3>
+          <ul>
+            <li>平台ID：调用 <code>https://{shop}/admin/api/2026-04/graphql.json</code>，取返回的 <code>data.shop.id</code>；口径写在表头「平台ID」标注里。</li>
+            <li>到期时间：换取 Token 时 <code>POST https://{shop}.myshopify.com/admin/oauth/access_token</code> 需携带 <code>expiring=1</code>，响应根级字段 <code>$.expires_in</code>（Access Token，秒）与 <code>$.refresh_token_expires_in</code>（Refresh Token，秒）；本列按 Refresh Token 有效期换算，Access Token 只用于后台刷新换新，口径写在表头「到期时间」标注里。</li>
+          </ul>
+        </section>
+
+        <section id="interaction-states">
+          <h2>交互与状态方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr></thead>
+              <tbody>
+                <tr><td data-label="对象/场景">平台页签</td><td data-label="前置状态">敦煌网为激活态（橙底白字）</td><td data-label="用户操作">点击拼多多 / Shopify</td><td data-label="原型表现">无响应，仅展示截图当前态</td><td data-label="后续状态">保持敦煌网</td></tr>
+                <tr><td data-label="对象/场景">店铺列表</td><td data-label="前置状态">4 条已授权店铺，状态均为「启用」</td><td data-label="用户操作">浏览</td><td data-label="原型表现">静态展示，无 hover / 选中态</td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">分页条</td><td data-label="前置状态">共 4 条、第 1 页</td><td data-label="用户操作">点击上一页 / 下一页</td><td data-label="原型表现">按钮为禁用样式，无响应</td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">子页面路由</td><td data-label="前置状态">原型已加载</td><td data-label="用户操作">修改 hash 为 <code>#page=store-auth</code></td><td data-label="原型表现">切换到店铺授权页</td><td data-label="后续状态">店铺授权为默认页</td></tr>
+                <tr><td data-label="对象/场景">新增店铺弹窗</td><td data-label="前置状态">店铺授权列表</td><td data-label="用户操作">点击「新增」</td><td data-label="原型表现">弹窗在视口居中弹出，背后列表加 <code>rgba(0,0,0,.5)</code> 遮罩</td><td data-label="后续状态">弹窗打开</td></tr>
+                <tr><td data-label="对象/场景">新增店铺弹窗</td><td data-label="前置状态">弹窗已打开</td><td data-label="用户操作">点 × / 取消 / 确定 / 遮罩空白处</td><td data-label="原型表现">关闭弹窗回到列表；确定不做校验、不写入数据</td><td data-label="后续状态">列表保持 4 条</td></tr>
+                <tr><td data-label="对象/场景">弹窗内控件</td><td data-label="前置状态">弹窗已打开</td><td data-label="用户操作">点输入框 / 下拉 / 单选</td><td data-label="原型表现">无响应，保持截图里的占位态</td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">认领中心页签带</td><td data-label="前置状态">「认领中心」为激活态</td><td data-label="用户操作">点击商品采集 / 我的商品</td><td data-label="原型表现">无响应；「我的商品」页签仅作为静态文字，不跳转到 <code>my-products</code></td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">认领中心列表</td><td data-label="前置状态">第 1 行为勾选态，表头为半选态，其下方展开操作条</td><td data-label="用户操作">点击复选框 / 编辑 / 标签 / 删除</td><td data-label="原型表现">无响应，勾选状态与展开操作条固定不变</td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">认领商品弹窗</td><td data-label="前置状态">认领中心列表</td><td data-label="用户操作">点击行内「认领」或底部「批量认领」</td><td data-label="原型表现">700×524 弹窗在 <code>top:55px</code> 居中弹出，背后列表加 <code>rgba(0,0,0,.5)</code> 遮罩</td><td data-label="后续状态">弹窗打开</td></tr>
+                <tr><td data-label="对象/场景">认领商品弹窗</td><td data-label="前置状态">弹窗已打开</td><td data-label="用户操作">点 × / 遮罩空白处</td><td data-label="原型表现">关闭弹窗回到列表</td><td data-label="后续状态">列表不变</td></tr>
+                <tr><td data-label="对象/场景">认领商品弹窗内控件</td><td data-label="前置状态">弹窗已打开</td><td data-label="用户操作">点平台卡片 / 店铺卡片 / 全选 / 直接认领 / 自动编辑</td><td data-label="原型表现">无响应，保持截图的未选店铺禁用态</td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">认领中心筛选与分页</td><td data-label="前置状态">控件为占位态，分页停在第 1 页</td><td data-label="用户操作">点击搜索 / 重置 / 下拉 / 页码</td><td data-label="原型表现">无响应，下拉面板不展开</td><td data-label="后续状态">不变</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="hint">本页当前只有「已授权 + 启用 + 第 1 页」一种展示态；空态、授权失效、到期提醒等状态待 Shopify 需求明确后补充。</p>
+        </section>
+
+        <section id="design-basis">
+          <h2>设计基底与原型特有调整</h2>
+          <ul>
+            <li>采用的 <code>DESIGN.md</code>：<code>src/themes/camel-captain-erp/DESIGN.md</code></li>
+            <li>继承方式：与线上截图一致的部分沿用主题规范（控件圆角 8px、表头渐变、绿底标签）；冲突时以截图实测值为准。</li>
+            <li>本原型特有调整：
+              <ul>
+                <li>主色使用线上实测 <code>#ff781f</code>，并以 <code>--si-*</code> 局部变量集中在 <code>.si-page</code> 上，不写全局变量，避免影响其他原型。</li>
+                <li>页面以 1912 为基准宽度，<code>min-width: 1280px</code>；表格列宽用百分比表达，容器变窄时整表等比缩放，窄于 <code>1400px</code> 时表格容器内部横向滚动，保证「到期时间」列不被裁掉。</li>
+              </ul>
+            </li>
+          </ul>
+          <h3>还原精度基准</h3>
+          <ul>
+            <li>几何：顶栏 50、面包屑 40、卡片外边距 21 / 内边距 20、页签高 40、控件高 28、表头 40、行高 45、标签高 24、分页高 28。</li>
+            <li>表格列宽：以 1830 内容宽为基准的百分比 16.393% / 17.596% / 17.705% / 17.541% / 4.426% / 17.541% / 8.798%，在 1912 视口下折算为 300 / 322 / 324 / 321 / 81 / 321 / 161。</li>
+            <li>颜色：主色 <code>#ff781f</code>、激活导航底 <code>#ffe9d5</code>、标签 <code>#e7faf0 / #d0f5e0 / #13ce66</code>、分隔线 <code>#ebeef5</code>、分页禁用底 <code>#f4f4f5</code>。</li>
+            <li>新增店铺弹窗：面板 500×470、圆角 8、内边距 20；标题 18px/24 中字重 <code>#303133</code>，关闭 × 16×16 居中于 (472, 28)；标签列宽 100、右对齐、右内边距 13，必填星号 <code>#ff5252</code>；控件高 36、行距 58，输入框宽 360、下拉宽 217，边框 <code>#dcdfe6</code>，占位文字 <code>#c0c4cc</code> 左内边距 15；单选圆点 14×14、选中态 <code>#1890ff</code>（含选中标签同色）；底部按钮 62×36、间距 18、整组居中、距面板底 20。</li>
+            <li>验收口径：1912×867 视口截图与源截图逐像素比对，差异像素约 2.0%，集中在文字抗锯齿与平台字体渲染，不再继续调整。</li>
+          </ul>
+          <h3>认领中心还原精度基准（1912×867 实测）</h3>
+          <ul>
+            <li>几何：顶栏 50、面包屑带 40、主卡片 x=20→1891 / y=90→852、页签带高 50（y=90→140）、筛选控件高 32（第 1 行 y=156→187，第 2 行 y=207→238，两行间距 19）、表头高 40（y=259→298）、数据行高约 102.3（分隔线 y=401 / 442 / 544 / 647 / 749）、展开操作条高 41、底部栏 52（上边框 y=799，卡片底 y=852）。</li>
+            <li>页签带：「商品采集」文字 x=53→108，激活页签底边轮廓 x=152→343（宽 191，顶边平直段 x=200→295，两侧为 S 形凹弧），渐变圆点 x=195→214（20×14，左实右透），「认领中心」文字 x=226→288，「我的商品」文字 x=387→441。</li>
+            <li>筛选第 1 行控件宽：采集源字段下拉 119、批量搜索框 210、认领状态 214、价格输入 120 × 2（右侧步进器 32，上下两格以 1px 分隔线分开）、采集平台 214、采集日期区间 345；标签下拉 214。控件左右间距 12，「搜索」宽 66（x=304）、「重置」宽 66（x=380）、「创建新产品」宽 101（x=456）。</li>
+            <li>列表列边界（表格内容区 x=41→1870，右侧 16 为滚动条槽）：勾选 61、图片 90、标题 708（自适应）、售价 146、状态 114、标签 334、来源 214、采集账号 146；列文字居中，标题左对齐、左内边距 13。</li>
+            <li>缩略图 80×80（x=107→186，行内垂直居中）；标题行墨迹 y≈330→340、父SKU 行 y≈358→366，两行墨迹顶距 29（实现取行高 18 + 间距 11）。</li>
+            <li>字号与字色（取自数据包 flat/styles 计算样式，并用墨迹宽度反查校验）：表头 14 / 500 / <code>#606266</code>；标题 12 / 600 / <code>#606266</code>；父SKU＋类目 12 / 400 / <code>#666666</code>；售价 12 / 600 / <code>#ff781f</code>；状态「已认领」13 / 500 / <code>#52c41a</code>；来源「1688」14 / 500 / <code>#ff781f</code>；采集账号 12 / 400 / <code>#606266</code>；筛选标签与占位符 13 / 400 / <code>#606266</code>；搜索 / 重置 / 批量按钮 12 / 400；「已选 1 项」13 / 400 / <code>#909399</code>；「共 1679 条」「前往」「页」13 / 400 / <code>#606266</code>，「前往」左外边距 24；非激活页签 14 / 500 / <code>#4e5969</code>；激活页签 16 / 600 / <code>#303133</code>。</li>
+            <li>展开操作条按钮 46×24、间距 15、起始 x=52，蓝色 <code>#1890ff</code> 描边。</li>
+            <li>底部栏：「已选 1 项」x=42→93，批量按钮宽 80 高 32、间距 10、起始 x=104；分页从右起为「页」/ 跳转框 45 / 「前往」/ 下一页 / 省略号 / 1-6 / 上一页 / 每页下拉 100，页码按钮 30×26、水平间距 10（40px 步距）。</li>
+            <li>颜色：主色 <code>#ff781f</code>（售价、来源、搜索按钮、勾选框）、激活页签与激活页码描边 <code>#ff7d29</code>、成功 <code>#52c41a</code>（已认领）、蓝描边操作 <code>#1890ff</code>、表头底 <code>#f5f7fa</code>、行分隔 <code>#ebeef5</code>、控件边框 <code>#dcdfe6</code>、正文 <code>#606266</code>、次要文字 <code>#909399</code>、页面底 <code>#f0f1f5</code>。</li>
+            <li>实现约束：全局 <code>.si-page button { margin: 0 }</code> 优先级高于单类选择器，认领中心里需要外边距的按钮必须写成双类（如 <code>.cc-btn.cc-batch-btn</code>），否则边距会被静默覆盖。</li>
+            <li>验收口径：1912×867 视口截图与 <code>screenshot.png</code> 逐像素比对（阈值 ΔR+ΔG+ΔB>90），屏蔽缩略列与顶栏后差异像素约 3%，集中在文字抗锯齿、缩略图内容（按用户决策改用仓库现有素材）与 Make 客户端右下角悬浮工具条，其余不再继续调整。</li>
+          </ul>
+          <h3>认领商品弹窗还原精度基准（取自数据包 <code>flat/styles/style_171~217</code> 计算样式）</h3>
+          <ul>
+            <li>遮罩 <code>rgba(0,0,0,.5)</code> 全屏；面板 700×524、圆角 6、阴影 <code>0 1px 3px rgba(0,0,0,.3)</code>、<code>margin: 55px auto 0</code>。</li>
+            <li>头部 700×55：内边距 <code>20px 20px 10px</code>，下边框 <code>#ebeef5</code>；标题 18px / 400 / <code>#303133</code>；关闭 × 16×16 位于 <code>top:20 right:20</code>，<code>#909399</code>。</li>
+            <li>主体内边距 20；两栏 <code>gap:16</code>、<code>min-height:360</code>。左栏 220 宽、<code>max-height:384</code>、底 <code>#f5f7fa</code>、边框 <code>#e4e7ed</code>、圆角 8、内边距 12；商品行 <code>gap:10</code>、下外边距 12，缩略图 44×44（含 1px 边框，圆角 6，图 42×42），标题 12px / <code>#606266</code> / 行高 17、两行裁切（<code>overflow:hidden</code>，无省略号）；「共 1 个商品」12px / <code>#909399</code>、上外边距 8。</li>
+            <li>右栏宽 424：字段标题 14px / 600 / <code>#303133</code>、下外边距 10；平台卡片 72×72、圆角 8、内边距 <code>8px 4px 6px</code>、图标 28×28、名称 12px / <code>#606266</code>，选中态边框与外描边 <code>#ff781f</code>（<code>box-shadow: 0 0 0 1px</code>），右下角 18×18 圆形徽标 <code>#ff781f</code> 内嵌 12px 白色对勾、偏移 <code>-6px</code>。</li>
+            <li>店铺区：标题行两端对齐，副标题「（可多选）已选择0个店铺」13px / <code>#909399</code>；「全选」为 14×14 橙描边方框 + 13px <code>#ff781f</code> 文字；列表 <code>gap:10</code>、内边距 2、<code>max-height:256</code>；店铺卡片 420×42、边框 <code>#dcdfe6</code>、圆角 8、内边距 <code>10px 12px</code>、勾选框 16×16（圆角 3）、名称 14px / <code>#303133</code>。</li>
+            <li>底部栏 700×53：外边距 <code>16px -20px 0</code>、内边距 <code>16px 20px 0</code>、上边框 <code>#ebeef5</code>；状态文字 13px / <code>#606266</code>；提示 13px / <code>#ff781f</code>；按钮最小宽 110、高 36、内边距 <code>10px 20px</code>、圆角 8、图标 14 与文字间距 5。「直接认领」白底 <code>#e4e7ed</code> 描边 + <code>#c0c4cc</code> 文字并整体 <code>opacity:.5</code>；「自动编辑」底与边框 <code>#f3c7a3</code>、文字 <code>#fff</code>，两者均为 <code>cursor:not-allowed</code>。</li>
+            <li>实现约束：弹窗类名前缀 <code>capd-</code>（<code>cpd-</code> 已被创建产品弹窗占用）；实现文件 <code>components/ClaimProductDialog.tsx</code> + <code>claim-product-dialog.css</code>。</li>
+            <li>验收口径：1912×907 无头浏览器实测面板 700×524、头部 55、主体 469、两栏 660×360、店铺卡片 420×42、底部 53、按钮 117×36，与数据包计算样式一致。</li>
+          </ul>
+        </section>
+
+        <section id="open-questions">
+          <h2>当前待确认事项</h2>
+          <ul>
+            <li>Shopify 页签激活后的列表字段、授权入口与授权方式（OAuth 跳转 / 填写店铺域名 + token）。</li>
+            <li>平台页签是否需要真正可切换（当前按用户决策保持静态）。</li>
+            <li>授权到期提醒策略：提前几天提醒、到期后是否阻断刊登与拉单，以及对应的界面表现。</li>
+            <li>「新增店铺」弹窗：三个必填项的校验规则与提示文案、「确定」后的落库表现（列表是否立刻出现新行、到期时间如何填充）。</li>
+            <li>「平台名称」下拉的可选值清单，以及「子账号」是否随平台联动、子账号数据来自哪个接口。</li>
+            <li>Shopify 店铺新增时是否需要额外填写 shop 域名或 token（对应表头标注里的授权接口）。</li>
+            <li>认领中心「创建新产品」「导入产品」「导出」的真实落点：是否复用「我的商品」的创建产品弹窗，导入 / 导出模板字段清单是什么。</li>
+            <li>认领中心行内「编辑」和批量「编辑货源 / 批量标签 / 批量删除」打开后的表单（「认领 / 批量认领」已还原为「认领商品」弹窗外观）。</li>
+            <li>「认领商品」弹窗选中店铺后的可用态：勾选店铺时「直接认领 / 自动编辑」的常规配色、已选计数变化、店铺超过 5 家时的列表滚动与「全选」行为。</li>
+            <li>「标签」列的展示形态：截图 10 行全部为空，需要一条带标签样例确认标签样式与溢出规则。</li>
+          </ul>
+        </section>
+
+        <section id="decision-history">
+          <h2>用户重要决策与变更</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr></thead>
+              <tbody>
+                <tr><td data-label="日期">2026-10-16</td><td data-label="用户决策或变更">确定原型目录 <code>shopify-integration</code> 与子页面 <code>store-auth</code>。</td><td data-label="对当前原型的影响">目录与 hash 路由按此命名落地。</td></tr>
+                <tr><td data-label="日期">2026-10-16</td><td data-label="用户决策或变更">平台页签本轮只还原截图当前态，不可切换。</td><td data-label="对当前原型的影响">页签渲染为静态元素，不绑定点击逻辑。</td></tr>
+                <tr><td data-label="日期">2026-10-16</td><td data-label="用户决策或变更">主规格使用 HTML 格式。</td><td data-label="对当前原型的影响">规格落在 <code>.spec/spec.html</code>。</td></tr>
+                <tr><td data-label="日期">2026-10-16</td><td data-label="用户决策或变更">指出表格宽度写死导致「到期时间」列被预览框架挡住，要求改成动态宽度。</td><td data-label="对当前原型的影响">页面最小宽度从 1912 降到 1280，表格列宽改为百分比并加 1400px 兜底与内部横向滚动。</td></tr>
+                <tr><td data-label="日期">2026-10-16</td><td data-label="用户决策或变更">通过两条表头批注补充 Shopify 取数口径：平台ID 来自 <code>data.shop.id</code>；到期时间按 Refresh Token 有效期换算，Access Token 仅用于后台刷新。</td><td data-label="对当前原型的影响">在「平台ID」「到期时间」表头挂标注节点 <code>sa-col-platform-id</code> / <code>sa-col-expire</code>，列表数据本身不变，规格补充取数口径。</td></tr>
+                <tr><td data-label="日期">2026-10-16</td><td data-label="用户决策或变更">要求还原点击「新增」后的「新增店铺」弹窗；确认挂在店铺授权页（点新增弹出）、本轮只还原外观、平台名称下拉不做展开。</td><td data-label="对当前原型的影响">新增 <code>components/AddStoreDialog.tsx</code> 与 <code>add-store-dialog.css</code>，弹窗内控件全部静态呈现，只有打开与关闭可用。</td></tr>
+                <tr><td data-label="日期">2026-10-17</td><td data-label="用户决策或变更">要求按 <code>AI-认领中心-骆驼队长BI-complete.zip</code> 的 README 指引高精度还原「认领中心」，放在本原型下命名为「认领中心」。</td><td data-label="对当前原型的影响">新增 <code>pages/claim-center.tsx</code> 与 <code>claim-center.css</code>，hash 路由增加 <code>claim-center</code>，复用 <code>AppShell</code> 与 <code>sip-*</code> 页签 / 筛选 / 分页规范。</td></tr>
+                <tr><td data-label="日期">2026-10-17</td><td data-label="用户决策或变更">确认本轮范围只做列表页（不还原批量查找 / 导入产品 / 统一导出弹窗和任务处理中提示）、缩略图复用仓库现有素材、按静态还原不做勾选联动。</td><td data-label="对当前原型的影响">页面为纯展示态：首行固定勾选并展开操作条，表头半选，底部固定「已选 1 项」；不引入选择状态管理。</td></tr>
+                <tr><td data-label="日期">2026-10-17</td><td data-label="用户决策或变更">要求按新一轮数据包还原「认领商品」弹窗，只还原界面不还原交互，采用 <code>camel-captain-erp</code> 设计与 Element UI 组件样式；确认挂在已有的认领中心页，由「认领」「批量认领」调起。</td><td data-label="对当前原型的影响">新增 <code>components/ClaimProductDialog.tsx</code> 与 <code>claim-product-dialog.css</code>，<code>ClaimCenterPage</code> 增加打开状态；弹窗内控件保持截图的未选店铺禁用态。</td></tr>
+                <tr><td data-label="日期">2026-10-17</td><td data-label="用户决策或变更">弹窗商品图改用线上 CDN 原图。</td><td data-label="对当前原型的影响">新增 <code>assets/claim-necklace.jpg</code>，同时替换认领中心第 1 行缩略图，使弹窗与来源行一致。</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="hint">只记录会改变页面范围、结构、流程、内容口径或设计表达的重要决定，不保存完整讨论过程。</p>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const navItems = [...document.querySelectorAll('[data-page-target]')];
+    const pages = [...document.querySelectorAll('[data-spec-page]')];
+
+    const showPage = (pageId) => {
+      for (const navItem of navItems) {
+        if (navItem.dataset.pageTarget === pageId) {
+          navItem.setAttribute('aria-current', 'page');
+        } else {
+          navItem.removeAttribute('aria-current');
+        }
+      }
+      for (const page of pages) {
+        page.hidden = page.dataset.specPage !== pageId;
+      }
+    };
+
+    for (const navItem of navItems) {
+      navItem.addEventListener('click', () => showPage(navItem.dataset.pageTarget));
+    }
+  </script>
+</body>
+</html>

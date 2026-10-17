@@ -1,7 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-15T09:41:05.263Z",
+  "updatedAt": "2026-10-17T08:11:17.053Z",
   "prototypes": [
+    {
+      "id": "item:prototypes:shopify-integration",
+      "kind": "item",
+      "title": "Shopify 对接",
+      "itemKey": "prototypes/shopify-integration"
+    },
     {
       "id": "folder-1791797215018-7mge1v",
       "kind": "folder",
@@ -10,7 +16,7 @@
         {
           "id": "item:prototypes:dhgate-compliance-check",
           "kind": "item",
-          "title": "敦煌网商品合规检测原型主规格",
+          "title": "敦煌网商品合规检测",
           "itemKey": "prototypes/dhgate-compliance-check"
         }
       ]
@@ -113,6 +119,12 @@
           ]
         }
       ]
+    },
+    {
+      "id": "item:prototypes:published-prototypes",
+      "kind": "item",
+      "title": "原型发布地址",
+      "itemKey": "prototypes/published-prototypes"
     }
   ],
   "docs": [],
@@ -128,12 +140,6 @@
       "kind": "item",
       "title": "element-ui",
       "itemKey": "themes/element-ui"
-    },
-    {
-      "id": "item:themes:localhost",
-      "kind": "item",
-      "title": "localhost",
-      "itemKey": "themes/localhost"
     }
   ],
   "themes": [

@@ -1,0 +1,443 @@
+/* ============ Shopify 对接 - 我的订单（截图还原，1912 设计宽） ============ */
+/* token 来源：《我的订单页面样式.txt》cssVariables + 源截图实测像素 */
+
+.so-root {
+  padding-bottom: 84px;
+}
+
+/* ===== 状态页签 ===== */
+.so-tabs {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 20px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.so-tab {
+  height: 52px;
+  margin-right: 10px;
+  padding: 0 16px;
+  border-bottom: 2px solid transparent;
+  border-radius: 8px 8px 0 0;
+  font-size: 15px;
+  line-height: 50px;
+  color: #303133;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.so-tab.is-active {
+  background: linear-gradient(180deg, #fff5ef 0%, #ffede0 100%);
+  border-bottom-color: var(--si-primary);
+  font-weight: 600;
+  color: var(--si-primary);
+}
+
+/* ===== 筛选行 ===== */
+.so-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px 12px;
+}
+
+.so-label {
+  font-size: 14px;
+  color: #606266;
+  white-space: nowrap;
+}
+
+.so-select,
+.so-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid #dcdfe6;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #303133;
+  cursor: pointer;
+}
+
+.so-select-store { width: 250px; }
+.so-select-field { width: 120px; }
+.so-input { width: 240px; }
+
+.so-select img { width: 12px; height: 12px; }
+
+.so-ph { color: var(--si-placeholder); }
+
+.so-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 16px;
+  border: 1px solid var(--si-primary);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: var(--si-primary);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.so-btn-primary { background: var(--si-primary); color: #fff; }
+
+.so-btn-icon { width: 14px; height: 14px; }
+.so-btn-chev { width: 11px; height: 11px; }
+
+.so-filter-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+/* ===== 表格 ===== */
+.so-table-wrap {
+  margin: 0 20px;
+  border: 1px solid #ebeef5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.so-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.so-table th {
+  height: 48px;
+  background: linear-gradient(180deg, #fff5ef 0%, #ffede0 100%);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  color: #303133;
+}
+
+.so-table th.so-th-left { text-align: left; padding-left: 12px; }
+
+.so-table td {
+  padding: 14px 10px;
+  border-top: 1px solid #ebeef5;
+  font-size: 12px;
+  vertical-align: top;
+  color: #606266;
+}
+
+.so-check {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--si-primary);
+  cursor: pointer;
+}
+
+/* --- 序号列 --- */
+.so-table td.so-cell-index { text-align: center; vertical-align: middle; }
+.so-row-no { display: block; margin-top: 8px; color: #909399; }
+
+/* --- 订单号/状态列 --- */
+.so-table td.so-cell-order { position: relative; text-align: center; }
+
+.so-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid var(--si-primary);
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--si-primary);
+}
+
+.so-order-no {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--si-success);
+  text-decoration: none;
+}
+
+.so-store {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #303133;
+}
+
+.so-store img { width: 20px; height: 20px; }
+
+.so-id { display: block; margin-top: 4px; font-size: 14px; color: #909399; }
+.so-id a { color: #409eff; text-decoration: none; }
+
+.so-ops { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
+
+.so-op-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #dcdfe6;
+  border-radius: 50%;
+  color: var(--si-placeholder);
+  cursor: pointer;
+}
+
+.so-op-btn svg { width: 15px; height: 15px; }
+
+.so-sync {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #409eff;
+  cursor: pointer;
+}
+
+.so-sync svg { width: 18px; height: 18px; }
+
+/* --- 产品信息列 --- */
+.so-table td.so-cell-product {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-right: 16px;
+}
+
+.so-thumb { flex: none; width: 100px; text-align: center; }
+
+.so-thumb img {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.so-edit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #409eff;
+  text-decoration: none;
+}
+
+.so-edit-icon { width: 12px; height: 12px; color: #409eff; }
+
+.so-product-main { flex: 1; min-width: 0; }
+
+.so-title {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #409eff;
+  text-decoration: none;
+}
+
+.so-specs { margin-top: 8px; font-size: 12px; line-height: 18px; }
+.so-specs b { font-weight: 700; color: #303133; }
+
+.so-price { margin-left: 26px; }
+.so-sku { margin-left: 26px; }
+
+.so-price i {
+  font-style: normal;
+  font-weight: 700;
+  color: #ff4949;
+}
+
+.so-sub { margin-top: 8px; font-size: 12px; line-height: 18px; }
+.so-sub a { color: #409eff; text-decoration: none; }
+.so-gap { display: inline-block; width: 26px; }
+
+.so-purchase-state {
+  flex: none;
+  align-self: center;
+  padding: 6px 14px;
+  border-radius: 14px;
+  background: #909399;
+  font-size: 12px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* --- 买家信息列 --- */
+.so-cell-buyer b { font-weight: 700; color: #303133; }
+.so-cell-buyer div { line-height: 26px; }
+
+/* --- 时间节点列 --- */
+.so-cell-times div { line-height: 18px; color: #606266; }
+.so-cell-times div.is-strong { color: #303133; }
+
+.so-th-times { position: relative; }
+
+.so-tip {
+  position: absolute;
+  top: 42px;
+  left: -90px;
+  z-index: 40;
+  width: 330px;
+  padding: 6px 0;
+  border-radius: 6px;
+  background: rgba(96, 98, 102, 0.95);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  font-weight: 400;
+  text-align: left;
+}
+
+.so-tip-line {
+  padding: 7px 14px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #fff;
+}
+
+.so-tip-line.is-hot {
+  background: #303133;
+  font-weight: 700;
+}
+
+/* --- 预警/物流/数据列 --- */
+.so-cell-warn div { line-height: 30px; }
+.so-warn-orange { color: var(--si-primary); }
+.so-warn-blue { color: #409eff; }
+
+.so-table td.so-cell-logistics { vertical-align: middle; font-size: 13px; color: #606266; }
+
+.so-cell-data div { line-height: 24px; }
+.so-income { font-weight: 700; color: var(--si-success); }
+
+/* ===== 底部操作栏 ===== */
+.so-bottombar {
+  position: fixed;
+  left: 20px;
+  right: 20px;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 64px;
+  padding: 0 20px;
+  border-radius: 10px 10px 0 0;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.08) 0 -2px 12px 0;
+}
+
+.so-batch { display: flex; gap: 12px; }
+
+.so-btn-soft {
+  height: 32px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--si-primary-soft);
+  font-size: 13px;
+  color: var(--si-primary);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.so-selected { font-size: 14px; color: #909399; white-space: nowrap; }
+
+.so-pag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  font-size: 14px;
+  color: #303133;
+  white-space: nowrap;
+}
+
+.so-pag-size {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #dcdfe6;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.so-pag-size img { width: 10px; height: 10px; }
+
+.so-pag-btn,
+.so-pag-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  border: 1px solid #dcdfe6;
+  border-radius: 8px;
+  background: #fff;
+  color: #606266;
+  cursor: pointer;
+}
+
+.so-pag-btn.is-disabled { color: var(--si-placeholder); cursor: default; }
+.so-pag-num.is-active { border-color: var(--si-primary); color: var(--si-primary); }
+.so-pag-ellipsis { color: #606266; }
+
+.so-pag-jump {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 8px;
+  color: #606266;
+}
+
+.so-pag-jump-input {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 32px;
+  border: 1px solid #dcdfe6;
+  border-radius: 8px;
+  color: #303133;
+}
+
+/* ===== 右侧浮动滚动按钮 ===== */
+.so-float {
+  position: fixed;
+  right: 14px;
+  bottom: 180px;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.so-float-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--si-primary);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--si-primary);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.so-float-btn svg { width: 16px; height: 16px; }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>原型发布地址 - 主规格</title>
+  <style>
+    body { font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; padding: 40px; line-height: 1.6; color: #1d2129; }
+    h1 { font-size: 24px; margin-bottom: 24px; }
+    h2 { font-size: 18px; margin: 24px 0 12px; color: #ff7d29; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+    th, td { border: 1px solid #e5e6eb; padding: 8px 12px; text-align: left; font-size: 14px; }
+    th { background: #f7f8fa; font-weight: 500; color: #4e5969; }
+    .tag { display: inline-block; padding: 2px 8px; background: #fef3ea; color: #ff7d29; border-radius: 4px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>原型发布地址 - 主规格</h1>
+
+  <h2>当前方案</h2>
+  <ul>
+    <li><strong>原型意图</strong>：单页工具页，集中查看已发布到 GitHub Pages 的原型清单和访问地址</li>
+    <li><strong>使用场景</strong>：产品/设计/开发需要分享或打开已发布原型时，从这里取链接</li>
+    <li><strong>当前表达</strong>：页面标题 + 一张四列表格（原型名称、需求概述、发布时间、发布地址）</li>
+  </ul>
+
+  <h2>原型范围</h2>
+  <h3>本次呈现</h3>
+  <ul>
+    <li>14 个已发布到 GitHub Pages 的原型（未发布的原型不列出，如「Shopify 对接」）</li>
+    <li>原型名称：取自 Make 侧边栏页面树中的展示名；前后台重名的「帮助中心」以后台/前台后缀区分</li>
+    <li>需求概述：有序列表逐条概括该原型实现的功能（3-6 条，依据各原型主规格与代码核实）</li>
+    <li>发布时间：该原型第一次成功发布到 GitHub Pages 的时间（北京时间，精确到分钟）</li>
+    <li>发布地址：完整 URL，点击后在新标签页跳转到该原型发布页；每行地址旁提供「复制」按钮，一键复制该地址</li>
+  </ul>
+
+  <h3>本次不呈现</h3>
+  <ul>
+    <li>未发布原型、主题、资源的发布状态</li>
+    <li>发布时间、发布历史等附加列</li>
+    <li>搜索、筛选、复制按钮等附加交互</li>
+    <li>需求概述的完整需求文档（仅摘要，详情看各原型主规格）</li>
+  </ul>
+
+  <h2>数据与交互</h2>
+  <table>
+    <tr><th>对象/场景</th><th>说明</th></tr>
+    <tr><td>数据来源</td><td>静态写入页面代码，取自 <code>.axhub/make/exports</code> 中成功的 github-pages 发布记录（branch master、根目录快照）；发布时间取该原型最早的成功发布记录</td></tr>
+    <tr><td>排序</td><td>固定按发布时间倒序展示，表头不提供排序交互</td></tr>
+    <tr><td>需求概述</td><td>静态摘要，逐条有序列表展示该原型已实现的功能点</td></tr>
+    <tr><td>需求概述</td><td>静态摘要，逐条有序列表展示该原型已实现的功能点</td></tr>
+    <tr><td>发布地址链接</td><td>点击链接 → 新标签页打开 <code>https://licanrong0227.github.io/camel-captain/&lt;prototype-id&gt;/</code></td></tr>
+    <tr><td>一键复制</td><td>点击「复制」→ 该原型发布地址写入剪贴板，按钮变绿色「已复制」，2 秒后恢复</td></tr>
+    <tr><td>行悬停</td><td>表格行底色切换为浅灰</td></tr>
+  </table>
+
+  <h2>设计规格</h2>
+  <table>
+    <tr><th>属性</th><th>值（依据 camel-captain-erp DESIGN.md）</th></tr>
+    <tr><td>设计基底</td><td><span class="tag">src/themes/camel-captain-erp/DESIGN.md</span></td></tr>
+    <tr><td>页面底色</td><td>#F7F8FA，卡片白底、圆角 8px、边框 1px #E5E6EB、内边距 20px</td></tr>
+    <tr><td>页面标题</td><td>18px / 500 / #1D2129，右侧辅助计数 12px #86909C</td></tr>
+    <tr><td>表头</td><td>底 #F7F8FA，文字 #4E5969，14px/500</td></tr>
+    <tr><td>表体</td><td>名称/地址 14px/400，需求概述 12px/400 有序列表；单元格顶部对齐；行分割线 #EBEEF5；悬停行底 #F7F8FA</td></tr>
+    <tr><td>列宽</td><td>原型名称 160px、需求概述自适应、发布时间 132px（nowrap、tabular-nums）、发布地址 380px</td></tr>
+    <tr><td>复制按钮</td><td>12px 描边小按钮：常规 #4E5969，悬停品牌橙，已复制态成功绿底 #E2F6EC / 文字 #0BB861</td></tr>
+    <tr><td>链接色</td><td>常规 #FF7D29，悬停 #FF9148，点击 #D25909</td></tr>
+  </table>
+</body>
+</html>

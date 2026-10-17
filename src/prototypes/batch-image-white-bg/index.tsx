@@ -62,18 +62,40 @@ const Spinner: React.FC<{ size?: number }> = ({ size = 16 }) => (
 
 const BatchImageWhiteBg: React.FC = () => {
   const [startLoading, setStartLoading] = useState(false);
+  const [stopping, setStopping] = useState(false);
+  const [toast, setToast] = useState('');
   const [hasProcessed, setHasProcessed] = useState(false);
   const [exitDialogOpen, setExitDialogOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(true);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const stopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showToast = (message: string) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setToast(message);
+    toastTimerRef.current = setTimeout(() => {
+      setToast('');
+      toastTimerRef.current = null;
+    }, 2500);
+  };
 
   const handleStart = useCallback(() => {
+    if (stopping) {
+      showToast('停止处理中，请等待当前任务处理完成');
+      return;
+    }
     if (startLoading) {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
       }
-      setStartLoading(false);
+      setStopping(true);
+      stopTimerRef.current = setTimeout(() => {
+        setStopping(false);
+        setStartLoading(false);
+        stopTimerRef.current = null;
+      }, 3000);
     } else {
       setHasProcessed(true);
       setStartLoading(true);
@@ -82,7 +104,7 @@ const BatchImageWhiteBg: React.FC = () => {
         timerRef.current = null;
       }, 5000);
     }
-  }, [startLoading]);
+  }, [startLoading, stopping]);
 
   const handleExitClick = () => {
     setExitDialogOpen(true);
@@ -124,12 +146,12 @@ const BatchImageWhiteBg: React.FC = () => {
                       <span className="biw-count">已选 5/5 张</span>
                     </div>
                     <button
-                      className={`biw-start-btn${startLoading ? ' biw-start-btn--processing' : ''}`}
+                      className={`biw-start-btn${startLoading ? ' biw-start-btn--processing' : ''}${stopping ? ' biw-start-btn--stopping' : ''}`}
                       type="button"
                       onClick={handleStart}
                     >
                       {startLoading && <Spinner size={16} />}
-                      {startLoading ? '停止处理' : '开始处理'}
+                      {stopping ? '停止中' : startLoading ? '停止处理' : '开始处理'}
                       {!startLoading && <span className="biw-help">?</span>}
                     </button>
                   </div>
@@ -193,6 +215,8 @@ const BatchImageWhiteBg: React.FC = () => {
                 </div>
               </div>
             )}
+
+            {toast && <div className="biw-toast">{toast}</div>}
           </div>
       <AnnotationViewer
         source={annotationSourceDocument as unknown as AnnotationSourceDocument}

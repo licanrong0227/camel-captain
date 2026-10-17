@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 3,
+  "kind": "document-edit-comments",
+  "resource": {
+    "id": "cfe6089a03668ad187f1b7fb3c5a9fed3f111261fb8dcd0810a531337f656cb4",
+    "targetPath": "src/prototypes/shopify-integration/.spec/spec.html",
+    "filePath": ".axhub/make/comments/cfe6089a03668ad187f1b7fb3c5a9fed3f111261fb8dcd0810a531337f656cb4.json"
+  },
+  "comments": [],
+  "images": [],
+  "documentPath": "src/prototypes/shopify-integration/.spec/spec.html"
+}

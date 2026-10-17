@@ -80,7 +80,16 @@
       "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git log -1 --stat)",
       "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && git diff HEAD~1 --name-only)",
       "Bash(cd \"d:/projects/camel captain\" && git diff --stat && echo \"---\" && git diff --name-only)",
-      "Bash(cd \"d:/projects/camel captain\" && git diff src/prototypes/update-publish-dialog/index.tsx src/prototypes/update-publish-dialog/.spec/spec.html src/prototypes/update-publish-dialog/annotation-source.json)"
+      "Bash(cd \"d:/projects/camel captain\" && git diff src/prototypes/update-publish-dialog/index.tsx src/prototypes/update-publish-dialog/.spec/spec.html src/prototypes/update-publish-dialog/annotation-source.json)",
+      "Bash(cd \"d:/projects/camel captain\" && git diff HEAD -- \"src/prototypes/shopify-integration/index.tsx\" | head -300)",
+      "Bash(cd \"d:/projects/camel captain\" && git log --oneline -10 -- \"src/prototypes/shopify-integration/\")",
+      "Bash(cd \"d:/projects/camel captain\" && git status -- \"src/prototypes/shopify-integration/\")",
+      "Bash(cd \"d:/projects/camel captain\" && git log --all --oneline -20 -- \"src/prototypes/shopify-integration/\")",
+      "Bash(cd \"d:/projects/camel captain\" && ls -la src/prototypes/shopify-integration/)",
+      "Bash(cd \"d:/projects/camel captain\" && git stash list)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && npx tsc --noEmit --pretty src/prototypes/edit-product-dialog-media/components/CollageDialog.tsx 2>&1 | head -30)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('src/prototypes/edit-product-dialog-media/annotation-source.json','utf8'\\)\\); console.log\\('JSON valid'\\)\")",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('src/prototypes/shopify-integration/annotation-source.json', 'utf8'\\)\\); console.log\\('JSON valid'\\)\")"
     ]
   }
 }
