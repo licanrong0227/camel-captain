@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "my-order-batch-declare",
+    "targetPath": "prototypes/my-order-batch-declare",
+    "filePath": ".axhub/make/comments/2c6aaa91f1236969e3ca93f7679da5a6fc2a14b160ad5f3be1c54ac78c9ae126.json"
+  },
+  "comments": [],
+  "images": []
+}

@@ -1,0 +1,102 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "presentation": {
+    "layerSelectors": [
+      ".mobd-dialog"
+    ]
+  },
+  "data": {
+    "version": 2,
+    "prototypeName": "my-order-batch-declare",
+    "pageId": "my-order-batch-declare",
+    "nodes": [
+      {
+        "id": "declare-required-fields",
+        "index": 1,
+        "title": "批处理申报信息新增申报项与运单校验",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"declare-required-fields\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=declare-required-fields",
+          "path": []
+        },
+        "aiPrompt": "根据批处理申报信息弹窗标注生成选填编码、接口报错提示与引导逻辑的实现说明。",
+        "annotationText": "批处理申报信息新增 3 个字段（均为选填）：\n- 制造商产品识别码（nsPid）\n- 国际标准商品编码（sPid）\n- 商家产品识别码（mPid）\n订单列表-查看订单-信息编辑中的申报表格需要同步新增以上 3 项。\n\n申请运单号校验：\n这 3 项系统不强制要求填写，用户填什么就传什么，没填就传空值，申请运单号时不再由系统校验是否填全；改为以接口返回为准——如果申请运单号时接口返回错误信息要求填写，就把该错误信息 toast 展示给用户，并在提示的同时引导用户前往填写位置：\n- 单个订单申请运单号：自动打开「查看订单」弹窗，并定位到「信息编辑」页签；\n- 订单列表批量申请运单号：自动打开「批处理申请信息」弹窗。",
+        "hasMarkdown": false,
+        "color": "#D97706",
+        "images": [],
+        "createdAt": 1792405124890,
+        "updatedAt": 1792407075191
+      },
+      {
+        "id": "declare-col-nspid",
+        "index": 2,
+        "title": "制造商产品识别码（nsPid）",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"declare-col-nspid\"]"
+          ],
+          "fingerprint": "th|data-annotation-id=declare-col-nspid",
+          "path": []
+        },
+        "aiPrompt": "根据该列标注说明 nsPid 在下单接口中的参数传递。",
+        "annotationText": "选填项，系统不强制填写：填了按填写内容传递，没填传空值。申请运单号时随订单提交：\n- 敦煌接口「dh.online.order.place$2.0 (下单接口)」传递参数 nsPid，接口文档：https://open.dhgate.com/docs/api/detail/36c35c9cb3d0452a8991ffa6b548a689\n- 华磊接口「添加订单(UTF-8)」传递参数 invoice_nspid，接口文档：http://doc.sz56t.com:8090/doc-wiki#/page/share/view?space=23bdefb8e45248fcb5e4a98f54bb8416&pageId=232\n- 接口返回错误要求填写时，把接口返回的错误信息展示给用户，并引导到该字段填写。",
+        "hasMarkdown": false,
+        "color": "#2563EB",
+        "images": [],
+        "createdAt": 1792405124890,
+        "updatedAt": 1792407075191
+      },
+      {
+        "id": "declare-col-spid",
+        "index": 3,
+        "title": "国际标准商品编码（sPid）",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"declare-col-spid\"]"
+          ],
+          "fingerprint": "th|data-annotation-id=declare-col-spid",
+          "path": []
+        },
+        "aiPrompt": "根据该列标注说明 sPid 在下单接口中的参数传递。",
+        "annotationText": "选填项，系统不强制填写：填了按填写内容传递，没填传空值。申请运单号时随订单提交：\n- 敦煌接口「dh.online.order.place$2.0 (下单接口)」传递参数 sPid，接口文档：https://open.dhgate.com/docs/api/detail/36c35c9cb3d0452a8991ffa6b548a689\n- 华磊接口「添加订单(UTF-8)」传递参数 invoice_spid，接口文档：http://doc.sz56t.com:8090/doc-wiki#/page/share/view?space=23bdefb8e45248fcb5e4a98f54bb8416&pageId=232\n- 接口返回错误要求填写时，把接口返回的错误信息展示给用户，并引导到该字段填写。",
+        "hasMarkdown": false,
+        "color": "#2563EB",
+        "images": [],
+        "createdAt": 1792405124890,
+        "updatedAt": 1792407075191
+      },
+      {
+        "id": "declare-col-mpid",
+        "index": 4,
+        "title": "商家产品识别码（mPid）",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"declare-col-mpid\"]"
+          ],
+          "fingerprint": "th|data-annotation-id=declare-col-mpid",
+          "path": []
+        },
+        "aiPrompt": "根据该列标注说明 mPid 在下单接口中的参数传递。",
+        "annotationText": "选填项，系统不强制填写：填了按填写内容传递，没填传空值。申请运单号时随订单提交：\n- 敦煌接口「dh.online.order.place$2.0 (下单接口)」传递参数 mPid，接口文档：https://open.dhgate.com/docs/api/detail/36c35c9cb3d0452a8991ffa6b548a689\n- 华磊接口「添加订单(UTF-8)」传递参数 invoice_mpid，接口文档：http://doc.sz56t.com:8090/doc-wiki#/page/share/view?space=23bdefb8e45248fcb5e4a98f54bb8416&pageId=232\n- 接口返回错误要求填写时，把接口返回的错误信息展示给用户，并引导到该字段填写。",
+        "hasMarkdown": false,
+        "color": "#2563EB",
+        "images": [],
+        "createdAt": 1792405124890,
+        "updatedAt": 1792407075191
+      }
+    ],
+    "updatedAt": 1792406753120
+  },
+  "markdownMap": {},
+  "assetMap": {},
+  "targets": [],
+  "directory": {
+    "nodes": []
+  },
+  "documents": {
+    "nodes": []
+  }
+}

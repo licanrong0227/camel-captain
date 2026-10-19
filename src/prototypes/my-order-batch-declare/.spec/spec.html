@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>我的订单 · 批处理申报信息弹窗 · 还原主规格</title>
+  <style>
+    :root {
+      font-family:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --brand: #ff7d29;
+      --brand-ink: #d25909;
+      --brand-soft: #ffefe5;
+      --brand-surface: #fff7f0;
+      --brand-border: #ffd9bf;
+      --text: #1d2129;
+      --text-secondary: #4e5969;
+      --text-muted: #86909c;
+      --text-placeholder: #c0c5cf;
+      color: var(--text);
+      background: #f5f7fb;
+      scrollbar-gutter: stable;
+    }
+
+    * { box-sizing: border-box; }
+
+    body { margin: 0; padding: 32px 20px 64px; }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 32px;
+      padding: 18px 14px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .sidebar-title { margin: 0 8px 10px; color: var(--text-muted); font-size: 12px; font-weight: 600; }
+
+    .page-nav { display: flex; flex-direction: column; gap: 4px; }
+
+    .page-nav button {
+      width: 100%;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .page-nav button:hover,
+    .page-nav button[aria-current="page"] { color: var(--brand-ink); background: var(--brand-soft); }
+    .page-nav button[aria-current="page"] { font-weight: 600; }
+
+    main { min-width: 0; padding: 40px; border: 1px solid #dfe4ee; border-radius: 8px; background: #fff; }
+
+    h1 { margin: 0 0 8px; font-size: 22px; }
+    h2 { margin: 28px 0 12px; font-size: 17px; color: var(--text); border-left: 3px solid var(--brand); padding-left: 10px; }
+    h3 { margin: 18px 0 8px; font-size: 14px; color: var(--text-secondary); }
+    p, li { font-size: 13.5px; line-height: 1.7; color: var(--text-secondary); }
+    code { background: #f2f3f5; border-radius: 4px; padding: 1px 5px; font-size: 12.5px; }
+    .definition { color: var(--text-muted); font-size: 13px; }
+    .hint { color: var(--text-muted); font-size: 12.5px; }
+
+    .table-wrap { overflow-x: auto; margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+    th, td { border: 1px solid #e5e6eb; padding: 8px 10px; text-align: left; vertical-align: top; line-height: 1.6; }
+    th { background: #f7f8fa; color: var(--text-secondary); font-weight: 600; white-space: nowrap; }
+    td { color: var(--text-secondary); }
+    ul { margin: 6px 0; padding-left: 22px; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <p class="sidebar-title">目录</p>
+      <nav class="page-nav" aria-label="规格文档页面">
+        <button type="button" data-page-target="overview" aria-current="page">当前方案</button>
+      </nav>
+    </aside>
+
+    <main>
+      <article class="spec-page" data-spec-page="overview">
+        <h1>我的订单 · 批处理申报信息弹窗 · 还原主规格</h1>
+        <p class="definition">本文档是用户与 Agent 围绕当前原型进行方案沟通、确认和持续生成的事实依据。只维护当前有效方案，并简短记录会影响当前原型的重要用户决策和变更。</p>
+
+        <section id="current-plan">
+          <h2>当前方案</h2>
+          <ul>
+            <li><strong>原型意图：</strong>高精度还原「我的订单 - 骆驼队长BI」页面中处于打开状态的「批处理申报信息」弹窗窗体本身；背后页面不还原，仅以灰色遮罩衬托。</li>
+            <li><strong>使用场景：</strong>运营在订单列表勾选订单后批量填写海关申报信息（英文名、中文名、数量、单位价值、重量、尺寸、海关编码等）。</li>
+            <li><strong>当前表达：</strong>静态弹窗（宽约 1807px、高约 844px，随视口自适应收窄），含标题栏、工具栏（批量删除/查看重复订单）、20 列 × 10 行申报表格（横向可滚动查看完整列）、底部取消/保存按钮。</li>
+          </ul>
+        </section>
+
+        <section id="facts-inputs">
+          <h2>事实与输入</h2>
+          <h3>用户确认事实</h3>
+          <ul>
+            <li>还原范围：仅申报弹窗窗体即可，不还原背后「我的订单」页面和其他弹窗。</li>
+            <li>视觉基底：套用项目默认主题 <code>camel-captain-erp</code>（不照搬线上深色导航等遗留样式）。</li>
+            <li>交互：静态呈现，但表格必须能横向滚动查看完整列。</li>
+            <li>素材：产品信息列图片用占位即可，不引入真实商品图。</li>
+            <li>主规格格式：HTML。</li>
+          </ul>
+          <h3>参考资料</h3>
+          <ul>
+            <li>数据包 <code>AI-我的订单-骆驼队长BI-complete.zip</code>（解压于 <code>D:\Users\admin\Downloads\ai-order-bi-extract</code>）：<code>flat/styles/*.json</code> 为字号/颜色权威，<code>structure/doms.json</code> 提供弹窗子树（n2519，1165 节点）与列宽，<code>content.md</code> 提供行数据，<code>screenshot.png</code> 为视觉参考。</li>
+            <li>设计基底：<code>src/themes/camel-captain-erp/DESIGN.md</code>。</li>
+          </ul>
+          <h3>当前假设</h3>
+          <ul>
+            <li>第 5–10 行的英文名/中文名在截图中被裁切、DOM 未采集 input 值，按商品品类推断填写（如 Clogs/木屐、Boots/靴子），单位重量统一 1.00，长/宽/高统一 0。</li>
+            <li>海关编码、材质、用途输入框为空的「请输入」占位态；「特征」为多选下拉（选项：特货/金属/食物/纯电池/带电池/液体，取自 DOM 文本），未选中。</li>
+            <li>「批量删除」按钮为禁用态（DOM 中 <code>is-disabled</code>，勾选 0 项）。</li>
+          </ul>
+        </section>
+
+        <section id="prototype-scope">
+          <h2>原型范围</h2>
+          <h3>本次呈现</h3>
+          <ul>
+            <li>灰色全屏遮罩（<code>rgba(0,0,0,0.6)</code>，主题 4.6 规定）。</li>
+            <li>批处理申报信息弹窗：标题 + 右上角关闭图标、工具栏、申报表格（20 列 × 10 行）、底部取消/保存。</li>
+            <li>表格横向滚动（列总宽约 2785px &gt; 弹窗内容宽）、纵向滚动。</li>
+          </ul>
+          <h3>本次不呈现</h3>
+          <ul>
+            <li>「我的订单」主页面（导航、页签、筛选区、订单列表、分页等）。</li>
+            <li>其他弹窗（补发订单、批量处理买家信息、批量邀约采购、统一导出、批量查找等）。</li>
+            <li>任何点击交互逻辑（关闭、勾选、批量编辑、保存等均不做行为）。</li>
+          </ul>
+        </section>
+
+        <section id="pages-content">
+          <h2>页面与内容方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>页面/视图</th><th>页面作用</th><th>主要模块与内容</th><th>示例数据或素材</th><th>与其他页面的关系</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td data-label="页面/视图">批处理申报信息弹窗（唯一视图，默认打开）</td>
+                  <td data-label="页面作用">批量填写所选订单的海关申报字段</td>
+                  <td data-label="主要模块与内容">标题栏（16px/500 + 关闭）；工具栏（批量删除-禁用、查看重复订单-描边）；表格列：勾选(45)、序号(60)、平台订单号(140)、产品信息(220)、规格(140)、英文名(160,橙+翻译图标)、中文名(160,橙+翻译图标)、数量(130,橙+编辑图标)、单位价值USD(140,橙+编辑图标)、制造商产品识别码（nsPid）(180,橙,选填输入框)、国际标准商品编码（sPid）(180,橙,选填输入框)、商家产品识别码（mPid）(180,橙,选填输入框)、单位重量kg(140)、长CM(120)、宽CM(120)、高CM(120)、海关编码(130,搜索后缀)、材质(120)、用途(120)、特征(180,多选)；底部：取消(描边) + 保存(主按钮)，右对齐</td>
+                  <td data-label="示例数据或素材">10 行订单数据取自数据包 content.md（订单号 323171910636 ~ 323226396029）；商品图为灰色占位块</td>
+                  <td data-label="与其他页面的关系">独立原型，不挂接其他页面</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="interaction-states">
+          <h2>交互与状态方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr></thead>
+              <tbody>
+                <tr><td data-label="对象/场景">申报表格</td><td data-label="前置状态">弹窗打开</td><td data-label="用户操作">横向滚动</td><td data-label="原型表现">表头与表体同步横向滚动，可见全部 20 列；序号/订单号列不固定</td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">表格纵向</td><td data-label="前置状态">弹窗打开</td><td data-label="用户操作">纵向滚动</td><td data-label="原型表现">表头吸顶，10 行数据可滚动浏览</td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">关闭/按钮/输入框</td><td data-label="前置状态">—</td><td data-label="用户操作">点击</td><td data-label="原型表现">无行为（静态），input 可聚焦但不承载逻辑</td><td data-label="后续状态">不变</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>状态口径</h3>
+          <ul>
+            <li>弹窗为「已选订单进入批处理」的打开态；勾选框全部未选中，表头全选框未选中。</li>
+            <li>「批量删除」禁用态：按主题禁用色（底 <code>#F2F3F5</code>、文字 <code>#C0C5CF</code>）。</li>
+            <li>制造商产品识别码、国际标准商品编码、商家产品识别码三列为选填，默认空值占位，弹窗内不做必填校验；申请运单号时若接口返回要求填写的错误，再 toast 展示接口错误信息并引导到填写位置（详见弹窗标注）。</li>
+          </ul>
+        </section>
+
+        <section id="design-basis">
+          <h2>设计基底与原型特有调整</h2>
+          <ul>
+            <li>采用的 <code>DESIGN.md</code>：<code>src/themes/camel-captain-erp/DESIGN.md</code></li>
+            <li>继承方式：默认严格遵循（品牌橙 #FF7D29 五级色板、控件圆角 4px、字号 12/14/16、文本四级中性色、遮罩 60%、弹窗内容区 30px 填充、按钮状态矩阵）。</li>
+            <li>本原型特有调整：
+              <ul>
+                <li>表头浅橙渐变底（线上为 <code>#FFF5EF→#FFEDE0</code> 系）→ 按主题改用 brand-1 <code>#FFEFE5</code> 单色浅橙表头，文字 <code>#4E5969</code>，可批量编辑列（英文名/中文名/数量/单位价值USD）表头文字用 brand-4 <code>#FF7D29</code> 表达（对应线上橙色表头语义）。</li>
+                <li>结构、列宽、行数据、控件形态（步进器右侧上下箭头、海关编码搜索图标、特征多选）按数据包还原；线上 8px 控件圆角统一收敛为主题 4px。</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section id="open-questions">
+          <h2>当前待确认事项</h2>
+          <ul class="placeholder-list"><li>无（如第 5–10 行推断的申报名称需要修正，请在评审时批注）</li></ul>
+        </section>
+
+        <section id="decision-history">
+          <h2>用户重要决策与变更</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr></thead>
+              <tbody>
+                <tr><td data-label="日期">2026-10-19</td><td data-label="用户决策或变更">范围收敛为仅申报弹窗窗体；不还原背后页面</td><td data-label="对当前原型的影响">独立原型 + 灰遮罩呈现</td></tr>
+                <tr><td data-label="日期">2026-10-19</td><td data-label="用户决策或变更">视觉基底选择 camel-captain-erp 主题而非线上样式</td><td data-label="对当前原型的影响">颜色、圆角、字号、按钮态按主题令牌执行</td></tr>
+                <tr><td data-label="日期">2026-10-19</td><td data-label="用户决策或变更">静态呈现 + 表格横向滚动；图片用占位</td><td data-label="对当前原型的影响">不做点击交互逻辑；商品图为占位块</td></tr>
+                <tr><td data-label="日期">2026-10-19</td><td data-label="用户决策或变更">在单位价值USD与单位重量kg之间新增 nsPid/sPid/mPid 三个必填输入列（制造商产品识别码、国际标准商品编码、商家产品识别码）</td><td data-label="对当前原型的影响">表格扩为 20 列；三列表头橙色带红色 *，输入框为空占位</td></tr>
+                <tr><td data-label="日期">2026-10-19</td><td data-label="用户决策或变更">nsPid/sPid/mPid 三项由必填改为选填：填什么传什么、没填传空值，系统不强制校验；申请运单号时若接口返回要求填写的错误，再把该错误信息展示给用户</td><td data-label="对当前原型的影响">三列表头去掉红色 *；「未填完整时系统 toast 拦截」改为「接口返回要求填写的错误后再提示」，提示同时自动定位填写处的引导逻辑保留（单个订单→查看订单弹窗信息编辑页签，批量→批处理申请信息弹窗）</td></tr>
+                <tr><td data-label="日期">2026-10-19</td><td data-label="用户决策或变更">三列表头补上接口参数英文名：制造商产品识别码（nsPid）、国际标准商品编码（sPid）、商家产品识别码（mPid）</td><td data-label="对当前原型的影响">列宽由 160 加到 180 以容纳表头文字，列总宽约 2785px</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const navItems = [...document.querySelectorAll('[data-page-target]')];
+    const pages = [...document.querySelectorAll('[data-spec-page]')];
+
+    const showPage = (pageId) => {
+      for (const navItem of navItems) {
+        if (navItem.dataset.pageTarget === pageId) navItem.setAttribute('aria-current', 'page');
+        else navItem.removeAttribute('aria-current');
+      }
+      for (const page of pages) page.hidden = page.dataset.specPage !== pageId;
+    };
+
+    for (const navItem of navItems) {
+      navItem.addEventListener('click', () => showPage(navItem.dataset.pageTarget));
+    }
+  </script>
+</body>
+</html>

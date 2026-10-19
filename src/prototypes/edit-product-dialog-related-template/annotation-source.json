@@ -1,0 +1,43 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "presentation": {
+    "layerSelectors": [
+      ".emd-mask"
+    ]
+  },
+  "data": {
+    "version": 3,
+    "prototypeName": "edit-product-dialog-related-template",
+    "pageId": "edit-product-dialog-related-template",
+    "nodes": [
+      {
+        "id": "product-template-api",
+        "index": 1,
+        "title": "产品模板数据来源与接口",
+        "pageId": "edit-product-dialog-related-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"product-template-api\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=product-template-api",
+          "path": [
+            "body > div > div > div > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > section:nth-of-type(1) > span:nth-of-type(11)"
+          ]
+        },
+        "aiPrompt": "根据标注正文说明产品模板下拉框的数据来源接口，以及新增/修改关联产品模板调用的接口。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#33C276",
+        "images": [],
+        "createdAt": 1792394823395,
+        "updatedAt": 1792394823395
+      }
+    ],
+    "updatedAt": "2026-10-19T07:27:25.548Z"
+  },
+  "markdownMap": {
+    "product-template-api": "**数据来源：** 产品模板下拉选项的数据从「dh.relmodel.pageget$2.0（卖家获取关联产品模板详细信息）」接口同步，接口返回的「`relModelList>modelName`」即为产品名称，展示在「请选择产品模板」下拉框中。\n\n**新增/修改：** 新增关联产品模板调用「dh.relmodel.add$2.0（卖家增加关联产品模板信息接口）」；修改关联产品模板调用「dh.relmodel.modify$2.0（卖家修改关联产品模板信息接口）」。\n\n页面右侧「同步」按钮用于触发从 pageget 接口重新拉取模板列表。"
+  },
+  "assetMap": {}
+}

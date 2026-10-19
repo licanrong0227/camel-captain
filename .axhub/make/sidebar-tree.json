@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-17T08:11:17.053Z",
+  "updatedAt": "2026-10-19T08:34:04.334Z",
   "prototypes": [
     {
       "id": "item:prototypes:shopify-integration",
@@ -102,6 +102,24 @@
               "kind": "item",
               "title": "更新发布弹窗-循环刊登策略",
               "itemKey": "prototypes/update-publish-dialog"
+            },
+            {
+              "id": "item:prototypes:edit-product-dialog-related-template",
+              "kind": "item",
+              "title": "编辑产品弹窗 - 新增关联产品模板",
+              "itemKey": "prototypes/edit-product-dialog-related-template"
+            },
+            {
+              "id": "item:prototypes:auto-edit-dialog-copy2",
+              "kind": "item",
+              "title": "自动编辑弹窗 - 多项功能调整",
+              "itemKey": "prototypes/auto-edit-dialog-copy2"
+            },
+            {
+              "id": "item:prototypes:my-order-batch-declare",
+              "kind": "item",
+              "title": "我的订单 · 批处理申报信息弹窗 · 新增申报参数",
+              "itemKey": "prototypes/my-order-batch-declare"
             }
           ]
         },

@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "edit-product-dialog-related-template",
+    "targetPath": "prototypes/edit-product-dialog-related-template",
+    "filePath": ".axhub/make/comments/4a73ea6071de1f63691046b05fb555086ff64af764ab7471f85ac4e6b913f156.json"
+  },
+  "comments": [
+    {
+      "elementKey": "span_1",
+      "label": "span(\"请选择产品模板\")",
+      "locator": {
+        "selectors": [
+          ".emt-select--product",
+          "body > div > div > div > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > section:nth-of-type(1) > span:nth-of-type(11)",
+          "#root div > div > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > section:nth-of-type(1) > span:nth-of-type(11)"
+        ],
+        "fingerprint": "span|class=emt-select.emt-select--tall.emt-select--svc.emt-select--product.emt-select--ph|text=请选择产品模板",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          6,
+          0,
+          1,
+          0,
+          12
+        ]
+      },
+      "skillIds": [
+        "prototype-annotation"
+      ],
+      "marker": {
+        "clientX": 1471,
+        "clientY": 427,
+        "documentX": 1471,
+        "documentY": 427,
+        "xPercent": 76.93514644351464,
+        "y": 427,
+        "isFixed": true,
+        "offsetX": 213,
+        "offsetY": 15,
+        "dirtySince": 1792394706166
+      },
+      "id": "b54519d9-aa54-4548-afbd-e64d3ca6b982",
+      "state": "idle",
+      "comment": "新增标注：\n产品模板数据从「dh.relmodel.pageget$2.0（卖家获取关联产品模板详细信息）」接口同步，「relModelList>modelName」就是产品名称\n新增关联产品模板调用「dh.relmodel.add$2.0（卖家增加关联产品模板信息接口）」「dh.relmodel.modify$2.0（卖家修改关联产品模板信息接口）」",
+      "pageScope": "/prototypes/edit-product-dialog-related-template",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null,
+      "author": null,
+      "readOnly": false
+    }
+  ],
+  "images": []
+}

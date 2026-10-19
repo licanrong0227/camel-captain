@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 import dhBadge from '../assets/dh-badge.png';
+import iconDhgate from '../assets/icon-dhgate.png';
+import iconShopify from '../assets/icon-shopify.png';
 import thumb1 from '../assets/order-thumb-1.jpg';
 import thumb2 from '../assets/order-thumb-2.jpg';
 import thumb3 from '../assets/order-thumb-3.jpg';
@@ -187,15 +189,6 @@ const ROWS: OrderRow[] = [
   },
 ];
 
-const TIME_TIP_LINES = [
-  { label: '创建', desc: '订单在ERP中创建订单的时间' },
-  { label: '付款', desc: '平台买家支付订单的时间' },
-  { label: '审核', desc: '订单在ERP（本系统）审核订单的时间' },
-  { label: '采购', desc: '订单下的所有采购单（代发采购）的最晚的时间', hot: true },
-  { label: '单号', desc: '国际运单号的创建时间' },
-  { label: '发货', desc: '订单在后台显示的发货时间' },
-];
-
 const BATCH_BUTTONS = ['一键出库', '处理申报信息', '修改买家邮箱', '修改买家信息', '修改物流渠道', '提交到平台', '标记', '同步订单详情', '邀约采购', '删除'];
 
 function IconSearch() {
@@ -261,21 +254,93 @@ function IconGear() {
   );
 }
 
-function TimeTip({ open }: { open: boolean }) {
-  if (!open) return null;
+const ORDER_PLATFORMS = [
+  { id: 'dhgate', label: '敦煌网', icon: iconDhgate },
+  { id: 'shopify', label: 'shopify', icon: iconShopify },
+];
+
+const ORDER_STORES: { platform: string; name: string }[] = [
+  { platform: 'dhgate', name: 'sneakerhub8' },
+  { platform: 'dhgate', name: '鞋子' },
+  { platform: 'dhgate', name: 'bag' },
+  { platform: 'shopify', name: 'camel-captain' },
+  { platform: 'shopify', name: 'camel-outlet' },
+];
+
+interface DropdownOption {
+  id: string;
+  label: string;
+  icon?: string;
+}
+
+function Dropdown({
+  options,
+  value,
+  placeholder,
+  className,
+  annotationId,
+  onChange,
+}: {
+  options: DropdownOption[];
+  value: string;
+  placeholder: string;
+  className: string;
+  annotationId?: string;
+  onChange: (id: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const current = options.find((option) => option.id === value);
+
   return (
-    <div className="so-tip">
-      {TIME_TIP_LINES.map((line) => (
-        <div key={line.label} className={'so-tip-line' + (line.hot ? ' is-hot' : '')}>
-          {line.desc}
-        </div>
-      ))}
+    <div
+      className={'so-select ' + className}
+      {...(annotationId ? { 'data-annotation-id': annotationId } : {})}
+      onClick={() => setOpen((prev) => !prev)}
+    >
+      <span className={current ? undefined : 'so-ph'}>{current ? current.label : placeholder}</span>
+      <img src={icChevronDown} alt="" />
+      {open && (
+        <>
+          <span
+            className="so-menu-mask"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(false);
+            }}
+          />
+          <div className="so-menu">
+            {options.map((option) => (
+              <div
+                key={option.id}
+                className={'so-menu__item' + (option.id === value ? ' is-active' : '')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onChange(option.id);
+                  setOpen(false);
+                }}
+              >
+                {option.icon && <img className="so-menu__icon" src={option.icon} alt="" />}
+                {option.label}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
 export default function MyOrdersPage() {
-  const [tipOpen, setTipOpen] = useState(false);
+  const [platform, setPlatform] = useState('');
+  const [store, setStore] = useState('');
+
+  const platformOptions: DropdownOption[] = [
+    { id: '', label: '全部平台' },
+    ...ORDER_PLATFORMS.map((item) => ({ id: item.id, label: item.label, icon: item.icon })),
+  ];
+  const storeOptions: DropdownOption[] = ORDER_STORES.filter((item) => platform === '' || item.platform === platform).map(
+    (item) => ({ id: item.name, label: item.name }),
+  );
 
   return (
     <div className="so-root">
@@ -288,11 +353,26 @@ export default function MyOrdersPage() {
       </div>
 
       <div className="so-filter">
+        <span className="so-label">平台名称</span>
+        <Dropdown
+          className="so-select-platform"
+          options={platformOptions}
+          value={platform}
+          placeholder="全部平台"
+          onChange={(id) => {
+            setPlatform(id);
+            setStore('');
+          }}
+        />
         <span className="so-label">店铺名称</span>
-        <div className="so-select so-select-store">
-          <span className="so-ph">搜索/选择店铺</span>
-          <img src={icChevronDown} alt="" />
-        </div>
+        <Dropdown
+          className="so-select-store"
+          annotationId="mo-filter-store"
+          options={storeOptions}
+          value={store}
+          placeholder="搜索/选择店铺"
+          onChange={setStore}
+        />
         <div className="so-select so-select-field">
           <span>平台订单号</span>
           <img src={icChevronDown} alt="" />
@@ -343,14 +423,7 @@ export default function MyOrdersPage() {
               <th className="so-th-left">订单号/状态</th>
               <th className="so-th-left">产品信息</th>
               <th className="so-th-left">买家信息</th>
-              <th
-                className="so-th-left so-th-times"
-                onMouseEnter={() => setTipOpen(true)}
-                onMouseLeave={() => setTipOpen(false)}
-              >
-                时间节点
-                <TimeTip open={tipOpen} />
-              </th>
+              <th className="so-th-left">时间节点</th>
               <th className="so-th-left">发货过程预警</th>
               <th className="so-th-left">物流信息</th>
               <th className="so-th-left">数据</th>

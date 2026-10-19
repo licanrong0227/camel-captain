@@ -1,0 +1,761 @@
+/* ============ 编辑产品弹窗 - 新增关联产品模板 ============
+   弹窗外壳参照 edit-product-dialog-media，内容区按源截图 1729x830 逐像素实测，纯样式无交互。 */
+
+:root {
+  --emd-primary: #ff781f;
+  --emd-text-primary: #303133;
+  --emd-text-regular: #606266;
+  --emd-text-secondary: #909399;
+  --emd-text-placeholder: #c0c4cc;
+  --emd-border: #dcdfe6;
+  --emd-divider: #ebeef5;
+  --emd-danger: #ff4949;
+  --emd-blue: #409eff;
+  --emd-active-bg: #fffaf5;
+  --emd-active-border: #ffb366;
+  --emd-mask: #7f7f7f;
+  --emd-font: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", Arial, sans-serif;
+}
+
+.emd-mask,
+.emd-mask * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.emd-mask {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 4px;
+  overflow: hidden;
+  background: var(--emd-mask);
+  font-family: var(--emd-font);
+  color: var(--emd-text-primary);
+}
+
+.emd-dialog {
+  position: relative;
+  width: 1720px;
+  height: 822px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+/* ---------- 头部 ---------- */
+
+.emd-dialog__title {
+  position: absolute;
+  left: 19px;
+  top: 18px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--emd-text-primary);
+}
+
+.emd-dialog__close {
+  position: absolute;
+  left: 1687px;
+  top: 23px;
+  width: 15px;
+  height: 15px;
+}
+
+/* ---------- 左侧商品列表 ---------- */
+
+.emd-list {
+  position: absolute;
+  left: 20px;
+  top: 68px;
+  width: 220px;
+  list-style: none;
+}
+
+.emd-item {
+  position: relative;
+  height: 62px;
+}
+
+.emd-item__card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 58px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+.emd-item--active .emd-item__card {
+  border-color: var(--emd-active-border);
+  background: var(--emd-active-bg);
+}
+
+.emd-item__thumb {
+  position: absolute;
+  left: 9px;
+  top: 9px;
+  width: 40px;
+  height: 40px;
+  display: block;
+  object-fit: cover;
+}
+
+.emd-item__title {
+  position: absolute;
+  left: 57px;
+  top: 11px;
+  width: 155px;
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--emd-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emd-item__foot {
+  position: absolute;
+  left: 67px;
+  top: 33px;
+  width: 145px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.emd-item__status {
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--emd-text-secondary);
+}
+
+.emd-item__actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+}
+
+.emd-item__action {
+  display: none;
+}
+
+.emd-item--active .emd-item__action {
+  display: block;
+}
+
+.emd-item__action img {
+  display: block;
+}
+
+/* ---------- 分页 ---------- */
+
+.emd-pager {
+  position: absolute;
+  left: 94px;
+  top: 696px;
+  display: flex;
+  gap: 16px;
+}
+
+.emd-pager__btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e4e7ed;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.emd-pager__btn--next {
+  border-color: var(--emd-blue);
+}
+
+/* ---------- 基本 / 详情 / 日志 标签 ---------- */
+
+.emd-tabs {
+  position: absolute;
+  left: 250px;
+  top: 66px;
+  display: flex;
+  align-items: center;
+  height: 24px;
+}
+
+.emd-tabs__collapse {
+  width: 14px;
+  height: 16px;
+  display: block;
+}
+
+.emd-tabs__item {
+  margin-left: 11px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--emd-text-regular);
+}
+
+.emd-tabs__item--active {
+  color: var(--emd-primary);
+}
+
+.emd-tabs__divider {
+  width: 1px;
+  height: 12px;
+  margin-left: 11px;
+  background: var(--emd-border);
+}
+
+.emd-tabs__divider + .emd-tabs__item {
+  margin-left: 12px;
+}
+
+/* ---------- 分区菜单 ---------- */
+
+.emd-menu {
+  position: absolute;
+  left: 266px;
+  top: 96px;
+  width: 152px;
+}
+
+.emd-menu__item {
+  position: relative;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.emd-menu__icon {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.emd-menu__label {
+  margin-left: 10px;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--emd-text-regular);
+}
+
+.emd-menu__item--active .emd-menu__label {
+  font-weight: 500;
+  color: var(--emd-primary);
+}
+
+.emd-menu__bar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 4px;
+  height: 40px;
+  border-radius: 2px;
+  background: var(--emd-primary);
+}
+
+/* ---------- 内容区 ---------- */
+
+.emd-editor {
+  position: absolute;
+  left: 418px;
+  top: 107px;
+  width: 1282px;
+  height: 659px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.emt-cols {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  width: 1258px;
+}
+
+.emt-col {
+  position: absolute;
+  top: 0;
+  width: 618px;
+}
+
+.emt-col--l { left: 0; }
+.emt-col--r { left: 642px; }
+
+.emt-card {
+  position: relative;
+  margin-top: 13px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.emt-col .emt-card:first-child {
+  margin-top: 0;
+}
+
+.emt-card--sale { height: 468px; }
+.emt-card--service { height: 511px; }
+
+.emt-card--weight,
+.emt-card--source { height: 250px; }
+
+.emt-title {
+  position: absolute;
+  left: 20px;
+  top: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 22px;
+  color: var(--emd-text-primary);
+}
+
+.emt-title__star {
+  color: var(--emd-danger);
+}
+
+.emt-counter {
+  position: absolute;
+  top: 13px;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--emd-text-secondary);
+}
+
+.emt-hr {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 46px;
+  height: 1px;
+  background: var(--emd-divider);
+}
+
+/* ---------- 表单行 ---------- */
+
+.emt-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 24px;
+}
+
+.emt-label {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  height: 24px;
+  line-height: 24px;
+  font-size: 14px;
+  color: var(--emd-text-regular);
+  white-space: nowrap;
+}
+
+.emt-label__star {
+  color: var(--emd-danger);
+  margin-right: 1px;
+}
+
+.emt-select {
+  position: absolute;
+  height: 24px;
+  line-height: 22px;
+  padding: 0 24px 0 8px;
+  border: 1px solid var(--emd-border);
+  border-radius: 4px;
+  background: #fff;
+  font-size: 14px;
+  color: var(--emd-text-regular);
+  white-space: nowrap;
+}
+
+.emt-select::after {
+  content: "";
+  position: absolute;
+  right: 8px;
+  top: 9px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--emd-text-placeholder);
+}
+
+.emt-select--ph {
+  color: var(--emd-text-placeholder);
+}
+
+.emt-select--tall {
+  height: 28px;
+  line-height: 26px;
+}
+
+.emt-select--warn {
+  border-color: var(--emd-primary);
+}
+
+.emt-input {
+  position: absolute;
+  height: 32px;
+  line-height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--emd-border);
+  border-radius: 4px;
+  background: #fff;
+  font-size: 14px;
+  color: var(--emd-text-regular);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* ---------- 单选 ---------- */
+
+.emt-radios {
+  position: absolute;
+  top: 0;
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.emt-radio {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  margin-right: 32px;
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--emd-text-regular);
+  white-space: nowrap;
+}
+
+.emt-radio__dot {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  border: 1px solid var(--emd-border);
+  border-radius: 50%;
+  background: #fff;
+}
+
+.emt-radio--on {
+  color: var(--emd-primary);
+}
+
+.emt-radio--on .emt-radio__dot {
+  border-color: var(--emd-primary);
+}
+
+.emt-radio--on .emt-radio__dot::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--emd-primary);
+}
+
+/* ---------- 步进器 ---------- */
+
+.emt-step {
+  position: absolute;
+  top: 0;
+  height: 24px;
+  display: flex;
+  border: 1px solid var(--emd-border);
+  border-radius: 4px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.emt-step__btn {
+  width: 32px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f7fa;
+  font-size: 14px;
+  color: var(--emd-text-regular);
+}
+
+.emt-step__btn--minus {
+  border-right: 1px solid var(--emd-border);
+}
+
+.emt-step__btn--plus {
+  border-left: 1px solid var(--emd-border);
+}
+
+.emt-step__val {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--emd-text-regular);
+}
+
+.emt-unit {
+  position: absolute;
+  top: 0;
+  height: 24px;
+  line-height: 24px;
+  font-size: 14px;
+  color: var(--emd-text-regular);
+  white-space: nowrap;
+}
+
+.emt-hint {
+  position: absolute;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--emd-text-secondary);
+  white-space: nowrap;
+}
+
+.emt-hint--wrap {
+  white-space: normal;
+}
+
+.emt-count {
+  position: absolute;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--emd-text-secondary);
+}
+
+/* ---------- 按钮 ---------- */
+
+.emt-btn-add {
+  position: absolute;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 14px;
+  border-radius: 4px;
+  background: var(--emd-primary);
+  font-size: 14px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.emt-btn-sync {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--emd-primary);
+  border-radius: 4px;
+  background: #fff;
+  font-size: 14px;
+  color: var(--emd-primary);
+}
+
+.emt-btn-icon {
+  position: absolute;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.emt-btn-icon--link {
+  width: 32px;
+  background: var(--emd-primary);
+}
+
+.emt-btn-icon--trash {
+  width: 28px;
+  border: 1px solid var(--emd-active-border);
+  background: #fff;
+}
+
+/* ---------- 开关 ---------- */
+
+.emt-switch {
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  border-radius: 10px;
+  background: var(--emd-border);
+}
+
+.emt-switch::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* ---------- 装饰滚动条 ---------- */
+
+.emt-scroll {
+  position: absolute;
+  right: 2px;
+  top: 8px;
+  bottom: 8px;
+  width: 4px;
+  border-radius: 2px;
+  background: #f1f1f1;
+}
+
+.emt-scroll__thumb {
+  position: absolute;
+  left: 0;
+  top: 512px;
+  width: 4px;
+  height: 118px;
+  border-radius: 2px;
+  background: #d0d0d0;
+}
+
+/* ---------- 底部操作栏 ---------- */
+
+.emd-footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 0 0 8px 8px;
+  background: #fff;
+}
+
+.emd-btn {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 14px;
+}
+
+.emd-btn--plain {
+  width: 74px;
+  border: 1px solid var(--emd-primary);
+  background: #fff;
+  color: var(--emd-primary);
+  letter-spacing: 4px;
+}
+
+.emd-btn--primary {
+  width: 74px;
+  border: 1px solid var(--emd-primary);
+  background: var(--emd-primary);
+  color: #fff;
+  letter-spacing: 4px;
+}
+
+.emd-btn--publish {
+  width: 112px;
+  border: 1px solid var(--emd-primary);
+  background: var(--emd-primary);
+  color: #fff;
+}
+
+/* ---------- 精确落位（源自 1729x830 实测，卡片内相对坐标） ---------- */
+
+/* 销售方案卡 */
+.emt-row--sale1 { top: 77px; }
+.emt-row--sale2 { top: 132px; }
+.emt-row--sale3 { top: 174px; }
+.emt-row--sale4 { top: 230px; }
+.emt-row--sale5 { top: 285px; }
+.emt-row--sale6 { top: 343px; }
+.emt-row--sale7 { top: 415px; }
+
+.emt-select--unit { left: 130px; width: 119px; }
+.emt-label--way { left: 259px; }
+.emt-label__star--way { position: absolute; left: 245px; top: 0; line-height: 24px; font-size: 14px; color: var(--emd-danger); }
+.emt-radios--way { left: 360px; }
+.emt-radios--stock { left: 130px; }
+.emt-radios--deduct { left: 130px; gap: 24px; }
+.emt-radios--deduct .emt-radio { margin-right: 0; }
+.emt-select--area { left: 130px; width: 219px; }
+.emt-btn-add--area { left: 358px; top: -2px; }
+.emt-count--area { left: 444px; top: 5px; }
+.emt-step--period { left: 130px; }
+.emt-step--period .emt-step__val { width: 64px; }
+.emt-unit--day { left: 274px; }
+.emt-hint--period { left: 293px; top: 4px; }
+.emt-step--price { left: 130px; }
+.emt-step--price .emt-step__val { width: 80px; }
+.emt-hint--price { left: 284px; top: -18px; width: 210px; }
+.emt-btn-add--price { left: 495px; top: -2px; }
+.emt-count--price { left: 584px; top: 5px; }
+.emt-select--valid { left: 130px; width: 119px; }
+
+/* 重量/包装卡 */
+.emt-row--w1 { top: 76px; }
+.emt-row--w2 { top: 131px; }
+.emt-step--wweight { left: 130px; }
+.emt-step--wweight .emt-step__val { width: 94px; }
+.emt-unit--kg { left: 300px; }
+.emt-switch--custom { left: 359px; top: 2px; }
+.emt-label--custom { left: 410px; }
+.emt-step--wlen { left: 130px; }
+.emt-step--wlen .emt-step__val { width: 54px; }
+.emt-unit--len { left: 257px; }
+.emt-step--wwid { left: 313px; }
+.emt-step--wwid .emt-step__val { width: 54px; }
+.emt-unit--wid { left: 440px; }
+
+/* 服务卡 */
+.emt-row--svc1 { top: 76px; }
+.emt-radios--grade { left: 116px; }
+.emt-radios--grade .emt-radio { margin-right: 24px; }
+.emt-select--svc { left: 90px; width: 505px; }
+.emt-select--grp { top: 117px; }
+.emt-select--freight { top: 160px; }
+.emt-select--after { top: 203px; }
+.emt-select--size { top: 246px; }
+.emt-select--product { top: 289px; }
+.emt-label--grp { top: 119px; }
+.emt-label--freight { top: 162px; }
+.emt-label--after { top: 205px; }
+.emt-label--size { top: 248px; }
+.emt-label--product { top: 291px; }
+.emt-btn-sync { top: 329px; }
+
+/* 货源/系统信息卡 */
+.emt-counter--source { left: 152px; }
+.emt-row--src1 { top: 60px; height: 32px; }
+.emt-label--src1 { line-height: 32px; }
+.emt-select--src { left: 76px; width: 139px; top: 4px; }
+.emt-input--url { left: 224px; top: 0; width: 275px; }
+.emt-btn-icon--link { left: 508px; top: 0; }
+.emt-btn-icon--trash { left: 570px; top: 0; }
+.emt-btn-add--src { left: 20px; top: 101px; height: 27px; }
+.emt-row--psku { top: 147px; }
+.emt-input--psku { left: 76px; top: 0; width: 319px; height: 24px; line-height: 22px; }

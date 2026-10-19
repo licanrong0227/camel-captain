@@ -1,0 +1,394 @@
+/* 我的订单 - 批处理申报信息（设计基底：camel-captain-erp） */
+
+.mobd-root {
+  --brand-1: #ffefe5;
+  --brand-2: #ffd9bf;
+  --brand-3: #ff9148;
+  --brand-4: #ff7d29;
+  --brand-5: #d25909;
+  --danger-4: #f44837;
+  --info-4: #2881ff;
+  --neutral-1: #f7f8fa;
+  --neutral-2: #f2f3f5;
+  --neutral-3: #ebeef5;
+  --neutral-4: #e5e6eb;
+  --neutral-5: #c0c5cf;
+  --neutral-6: #86909c;
+  --neutral-7: #4e5969;
+  --neutral-8: #1d2129;
+  position: fixed;
+  inset: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+  color: var(--neutral-8);
+}
+
+.mobd-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 52px 48px 40px;
+  overflow: auto;
+}
+
+.mobd-dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(1807px, 100%);
+  max-height: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(29, 33, 41, 0.16);
+}
+
+/* ---------- header ---------- */
+
+.mobd-dialog__header {
+  position: relative;
+  flex: none;
+  padding: 20px 20px 10px;
+}
+
+.mobd-dialog__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--neutral-8);
+}
+
+.mobd-dialog__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--neutral-6);
+  cursor: pointer;
+}
+
+/* ---------- body ---------- */
+
+.mobd-dialog__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 30px 30px;
+}
+
+.mobd-toolbar {
+  flex: none;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.mobd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.mobd-btn--danger {
+  background: var(--neutral-2);
+  border: 1px solid var(--neutral-2);
+  color: var(--neutral-5);
+  cursor: not-allowed;
+}
+
+.mobd-btn--outline {
+  background: #fff;
+  border: 1px solid var(--brand-4);
+  color: var(--brand-4);
+}
+
+.mobd-btn--medium {
+  height: 42px;
+  padding: 0 24px;
+}
+
+.mobd-btn--default {
+  background: #fff;
+  border: 1px solid var(--neutral-4);
+  color: var(--neutral-8);
+}
+
+.mobd-btn--primary {
+  background: var(--brand-4);
+  border: 1px solid var(--brand-4);
+  color: #fff;
+}
+
+/* ---------- table ---------- */
+
+.mobd-table-frame {
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--neutral-4);
+  border-radius: 4px;
+  overflow: auto;
+}
+
+.mobd-table-scroll {
+  min-width: 2715px;
+}
+
+.mobd-table {
+  width: 2715px;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  font-size: 12px;
+  color: var(--neutral-8);
+}
+
+.mobd-th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  height: 40px;
+  padding: 0;
+  background: var(--brand-1);
+  border-right: 1px solid var(--neutral-4);
+  border-bottom: 1px solid var(--neutral-4);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--neutral-7);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.mobd-th:last-child {
+  border-right: 0;
+}
+
+.mobd-th--center {
+  text-align: center;
+}
+
+.mobd-th--selection {
+  border-top-left-radius: 3px;
+}
+
+.mobd-th--editable {
+  color: var(--brand-4);
+}
+
+.mobd-batch-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mobd-translate-icon {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--info-4);
+}
+
+
+.mobd-th .mobd-cell {
+  display: flex;
+  align-items: center;
+  justify-content: inherit;
+}
+
+.mobd-th--center .mobd-cell {
+  justify-content: center;
+}
+
+.mobd-tr:nth-child(even) .mobd-td {
+  background: #fff;
+}
+
+.mobd-td {
+  height: 138px;
+  padding: 0;
+  border-right: 1px solid var(--neutral-3);
+  border-bottom: 1px solid var(--neutral-3);
+  vertical-align: middle;
+}
+
+.mobd-td:last-child {
+  border-right: 0;
+}
+
+.mobd-tr:last-child .mobd-td {
+  border-bottom: 0;
+}
+
+.mobd-td--center {
+  text-align: center;
+}
+
+.mobd-td .mobd-cell {
+  display: flex;
+  align-items: center;
+}
+
+.mobd-td--center .mobd-cell {
+  justify-content: center;
+}
+
+.mobd-cell {
+  padding: 10px;
+  line-height: 20px;
+}
+
+.mobd-cell--num {
+  font-variant-numeric: tabular-nums;
+}
+
+.mobd-cell--ellipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobd-cell--product {
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.mobd-thumb {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  margin-top: 10px;
+  background: var(--neutral-2);
+  border-radius: 4px;
+  color: var(--neutral-5);
+}
+
+.mobd-product-name {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--neutral-8);
+}
+
+/* ---------- checkbox ---------- */
+
+.mobd-checkbox {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border: 1px solid var(--neutral-5);
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+/* ---------- inputs ---------- */
+
+.mobd-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 32px;
+  padding: 0 12px;
+  background: #fff;
+  border: 1px solid var(--neutral-4);
+  border-radius: 4px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--neutral-8);
+}
+
+.mobd-input::placeholder {
+  color: var(--neutral-6);
+}
+
+.mobd-input-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.mobd-input--suffix {
+  padding-right: 32px;
+}
+
+.mobd-input__suffix {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  display: inline-flex;
+  transform: translateY(-50%);
+  color: var(--neutral-5);
+}
+
+/* ---------- input number ---------- */
+
+.mobd-input-number {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.mobd-input-number__inner {
+  padding-right: 38px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.mobd-input-number__controls {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  display: flex;
+  flex-direction: column;
+  width: 26px;
+  border-left: 1px solid var(--neutral-4);
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  overflow: hidden;
+}
+
+.mobd-input-number__increase,
+.mobd-input-number__decrease {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--neutral-1);
+  color: var(--neutral-7);
+}
+
+.mobd-input-number__decrease {
+  border-top: 1px solid var(--neutral-4);
+}
+
+/* ---------- footer ---------- */
+
+.mobd-dialog__footer {
+  flex: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 10px 30px 20px;
+}

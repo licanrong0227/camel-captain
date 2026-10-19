@@ -202,6 +202,34 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
     firstPublished: '2026-10-15T08:53:01.479Z',
     url: 'https://licanrong0227.github.io/camel-captain/update-publish-dialog/',
   },
+  {
+    name: '自动编辑弹窗 - 多项功能调整',
+    id: 'auto-edit-dialog-copy2',
+    summary: [
+      '在批量编辑弹窗基础上扩展左侧编辑模块：关键词、短描、产品特性、类目、标题、标签、关联产品模板、主图、推广图、视频、SKU、属性、品牌等',
+      '新增「新增短描」，最多添加 5 个短描；未勾选产品特性时也可直接点选启用该行',
+      '关联产品模板：同步、新增/修改产品，每模板最多 6 个展示位，展示位已满时「新增产品」置灰',
+      '图片处理多选时按「转白底 → 去水印 → 图片翻译 → 加水印」顺序依次执行',
+      '「确定」时校验水印完整性：文字水印需已填文字、图片水印需已上传图片',
+      '勾选品牌但未填名称则保留原值；商品规格值沿用编辑产品批量编辑逻辑（追加文本/清空默认处理全部规格）',
+    ],
+    firstPublished: '2026-10-19T07:34:45.253Z',
+    url: 'https://licanrong0227.github.io/camel-captain/auto-edit-dialog-copy2/',
+  },
+  {
+    name: '我的订单 · 批处理申报信息弹窗 · 新增申报参数',
+    id: 'my-order-batch-declare',
+    summary: [
+      '高精度还原「我的订单」页处于打开状态的「批处理申报信息」弹窗，背后页面不还原，仅灰色遮罩衬托',
+      '弹窗含标题栏、工具栏（批量删除-禁用态、查看重复订单）与底部取消/保存按钮',
+      '20 列 × 10 行申报表格：英文名/中文名/数量/单位价值USD 等可批量编辑列表头标橙',
+      'nsPid/sPid/mPid 三个识别码列为选填占位，接口要求填写报错时再提示并引导定位填写处',
+      '表格横向、纵向均可滚动，表头吸顶，列总宽超出弹窗宽度',
+      '静态呈现，不实现点击行为；商品图为占位块',
+    ],
+    firstPublished: '2026-10-19T10:27:40.425Z',
+    url: 'https://licanrong0227.github.io/camel-captain/my-order-batch-declare/',
+  },
 ];
 
 const TIME_FORMATTER = new Intl.DateTimeFormat('zh-CN', {
