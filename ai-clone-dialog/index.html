@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AI克隆弹窗 - 我的商品</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    html, body {
+      box-sizing: border-box;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    #root {
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      height: 100%;
+      min-height: 100vh;
+      overflow: visible;
+    }
+    body.is-element-page #root {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+  <style>
+:root{--acd-blue: #4096ff;--acd-blue-hover: #66b1ff;--acd-orange: #ff781f;--acd-orange-hover: #ff8b3f;--acd-text-primary: #303133;--acd-text-regular: #606266;--acd-text-secondary: #909399;--acd-text-placeholder: #c0c4cc;--acd-border: #dcdfe6;--acd-panel-bg: #f5f7fa;--acd-font: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif}.acd-page{min-height:100vh;margin:0;background:#fff;font-family:var(--acd-font)}.acd-reopen{position:absolute;top:40px;left:40px;padding:10px 20px;font:14px/1 var(--acd-font);color:#fff;background:var(--acd-orange);border:1px solid var(--acd-orange);border-radius:8px;cursor:pointer}.acd-overlay{position:fixed;inset:0;z-index:1000;overflow:auto;background:#00000080;font-family:var(--acd-font)}.acd-dialog{position:relative;box-sizing:border-box;width:720px;max-width:calc(100vw - 32px);margin:15vh auto 50px;background:#fff;border-radius:6px;box-shadow:0 1px 3px #0000004d}.acd-dialog__header{padding:20px 20px 10px}.acd-dialog__title{color:var(--acd-text-primary);font-size:18px;font-weight:400;line-height:24px}.acd-dialog__close{position:absolute;top:20px;right:20px;display:flex;align-items:center;justify-content:center;width:16px;height:16px;padding:0;color:var(--acd-text-secondary);background:none;border:0;cursor:pointer}.acd-dialog__close:hover{color:var(--acd-blue)}.acd-dialog__body{padding:30px 20px;color:var(--acd-text-regular);font-size:14px}.acd-modal{min-height:360px}.acd-section{margin-bottom:24px}.acd-section__title{display:flex;align-items:center;margin-bottom:12px;color:var(--acd-text-primary);font-size:15px;font-weight:600;line-height:20px}.acd-step{flex:none;width:20px;height:20px;margin-right:8px;color:#fff;font-size:12px;font-weight:600;line-height:20px;text-align:center;background:var(--acd-blue);border-radius:50%}.acd-mode{display:flex;align-items:center;gap:24px;margin-bottom:12px}.acd-radio{position:relative;display:inline-flex;align-items:center;color:var(--acd-text-regular);font-size:14px;cursor:pointer;user-select:none}.acd-radio__input{position:absolute;width:0;height:0;margin:0;opacity:0;pointer-events:none}.acd-radio__box{position:relative;flex:none;box-sizing:border-box;width:14px;height:14px;background:#fff;border:1px solid var(--acd-border);border-radius:50%;transition:background-color .15s,border-color .15s}.acd-radio__box:after{position:absolute;top:4px;left:4px;width:4px;height:4px;background:#fff;border-radius:50%;transform:scale(0);transition:transform .15s;content:""}.acd-radio__input:checked+.acd-radio__box{background:var(--acd-blue);border-color:var(--acd-blue)}.acd-radio__input:checked+.acd-radio__box:after{transform:scale(1)}.acd-radio__text{padding-left:10px;line-height:19px}.acd-radio.is-checked{color:var(--acd-blue)}.acd-search{position:relative;display:block;margin-bottom:12px}.acd-search__icon{position:absolute;top:0;left:5px;display:flex;align-items:center;justify-content:center;width:25px;height:32px;color:var(--acd-text-placeholder);pointer-events:none}.acd-search__inner{box-sizing:border-box;width:100%;height:32px;padding:0 30px;color:var(--acd-text-regular);font:13px/32px var(--acd-font);background:#fff;border:1px solid var(--acd-border);border-radius:8px;outline:none}.acd-search__inner::placeholder{color:var(--acd-text-regular)}.acd-search__inner:focus{border-color:var(--acd-blue)}.acd-panel{box-sizing:border-box;padding:12px 14px 14px;background:var(--acd-panel-bg);border-radius:8px}.acd-panel--origin{color:var(--acd-text-regular);font-size:13px;line-height:20px}.acd-panel__head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;color:var(--acd-text-primary);font-size:13px;line-height:19px}.acd-group{display:flex;flex-wrap:wrap;gap:10px;max-height:224px;overflow-y:auto}.acd-group__empty{color:var(--acd-text-secondary);font-size:13px;line-height:31px}.acd-check{position:relative;display:inline-flex;align-items:center;color:var(--acd-text-regular);font-size:14px;cursor:pointer;user-select:none}.acd-check__input{position:absolute;width:0;height:0;margin:0;opacity:0;pointer-events:none}.acd-check__box{position:relative;flex:none;box-sizing:border-box;width:14px;height:14px;background:#fff;border:1px solid var(--acd-border);border-radius:2px;transition:background-color .15s,border-color .15s}.acd-check__box:after{position:absolute;top:1px;left:4px;display:none;width:3px;height:7px;background:transparent;border:1px solid #ffffff;border-top:0;border-left:0;transform:rotate(45deg);content:""}.acd-check__input:checked+.acd-check__box{background:var(--acd-blue);border-color:var(--acd-blue)}.acd-check__input:checked+.acd-check__box:after{display:block}.acd-check__input:indeterminate+.acd-check__box{background:var(--acd-blue);border-color:var(--acd-blue)}.acd-check__input:indeterminate+.acd-check__box:after{top:5px;left:2px;display:block;width:8px;height:0;background:transparent;border:0;border-top:2px solid #ffffff;transform:none}.acd-check__text{padding-left:10px;line-height:19px}.acd-check--chip{box-sizing:border-box;padding:6px 10px;background:#fff;border:1px solid var(--acd-border);border-radius:8px;transition:border-color .15s,color .15s}.acd-check--chip:hover{border-color:var(--acd-blue)}.acd-check--chip.is-checked{color:var(--acd-blue);border-color:var(--acd-blue)}.acd-check--chip .acd-check__text{line-height:17px}.acd-config{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0}.acd-config__title{margin-bottom:4px;color:var(--acd-text-primary);font-size:14px;line-height:16px}.acd-config__desc{color:var(--acd-text-secondary);font-size:12px;line-height:14px}.acd-switch{position:relative;flex:none;box-sizing:border-box;width:40px;height:20px;padding:0;background:var(--acd-border);border:1px solid var(--acd-border);border-radius:10px;cursor:pointer;transition:background-color .2s,border-color .2s}.acd-switch:after{position:absolute;top:1px;left:1px;width:16px;height:16px;background:#fff;border-radius:50%;transition:left .2s;content:""}.acd-switch.is-on{background:var(--acd-blue);border-color:var(--acd-blue)}.acd-switch.is-on:after{left:21px}.acd-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:8px}.acd-footer__left{color:var(--acd-text-regular);font-size:13px}.acd-footer__left strong{color:inherit;font-weight:400}.acd-footer__right{display:flex;align-items:center;gap:8px}.acd-btn{box-sizing:border-box;padding:10px 20px;color:var(--acd-text-regular);font:14px/1 var(--acd-font);white-space:nowrap;background:#fff;border:1px solid var(--acd-border);border-radius:8px;cursor:pointer;transition:color .15s,border-color .15s,background-color .15s}.acd-btn:hover{color:var(--acd-blue);border-color:var(--acd-blue-hover)}.acd-btn--clone{color:var(--acd-blue);border-color:var(--acd-blue)}.acd-btn--clone:hover{color:var(--acd-blue-hover);background:#ecf5ff;border-color:var(--acd-blue-hover)}.acd-btn--publish{color:#fff;background:var(--acd-orange);border-color:var(--acd-orange)}.acd-btn--publish:hover{color:#fff;background:var(--acd-orange-hover);border-color:var(--acd-orange-hover)}.acd-toast{position:fixed;top:32px;left:50%;z-index:1100;box-sizing:border-box;max-width:calc(100vw - 32px);padding:12px 20px;color:var(--acd-text-regular);font-size:14px;background:#edf2fc;border:1px solid #ebeef5;border-radius:8px;box-shadow:0 2px 12px #0000001a;transform:translate(-50%)}
+
+  </style>
+</head>
+<body>
+
+  <script>
+    (function () {
+      var isComponent = false;
+      if (document.body && (isComponent || window.location.pathname.includes('/components/'))) {
+        document.body.classList.add('is-element-page');
+      }
+    })();
+  </script>
+
+  <div id="root"></div>
+
+  
+  <script src="./assets/react.production.min.js"></script>
+  <script src="./assets/react-dom.production.min.js"></script>
+  <script src="./assets/export-html-bootstrap.js"></script>
+
+  <script>
+    function waitForBootstrap(timeoutMs) {
+      timeoutMs = timeoutMs || 10000;
+      return new Promise(function (resolve, reject) {
+        var startedAt = Date.now();
+        function check() {
+          if (window.HtmlTemplateBootstrap) {
+            resolve(window.HtmlTemplateBootstrap);
+            return;
+          }
+          if (Date.now() - startedAt >= timeoutMs) {
+            reject(new Error('[Html Template] Bootstrap 初始化超时'));
+            return;
+          }
+          setTimeout(check, 10);
+        }
+        check();
+      });
+    }
+
+    function loadEntryScript(src) {
+      return new Promise(function (resolve, reject) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = false;
+        script.onload = function () { resolve(); };
+        script.onerror = function () { reject(new Error('[Html Template] 入口脚本加载失败: ' + src)); };
+        document.body.appendChild(script);
+      });
+    }
+
+    async function bootstrapAndRender() {
+      try {
+        var bootstrap = await waitForBootstrap();
+        var renderComponent = bootstrap.renderComponent;
+        window.React = bootstrap.React;
+        window.ReactDOM = bootstrap.ReactDOM;
+
+        await loadEntryScript('./index.js');
+        
+
+        var Component = window.UserComponent && (window.UserComponent.Component || window.UserComponent.default || window.UserComponent);
+        if (!Component) {
+          throw new Error('[Html Template] 入口脚本未暴露 UserComponent');
+        }
+
+        renderComponent(Component);
+      } catch (error) {
+        console.error('[Html Template] 页面初始化失败:', error);
+      }
+    }
+
+    bootstrapAndRender();
+  </script>
+
+</body>
+</html>
