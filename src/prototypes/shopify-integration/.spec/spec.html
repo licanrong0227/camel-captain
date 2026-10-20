@@ -315,7 +315,7 @@
             <li>用户提供的页面截图（1912×867）：布局、文案、示例数据与颜色的唯一视觉基准。</li>
             <li>《店铺授权页面样式.txt》：<code>cssVariables</code> 提供主色 <code>#ff781f</code>、圆角 <code>8px</code>、表头渐变 <code>#fff5ef → #ffede0</code>、表头 14px / 表体 12px 等 token；<code>assets.images</code> 提供 logo 与平台图标 OSS 直链。</li>
             <li><code>src/prototypes/my-products-bi/assets/icons/</code>：顶栏图标 SVG 复用来源。</li>
-            <li><code>src/prototypes/shopify-integration/docs/shopify-integration-overview.md</code>：三个子页面的功能说明与待确认清单。</li>
+            <li>原型说明文档：标注目录「需求文档 / Shopify 对接 - 原型说明」（内联在 <code>annotation-source.json</code> 的 <code>directory</code> 里），含四个页面与「我的商品」「我的订单」的功能说明与待确认清单。</li>
             <li><code>AI-认领中心-骆驼队长BI-complete.zip</code>（导出版本 3.0，源页 <code>https://test.kuachengjing.com/commodity/claim</code>）：<code>screenshot.png</code> 为 1912×867 视觉基准，<code>content.md</code> 提供筛选项、10 行商品数据与分页文案，<code>index.html/style.css</code> 为参考实现，<code>flat/</code> 提供 614 节点结构与选择器。</li>
           </ul>
           <h3>当前假设</h3>
@@ -337,6 +337,9 @@
             <li>右侧固定「联系我们」浮窗。</li>
             <li>认领中心页：面包屑（商品 / 商品管理 / 认领中心）、「商品采集 / 认领中心 / 我的商品」页签带（中间页签为激活态，白底浅橘描边凹弧 + 双圆点）、两行筛选区、8 列商品列表（10 行）、首行勾选后展开的「编辑 / 认领 / 标签 / 删除」操作条、底部「已选 1 项 + 编辑货源 / 批量认领 / 批量标签 / 批量删除」与分页条。</li>
             <li>「认领商品」弹窗：左侧已选商品清单（缩略图 + 标题 + 共 1 个商品）、右侧「选择认领平台」敦煌网卡片（选中态橙描边 + 右下角勾选徽标）与「选择店铺（可多选）已选择0个店铺 / 全选」店铺卡片列表、底部「平台 敦煌网 已选0个店铺」+「请至少选择 1 个店铺」+「直接认领」「自动编辑」。</li>
+            <li>我的订单行操作条：点击某个订单行时，在该行下方展开「线路审核 / 查看订单 / 标记 / 作废 / 删除」橙色描边按钮条（对应线上截图第 1 行）；再点同一行收起，点其他行则换到该行。</li>
+            <li>「订单详情」弹窗：顶部四栏概要（平台订单号 / 实收金额 / 店铺 / 订单状态，左橙竖条）、9 个单选页签（基础信息为选中态）、基础信息字段两行（平台订单号 + 复制、状态、分拣种类 / 买家选择的物流、卖家选择的物流）、图片 / 产品名称规格 / 价格数量 / 物流四列商品明细表、底部居中「关闭」「线路审核」。</li>
+            <li>「订单详情」弹窗其余 8 个页签的内容（按用户在线上重新登录后补采的结果还原）：信息编辑（基本信息 / 联系方式 / 地址三段字段 + 13 列申报信息可编辑表格与「合计」表尾 + 「更新申报信息」按钮）、包裹（基本信息 / 重量 / 尺寸三段）、财务（币种 / 收入USD / 支出RMB / 利润四段，收入USD 为 4 列且第 2~4 行首列留空）、备注（卖家备注 / 拣货备注可编辑 + 客户备注只读，整行宽）、时间（创建 / 付款 / 截止 / 审核时间四行）、日志跟踪（灰底「日志」标题条 + 蓝色刷新图标 + 460 高日志区「暂无日志记录」+ 右对齐迷你分页「1」）、代发包裹（11 列表格，550 高，空态「暂无数据」）、国际物流（14 列含多行表头的表格 + 空态 + 「-物流轨迹」描边卡片）。</li>
           </ul>
           <h3>本次不呈现</h3>
           <ul>
@@ -348,6 +351,8 @@
             <li>认领中心的「批量查找」「导入产品」「统一导出」弹窗与「任务处理中」浮层：源页面 DOM 中存在但处于隐藏态，无截图视觉依据，本轮不还原。</li>
             <li>认领中心筛选下拉的选项展开面板（采集源字段、认领状态、采集平台、采集日期、标签）与搜索 / 重置 / 分页的真实结果反馈。</li>
             <li>「认领商品」弹窗内的可选态与业务逻辑：店铺勾选与「全选」联动、平台切换、已选店铺计数、「直接认领 / 自动编辑」的启用条件与点击结果、店铺清单为空 / 加载中状态。截图给出的是未选店铺的禁用态，本轮按该态静态还原。</li>
+            <li>「订单详情」弹窗 8 个补采页签内的编辑与提交流程：「更新申报信息」、申报表格删行、日志「刷新」与分页、各输入框 / 下拉 / 数字步进器的联动与校验；这些页签的字段值取自线上该笔订单的采集样例，不随点击的订单行变化（只有「基础信息」与「时间」跟随行数据）。</li>
+            <li>「订单详情」弹窗内「线路审核」的提交流程、行操作条里「标记 / 作废 / 删除」的反馈，以及平台订单号复制成功的提示。</li>
           </ul>
         </section>
 
@@ -388,16 +393,23 @@
                 <tr>
                   <td data-label="页面/视图"><code>my-products</code> 我的商品</td>
                   <td data-label="页面作用">商品认领后的发布与管理列表。</td>
-                  <td data-label="主要模块与内容">由其他轮次补充，功能说明见 <code>docs/shopify-integration-overview.md</code>。</td>
-                  <td data-label="示例数据或素材"></td>
-                  <td data-label="与其他页面的关系"><code>#page=my-products</code>。</td>
+                  <td data-label="主要模块与内容">平台可切换页签带（商品采集 / 认领中心 / 我的商品-shopify）→ 两行筛选（采集源、价格、采集平台、刊登/认领/修改时间、标签、店铺）＋搜索 / 重置 / 创建新产品 / 排序 / 导出 / 导入货源 / 同步线上 / 列设置 → 左侧统计分组（商品概览 / 发布管理 / 销售状态）→ 8 列商品列表 → 分页。「创建新产品」调起创建产品弹窗（<code>components/CreateProductDialog.tsx</code>）。</td>
+                  <td data-label="示例数据或素材">5 行商品示例、共 266 条、侧栏计数 9172 / 266 / 75 / 2740 / 3077；缩略图复用 <code>assets/thumb-sneaker.jpg</code>、<code>assets/thumb-bracelet.jpg</code>，平台图标 <code>assets/icon-dhgate.png</code>、<code>assets/icon-shopify.png</code>。</td>
+                  <td data-label="与其他页面的关系"><code>#page=my-products</code>；承接 <code>claim-center</code> 认领后的商品，店铺选项依赖 <code>store-auth</code> 的授权状态。</td>
                 </tr>
                 <tr>
                   <td data-label="页面/视图"><code>my-orders</code> 我的订单</td>
                   <td data-label="页面作用">平台订单处理与发货跟踪。</td>
-                  <td data-label="主要模块与内容">由其他轮次补充，功能说明见 <code>docs/shopify-integration-overview.md</code>。</td>
-                  <td data-label="示例数据或素材"></td>
-                  <td data-label="与其他页面的关系"><code>#page=my-orders</code>。</td>
+                  <td data-label="主要模块与内容">7 个状态页签（全部订单 / 新订单 / 采购配货 / 仓库处理 / 物流运输 / 已妥投 / 已作废）→ 筛选（平台名称、店铺名称、字段选择 + 批量搜索、搜索 / 重置）＋高级筛选 / 排序 / 同步店铺订单 / 导入导出 / 设置 → 订单列表（订单号与状态、产品信息、买家信息、时间节点、发货预警、物流、USD/CNY 数据）→ 点击行展开的行操作条（线路审核 / 查看订单 / 标记 / 作废 / 删除）→ 底部批量操作栏与分页。</td>
+                  <td data-label="示例数据或素材">4 条敦煌网订单示例、共 11759 条；订单缩略图 <code>assets/order-thumb-1~4.jpg</code>。</td>
+                  <td data-label="与其他页面的关系"><code>#page=my-orders</code>；「店铺名称」下拉选项跟随「平台名称」筛选（见 <code>mo-filter-store</code> 标注）。</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图"><code>订单详情</code> 弹窗</td>
+                  <td data-label="页面作用">查看单个平台订单的完整信息并做线路审核。</td>
+                  <td data-label="主要模块与内容">标题「订单详情」+ 关闭 × → 四栏概要（平台订单号 / 实收金额 USD / 店铺 + 平台徽标 / 订单状态，均左橙竖条、值右对齐）→ 9 个单选页签：基础信息（两行字段 + 商品明细表）、信息编辑（基本信息 / 联系方式 / 地址 + 13 列申报信息表与「合计」表尾 + 「更新申报信息」按钮）、包裹（基本信息 / 重量 / 尺寸）、财务（币种 / 收入USD / 支出RMB / 利润）、备注（卖家备注 / 拣货备注可编辑 + 客户备注只读）、时间（创建 / 付款 / 截止 / 审核）、日志跟踪（标题条 + 刷新 + 日志区空态 + 迷你分页）、代发包裹（11 列 550 高表格空态）、国际物流（14 列表格空态 + 「-物流轨迹」卡片）→ 底部居中「关闭」「线路审核」。</td>
+                  <td data-label="示例数据或素材">「基础信息」与「时间」取被点击的订单行（订单号、实收金额=列表「收入 USD」、店铺、物流、买家与时间、商品图与 SKU）；其余 7 个页签沿用线上这笔订单的实采样例值，集中写在 <code>OrderDetailDialog.tsx</code> 的 <code>SAMPLE</code> 常量，不随行变化。</td>
+                  <td data-label="与其他页面的关系">由 <code>my-orders</code> 行操作条的「查看订单」调起，背后是订单列表加 <code>rgba(0,0,0,.5)</code> 遮罩。</td>
                 </tr>
                 <tr><td data-label="日期">2026-10-17</td><td data-label="用户决策或变更">还原完成后逐像素比对验收，未再提出新变更。</td><td data-label="对当前原型的影响">以数据包 <code>flat/styles/style_N.json</code> 的计算样式为字号字色基准（墨迹宽度反查校验），修正标题 / 父SKU / 售价 / 采集账号为 12px、状态 13px、来源 14px、按钮 12px、非激活页签 <code>#4e5969</code>；行高改为 102.33 使分隔线落在 401 / 442 / 544 / 647 / 749；价格输入 120＋32px 双格步进器；页签圆点改 20×14 左实右透渐变胶囊；下拉箭头改为朝上的浅灰细箭头。屏蔽缩略列与顶栏后差异像素约 3%。</td></tr>
               </tbody>
@@ -429,6 +441,12 @@
                 <tr><td data-label="对象/场景">认领商品弹窗</td><td data-label="前置状态">弹窗已打开</td><td data-label="用户操作">点 × / 遮罩空白处</td><td data-label="原型表现">关闭弹窗回到列表</td><td data-label="后续状态">列表不变</td></tr>
                 <tr><td data-label="对象/场景">认领商品弹窗内控件</td><td data-label="前置状态">弹窗已打开</td><td data-label="用户操作">点平台卡片 / 店铺卡片 / 全选 / 直接认领 / 自动编辑</td><td data-label="原型表现">无响应，保持截图的未选店铺禁用态</td><td data-label="后续状态">不变</td></tr>
                 <tr><td data-label="对象/场景">认领中心筛选与分页</td><td data-label="前置状态">控件为占位态，分页停在第 1 页</td><td data-label="用户操作">点击搜索 / 重置 / 下拉 / 页码</td><td data-label="原型表现">无响应，下拉面板不展开</td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">我的订单行操作条</td><td data-label="前置状态">订单列表，所有行收起</td><td data-label="用户操作">点击任意订单行</td><td data-label="原型表现">该行下方展开「线路审核 / 查看订单 / 标记 / 作废 / 删除」按钮条；再次点击同一行收起，点击其他行时操作条跟随到新的一行（同一时刻只展开一行）</td><td data-label="后续状态">被点击行展开</td></tr>
+                <tr><td data-label="对象/场景">订单详情弹窗</td><td data-label="前置状态">某订单行处于点击展开态</td><td data-label="用户操作">点击「查看订单」</td><td data-label="原型表现">近全屏弹窗自 <code>top:15vh</code>、左右各 95px 弹出，背后列表加 <code>rgba(0,0,0,.5)</code> 遮罩，内容取该行订单数据</td><td data-label="后续状态">弹窗打开，默认「基础信息」页签</td></tr>
+                <tr><td data-label="对象/场景">订单详情弹窗页签</td><td data-label="前置状态">弹窗已打开</td><td data-label="用户操作">点击其余 8 个页签</td><td data-label="原型表现">选中态样式切换（橙底白字），并切换到该页签对应面板（信息编辑 / 包裹 / 财务 / 备注 / 时间 / 日志跟踪 / 代发包裹 / 国际物流）</td><td data-label="后续状态">停留在所选页签</td></tr>
+                <tr><td data-label="对象/场景">信息编辑页签</td><td data-label="前置状态">「信息编辑」页签选中</td><td data-label="用户操作">修改申报信息输入框 / 数字步进器 / 删除行 / 点「更新申报信息」</td><td data-label="原型表现">控件外观可操作但数值不落库，表格内容与合计不变，无提交反馈</td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">日志跟踪页签</td><td data-label="前置状态">「日志跟踪」页签选中，日志区为空态</td><td data-label="用户操作">点刷新图标 / 分页按钮 / 页码「1」</td><td data-label="原型表现">无响应，分页按钮保持禁用灰态</td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">订单详情弹窗</td><td data-label="前置状态">弹窗已打开</td><td data-label="用户操作">点 × / 遮罩空白处 / 底部「关闭」</td><td data-label="原型表现">关闭弹窗回到列表；「线路审核」与平台订单号复制按钮不产生业务反馈（复制仅写入剪贴板）</td><td data-label="后续状态">列表不变</td></tr>
               </tbody>
             </table>
           </div>
@@ -480,6 +498,33 @@
             <li>实现约束：弹窗类名前缀 <code>capd-</code>（<code>cpd-</code> 已被创建产品弹窗占用）；实现文件 <code>components/ClaimProductDialog.tsx</code> + <code>claim-product-dialog.css</code>。</li>
             <li>验收口径：1912×907 无头浏览器实测面板 700×524、头部 55、主体 469、两栏 660×360、店铺卡片 420×42、底部 53、按钮 117×36，与数据包计算样式一致。</li>
           </ul>
+          <h3>订单详情弹窗还原精度基准（1912×867，取自数据包 <code>structure/styles.json</code> 的 <code>style_196~242</code> 计算样式）</h3>
+          <ul>
+            <li>遮罩 <code>rgba(0,0,0,.5)</code> 全屏；面板左右外边距 95（实测白区 x=95→1807）、上外边距 <code>15vh</code>（实测顶边 y=130；数据包记录的 52px 与截图冲突，按截图为准）、圆角 6、阴影 <code>0 1px 3px rgba(0,0,0,.3)</code>。</li>
+            <li>头部内边距 <code>20px 20px 10px</code>（高 54）；标题 18px / 400 / <code>#303133</code>；关闭 × 16×16 位于 <code>top:20 right:20</code>、<code>#909399</code>。主体内边距 <code>30px 20px</code>。</li>
+            <li>四栏概要：flex 等分（<code>flex:1 1 8.3333%</code>），左竖条 2px <code>#ff781f</code>，内边距 <code>15px 20px 0 10px</code>，整行高 70、下外边距 20；标签 14px / 700 / <code>#000</code>、下外边距 5；值 16px / 700 / <code>#303133</code> 右对齐，金额数字 24px，店铺徽标 20×20 右外边距 10。</li>
+            <li>页签组 <code>margin-bottom:20</code>、容器 <code>font-size:0</code>；单个页签内边距 <code>10px 20px</code>、高 36、14px / <code>#606266</code>、边框 <code>#dcdfe6</code>（相邻间去左边框），首项圆角 <code>8px 0 0 8px</code>、末项 <code>0 8px 8px 0</code>；选中态底与边框 <code>#ff781f</code>、白字、<code>box-shadow:-1px 0 0 0 #ff781f</code>。</li>
+            <li>基础信息字段行 <code>flex-wrap</code>、下外边距 15；字段项 <code>flex:1 1 8.3333%</code>、右外边距 20、下外边距 10（第 1 行 3 项各 537、第 2 行 2 项各 816）；标签宽 140、右外边距 10、<code>#606266</code>，值 <code>#303133</code>；复制按钮 20×20、左外边距 10、圆角 8、<code>#1890ff</code>。</li>
+            <li>明细表容器高 460、上 / 左边框 1px <code>#dfe4ed</code>、圆角 <code>8px 8px 0 0</code>；表头行 40.6（内边距 <code>10px 0</code>、14px / 700 / <code>#606266</code>、底 <code>linear-gradient(180deg,#fff5ef,#ffede0)</code>、下边框 <code>#dfe4ed</code>）；列宽 100 / 自适应 / 150 / 220；数据行 106.4（内边距 <code>10px 0</code>、下边框 <code>#ebeef5</code>、12px / <code>#606266</code>、行高 1.45），单元格内容左右内边距 10；缩略图外框 80×80 + 1px <code>#ccc</code>，图 78×78。</li>
+            <li>底部按钮行上外边距 20、整组居中；「关闭」70×36 白底橙描边橙字，「线路审核」98×36 橙底白字、左外边距 10，均内边距 <code>10px 20px</code>、圆角 8。</li>
+            <li>行操作条：整行高 49（内边距 <code>10px 0</code>、左内边距 10、上边框 <code>#ebeef5</code>），按钮 93 / 93 / 69 / 69 / 69 × 28、内边距 <code>6px 14px</code>、12px / <code>#ff781f</code>、橙描边、圆角 8、水平间距 10、图标 12×12。</li>
+            <li>实现约束：类名前缀 <code>od-</code>，实现文件 <code>components/OrderDetailDialog.tsx</code> + <code>order-detail-dialog.css</code>；按钮外边距必须写成双类（<code>.od-footer .od-btn--primary</code>、<code>.od-field .od-field__copy</code>、<code>.so-actions .so-action</code>），否则被 <code>.si-page button { margin: 0 }</code> 静默覆盖；行操作条用每个订单一个 <code>&lt;tbody&gt;</code> 承载，展开状态由 <code>my-orders.tsx</code> 的 <code>activeOrderNo</code> 控制、给操作行加 <code>is-open</code> 类实现。</li>
+            <li>验收口径：1912×867 无头浏览器实测面板 1722×867、头部 54、概要单元格 421×67、页签 98×36、明细表 1682×460、表头 40、按钮 70×36 与 98×36（间距 10），与数据包计算样式一致；与源截图按弹窗区域（x=95, y=130, 1712×737）逐像素比对差异 3.04%，差异集中在示例文字内容（订单号、商品与金额取自本原型示例行）与文字抗锯齿。</li>
+          </ul>
+          <h3>订单详情弹窗补采页签还原精度基准（1912×867，取自线上已登录页面的 DOM 结构 + <code>getComputedStyle</code> 实测；内置浏览器无法截图 <code>NATIVE_BROWSER_VIEWPORT_UNAVAILABLE</code>，故不做像素比对）</h3>
+          <ul>
+            <li>字段项 <code>.od-info-item</code>：<code>flex:1 1 0</code>、<code>min-width:200px</code>、外边距 <code>0 20px 10px 0</code>；实测 3 列行每项 541、4 列行 401、整行宽 1662。标签宽 140 + 右外边距 10、<code>#606266</code>；值 <code>#303133</code>，可编辑值为 <code>#ff781f</code> + <code>cursor:pointer</code> + 14px 编辑图标。</li>
+            <li>小标题 <code>h4.od-section-title</code>：16px / 700 / <code>#303133</code>、外边距 <code>21px 0 15px</code>；页签带→面板首元素间距实测 21（以标题开头的面板）与 20（直接以字段开头的面板），外边距折叠结果与线上一致。</li>
+            <li>表格 <code>.od-grid</code>（仿 <code>.el-table</code>，<code>colgroup</code> 按 px 列宽）：表头 41（内边距 <code>10px 0</code>、14px / 700 / <code>#606266</code>、底 <code>linear-gradient(180deg,#fff5ef,#ffede0)</code>、下边框 <code>#dfe4ed</code>）、数据行 81、表尾 44（<code>#f5f7fa</code> + 上边框 <code>#dfe4ed</code> + 内容 <code>line-height:23px</code>）、空态居中 12px <code>#909399</code>。</li>
+            <li>控件：输入框 160×32、圆角 8、13px；数字输入宽 130 + <code>padding-right:42</code>，步进器 32×30（上下格 15 / 14，底 <code>#f5f7fa</code>、边框 <code>#dcdfe6</code>、箭头旋转 ±90°）；申报行「删除」为 56×28 <code>#ff4949</code> 危险按钮。</li>
+            <li>信息编辑：基本信息 / 联系方式 / 地址三段字段 + 13 列申报信息表，列宽 <code>160,180,180</code> + <code>160×9</code> + <code>200</code>（合计 2160），序号列下方 60×60 商品图、表尾「合计」、表下方橙底实色「更新申报信息」（上外边距 10，写成双类 <code>.od-panel .od-btn--solid</code> 规避全局按钮 margin 覆盖）；实测整表 166 高。</li>
+            <li>财务：币种 / 收入USD / 支出RMB / 利润四段；13 项收入USD 按线上分组为 4 / 3 / 3 / 3，且第 2~4 行首列留空占位，保证与其他行同列对齐。</li>
+            <li>日志跟踪：卡片边框 <code>#e4e7ed</code>、圆角 4；标题条高 47（内边距 <code>5px 20px</code>、底 <code>#f5f7fa</code>）内含 16×36 <code>#409eff</code> 刷新图标；日志区高 460、<code>overflow-y:auto</code>、居中「暂无日志记录」；分页条高 47（内边距 <code>10px 20px</code>、右对齐），前后按钮 30×22 <code>#c0c4cc</code> + <code>cursor:not-allowed</code>，页码 22×22 橙描边。</li>
+            <li>代发包裹：11 列（60,90,180,150,100,100,120,180,100,150,80，其中 7 列居中）、容器高 550、空态「暂无数据」；线上实测同为 550（表头 41 + 空态 508）。</li>
+            <li>国际物流：14 列（140,150,80,100,160,180,200,90,170,120,90,130,110,90，其中 4 列居中）含三组多行表头（国家地区/收件人、物流商/物流渠道、付款/提交/更新），表头实测 79（线上 80）+ 空态 60；表下方「-物流轨迹」描边卡片（上外边距 20、内边距 20、边框 <code>#e4e7ed</code>、圆角 4，标题 16px / 700 / <code>#606266</code>、下外边距 10）。</li>
+            <li>样例取数口径：电话 <code>1-2027735829</code>、城市 <code>OREM</code>、地址、单件重量 <code>0.05</code>、汇率 <code>6.6927</code>、收入USD 13 项与利润 3 项、各空态文案均取自线上这笔订单的实采值，集中写在 <code>OrderDetailDialog.tsx</code> 的 <code>SAMPLE</code> 常量；「基础信息」与「时间」仍从被点击行取数。</li>
+            <li>验收口径：1912×867 无头浏览器实测 9 个页签均可切换、无控制台与页面错误，<code>npx tsc --noEmit</code> 对本原型无报错；结构化字段宽度、表格高度、控件尺寸逐项对齐线上计算样式。</li>
+          </ul>
         </section>
 
         <section id="open-questions">
@@ -495,6 +540,10 @@
             <li>认领中心行内「编辑」和批量「编辑货源 / 批量标签 / 批量删除」打开后的表单（「认领 / 批量认领」已还原为「认领商品」弹窗外观）。</li>
             <li>「认领商品」弹窗选中店铺后的可用态：勾选店铺时「直接认领 / 自动编辑」的常规配色、已选计数变化、店铺超过 5 家时的列表滚动与「全选」行为。</li>
             <li>「标签」列的展示形态：截图 10 行全部为空，需要一条带标签样例确认标签样式与溢出规则。</li>
+            <li>「订单详情」弹窗 8 个补采页签内字段的取数字段与真实业务规则（申报信息如何随「更新申报信息」提交、日志来源、代发包裹与国际物流表格的数据接口），当前只有这笔线上订单的一份样例。</li>
+            <li>「信息编辑」页可编辑字段与只读字段的边界：哪些字段允许在订单详情内直接改、改完是否同步到平台订单。</li>
+            <li>行操作条的展开态与线上是否一致：线上是否会把已展开行做高亮/常显标记，当前原型只在被点击行下方展开，行本身无选中样式。</li>
+            <li>「订单状态」与「状态」两个字段的口径：概要区显示「新订单」（对应顶部状态页签），基础信息显示「等待发货」（对应平台订单状态），需要确认取数字段。</li>
           </ul>
         </section>
 
@@ -514,6 +563,9 @@
                 <tr><td data-label="日期">2026-10-17</td><td data-label="用户决策或变更">确认本轮范围只做列表页（不还原批量查找 / 导入产品 / 统一导出弹窗和任务处理中提示）、缩略图复用仓库现有素材、按静态还原不做勾选联动。</td><td data-label="对当前原型的影响">页面为纯展示态：首行固定勾选并展开操作条，表头半选，底部固定「已选 1 项」；不引入选择状态管理。</td></tr>
                 <tr><td data-label="日期">2026-10-17</td><td data-label="用户决策或变更">要求按新一轮数据包还原「认领商品」弹窗，只还原界面不还原交互，采用 <code>camel-captain-erp</code> 设计与 Element UI 组件样式；确认挂在已有的认领中心页，由「认领」「批量认领」调起。</td><td data-label="对当前原型的影响">新增 <code>components/ClaimProductDialog.tsx</code> 与 <code>claim-product-dialog.css</code>，<code>ClaimCenterPage</code> 增加打开状态；弹窗内控件保持截图的未选店铺禁用态。</td></tr>
                 <tr><td data-label="日期">2026-10-17</td><td data-label="用户决策或变更">弹窗商品图改用线上 CDN 原图。</td><td data-label="对当前原型的影响">新增 <code>assets/claim-necklace.jpg</code>，同时替换认领中心第 1 行缩略图，使弹窗与来源行一致。</td></tr>
+                <tr><td data-label="日期">2026-10-20</td><td data-label="用户决策或变更">要求按 <code>AI-我的订单-骆驼队长BI-complete.zip</code> 的 README 指引高精度还原「订单详情」弹窗，只还原弹窗、放进本原型的「我的订单」页，由行内「查看订单」调起。</td><td data-label="对当前原型的影响">新增 <code>components/OrderDetailDialog.tsx</code> 与 <code>order-detail-dialog.css</code>；<code>my-orders</code> 每个订单行改为独立 <code>&lt;tbody&gt;</code> 并补上悬停展开的行操作条，订单数据新增 <code>orderState</code> 字段供弹窗概要使用。</td></tr>
+                <tr><td data-label="日期">2026-10-20</td><td data-label="用户决策或变更">纠正行操作条的出现方式：改为点击订单行时显示和隐藏，不是悬停显示。</td><td data-label="对当前原型的影响"><code>my-orders.tsx</code> 增加 <code>activeOrderNo</code> 状态并在行 <code>onClick</code> 切换，操作行加 <code>is-open</code>；<code>my-orders.css</code> 去掉 <code>:hover</code> 规则、改用 <code>.so-actions-row.is-open</code>，并给订单行加 <code>cursor: pointer</code>。</td></tr>
+                <tr><td data-label="日期">2026-10-20</td><td data-label="用户决策或变更">追问数据包是否有其余页签内容，要求「有就实现、没有就说明，不要自己瞎编」；确认线上数据包只抓到「基础信息」后，在线上重新登录并打开弹窗，授权按线上实采结果还原。</td><td data-label="对当前原型的影响"><code>OrderDetailDialog.tsx</code> 补齐全 9 个页签面板（新增 <code>SAMPLE</code> 常量承载线上样例值、<code>Grid</code> / <code>FieldRow</code> / <code>SectionTitle</code> 等共用渲染），<code>order-detail-dialog.css</code> 增加字段、表格、输入控件、日志卡片、分页与物流轨迹样式；「时间」页签改为读取行数据 <code>times</code>。</td></tr>
               </tbody>
             </table>
           </div>

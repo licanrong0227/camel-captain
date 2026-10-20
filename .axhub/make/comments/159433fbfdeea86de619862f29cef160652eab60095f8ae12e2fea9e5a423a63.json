@@ -8,16 +8,13 @@
   },
   "comments": [
     {
-      "elementKey": "div_100",
-      "label": "div(\"选择次日继续刊登时间\")",
       "locator": {
         "selectors": [
-          ".is-focused",
-          ".up-picker__input.is-focused",
-          "body > div > div > div > div:nth-of-type(2) > div:nth-of-type(4) > div > div > div > div:nth-of-type(1)",
-          "#root div > div > div:nth-of-type(2) > div:nth-of-type(4) > div > div > div > div:nth-of-type(1)"
+          ".up-sub-strategy__desc",
+          "body > div > div > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > span:nth-of-type(2)",
+          "#root div > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > span:nth-of-type(2)"
         ],
-        "fingerprint": "div|class=up-picker__input.is-focused|text=选择次日继续刊登时间",
+        "fingerprint": "span|class=up-sub-strategy__desc|text=当SKU图已用完但循环刊登未结束时启用",
         "path": [
           0,
           1,
@@ -25,28 +22,33 @@
           0,
           0,
           1,
+          2,
+          2,
           3,
-          1,
           0,
-          2,
-          0
+          1
         ]
       },
-      "marker": {
-        "clientX": 1061,
-        "clientY": 467,
-        "documentX": 1061,
-        "documentY": 467,
-        "xPercent": 55.49163179916318,
-        "y": 467,
-        "isFixed": true,
-        "offsetX": 8,
-        "offsetY": 0.8125,
-        "dirtySince": 1792052772033
+      "textChange": {
+        "before": "当备选首图已用完但循环刊登未结束时启用",
+        "after": "当SKU图已用完但循环刊登未结束时启用"
       },
-      "id": "10fb4585-7025-4b50-8bcc-9f1243acbcd5",
+      "elementKey": "span_15",
+      "label": "span(\"当SKU图已用完但循环刊登未结束时启用\")",
+      "marker": {
+        "clientX": 957.5,
+        "clientY": 511.5,
+        "documentX": 957.5,
+        "documentY": 511.5,
+        "xPercent": 50.07845188284519,
+        "y": 511.5,
+        "isFixed": true,
+        "offsetX": 308.5,
+        "offsetY": 10,
+        "dirtySince": 1792478133054
+      },
+      "id": "8c696591-b953-42b3-95e8-ada4cd02e2af",
       "state": "idle",
-      "comment": "放到选项底下，宽度与“定时发布时间”控件相同",
       "pageScope": "/prototypes/update-publish-dialog",
       "provider": null,
       "requestId": null,
@@ -54,150 +56,6 @@
       "updatedAt": null,
       "message": null,
       "code": null
-    },
-    {
-      "elementKey": "div_84",
-      "label": "div(\"选择定时发布时间\")",
-      "locator": {
-        "selectors": [
-          ".up-picker__input",
-          "body > div > div > div > div:nth-of-type(2) > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div",
-          "#root div > div > div:nth-of-type(2) > div:nth-of-type(1) > div > div:nth-of-type(2) > div > div"
-        ],
-        "fingerprint": "div|class=up-picker__input|text=选择定时发布时间",
-        "path": [
-          0,
-          1,
-          0,
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0,
-          0
-        ]
-      },
-      "marker": {
-        "clientX": 977,
-        "clientY": 186,
-        "documentX": 977,
-        "documentY": 186,
-        "xPercent": 51.09832635983263,
-        "y": 186,
-        "isFixed": true,
-        "offsetX": 184,
-        "offsetY": 17.8125,
-        "dirtySince": 1792052733713
-      },
-      "id": "28613293-b0d5-4a23-8dad-73bf94c5ad32",
-      "state": "idle",
-      "comment": "放到“定时发布”选项右侧",
-      "pageScope": "/prototypes/update-publish-dialog",
-      "provider": null,
-      "requestId": null,
-      "sessionId": null,
-      "updatedAt": null,
-      "message": null,
-      "code": null
-    },
-    {
-      "elementKey": "label_31",
-      "label": "label(\"增量前缀\")",
-      "locator": {
-        "selectors": [
-          "body > div > div > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > label:nth-of-type(1)",
-          "#root div > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > label:nth-of-type(1)"
-        ],
-        "fingerprint": "label|class=up-seg-card__field|text=增量前缀",
-        "path": [
-          0,
-          1,
-          0,
-          0,
-          0,
-          1,
-          2,
-          1,
-          2,
-          0,
-          0,
-          1,
-          0
-        ]
-      },
-      "skillIds": [
-        "prototype-annotation"
-      ],
-      "marker": {
-        "clientX": 674,
-        "clientY": 402,
-        "documentX": 674,
-        "documentY": 402,
-        "xPercent": 35.25104602510461,
-        "y": 402,
-        "isFixed": true,
-        "offsetX": 10,
-        "offsetY": 14.8125,
-        "dirtySince": 1792059757953
-      },
-      "id": "025dc6eb-e943-41d6-b26e-0468bc8e72e4",
-      "state": "idle",
-      "comment": "上传图片的“引用”添加说明，单个商品的更新发布是启用的，可以正常引用，批量更新发布的弹窗打开时禁用",
-      "pageScope": "/prototypes/update-publish-dialog",
-      "provider": null,
-      "requestId": null,
-      "sessionId": null,
-      "updatedAt": null,
-      "message": null,
-      "code": null
-    },
-    {
-      "elementKey": "div_5",
-      "label": "div[aria-label=\"更新发布\"]",
-      "locator": {
-        "selectors": [
-          "[aria-label=\"更新发布\"]",
-          ".up-dialog",
-          "body > div > div > div"
-        ],
-        "fingerprint": "div|class=up-dialog|text=更新发布×发布时间立即发布定时发布选择定时发布时间循环刊登循环次",
-        "path": [
-          0,
-          1,
-          0,
-          0,
-          0
-        ]
-      },
-      "skillIds": [
-        "prototype-annotation"
-      ],
-      "marker": {
-        "clientX": 1245,
-        "clientY": 111,
-        "documentX": 1245,
-        "documentY": 111,
-        "xPercent": 65.11506276150628,
-        "y": 111,
-        "isFixed": true,
-        "offsetX": 649,
-        "offsetY": 49.8125,
-        "dirtySince": 1792052814234
-      },
-      "id": "9bb5b3db-6ec6-478d-b17d-fcb88c28b7cb",
-      "state": "idle",
-      "comment": "给控件的一些隐形逻辑添加备注，可以通过界面看出来的就不用写了",
-      "pageScope": "/prototypes/update-publish-dialog",
-      "provider": null,
-      "requestId": null,
-      "sessionId": null,
-      "updatedAt": null,
-      "message": null,
-      "code": null,
-      "author": null,
-      "readOnly": false
     }
   ],
   "images": []

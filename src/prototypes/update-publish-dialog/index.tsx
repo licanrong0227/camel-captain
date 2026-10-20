@@ -381,7 +381,7 @@ const UpdatePublishDialog = () => {
   const [backupIncrement, setBackupIncrement] = useState<IncrementValue>(defaultIncrement);
 
   const [imageOn, setImageOn] = useState(false);
-  const [imageMode, setImageMode] = useState<'shuffle' | 'backup'>('shuffle');
+  const [imageMode, setImageMode] = useState<'shuffle' | 'sku' | 'backup'>('shuffle');
   const [backupImageStrategy, setBackupImageStrategy] = useState<'shuffle'>('shuffle');
   const [backupImages, setBackupImages] = useState<UploadedImage[]>([
     { id: 'sample-1', url: mainSample1, name: '示例图片', width: 1024, height: 1024 },
@@ -551,9 +551,12 @@ const UpdatePublishDialog = () => {
                     <>
                       <div className="up-option-list">
                         <Radio checked={imageMode === 'shuffle'} label="随机打乱" onChange={() => setImageMode('shuffle')} />
+                        <Radio checked={imageMode === 'sku'} label="取SKU图替换首图" onChange={() => setImageMode('sku')} />
                         <Radio checked={imageMode === 'backup'} label="备选首图" onChange={() => setImageMode('backup')} />
                       </div>
-                      {imageMode === 'backup' ? (
+                      {imageMode !== 'shuffle' ? (
+                        <>
+                        {imageMode === 'backup' ? (
                         <div className="up-upload-wrap" data-annotation-id="backup-images">
                           <div className="up-upload">
                             <button type="button" className="up-upload__add" onClick={() => setUploadDialogOpen(true)}>
@@ -586,18 +589,24 @@ const UpdatePublishDialog = () => {
                             hidden
                             onChange={(e) => { handleFiles(e.target.files); setUploadDialogOpen(false); e.target.value = ''; }}
                           />
-                          <p className="up-hint">循环刊登时，如果某张首图未通过审核，将自动更换另一张备选首图重试。</p>
+                        </div>
+                        ) : null}
+                        <p className="up-hint">{imageMode === 'sku'
+                          ? '循环刊登时，如果某张首图未通过审核，将自动更换下一张SKU图作为首图尝试。'
+                          : '循环刊登时，如果某张首图未通过审核，将自动更换另一张备选首图重试。'}</p>
 
-                          <div className="up-sub-strategy">
-                            <div className="up-sub-strategy__head">
-                              <span className="up-sub-strategy__title">备选首图策略</span>
-                              <span className="up-sub-strategy__desc">当备选首图已用完但循环刊登未结束时启用</span>
-                            </div>
-                            <div className="up-option-list up-option-list--inline">
-                              <Radio checked={backupImageStrategy === 'shuffle'} label="随机打乱" onChange={() => setBackupImageStrategy('shuffle')} />
-                            </div>
+                        <div className="up-sub-strategy">
+                          <div className="up-sub-strategy__head">
+                            <span className="up-sub-strategy__title">备选首图策略</span>
+                            <span className="up-sub-strategy__desc">{imageMode === 'sku'
+                              ? '当SKU图已用完但循环刊登未结束时启用'
+                              : '当备选首图已用完但循环刊登未结束时启用'}</span>
+                          </div>
+                          <div className="up-option-list up-option-list--inline">
+                            <Radio checked={backupImageStrategy === 'shuffle'} label="随机打乱" onChange={() => setBackupImageStrategy('shuffle')} />
                           </div>
                         </div>
+                        </>
                       ) : null}
                     </>
                   ) : null}

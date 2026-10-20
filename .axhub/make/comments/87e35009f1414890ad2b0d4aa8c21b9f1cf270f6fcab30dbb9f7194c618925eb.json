@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "ai-clone-dialog",
+    "targetPath": "prototypes/ai-clone-dialog",
+    "filePath": ".axhub/make/comments/87e35009f1414890ad2b0d4aa8c21b9f1cf270f6fcab30dbb9f7194c618925eb.json"
+  },
+  "comments": [
+    {
+      "elementKey": "div_6",
+      "label": "div[aria-label=\"AI克隆\"]",
+      "locator": {
+        "selectors": [
+          "[aria-label=\"AI克隆\"]",
+          ".acd-dialog",
+          "body > div > div > div > div"
+        ],
+        "fingerprint": "div|class=acd-dialog|text=AI克隆（已选 10 条）1选择目标店铺选择目标店铺全选snea",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 924,
+        "clientY": 243,
+        "documentX": 924,
+        "documentY": 243,
+        "xPercent": 48.32635983263599,
+        "y": 243,
+        "isFixed": true,
+        "offsetX": 328,
+        "offsetY": 111.90625,
+        "dirtySince": 1792477108642
+      },
+      "id": "0010d294-d3d5-4aed-8836-b8f8d7fc01a3",
+      "state": "idle",
+      "comment": "我需要增加一个功能，就是克隆的时候有两个选项，一个是选择目标店铺，一个是克隆到原店铺，克隆到原店铺就无需选择店铺，所选的商店在那个店铺就克隆到那个店铺",
+      "pageScope": "/prototypes/ai-clone-dialog",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    }
+  ],
+  "images": []
+}

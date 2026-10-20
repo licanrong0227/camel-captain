@@ -13,6 +13,7 @@ import './style.css';
 import './my-products.css';
 import './create-product.css';
 import './my-orders.css';
+import './order-detail-dialog.css';
 import './claim-center.css';
 
 import { defineHashPageRoute, useHashPage } from '../../common/useHashPage';

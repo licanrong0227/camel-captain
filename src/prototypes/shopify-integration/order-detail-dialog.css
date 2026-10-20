@@ -1,0 +1,681 @@
+/* ============ 我的订单 - 订单详情弹窗（线上 1912 视口还原） ============ */
+/* 尺寸/颜色来源：AI-我的订单-骆驼队长BI-complete 数据包 computedStyle */
+
+.od-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.od-dialog {
+  position: relative;
+  margin: 15vh 95px 0;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  color: #606266;
+}
+
+/* ===== 标题栏 ===== */
+.od-header {
+  position: relative;
+  padding: 20px 20px 10px;
+}
+
+.od-header__title {
+  font-size: 18px;
+  color: #303133;
+}
+
+.od-header__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 16px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #909399;
+  cursor: pointer;
+}
+
+.od-header__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ===== 内容区 ===== */
+.od-body {
+  padding: 30px 20px;
+}
+
+/* --- 顶部四栏概要 --- */
+.od-summary {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.od-summary__cell {
+  flex: 1 1 8.3333%;
+  padding: 15px 20px 0 10px;
+  border-left: 2px solid var(--si-primary);
+}
+
+.od-summary__label {
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+}
+
+.od-summary__value {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  font-size: 16px;
+  font-weight: 700;
+  color: #303133;
+}
+
+.od-summary__value img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  align-self: center;
+}
+
+.od-summary__amount {
+  margin-left: 6px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #303133;
+}
+
+/* --- 页签组 --- */
+.od-tabs {
+  margin-bottom: 20px;
+  font-size: 0;
+}
+
+.od-tab {
+  position: relative;
+  display: inline-block;
+  cursor: default;
+}
+
+.od-tab input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.od-tab span {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 1px solid var(--si-border);
+  border-left: none;
+  background: #fff;
+  font-size: 14px;
+  line-height: 1;
+  color: #606266;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.od-tab:first-child span {
+  border-left: 1px solid var(--si-border);
+  border-radius: 8px 0 0 8px;
+}
+
+.od-tab:last-child span {
+  border-radius: 0 8px 8px 0;
+}
+
+.od-tab input:checked + span {
+  border-color: var(--si-primary);
+  background: var(--si-primary);
+  box-shadow: -1px 0 0 0 var(--si-primary);
+  color: #fff;
+}
+
+/* --- 基础信息字段 --- */
+.od-fields {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.od-field {
+  flex: 1 1 8.3333%;
+  display: flex;
+  align-items: center;
+  margin: 0 20px 10px 0;
+}
+
+.od-field__label {
+  flex: none;
+  width: 140px;
+  margin-right: 10px;
+  font-size: 14px;
+  color: #606266;
+}
+
+.od-field__value {
+  flex: 1 1 8.3333%;
+  font-size: 14px;
+  color: #303133;
+}
+
+.od-field .od-field__copy {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: none;
+  color: #1890ff;
+  cursor: pointer;
+}
+
+.od-field__copy svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* --- 商品明细表 --- */
+.od-table {
+  height: 460px;
+  margin-top: 20px;
+  border-top: 1px solid #dfe4ed;
+  border-left: 1px solid #dfe4ed;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  background: #fff;
+  font-size: 12px;
+}
+
+.od-table table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.od-table th {
+  padding: 10px 0;
+  background: linear-gradient(180deg, #fff5ef 0%, #ffede0 100%);
+  border-bottom: 1px solid #dfe4ed;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: left;
+  color: #606266;
+}
+
+.od-table th.is-first {
+  border-radius: 8px 0 0 0;
+}
+
+.od-table th > div,
+.od-cell-inner {
+  padding: 0 10px;
+}
+
+.od-table__body {
+  height: 418px;
+  overflow-y: auto;
+}
+
+.od-table td {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--si-border-light);
+  font-size: 12px;
+  text-align: left;
+  color: #606266;
+}
+
+.od-cell-inner div {
+  line-height: 1.45;
+}
+
+.od-thumb {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.od-thumb img {
+  display: block;
+  width: 78px;
+  height: 78px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.od-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 460px;
+  font-size: 14px;
+  color: #909399;
+}
+
+/* --- 底部按钮 --- */
+.od-footer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.od-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 1px solid var(--si-primary);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--si-primary);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.od-footer .od-btn--primary {
+  margin-left: 10px;
+  border-color: var(--si-primary);
+  background: var(--si-primary);
+  color: #fff;
+}
+
+/* ============ 其余页签：字段行 / 小标题 ============ */
+.od-info-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.od-info-item {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 200px;
+  margin: 0 20px 10px 0;
+}
+
+.od-info-item.is-full {
+  flex: 1 1 100%;
+}
+
+.od-info-label {
+  flex: none;
+  width: 140px;
+  margin-right: 10px;
+  font-size: 14px;
+  color: #606266;
+}
+
+.od-info-value {
+  flex: 1 1 0;
+  font-size: 14px;
+  color: #303131;
+}
+
+.od-info-value.is-editable {
+  color: var(--si-primary);
+  cursor: pointer;
+}
+
+.od-icon-edit {
+  width: 14px;
+  height: 14px;
+  margin-right: 2px;
+  vertical-align: -2px;
+}
+
+.od-section-title {
+  margin: 21px 0 15px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #303133;
+}
+
+/* ============ 页签内表格（信息编辑 / 代发包裹 / 国际物流） ============ */
+.od-grid {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #dfe4ed;
+  border-left: 1px solid #dfe4ed;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+.od-grid__scroll {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  overflow-x: auto;
+}
+
+.od-grid table {
+  flex: none;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.od-grid th {
+  padding: 10px 0;
+  border-bottom: 1px solid #dfe4ed;
+  background: linear-gradient(180deg, #fff5ef 0%, #ffede0 100%);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: left;
+  color: #606266;
+}
+
+.od-grid th > div {
+  padding: 0 10px;
+}
+
+.od-grid td {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--si-border-light);
+  font-size: 12px;
+  text-align: left;
+  color: #606266;
+  vertical-align: middle;
+}
+
+.od-grid td > div {
+  padding: 0 10px;
+}
+
+.od-grid th.is-center,
+.od-grid td.is-center {
+  text-align: center;
+}
+
+.od-grid tfoot td {
+  border-top: 1px solid #dfe4ed;
+  border-bottom: none;
+  background: #f5f7fa;
+}
+
+.od-grid tfoot td > div {
+  line-height: 23px;
+}
+
+.od-grid__empty {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  font-size: 12px;
+  color: #909399;
+}
+
+.od-declare-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.od-icon-translate {
+  width: 14px;
+  height: 14px;
+}
+
+.od-declare-seq {
+  display: flex;
+  align-items: center;
+}
+
+.od-thumb--sm {
+  width: 60px;
+  height: 60px;
+  margin: 0 10px;
+}
+
+.od-thumb--sm img {
+  width: 58px;
+  height: 58px;
+}
+
+.od-btn-danger {
+  height: 28px;
+  padding: 7px 15px;
+  border: 1px solid #ff4949;
+  border-radius: 8px;
+  background: #ff4949;
+  font-size: 12px;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* --- 表格内控件 --- */
+.od-input {
+  position: relative;
+  display: inline-block;
+  width: 160px;
+  vertical-align: middle;
+}
+
+.od-input input {
+  width: 100%;
+  height: 32px;
+  padding: 0 15px;
+  border: 1px solid var(--si-border);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13px;
+  color: #606266;
+  outline: none;
+}
+
+.od-input input::placeholder {
+  color: #c0c4cc;
+}
+
+.od-input--number {
+  width: 130px;
+}
+
+.od-input--number input {
+  padding-right: 42px;
+}
+
+.od-input--select {
+  width: 180px;
+}
+
+.od-input--suffix input,
+.od-input--select input {
+  padding-right: 30px;
+}
+
+.od-input__suffix {
+  position: absolute;
+  top: 0;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  color: #c0c4cc;
+  cursor: pointer;
+}
+
+.od-input__suffix svg {
+  width: 14px;
+  height: 14px;
+}
+
+.od-stepper {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 32px;
+  height: 30px;
+}
+
+.od-stepper span {
+  display: block;
+  height: 15px;
+  border-left: 1px solid var(--si-border);
+  background: #f5f7fa;
+  color: #606266;
+  text-align: center;
+  line-height: 15px;
+}
+
+.od-stepper__down {
+  height: 14px;
+  border-bottom: 1px solid var(--si-border);
+  line-height: 14px;
+}
+
+.od-stepper svg {
+  width: 12px;
+  height: 12px;
+  vertical-align: top;
+}
+
+.od-stepper__up svg {
+  transform: rotate(-90deg);
+}
+
+.od-stepper__down svg {
+  transform: rotate(90deg);
+}
+
+.od-stepper .is-disabled {
+  color: #c0c4cc;
+}
+
+.od-input--select .od-input__suffix--caret svg {
+  transform: rotate(90deg);
+}
+
+.od-panel .od-btn--solid {
+  margin-top: 10px;
+  border-color: var(--si-primary);
+  background: var(--si-primary);
+  color: #fff;
+}
+
+/* ============ 日志跟踪 ============ */
+.od-log {
+  border: 1px solid #e4e7ed;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.od-log__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 47px;
+  padding: 5px 20px;
+  border-bottom: 1px solid #e4e7ed;
+  background: #f5f7fa;
+}
+
+.od-log__header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #303133;
+}
+
+.od-log__refresh {
+  width: 16px;
+  height: 36px;
+  padding: 10px 0;
+  border: none;
+  background: none;
+  color: #409eff;
+  cursor: pointer;
+}
+
+.od-log__refresh svg {
+  width: 14px;
+  height: 14px;
+}
+
+.od-log__body {
+  height: 460px;
+  overflow-y: auto;
+  font-size: 14px;
+  color: #606266;
+}
+
+.od-log__pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 47px;
+  padding: 10px 20px;
+  border-top: 1px solid #e4e7ed;
+}
+
+.od-pager__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #c0c4cc;
+  cursor: not-allowed;
+}
+
+.od-pager__btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.od-pager__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--si-primary);
+  background: #fff;
+  font-size: 12px;
+  color: var(--si-primary);
+}
+
+/* ============ 国际物流 - 轨迹卡 ============ */
+.od-track {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #e4e7ed;
+  border-radius: 4px;
+}
+
+.od-track__title {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #606266;
+}

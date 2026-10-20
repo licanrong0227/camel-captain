@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import OrderDetailDialog, { type OrderDetailData } from '../components/OrderDetailDialog';
 import dhBadge from '../assets/dh-badge.png';
 import iconDhgate from '../assets/icon-dhgate.png';
 import iconShopify from '../assets/icon-shopify.png';
@@ -21,10 +22,11 @@ const STATUS_TABS = [
 
 interface OrderRow {
   no: number;
-  status: string;
+  statuses: { label: string; tone: 'paid' | 'shipping' | 'shipped' | 'signed' | 'returned' | 'refunded' }[];
   orderNo: string;
   store: string;
   id: string;
+  orderState: string;
   image: string;
   title: string;
   specs: string;
@@ -45,6 +47,12 @@ interface OrderRow {
   incomeCny: string;
 }
 
+const ORDER_STATUSES = [
+  { label: '已支付', tone: 'paid' as const },
+  { label: '已签收', tone: 'signed' as const },
+  { label: '已退货', tone: 'returned' as const },
+];
+
 const EMPTY_TIMES = [
   { label: '创建', value: '-' },
   { label: '付款', value: '-' },
@@ -59,10 +67,14 @@ const EMPTY_TIMES = [
 const ROWS: OrderRow[] = [
   {
     no: 1,
-    status: '等待发货',
+    statuses: [
+      { label: '已支付', tone: 'paid' as const },
+      { label: '已签收', tone: 'signed' as const },
+    ],
     orderNo: '323148090747',
     store: 'sneakerhub8',
     id: '71743',
+    orderState: '新订单',
     image: thumb1,
     title: 'Mens Beige Monogram Print Shock Absorbing Loafers With Gold Metal Buckle Slip On Shoes',
     specs: '尺码:Men-US 8 - EU 41- Foot Length 10.0"   颜色:1Black',
@@ -84,10 +96,14 @@ const ROWS: OrderRow[] = [
   },
   {
     no: 2,
-    status: '等待发货',
+    statuses: [
+      { label: '已支付', tone: 'paid' as const },
+      { label: '已发货', tone: 'shipped' as const },
+    ],
     orderNo: '323146371393',
     store: '鞋子',
     id: '71724',
+    orderState: '采购配货',
     image: thumb2,
     title: "2026 Top Designer Fashion Wing Bag Genuine Leather Women&#39;s Shoulder Bag Niche French Large Capacity Tote Luxury Ladies Handbag",
     specs: '颜色:Black large',
@@ -119,10 +135,14 @@ const ROWS: OrderRow[] = [
   },
   {
     no: 3,
-    status: '等待发货',
+    statuses: [
+      { label: '已退款', tone: 'refunded' as const },
+      { label: '已签收', tone: 'signed' as const },
+    ],
     orderNo: '323146100770',
     store: 'sneakerhub8',
     id: '71720',
+    orderState: '仓库处理',
     image: thumb3,
     title: 'Light Khaki Hollow Closed Toe Clogs Men Soft EVA Non Slip Breathable Quick Dry Shower Beach Outdoor Casual Slippers',
     specs: '颜色:Kalani  尺码:Men-US 10 - EU 43- Foot Length 10.4"',
@@ -154,10 +174,11 @@ const ROWS: OrderRow[] = [
   },
   {
     no: 4,
-    status: '等待发货',
+    statuses: ORDER_STATUSES,
     orderNo: '323145882016',
     store: 'sneakerhub8',
     id: '71719',
+    orderState: '物流运输',
     image: thumb4,
     title: '2026 New Luxury Leather Handbags Women Classic Top Handle Bags Ladies Shoulder Bag Elegant Evening Purses',
     specs: '颜色:Apricot',
@@ -190,6 +211,70 @@ const ROWS: OrderRow[] = [
 ];
 
 const BATCH_BUTTONS = ['一键出库', '处理申报信息', '修改买家邮箱', '修改买家信息', '修改物流渠道', '提交到平台', '标记', '同步订单详情', '邀约采购', '删除'];
+
+const ROW_ACTIONS = ['线路审核', '查看订单', '标记', '作废', '删除'];
+
+function specValue(specs: string, key: string) {
+  const matched = specs.match(new RegExp(key + ':([\\s\\S]*?)(?=\\s{2,}|$)'));
+  return matched ? matched[1].trim() : '';
+}
+
+function toOrderDetail(row: OrderRow): OrderDetailData {
+  const size = specValue(row.specs, '尺码');
+  const color = specValue(row.specs, '颜色');
+  return {
+    orderNo: row.orderNo,
+    amount: row.incomeUsd,
+    store: row.store,
+    orderState: row.orderState,
+    status: row.statuses[0].label,
+    sortType: '单品单数',
+    buyerLogistics: row.logistics,
+    sellerLogistics: '-',
+    buyer: row.buyer,
+    times: row.times,
+    product: {
+      image: row.image,
+      title: row.title,
+      onlineNo: row.onlineNo,
+      skuCode: row.skuCode,
+      options: [size, color].filter(Boolean).join(','),
+      price: row.price,
+      qty: row.qty,
+      logistics: row.logistics,
+    },
+  };
+}
+
+function IconAction({ name }: { name: string }) {
+  const paths: Record<string, React.ReactNode> = {
+    线路审核: <path d="M8 2.4v7.2M5 7l3 3 3-3M2.8 12.6h10.4" strokeLinecap="round" strokeLinejoin="round" />,
+    查看订单: (
+      <>
+        <path d="M1.6 8S4 4 8 4s6.4 4 6.4 4-2.4 4-6.4 4S1.6 8 1.6 8Z" />
+        <circle cx="8" cy="8" r="1.9" />
+      </>
+    ),
+    标记: <path d="M3 2.2h7.4L13 5.2l-2.6 3H3V2.2ZM3 8.2v5.6" strokeLinejoin="round" />,
+    作废: (
+      <>
+        <circle cx="8" cy="8" r="5.6" />
+        <path d="M4 12 12 4" />
+      </>
+    ),
+    删除: (
+      <>
+        <path d="M2.8 4.4h10.4M6.4 4.4V2.6h3.2v1.8" />
+        <path d="M4.2 4.4 5 13.4h6l.8-9M6.8 6.6v4.4M9.2 6.6v4.4" strokeLinecap="round" />
+      </>
+    ),
+  };
+  return (
+    <svg className="so-action-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3">
+      {paths[name]}
+    </svg>
+  );
+}
 
 function IconSearch() {
   return (
@@ -333,6 +418,8 @@ function Dropdown({
 export default function MyOrdersPage() {
   const [platform, setPlatform] = useState('');
   const [store, setStore] = useState('');
+  const [detail, setDetail] = useState<OrderDetailData | null>(null);
+  const [activeOrderNo, setActiveOrderNo] = useState<string | null>(null);
 
   const platformOptions: DropdownOption[] = [
     { id: '', label: '全部平台' },
@@ -407,7 +494,7 @@ export default function MyOrdersPage() {
         <table className="so-table">
           <colgroup>
             <col style={{ width: '56px' }} />
-            <col style={{ width: '196px' }} />
+            <col style={{ width: '220px' }} />
             <col style={{ width: 'auto' }} />
             <col style={{ width: '148px' }} />
             <col style={{ width: '168px' }} />
@@ -429,16 +516,34 @@ export default function MyOrdersPage() {
               <th className="so-th-left">数据</th>
             </tr>
           </thead>
-          <tbody>
-            {ROWS.map((row) => (
-              <tr key={row.orderNo}>
+          {ROWS.map((row) => (
+            <tbody key={row.orderNo} className="so-order-group">
+              <tr
+                className="so-order-row"
+                onClick={() => setActiveOrderNo((prev) => (prev === row.orderNo ? null : row.orderNo))}
+              >
                 <td className="so-cell-index">
                   <input type="checkbox" className="so-check" readOnly />
                   <span className="so-row-no">{row.no}</span>
                 </td>
                 <td className="so-cell-order">
-                  <span className="so-status">{row.status}</span>
-                  <a className="so-order-no" href="#">
+                  <div {...(row.no === 1 ? { 'data-annotation-id': 'mo-status-parallel' } : {})}>
+                    <span className="so-status">
+                      {row.statuses.map((s, i) => (
+                        <React.Fragment key={s.label}>
+                          {i > 0 && <span className="so-status__pipe">|</span>}
+                          <span className={'so-status__item so-status__item--' + s.tone}>
+                            {s.label}
+                          </span>
+                        </React.Fragment>
+                      ))}
+                    </span>
+                  </div>
+                  <a
+                    className="so-order-no"
+                    href="#"
+                    {...(row.no === 1 ? { 'data-annotation-id': 'mo-order-no-source' } : {})}
+                  >
                     {row.orderNo}
                   </a>
                   <span className="so-store">
@@ -556,8 +661,25 @@ export default function MyOrdersPage() {
                   <div>CNY {row.incomeCny}</div>
                 </td>
               </tr>
-            ))}
-          </tbody>
+              <tr className={'so-actions-row' + (activeOrderNo === row.orderNo ? ' is-open' : '')}>
+                <td colSpan={8}>
+                  <div className="so-actions">
+                    {ROW_ACTIONS.map((label) => (
+                      <button
+                        key={label}
+                        className="so-action"
+                        type="button"
+                        onClick={() => label === '查看订单' && setDetail(toOrderDetail(row))}
+                      >
+                        <IconAction name={label} />
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ))}
         </table>
       </div>
 
@@ -604,6 +726,8 @@ export default function MyOrdersPage() {
           </svg>
         </button>
       </div>
+
+      {detail && <OrderDetailDialog data={detail} onClose={() => setDetail(null)} />}
     </div>
   );
 }

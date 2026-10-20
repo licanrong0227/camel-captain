@@ -670,7 +670,14 @@
 .ae-tpl-line {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 14px;
+  width: 100%;
+}
+.ae-tpl-line .ae-svc-field {
+  flex: 0 0 auto;
+}
+.ae-tpl-line .ae-svc-label {
+  flex-shrink: 0;
 }
 
 .ae-tpl-line .ae-op-btn {
@@ -1441,6 +1448,171 @@
 .ae-row.is-disabled .ae-radio-mask {
   background: #f5f7fa;
   border-color: #e4e7ed;
+}
+
+/* ===== 服务栏目 ===== */
+.ae-row-body.ae-svc-body {
+  padding: 0;
+}
+
+.ae-svc-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.ae-svc-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 57px;
+  padding: 8px 17px;
+  border-top: 1px solid var(--ae-border-light);
+  box-sizing: border-box;
+}
+
+.ae-svc-item:first-child {
+  border-top: none;
+}
+
+/* 店铺行：主配置 + 按店铺的关联产品模板 */
+.ae-svc-item--shop {
+  display: block;
+  padding: 10px 17px 14px;
+}
+
+.ae-svc-line {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 37px;
+}
+
+.ae-svc-tpl {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 10px;
+  padding-left: 99px;
+}
+
+
+
+.ae-svc-tpl .ae-tpl-slots {
+  margin-top: 0;
+  box-sizing: border-box;
+  width: calc(65px + var(--ae-field-w));
+}
+
+.ae-svc-tpl .ae-hint.sub {
+  margin-top: 0;
+}
+
+.ae-svc-tpl .ae-tpl-dropdown {
+  width: var(--ae-field-w);
+  max-width: var(--ae-field-w);
+  min-width: 0;
+  overflow: hidden;
+  height: 32px;
+  padding: 0 10px;
+  gap: 6px;
+  border-radius: var(--ae-radius);
+  flex: 0 0 auto;
+}
+
+.ae-svc-name {
+  width: 85px;
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--ae-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ae-svc-cat {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  color: var(--ae-text-regular);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ae-svc-field {
+  --ae-field-w: min(170px, calc((100vw - 738px) / 3));
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.ae-svc-label {
+  font-size: 14px;
+  color: var(--ae-text-regular);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ae-svc-select {
+  width: var(--ae-field-w);
+  max-width: var(--ae-field-w);
+  min-width: 0;
+  overflow: hidden;
+  height: 32px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 0 10px;
+  background: #fff;
+  border: 1px solid var(--ae-border);
+  border-radius: var(--ae-radius);
+  flex: 0 0 auto;
+}
+
+.ae-svc-select span {
+  font-size: 14px;
+  color: var(--ae-text-placeholder);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ae-svc-select svg {
+  flex-shrink: 0;
+  color: var(--ae-text-secondary);
+}
+
+.ae-sync-btn {
+  margin-left: auto;
+  height: 32px;
+  padding: 0 14px;
+  border: none;
+  border-radius: var(--ae-radius);
+  background: var(--ae-primary);
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.ae-sync-btn:hover:not(:disabled) {
+  background: var(--ae-primary-hover);
+}
+
+.ae-sync-btn:disabled {
+  cursor: not-allowed;
+}
+
+.ae-svc-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 17px 0 0;
 }
 
 /* ===== Footer ===== */

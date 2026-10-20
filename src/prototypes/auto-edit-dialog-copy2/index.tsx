@@ -157,10 +157,10 @@ const MenuAttr = () => (
 );
 
 const menuItems: MenuItem[] = [
-  { id: 'basic', label: '商品基本信息', count: 7, icon: <MenuHome /> },
+  { id: 'basic', label: '商品基本信息', count: 6, icon: <MenuHome /> },
   { id: 'detail', label: '详情页面', count: 1, icon: <MenuDoc /> },
   { id: 'attr', label: '属性', count: 1, icon: <MenuAttr /> },
-  { id: 'service', label: '服务', count: 3, icon: <MenuUser /> },
+  { id: 'service', label: '服务', count: 4, icon: <MenuUser /> },
   { id: 'price', label: '商品价格', count: 2, icon: <MenuTag /> },
   { id: 'sale', label: '销售方案', count: 1, icon: <MenuList /> },
   { id: 'sku', label: 'SKU信息', count: 6, icon: <MenuGrid /> },
@@ -170,6 +170,22 @@ const menuItems: MenuItem[] = [
   { id: 'image', label: '图片视频', count: 8, icon: <MenuImg /> },
   { id: 'trans', label: '翻译', count: 1, icon: <MenuTrans />, done: true },
   { id: 'source', label: '货源信息', count: 1, icon: <MenuLink /> },
+];
+
+const gradeModes = ['成人属性', '非成人属性'];
+const serviceFields = ['运费模板', '售后模板', '线上分组'];
+const serviceTplRows = [
+  { id: 'svc-1', name: '服装测试' },
+  { id: 'svc-2', name: 'bag' },
+  { id: 'svc-3', name: 'shoes' },
+];
+const sizeTplRows = [
+  { id: 'size-1', name: 'clothes', cat: '服装 < 男装 < 男士外套 < 男士羽绒服' },
+  { id: 'size-2', name: '包包', cat: '服装 < 女装 < 女士套装 < 女士裤装两件套' },
+  { id: 'size-3', name: 'clothes', cat: '服装 < 女装 < 女士套装 < 女士裤装两件套' },
+  { id: 'size-4', name: '包包', cat: '箱包及箱包辅料 < 时装包 < 斜挎包' },
+  { id: 'size-5', name: '鞋子', cat: '鞋类及鞋类辅料 < 正装鞋' },
+  { id: 'size-6', name: 'clothes', cat: '女士裤子（非牛仔）' },
 ];
 
 // ===== 商品基本信息 =====
@@ -188,8 +204,8 @@ const productTemplates = [
   { id: 'tpl-bag', modelName: '【爆款】男士休闲双肩包 大容量防水通勤背包', relModelProdList: ['P20261010001', 'P20261010002', 'P20261010003', 'P20261010004', 'P20261010005', 'P20261010006'] },
 ];
 const tplSyncModes = [
-  { id: 'add', label: '新增产品', hint: '把当前选中的、已有产品编号的产品加入模板。最多能加几个，取决于模板的剩余展示位：每个模板上限 6 个展示位。' },
-  { id: 'modify', label: '修改产品', hint: '用当前选中的、已有产品编号的产品直接替换模板中已有的产品，只替换不新增。每个模板最多 6 个展示位。' },
+  { id: 'add', label: '新增产品', hint: '把当前选中的、已有产品编号的产品加入模板。最多能加几个，取决于模板的剩余展示位。' },
+  { id: 'modify', label: '修改产品', hint: '用当前选中的、已有产品编号的产品直接替换模板中已有的产品，只替换不新增。' },
 ];
 const titleOps = ['过滤文字', '追加文本', '裁剪', '随机打乱', '随机插入', '查找替换', '首字母大写', '使用采集源标题', 'AI生成标题'];
 const skuSpecValueOps = ['删除超出的字符', '删除名称中的', '查找替换', '追加文本', '清空规格属性名称'];
@@ -642,7 +658,7 @@ function WatermarkCard({ config, onConfigChange, templateId, onPickTemplate }: {
 }
 
 // ===== Row component =====
-function FormRow({ label, checked, onCheck, children, last, disabled, flush, annotationId }: {
+function FormRow({ label, checked, onCheck, children, last, disabled, flush, bodyClass, annotationId }: {
   label: string;
   checked?: boolean;
   onCheck?: () => void;
@@ -650,6 +666,7 @@ function FormRow({ label, checked, onCheck, children, last, disabled, flush, ann
   last?: boolean;
   disabled?: boolean;
   flush?: boolean;
+  bodyClass?: string;
   annotationId?: string;
 }) {
   return (
@@ -668,7 +685,7 @@ function FormRow({ label, checked, onCheck, children, last, disabled, flush, ann
         </label>
         <span className="ae-row-label-text">{label}</span>
       </div>
-      <div className="ae-row-body">{children}</div>
+      <div className={`ae-row-body${bodyClass ? ' ' + bodyClass : ''}`}>{children}</div>
     </div>
   );
 }
@@ -752,6 +769,94 @@ function SvStepper({
   );
 }
 
+// ===== 关联产品模板：按店铺分别关联 =====
+type ShopTplState = { tplId: string; mode: string };
+const defaultShopTpl: ShopTplState = { tplId: '', mode: '' };
+
+function ProductTplBlock({
+  shopId,
+  state,
+  menuOpen,
+  menuPos,
+  onOpenMenu,
+  onPickTpl,
+  onModeChange,
+  annotationId,
+}: {
+  shopId: string;
+  state: ShopTplState;
+  menuOpen: boolean;
+  menuPos: { left: number; top?: number; bottom?: number; minWidth: number; maxWidth: number } | null;
+  onOpenMenu: (trigger: HTMLDivElement) => void;
+  onPickTpl: (id: string) => void;
+  onModeChange: (mode: string) => void;
+  annotationId?: string;
+}) {
+  const selectedTpl = productTemplates.find((t) => t.id === state.tplId);
+  const remainSlots = selectedTpl ? MAX_TEMPLATE_SLOTS - selectedTpl.relModelProdList.length : 0;
+  return (
+    <div className="ae-svc-tpl" data-annotation-id={annotationId}>
+      <div className="ae-tpl-line">
+        <div className="ae-svc-field">
+          <span className="ae-svc-label">产品模板</span>
+          <div className="ae-dropdown ae-tpl-dropdown" onClick={(e) => onOpenMenu(e.currentTarget)}>
+            <span className={selectedTpl ? 'ae-dropdown-value' : 'ae-dropdown-placeholder'} title={selectedTpl?.modelName}>
+              {selectedTpl ? `展示位剩余${remainSlots}` : '请选择产品模板'}
+            </span>
+            <ChevronDown />
+            {menuOpen && menuPos && (
+              <div className="ae-wm-menu ae-wm-menu--fixed" style={menuPos} onClick={(e) => e.stopPropagation()}>
+                {productTemplates.map((tpl) => (
+                  <div
+                    key={tpl.id}
+                    className={`ae-wm-menu-item${tpl.id === state.tplId ? ' is-active' : ''}`}
+                    title={tpl.modelName}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onPickTpl(tpl.id);
+                    }}
+                  >
+                    {`展示位剩余${MAX_TEMPLATE_SLOTS - tpl.relModelProdList.length}`}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      {selectedTpl && (
+        <div className={`ae-tpl-slots${remainSlots <= 0 ? ' is-exhausted' : ''}`}>
+          剩余展示位：{remainSlots}（最多{MAX_TEMPLATE_SLOTS}个展示位）
+        </div>
+      )}
+      {selectedTpl && (
+        <div className="ae-radio-group">
+          {tplSyncModes.map((mode) => {
+            const addDisabled = mode.id === 'add' && remainSlots <= 0;
+            return (
+              <label key={mode.id} className={`ae-radio${addDisabled ? ' is-disabled' : ''}`}>
+                <input
+                  type="radio"
+                  name={`productTplMode-${shopId}`}
+                  disabled={addDisabled}
+                  checked={state.mode === mode.id}
+                  onChange={() => onModeChange(mode.id)}
+                />
+                <span className="ae-radio-mask" />
+                <span>{mode.label}</span>
+                {addDisabled && <span className="ae-opt-warn">（展示位已满）</span>}
+              </label>
+            );
+          })}
+        </div>
+      )}
+      {selectedTpl && state.mode && (
+        <div className="ae-hint sub">{tplSyncModes.find((m) => m.id === state.mode)?.hint}</div>
+      )}
+    </div>
+  );
+}
+
 // ===== Main =====
 export default function AutoEditDialog() {
   const [activeMenu, setActiveMenu] = useState('basic');
@@ -775,11 +880,9 @@ export default function AutoEditDialog() {
   const [deletedPositions, setDeletedPositions] = useState<number[]>([]);
   const [appendImages, setAppendImages] = useState<UploadedImage[]>([]);
   const [uploadDialog, setUploadDialog] = useState<'replace' | 'append' | null>(null);
-  const [productTplId, setProductTplId] = useState('');
-  const [productTplMode, setProductTplMode] = useState('');
-  const [tplMenuOpen, setTplMenuOpen] = useState(false);
+  const [tplByShop, setTplByShop] = useState<Record<string, { tplId: string; mode: string }>>({});
+  const [tplMenuFor, setTplMenuFor] = useState('');
   const [tplMenuPos, setTplMenuPos] = useState<{ left: number; top?: number; bottom?: number; minWidth: number; maxWidth: number } | null>(null);
-  const tplTriggerRef = useRef<HTMLDivElement>(null);
   const [toast, setToast] = useState('');
 
   useEffect(() => {
@@ -789,9 +892,9 @@ export default function AutoEditDialog() {
   }, [toast]);
 
   useEffect(() => {
-    if (!tplMenuOpen) return;
+    if (!tplMenuFor) return;
     const close = () => {
-      setTplMenuOpen(false);
+      setTplMenuFor('');
       setTplMenuPos(null);
     };
     window.addEventListener('scroll', close, true);
@@ -800,7 +903,7 @@ export default function AutoEditDialog() {
       window.removeEventListener('scroll', close, true);
       window.removeEventListener('resize', close);
     };
-  }, [tplMenuOpen]);
+  }, [tplMenuFor]);
   const [sampleAtPos3, setSampleAtPos3] = useState(true);
   const [appendSample, setAppendSample] = useState(true);
   const pasteTargetRef = useRef<{ kind: 'append' } | null>(null);
@@ -855,6 +958,25 @@ export default function AutoEditDialog() {
     }
     setToast('提交成功');
   };
+
+  // ===== 服务 =====
+  const [serviceChecked, setServiceChecked] = useState<Record<string, boolean>>({});
+  const [gradeMode, setGradeMode] = useState('');
+
+  const toggleServiceRow = (id: string) =>
+    setServiceChecked((prev) => {
+      const next = { ...prev, [id]: !prev[id] };
+      if (!next[id] && id === 'grade') setGradeMode('');
+      return next;
+    });
+
+  const patchShopTpl = (shopId: string, patch: Partial<ShopTplState>) =>
+    setTplByShop((prev) => {
+      const next = { ...(prev[shopId] ?? defaultShopTpl), ...patch };
+      const tpl = productTemplates.find((t) => t.id === next.tplId);
+      if (tpl && tpl.relModelProdList.length >= MAX_TEMPLATE_SLOTS && next.mode === 'add') next.mode = '';
+      return { ...prev, [shopId]: next };
+    });
 
   // ===== SKU信息 =====
   const [skuChecked, setSkuChecked] = useState<Record<string, boolean>>({});
@@ -978,11 +1100,6 @@ export default function AutoEditDialog() {
       if (id === 'tag') {
         setTagAdd(false);
         setTagRemove(false);
-      }
-      if (id === 'productTemplate') {
-        setProductTplId('');
-        setProductTplMode('');
-        setTplMenuOpen(false);
       }
       return next;
     });
@@ -1226,7 +1343,7 @@ export default function AutoEditDialog() {
             </FormRow>
 
             {/* 标签 */}
-            <FormRow label="标签" checked={!!basicChecked.tag} onCheck={() => toggleBasicRow('tag')} annotationId="basic-tag-row">
+            <FormRow label="标签" checked={!!basicChecked.tag} onCheck={() => toggleBasicRow('tag')} last annotationId="basic-tag-row">
               <label className="ae-check-line">
                 <input
                   type="checkbox"
@@ -1247,104 +1364,6 @@ export default function AutoEditDialog() {
                 <span className="ae-checkbox-mask" />
                 <span>移除标签</span>
               </label>
-            </FormRow>
-
-            {/* 关联产品模板 */}
-            <FormRow label="关联产品模板" checked={!!basicChecked.productTemplate} onCheck={() => toggleBasicRow('productTemplate')} last annotationId="basic-product-template-row">
-              {(() => {
-                const selectedTpl = productTemplates.find((t) => t.id === productTplId);
-                const remainSlots = selectedTpl ? MAX_TEMPLATE_SLOTS - selectedTpl.relModelProdList.length : 0;
-                return (
-                  <>
-                    <div className="ae-tpl-line">
-                      <div
-                        ref={tplTriggerRef}
-                        className={`ae-dropdown ae-tpl-dropdown${basicChecked.productTemplate ? '' : ' is-disabled'}`}
-                        onClick={() => {
-                          if (!basicChecked.productTemplate) return;
-                          if (tplMenuOpen) {
-                            setTplMenuOpen(false);
-                            setTplMenuPos(null);
-                            return;
-                          }
-                          const trigger = tplTriggerRef.current;
-                          if (!trigger) return;
-                          const rect = trigger.getBoundingClientRect();
-                          const bounds = trigger.closest('.ae-content')?.getBoundingClientRect();
-                          const menuMax = Math.min(480, window.innerWidth - rect.left - 24);
-                          const spaceBelow = (bounds?.bottom ?? window.innerHeight) - rect.bottom;
-                          const spaceAbove = rect.top - (bounds?.top ?? 0);
-                          const openUp = spaceBelow < 240 && spaceAbove > spaceBelow;
-                          setTplMenuPos({
-                            left: rect.left,
-                            minWidth: rect.width,
-                            maxWidth: menuMax,
-                            ...(openUp ? { bottom: window.innerHeight - rect.top + 4 } : { top: rect.bottom + 4 }),
-                          });
-                          setTplMenuOpen(true);
-                        }}
-                      >
-                        <span className={selectedTpl ? 'ae-dropdown-value' : 'ae-dropdown-placeholder'} title={selectedTpl?.modelName}>
-                          {selectedTpl ? `展示位剩余${remainSlots}` : '请选择产品模板'}
-                        </span>
-                        <ChevronDown />
-                        {tplMenuOpen && basicChecked.productTemplate && tplMenuPos && (
-                          <div className="ae-wm-menu ae-wm-menu--fixed" style={tplMenuPos} onClick={(e) => e.stopPropagation()}>
-                            {productTemplates.map((tpl) => (
-                              <div
-                                key={tpl.id}
-                                className={`ae-wm-menu-item${tpl.id === productTplId ? ' is-active' : ''}`}
-                                title={tpl.modelName}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setProductTplId(tpl.id);
-                                  if (tpl.relModelProdList.length >= MAX_TEMPLATE_SLOTS) setProductTplMode((prev) => (prev === 'add' ? '' : prev));
-                                  setTplMenuOpen(false);
-                                  setTplMenuPos(null);
-                                }}
-                              >
-                                {`展示位剩余${MAX_TEMPLATE_SLOTS - tpl.relModelProdList.length}`}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <button className="ae-op-btn" type="button" disabled={!basicChecked.productTemplate} onClick={() => setToast('同步成功')}>同步</button>
-                    </div>
-                    {selectedTpl && (
-                      <div className={`ae-tpl-slots${remainSlots <= 0 ? ' is-exhausted' : ''}`}>
-                        剩余展示位：{remainSlots}（每个产品模板最多{MAX_TEMPLATE_SLOTS}个展示位）
-                      </div>
-                    )}
-                    {selectedTpl && (
-                      <>
-                        <div className="ae-radio-group">
-                          {tplSyncModes.map((mode) => {
-                            const addDisabled = mode.id === 'add' && remainSlots <= 0;
-                            return (
-                              <label key={mode.id} className={`ae-radio${addDisabled ? ' is-disabled' : ''}`}>
-                                <input
-                                  type="radio"
-                                  name="productTplMode"
-                                  disabled={addDisabled}
-                                  checked={productTplMode === mode.id}
-                                  onChange={() => setProductTplMode(mode.id)}
-                                />
-                                <span className="ae-radio-mask" />
-                                <span>{mode.label}</span>
-                                {addDisabled && <span className="ae-opt-warn">（展示位已满）</span>}
-                              </label>
-                            );
-                          })}
-                        </div>
-                        {productTplMode && (
-                          <div className="ae-hint sub">{tplSyncModes.find((m) => m.id === productTplMode)?.hint}</div>
-                        )}
-                      </>
-                    )}
-                  </>
-                );
-              })()}
             </FormRow>
               </>
             )}
@@ -1872,6 +1891,111 @@ export default function AutoEditDialog() {
               </>
             )}
 
+            {activeMenu === 'service' && (
+              <>
+                <FormRow label="商品分级管理" checked={!!serviceChecked.grade} onCheck={() => toggleServiceRow('grade')} annotationId="service-grade-row">
+                  <div className="ae-radio-group">
+                    {gradeModes.map((mode) => (
+                      <label key={mode} className="ae-radio">
+                        <input
+                          type="radio"
+                          name="serviceGrade"
+                          disabled={!serviceChecked.grade}
+                          checked={gradeMode === mode}
+                          onChange={() => setGradeMode(mode)}
+                        />
+                        <span className="ae-radio-mask" />
+                        <span>{mode}</span>
+                      </label>
+                    ))}
+                  </div>
+                </FormRow>
+
+                <FormRow label="服务模板" checked={!!serviceChecked.tpl} onCheck={() => toggleServiceRow('tpl')} bodyClass="ae-svc-body" annotationId="service-tpl-row">
+                  <div className="ae-svc-list">
+                    {serviceTplRows.map((row, index) => {
+                      const st = tplByShop[row.id] ?? defaultShopTpl;
+                      return (
+                        <div className="ae-svc-item ae-svc-item--shop" key={row.id}>
+                          <div className="ae-svc-line">
+                            <span className="ae-svc-name" title={row.name}>{row.name}</span>
+                            {serviceFields.map((field) => (
+                              <div className="ae-svc-field" key={field}>
+                                <span className="ae-svc-label">{field}</span>
+                                <div className="ae-svc-select">
+                                  <span>{`请选择${field}`}</span>
+                                  <ChevronDown />
+                                </div>
+                              </div>
+                            ))}
+                            <button className="ae-sync-btn" type="button" disabled={!serviceChecked.tpl} onClick={() => setToast('同步成功')}>同步</button>
+                          </div>
+                          <ProductTplBlock
+                            shopId={row.id}
+                            state={st}
+                            menuOpen={tplMenuFor === row.id}
+                            menuPos={tplMenuFor === row.id ? tplMenuPos : null}
+                            onOpenMenu={(trigger) => {
+                              if (tplMenuFor === row.id) {
+                                setTplMenuFor('');
+                                setTplMenuPos(null);
+                                return;
+                              }
+                              const rect = trigger.getBoundingClientRect();
+                              const bounds = trigger.closest('.ae-content')?.getBoundingClientRect();
+                              const menuMax = Math.min(480, window.innerWidth - rect.left - 24);
+                              const spaceBelow = (bounds?.bottom ?? window.innerHeight) - rect.bottom;
+                              const spaceAbove = rect.top - (bounds?.top ?? 0);
+                              const openUp = spaceBelow < 240 && spaceAbove > spaceBelow;
+                              setTplMenuPos({
+                                left: rect.left,
+                                minWidth: rect.width,
+                                maxWidth: menuMax,
+                                ...(openUp ? { bottom: window.innerHeight - rect.top + 4 } : { top: rect.bottom + 4 }),
+                              });
+                              setTplMenuFor(row.id);
+                            }}
+                            onPickTpl={(id) => {
+                              patchShopTpl(row.id, { tplId: id });
+                              setTplMenuFor('');
+                              setTplMenuPos(null);
+                              if (!serviceChecked.tpl) {
+                                setServiceChecked((prev) => ({ ...prev, tpl: true }));
+                              }
+                            }}
+                            onModeChange={(mode) => patchShopTpl(row.id, { mode })}
+                            annotationId={index === 0 ? 'basic-product-template-row' : undefined}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </FormRow>
+
+                <FormRow label="尺码模板" checked={!!serviceChecked.size} onCheck={() => toggleServiceRow('size')} last bodyClass="ae-svc-body" annotationId="service-size-row">
+                  <div className="ae-svc-toolbar">
+                    <button className="ae-sync-btn" type="button" disabled={!serviceChecked.size} onClick={() => setToast('全部同步成功')}>一键同步所有</button>
+                  </div>
+                  <div className="ae-svc-list">
+                    {sizeTplRows.map((row) => (
+                      <div className="ae-svc-item" key={row.id}>
+                        <span className="ae-svc-name" title={row.name}>{row.name}</span>
+                        <span className="ae-svc-cat" title={row.cat}>{row.cat}</span>
+                        <div className="ae-svc-field">
+                          <span className="ae-svc-label">尺码模板</span>
+                          <div className="ae-svc-select">
+                            <span>请选择尺码模板</span>
+                            <ChevronDown />
+                          </div>
+                        </div>
+                        <button className="ae-sync-btn" type="button" disabled={!serviceChecked.size} onClick={() => setToast('同步成功')}>同步</button>
+                      </div>
+                    ))}
+                  </div>
+                </FormRow>
+              </>
+            )}
+
             {activeMenu === 'attr' && (
               <>
               <FormRow label="属性" checked={attrChecked} onCheck={() => setAttrChecked((v) => !v)} annotationId="attr-row">
@@ -1901,7 +2025,7 @@ export default function AutoEditDialog() {
               </>
             )}
 
-            {activeMenu !== 'basic' && activeMenu !== 'image' && activeMenu !== 'sku' && activeMenu !== 'attr' && (
+            {activeMenu !== 'basic' && activeMenu !== 'image' && activeMenu !== 'sku' && activeMenu !== 'service' && activeMenu !== 'attr' && (
               <div className="ae-empty">该栏目内容沿用线上已有配置</div>
             )}
           </div>

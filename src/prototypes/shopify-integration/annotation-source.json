@@ -490,7 +490,8 @@
         "color": "#2c7bfc",
         "images": [],
         "createdAt": 1792220658213,
-        "updatedAt": 1792220658213
+        "updatedAt": 1792461164341,
+        "annotationText": ""
       },
       {
         "id": "cpd-publish-channel",
@@ -566,9 +567,127 @@
         "createdAt": 1792227683173,
         "updatedAt": 1792227683173,
         "annotationText": ""
+      },
+      {
+        "id": "mo-status-parallel",
+        "index": 26,
+        "title": "Shopify 订单多状态并行：接口字段与状态对照",
+        "pageId": "my-orders",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"mo-status-parallel\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=mo-status-parallel",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792484655202,
+        "updatedAt": 1792484655202
+      },
+      {
+        "id": "mo-order-no-source",
+        "index": 27,
+        "title": "订单号：展示 name，同时保存接口用 id",
+        "pageId": "my-orders",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"mo-order-no-source\"]"
+          ],
+          "fingerprint": "a|data-annotation-id=mo-order-no-source",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#2c7bfc",
+        "images": [],
+        "createdAt": 1792484992269,
+        "updatedAt": 1792484992269,
+        "annotationText": ""
+      },
+      {
+        "id": "annotation-27",
+        "index": 28,
+        "locator": {
+          "selectors": [
+            ".so-select-platform",
+            "div > div > main > div > div:nth-of-type(2) > div:nth-of-type(1)"
+          ],
+          "fingerprint": "div",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "main",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "div",
+              "index": 0
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "pageId": "my-orders",
+        "createdAt": 1792488305977,
+        "updatedAt": 1792488305977
+      },
+      {
+        "id": "mo-buyer-api-map",
+        "index": 29,
+        "title": "买家信息字段与 Shopify 接口对照表",
+        "pageId": "my-orders",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"mo-buyer-api-map\"]"
+          ],
+          "fingerprint": "h4|data-annotation-id=mo-buyer-api-map",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#f5222d",
+        "images": [],
+        "createdAt": 1792492710384,
+        "updatedAt": 1792493133717
+      },
+      {
+        "id": "mo-price-api-map",
+        "index": 30,
+        "title": "价格/数量字段的 Shopify 接口对照",
+        "pageId": "my-orders",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"mo-price-api-map\"]"
+          ],
+          "fingerprint": "th|data-annotation-id=mo-price-api-map",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#f5222d",
+        "images": [],
+        "createdAt": 1792492710384,
+        "updatedAt": 1792493133717
       }
     ],
-    "updatedAt": 1792227814239
+    "updatedAt": 1792493133717
   },
   "markdownMap": {
     "sa-col-platform-id": "## 平台ID 从哪来\n\n- 接口地址：`https://{shop}/admin/api/2026-04/graphql.json`\n- 取值路径：`data.shop.id`\n\n授权成功后调用上述接口，把返回的 `data.shop.id` 写入本列。",
@@ -590,11 +709,16 @@
     "annotation-17": "使用 input.descriptionHtml 参数，类型是 String，直接传入富文本对应的 HTML 字符串",
     "capd-platform-single": "## 认领平台只能单选\n\n- 一次只能选中一个平台，点击另一个平台就切换过去，不会出现多个平台同时选中。\n- 选中的平台决定下方店铺列表内容，以及底部「平台 xxx 已选 N 个店铺」的显示。\n\n## 平台选项的排序\n\n1. 按后台配置的排序值从小到大，自左向右排列；\n2. 排序值相同时，按平台创建时间从早到晚，自左向右排列。",
     "capd-platform-shopify": "## 新增 shopify 平台\n\n- 在敦煌网右侧增加 shopify 平台选项，打开弹窗时默认选中 shopify。\n- 平台只能单选；切换平台后，下方店铺列表按新平台重新加载，只显示该平台下的店铺，并清空此前已勾选的店铺。",
-    "capd-auto-edit-shared": "## 自动编辑弹窗与敦煌网共用\n\n**需要强调**：Shopify 的自动编辑沿用同一个弹窗，只有一处需要调整——商品基本信息中的类目数据要匹配 Shopify 的类目，其余内容、布局和操作保持不变。",
+    "capd-auto-edit-shared": "## 自动编辑弹窗与敦煌网共用\n\n**需要强调**：Shopify 的自动编辑沿用同一个弹窗，只有以下位置需要调整：\n- 商品基本信息-类目：只能匹配shopify的类目\n- 商品-批量编辑-属性：只能识别和指定shopify的类目\n- 商品-批量编辑-服务：此功能与敦煌强相关，隐藏tab",
     "cpd-publish-channel": "## 发布渠道：创建时只预填\n\nShopify 的产品需要发布到对应渠道后才能正常展示，但不能在创建时指定，需要产品上架成功之后才能指定发布渠道。\n\n所以这里只是**预填信息**：等产品上架成功后，再根据系统中预填的渠道，调用对应接口把产品发布到指定渠道。\n\n## 流程\n\n1. **获取可选渠道**：查询 `publications`，用 `catalog.title` 展示渠道名称，用 `Publication` 的 `id` 作为选项值。\n2. **创建商品**：调用 `productCreate`，获取商品 ID。\n3. **发布到选中渠道**：调用 `publishablePublish`，传入商品 ID 和选中的 `Publication` ID。\n\n> 产品需要为 `ACTIVE` 状态才能在渠道中显示，发布渠道可多选。",
     "mp-side-sale-status": "## 销售状态怎么取数\n\n通过 `product`（单个）或 `products`（批量）查询商品的 `status` 字段，需要 `read_products` 权限。\n\n## status 有 4 种取值\n\n| 状态 | 含义 |\n| --- | --- |\n| `ACTIVE` | 活跃，可以发布到销售渠道，但不代表已经上架到某个渠道 |\n| `DRAFT` | 草稿，尚未准备好销售，客户不可见 |\n| `ARCHIVED` | 已归档，不再销售，客户不可见 |\n| `UNLISTED` | 未列出，可通过直接链接访问，但不出现在搜索、商品系列或推荐中 |\n\n## 和本页两个统计项的对应关系\n\n| 本页统计项 | Shopify 状态 |\n| --- | --- |\n| 已上架 | `ACTIVE` |\n| 已下架 | `UNLISTED` |\n\n`DRAFT`、`ARCHIVED` 不计入本组的「已上架 / 已下架」。",
     "mp-filter-store": "## 店铺筛选只显示当前平台的店铺\n\n下拉选项只展示当前选中平台下的店铺",
-    "mo-filter-store": "## 店铺名称下拉只显示对应平台的店铺\n\n- 平台名称未指定（默认「全部平台」）时，店铺名称下拉列出全部平台的店铺。\n- 平台名称指定为敦煌网或 shopify 后，店铺名称下拉只显示该平台下的店铺，已选中的店铺会被清空。"
+    "mo-filter-store": "## 店铺名称下拉只显示对应平台的店铺\n\n- 平台名称未指定（默认「全部平台」）时，店铺名称下拉列出全部平台的店铺。\n- 平台名称指定为敦煌网或 shopify 后，店铺名称下拉只显示该平台下的店铺，已选中的店铺会被清空。",
+    "mo-status-parallel": "## Shopify 订单多状态并行\n\nShopify 订单没有单一状态，订单本身、支付、履约、物流、退货各是一条独立的状态线，需组合展示。\n\n### 1. 订单本身的状态\n\n| 状态 | 含义 | GraphQL 判断字段 |\n|------|------|------------------|\n| 开放／未归档 | 订单仍在处理中，尚未归档 | `closed` 为 `false`；取消情况另看 `cancelledAt` |\n| 已归档 | 订单已归档，不代表必然已付款或已签收 | `closed` 为 `true`、`closedAt` |\n| 已取消 | 订单已取消；是否退款需另外查看支付状态 | `cancelledAt` 不为空，`cancelReason` 为取消原因 |\n\n只有「开放／未归档」的订单才继续组合其他状态线；「已归档」直接显示绿色状态标签，「已取消」直接显示红色状态标签，见第 7 节。\n\n### 2. 支付状态\n\nGraphQL 字段：`displayFinancialStatus`。\n\n| 状态值 | 系统显示状态名 | 系统状态颜色 | 说明 |\n|--------| ------ | -------- |------|\n| PENDING | 待支付 | 橙色 | 支付渠道尚未完成付款，或使用手动付款方式 |\n| AUTHORIZED | 已授权 | 绿色 | 已获得支付授权，但尚未扣款 |\n| EXPIRED | 已过期 | 红色 | 未在期限内扣款；部分渠道也用它表示支付处理失败 |\n| PARTIALLY_PAID | 部分支付 | 绿色 | 已收金额小于订单总额 |\n| PAID | 已支付 | 绿色 | 已扣款，或订单被标记为已付款 |\n| PARTIALLY_REFUNDED | 部分退款 | 红色 | 已退还部分已付款金额 |\n| REFUNDED | 已退款 | 红色 | 已付款金额全部退还 |\n| VOIDED | 已撤销 | 红色 | 未扣款的授权被撤销；不等于订单取消 |\n\n### 3. 履约／发货状态\n\nGraphQL 字段：`displayFulfillmentStatus`。\n\n| 状态值 | 系统显示状态名 | 系统状态颜色 | 说明 |\n|--------| ------ | -------- |------|\n| UNFULFILLED | 待发货 | 橙色 | 尚未履约任何商品 |\n| IN_PROGRESS | 处理中 | 橙色 | 已向履约服务提交请求，或商品已被标记为处理中 |\n| ON_HOLD | 暂停发货 | 红色 | 所有尚未履约的商品都处于暂停状态 |\n| SCHEDULED | 排期发货 | 橙色 | 所有尚未履约的商品都计划在未来履约 |\n| PARTIALLY_FULFILLED | 部分发货 | 绿色 | 部分商品已履约 |\n| FULFILLED | 已发货 | 绿色 | 所有商品已履约；不代表物流已签收 |\n| REQUEST_DECLINED | 拒绝发货 | 红色 | 部分商品的履约请求被履约服务拒绝 |\n\n### 4. 物流／签收状态\n\nGraphQL 字段：`Fulfillment.displayStatus`。一笔订单可以拆成多个履约记录，各自状态可能不同。\n\n| 状态值 | 系统显示状态名 | 系统状态颜色 |\n|--------| ------ | -------- |\n| SUBMITTED | 已提交 | 绿色 |\n| CONFIRMED | 已确认 | 绿色 |\n| LABEL_PURCHASED | 已购买面单 | 绿色 |\n| LABEL_PRINTED | 已打印面单 | 绿色 |\n| LABEL_VOIDED | 面单已作废 | 红色 |\n| MARKED_AS_FULFILLED | 标记已签收 | 绿色 |\n| FULFILLED | 已履约 | 绿色 |\n| CARRIER_PICKED_UP | 已揽收 | 绿色 |\n| IN_TRANSIT | 运输中 | 橙色 |\n| OUT_FOR_DELIVERY | 派送中 | 橙色 |\n| ATTEMPTED_DELIVERY | 尝试投递失败 | 红色 |\n| DELIVERED | 已签收 | 绿色 |\n| DELAYED | 物流延误 | 红色 |\n| NOT_DELIVERED | 未送达 | 红色 |\n| FAILURE | 失败 | 红色 |\n| READY_FOR_PICKUP | 待取货 | 橙色 |\n| PICKED_UP | 已取货 | 绿色 |\n| CANCELED | 已取消 | 红色 |\n### 5. 退货状态\n\nGraphQL 字段：`Return.status`。一笔订单可以有多个退货单。\n\n| 状态值 | 系统显示状态名 | 系统状态颜色 | ERP 对应参考 |\n|--------| ------ | -------- |--------------|\n| REQUESTED | 退货申请中 | 橙色 | 买家申请退货，等待审核 |\n| OPEN | 退货处理中 | 橙色 | 已进入退货处理流程 |\n| DECLINED | 拒绝退货 | 红色 | 商家拒绝退货 |\n| CANCELED | 取消退货 | 绿色 | 买家撤销退货／退货单取消 |\n| CLOSED | 已退货 | 绿色 | 退货流程结束 |\n\n### 6. 订单整体退款结果\n\n查看订单的 `displayFinancialStatus`：\n\n| 状态值 | 中文含义 |\n|--------|----------|\n| PARTIALLY_REFUNDED | 部分退款，退还金额小于已付款金额 |\n| REFUNDED | 全额退款，已付款金额全部退还 |\n\n### 7. 本页状态标签的显示规则\n\n**先看订单本身的状态**\n\n第 2～6 节的各条状态线，只在订单本身处于「开放／未归档」时按下面的规则组合显示：\n\n- 「已归档」：状态列直接显示**已归档**（绿色），不再组合支付、履约、物流、退货状态；\n- 「已取消」：状态列直接显示**已取消**（红色），同样不再组合其他状态线。\n\n订单本身为「开放／未归档」时，订单行的状态标签**同时显示 3 个状态**，各自取什么值、显示什么名称、用什么颜色，见上面第 2～5 节的表格。\n\n**显示顺序**\n\n1. **支付状态**\n2. **混合状态**\n   - 默认取履约／发货状态；\n   - 当履约／发货状态为「部分发货」或「已发货」时，改取物流／签收状态。\n3. **退货状态**\n\n以上任一状态取不到值时，该位置**不显示状态名称**（不补占位文字）。\n",
+    "mo-order-no-source": "## 订单号从哪来\n\nShopify 后台显示的订单号，通过 Admin GraphQL API 的 `orders` 查询获取。\n\n| 返回字段 | 用途 |\n| --- | --- |\n| `name` | 后台显示的订单号，例如 `#1001`，本列展示的就是它 |\n| `id` | 订单的唯一 ID |\n\n## 为什么要一起保存 id\n\n本列显示的是 `name`，但 `id` 也需要同步保存下来：后续有些接口需要用 `id` 作为唯一标识去调用，只存 `name` 无法对接这些接口。",
+    "annotation-27": "新增查询条件：平台名称",
+    "mo-buyer-api-map": "### 买家信息 - 字段与接口对照表\n\n**统一约定：**\n- 查询接口：`order(id: $id)`，参数 `id` 为订单 GID，例如 `gid://shopify/Order/123456789`。\n- 修改接口：`orderUpdate(input: $input)`，所有修改都必须传 `input.id`。\n- 下表查询字段均相对于 `order`；修改参数均相对于 `input`。\n\n| 所需信息 | 获取接口 | 查询字段 | 修改接口 | 修改参数 / 注意事项 |\n| --- | --- | --- | --- | --- |\n| 客户姓名 | order | shippingAddress.firstName、lastName | orderUpdate | shippingAddress.firstName、lastName；这里是收货人姓名 |\n| 手机号码 | order | phone；收货联系电话可读 shippingAddress.phone | orderUpdate | phone 或 shippingAddress.phone，按用途选择 |\n| 电话号码 | order | 同上 | orderUpdate | 没有独立的手机、固话两个标准字段，如需同时保存，应另设自定义字段 |\n| 电子邮箱 | order | email | orderUpdate | email |\n| 国家 / 地区 | order | shippingAddress.country、countryCodeV2 | orderUpdate | shippingAddress.countryCode，例如 CN |\n| 省 / 州 | order | shippingAddress.province、provinceCode | orderUpdate | shippingAddress.provinceCode，应与国家匹配 |\n| 城市 | order | shippingAddress.city | orderUpdate | shippingAddress.city |\n| 邮编 | order | shippingAddress.zip | orderUpdate | shippingAddress.zip |\n| 区 / 街道 | order | 通常包含在 shippingAddress.address1 / address2 | orderUpdate | 无独立标准字段，合并写入 address1 / address2 |\n| 门牌号 | order | 通常包含在 shippingAddress.address1 / address2 | orderUpdate | 无独立标准字段，合并写入 address1 / address2 |\n| 买家税号 | order | localizedFields.nodes { key value } | orderUpdate | localizedFields: [{key, value}]；具体 key 取决于国家和税号类型，见下方说明 |\n| 详细地址 1 | order | shippingAddress.address1 | orderUpdate | shippingAddress.address1 |\n| 详细地址 2 | order | shippingAddress.address2 | orderUpdate | shippingAddress.address2 |\n| 详细地址 3 | order | 无原生 address3 | orderUpdate | 可合并至 address2，或用 metafields 单独保存；自定义字段不会自动成为配送地址的一部分 |\n\n**买家税号注意：** `localizedFields` 是国家/地区特定字段，并非统一的 taxNumber。如果税号由第三方应用、自定义字段或 B2B 公司资料保存，需要按实际来源查询，不能保证都在此字段中。",
+    "mo-price-api-map": "Admin GraphQL 的 `order(id:)`，在订单中查询价格和 `lineItems`（商品明细）即可，也可以把这些字段合并到上面的买家查询中。\n\n### 字段对应关系\n\n| 信息 | 字段 | 说明 |\n| --- | --- | --- |\n| 订单总金额 | totalPriceSet | 包含折扣、运费、税费等的订单总额 |\n| 当前订单总金额 | currentTotalPriceSet | 反映退货、退款、订单编辑等变更后的总额，不代表实收金额 |\n| 商品 SKU | lineItems.nodes.sku | 商品编码，未设置时可能为空 |\n| 商品数量 | lineItems.nodes.quantity | 明细数量，包含已退款或移除的数量 |\n| 当前商品数量 | lineItems.nodes.currentQuantity | 扣除已退款或移除后的数量 |\n| 商品折扣前单价 | lineItems.nodes.originalUnitPriceSet | 不是折后成交单价 |"
   },
   "assetMap": {},
   "directory": {
@@ -641,7 +765,7 @@
             "type": "markdown",
             "id": "shopify-integration-overview",
             "title": "Shopify 对接 - 原型说明",
-            "markdown": "# Shopify 对接 - 原型说明\n\n> 本文档由当前原型代码整理，作为可继续调整的基础版。标注中「待确认」的项目尚未在原型里实现，需要产品明确后再补充页面或标注。\n\n## 原型范围\n\n本原型模拟 ERP 中 Shopify 店铺对接相关的三个页面，通过 hash 路由切换（`#page=<pageId>`）：\n\n| pageId | 页面 | 定位 |\n| --- | --- | --- |\n| `store-auth` | 店铺授权 | 系统 / 店铺 / 店铺授权，管理多平台店铺与授权状态 |\n| `my-products` | 我的商品 | 商品 / 商品管理 / 我的商品，商品认领后的发布与管理 |\n| `my-orders` | 我的订单 | 交易 / 订单管理 / 我的订单，平台订单处理与发货跟踪 |\n\n## 店铺授权（store-auth）\n\n- 顶部平台页签：敦煌网（当前激活）、拼多多、Shopify。\n- 筛选：店铺名称输入 + 搜索 / 重置。\n- 操作：新增、店铺分组。\n- 列表字段：平台ID、平台名称、店铺别名、店铺名称、状态、授权状态、到期时间；示例数据均为 `dhgate` 平台店铺，共 4 条。\n- 字段来源（见「平台ID」「到期时间」两处表头标注）：平台ID 取 `https://{shop}/admin/api/2026-04/graphql.json` 返回的 `data.shop.id`；到期时间由 `POST https://{shop}.myshopify.com/admin/oauth/access_token`（换取 Token 时携带 `expiring=1`）响应中的 `$.refresh_token_expires_in`（秒）换算，`$.expires_in` 是短期的 Access Token 有效期，只用于后台刷新换取新 Token。\n- 分页：共 4 条、10 条/页、跳页。\n- 新增店铺弹窗：点「新增」弹出，含店铺名称、店铺别名、平台名称（必填）、子账号、状态（启用/禁用，默认启用）与取消/确定。本轮只还原外观，弹窗内控件为静态占位态，仅打开与关闭可用。\n\n待确认：\n- Shopify 页签激活后的列表字段、授权入口与授权流程（OAuth 跳转 / 填写店铺域名 + token）原型未体现。\n- 授权到期提醒策略（提前几天提醒、到期后是否阻断刊登与拉单）。\n-  Shopify 店铺在「我的商品」「我的订单」中的可选范围是否与授权状态联动。\n\n## 我的商品（my-products）\n\n- 顶部页签：商品采集、认领中心、我的商品（当前激活）；「我的商品」页签带平台后缀（如「我的商品-shopify」），右侧下拉可切换敦煌网 / shopify，选项与排序规则见该页签标注。\n- 筛选：采集源（字段选择 + 输入，支持双击批量搜索）、价格区间、采集平台、刊登时间、认领时间、修改时间、标签、店铺；操作含搜索、重置、创建新产品、排序、导出、导入货源、同步线上、列设置。\n- 左侧统计分组：商品概览（全部商品 9172，可刷新）、发布管理（待发布 266 / 发布中 / 循环刊登 / 发布失败）、销售状态（已上架 / 已下架）、审核与风险（待审核 / 审核未通过 / 内容违规 / 侵权违规）。分组项为单选：点击任一项选中该项，同时取消其他分组已选中项（如点「全部商品」会取消「待发布」的选中）。\n- 列表字段：勾选框、图片、商品信息（标题、类目、状态标签、平台徽标、店铺）、产品编号、售价、标签、时间/版本（认领、修改、刊登、认领版本号、当前版本号）、来源；共 266 条。表头「产品编号」列有标注，说明该值取自创建商品响应 `data.productSet.product.id`。\n\n待确认：\n- Shopify 渠道的商品状态枚举与平台侧状态（active / draft / archived）映射关系。\n- 刊登失败原因展示与重试入口。\n- 循环刊登在 Shopify 渠道的适用性。\n\n## 我的订单（my-orders）\n\n- 顶部状态页签：全部订单 11759、新订单、采购配货、仓库处理、物流运输、已妥投、已作废。\n- 筛选：平台名称（默认全部平台，可选敦煌网 / shopify）、店铺名称（下拉选项跟随平台名称，见「店铺名称」标注）、字段选择（平台订单号）+ 批量搜索输入、搜索、重置；右侧高级筛选、排序、同步店铺订单、导入/导出、设置。\n- 列表字段：序号与勾选、订单号/状态（含店铺、ID、行内操作图标、同步图标）、产品信息（图片与编辑货品、标题、规格、USD 单价×数量、SkuCode、线上产品编号、本地配对、买家/卖家/拣货备注、采购状态）、买家信息（姓名、国家、省/州、邮编）、时间节点（创建/付款/审核/采购/单号/发货/出库/上网/截止）、发货过程预警（采购预警、发货预警、上网状态、轨迹断更）、物流信息、数据（销售额与收入的 USD/CNY）；共 11759 条。\n- 底部批量操作：一键出库、处理申报信息、修改买家邮箱、修改买家信息、修改物流渠道、提交到平台、标记、邀约采购、删除；已选 0 项。\n\n待确认：\n- Shopify 订单号格式、订单状态到本页 7 个页签的映射规则。\n- 「提交到平台」在 Shopify 侧调用的接口与失败处理。\n- 物流渠道、跟踪号回传（fulfillment）与「上网状态 / 轨迹断更」的数据来源。\n- 费用项构成（平台佣金、支付手续费等）与「收入」计算口径。\n\n## 数据说明\n\n原型内所有列表、统计数据均为静态演示数据，未接入真实接口；示例数据沿用 DHgate 店铺，Shopify 相关字段尚未填充。"
+            "markdown": "# Shopify 对接 - 原型说明\n\n> 本文档由当前原型代码整理，作为可继续调整的基础版。标注中「待确认」的项目尚未在原型里实现，需要产品明确后再补充页面或标注。\n\n## 原型范围\n\n本原型模拟 ERP 中 Shopify 店铺对接相关的四个页面，通过 hash 路由切换（`#page=<pageId>`）：\n\n| pageId | 页面 | 定位 |\n| --- | --- | --- |\n| `store-auth` | 店铺授权 | 系统 / 店铺 / 店铺授权，管理多平台店铺与授权状态 |\n| `claim-center` | 认领中心 | 商品 / 商品管理 / 认领中心，采集商品的认领工作台 |\n| `my-products` | 我的商品 | 商品 / 商品管理 / 我的商品，商品认领后的发布与管理 |\n| `my-orders` | 我的订单 | 交易 / 订单管理 / 我的订单，平台订单处理与发货跟踪 |\n\n页面框架（顶栏、面包屑、卡片）由 `components/AppShell.tsx` 共用；弹窗组件为 `AddStoreDialog`（新增店铺）、`ClaimProductDialog`（认领商品）、`CreateProductDialog`（创建新产品）。\n\n## 店铺授权（store-auth）\n\n- 顶部平台页签：敦煌网（当前激活）、拼多多、Shopify，本轮为静态展示不可切换。\n- 筛选：店铺名称输入 + 搜索 / 重置；操作：新增、店铺分组。\n- 列表字段：平台ID、平台名称、店铺别名、店铺名称、状态、授权状态、到期时间；示例数据均为 `dhgate` 平台店铺，共 4 条。\n- 字段来源（见「平台ID」「到期时间」两处表头标注）：平台ID 取 `https://{shop}/admin/api/2026-04/graphql.json` 返回的 `data.shop.id`；到期时间由 `POST https://{shop}.myshopify.com/admin/oauth/access_token`（换取 Token 时携带 `expiring=1`）响应中的 `$.refresh_token_expires_in`（秒）换算，`$.expires_in` 是短期的 Access Token 有效期，只用于后台刷新换取新 Token。\n- 分页：共 4 条、10 条/页、跳页。\n- 新增店铺弹窗：点「新增」弹出，含店铺名称、店铺别名、平台名称（必填，下拉不展开）、子账号、状态（启用/禁用，默认启用）与取消/确定。弹窗内控件为静态占位态，仅打开与关闭可用（× / 取消 / 确定 / 遮罩点击均可关闭）。\n- Shopify 授权方式（表头与弹窗状态行标注）：授权采用跳转 Shopify 商店安装的形式，早期讨论的「商户自己填写域名拼接跳转」体验差且容易出错，已不采用。\n\n待确认：\n- Shopify 页签激活后的列表字段与授权回跳后的状态刷新时机。\n- 授权到期提醒策略（提前几天提醒、到期后是否阻断刊登与拉单）。\n- Shopify 店铺在「我的商品」「我的订单」中的可选范围是否与授权状态联动。\n\n## 认领中心（claim-center）\n\n- 顶部页签带：商品采集、认领中心（当前激活）、我的商品；为静态展示，「我的商品」不跳转到 `my-products`。\n- 筛选第 1 行：采集源字段下拉、批量搜索框、认领状态、价格区间（双输入 + 步进器）、采集平台、采集日期；第 2 行：标签 + 搜索 / 重置 / 创建新产品，右侧导出、导入产品、统一导出、列设置齿轮。下拉面板与搜索 / 重置 / 分页结果反馈均未实现。\n- 列表字段：勾选、图片、标题＋父SKU＋类目、售价、状态（已认领 / 未认领）、标签、来源、采集账号；示例 10 行（9 条 1688 + 1 条亚马逊），共 1679 条 / 168 页。\n- 行选择为静态还原：首行固定勾选并展开「编辑 / 认领 / 标签 / 删除」操作条，表头半选，底部固定「已选 1 项」，勾选不联动。\n- 认领商品弹窗：点行内「认领」或底部「批量认领」弹出。左栏已选商品清单（缩略图 + 标题 + 共 1 个商品），右栏「选择认领平台」敦煌网 / shopify 卡片 +「选择店铺（可多选）」店铺列表 +「全选」，底部「平台 ××× 已选0个店铺」+「请至少选择 1 个店铺」+「直接认领」「自动编辑」（两按钮为禁用态）。\n- 弹窗当前实现：打开时默认选中 shopify；平台单选，切换平台后店铺列表按新平台重新加载（shopify 为 camel-captain / camel-outlet / camel-home），底部状态文案跟随平台变化；店铺勾选、全选与认领提交逻辑仍未实现。\n- 自动编辑弹窗与敦煌网共用同一个弹窗，Shopify 只调整三处：商品基本信息-类目只匹配 shopify 类目；商品-批量编辑-属性只识别和指定 shopify 类目；商品-批量编辑-服务与敦煌强相关，隐藏该 tab。\n\n待确认：\n- 行内「编辑」「标签」「删除」与批量「编辑货源 / 批量标签 / 批量删除」打开后的表单。\n- 「批量查找」「导入产品」「统一导出」弹窗与「任务处理中」浮层（源页面 DOM 中为隐藏态，本轮未还原）。\n- 「认领商品」弹窗选中店铺后的可用态：勾选联动、已选计数、店铺超过 5 家时的滚动与「全选」行为、「直接认领 / 自动编辑」的启用条件与配色。\n- 认领中心「创建新产品」「导入产品」「导出」的真实落点：是否复用「我的商品」的创建产品弹窗（当前按钮无点击响应）。\n\n## 我的商品（my-products）\n\n- 顶部页签带：商品采集、认领中心、我的商品（当前激活）；「我的商品」页签带平台后缀（如「我的商品-shopify」），点页签上的下拉可在敦煌网 / shopify 间切换（默认 shopify），切换平台会清空已选店铺。页签为静态文字的不跳转到 `claim-center`。\n- 筛选：采集源（字段选择 + 输入，支持双击批量搜索）、价格区间、采集平台、刊登时间、认领时间、修改时间、标签、店铺；操作含搜索、重置、创建新产品、排序、导出、导入货源、同步线上、列设置。\n- 「店铺」筛选下拉可展开，选项只列当前平台的已授权店铺（敦煌网 4 家 / shopify 的 camel-captain、camel-outlet，`camel-home` 为未授权不出现在下拉里）；搜索按钮本身不产生结果。\n- 左侧统计分组：商品概览（全部商品 9172，带刷新）、发布管理（待发布 266 / 发布中 0 / 发布失败 75）、销售状态（已上架 2740 / 已下架 3077）。「循环刊登」与「审核与风险」分组已从页面隐藏，代码保留待恢复。分组项为单选：点击任一项选中该项，同时取消其他分组已选中项（该规则写在「销售状态」标注里，当前页面为静态呈现，不绑定点击）。\n- 列表字段：勾选框、图片、商品信息（标题、类目、状态标签、平台徽标、店铺）、产品编号、售价、标签、时间/版本（认领、修改、刊登、认领版本号、当前版本号）、来源；示例 5 行，共 266 条。表头「产品编号」标注说明该值取自创建商品响应 `data.productSet.product.id`。\n- 「同步线上」标注：与敦煌网逻辑一致，把平台上已有的商品数据拉回 ERP 与本地比对后更新；Shopify 侧走 GraphQL Admin API 的 `products` 查询，且只处理已选平台下的店铺数据。\n- 创建新产品弹窗：点「创建新产品」弹出，左侧锚点与右侧区块为店铺/类目、产品信息、产品属性、视频、主图（0/8）、产品规格（0/5）、价格 USD、发布渠道、SEO 信息、重量/包装、货源/系统信息。「关键词」「短描」「站外推广图」「模板样式」「定制商品」「销售方案」「服务」暂不展示，代码保留以便恢复。\n- 弹窗内已有交互：发布渠道与模板样式的同步按钮、库存地点的同步按钮点击后给出提示（「同步完成」/「同步成功」）；「批量修改库存地点」子弹窗可选颜色与自定义属性范围。其余控件为静态占位态。\n- 发布渠道：弹窗内的渠道（Online Store / Point of Sale / Trustpilot / Google & YouTube）是模拟从 shopify 同步回来的结果。按标注口径，Shopify 商品需要上架成功后才能指定渠道，所以创建时这里只是**预填**，上架成功后再按预填渠道调用对应接口发布；可选渠道来自 `publications` 查询。\n- Shopify 字段口径（对应弹窗内各处标注）：类目树先不带筛选调用 `taxonomy.categories` 取顶级，再对每个类目按 `descendantsOf` 循环取后代拼成完整树；产品属性通过 `node(id: $categoryId)` 查询，`TaxonomyChoiceListAttribute` 用 `values.nodes` 渲染选项，系统规格与产品属性同源，可直接引用作为规格可选项；`productSet` 最多接受 3 个产品规格，达到 3 个后「添加规格 / 添加自定义规则」不可用；标题写 `input.title`，富文本描述写 `input.descriptionHtml`（String）；SKU 变体传 `input.productOptions` 与 `input.variants`（`variants[].optionValues` 指定规格组合）；图片与视频合并走 `input.files`（`[FileSetInput!]`，不是 `media`），先传视频再传图片，上限暂时沿用敦煌网的 8 张；SEO 用 `input.seo.title / description / handle` 对应后台「搜索引擎列表」的页面标题、元描述、URL 标识名；重量传 `input.variants[].inventoryItem.measurement.weight`，`unit` 默认 `KILOGRAMS`。\n- `productSet` 同时用于创建和更新：更新时在 `input.id` 传已有产品的 Shopify GID；普通字段只更新传入项，列表字段（`variants`、`collections`、`metafields` 等）传入即整体替换。该规则写在弹窗标题标注里。\n\n待确认：\n- Shopify 渠道的商品状态枚举与平台侧状态（`ACTIVE` / `DRAFT` / `ARCHIVED`，另有 `INVITE_ONLY`）到「已上架 / 已下架」的映射规则，标注里已列口径，页面分组仍为静态。\n- 刊登失败原因展示与重试入口。\n- 库存地点、是否可售等列在 Shopify 侧的写入接口与批量提交结果。\n\n## 我的订单（my-orders）\n\n- 顶部状态页签：全部订单 11759、新订单 124、采购配货 20、仓库处理 4、物流运输 314、已妥投 8874、已作废 5；页签为静态展示。\n- 筛选：平台名称（默认全部平台，可选敦煌网 / shopify）、店铺名称（下拉可展开，选项跟随平台名称，未指定平台时列全部平台，切换平台后已选店铺清空）、字段选择（平台订单号）+ 批量搜索输入、搜索、重置；右侧高级筛选、排序、同步店铺订单、导入 / 导出、设置。\n- 列表字段：序号与勾选、订单号/状态（含店铺、ID、行内操作图标、同步图标）、产品信息（图片与编辑货品、标题、规格、USD 单价×数量、SkuCode、线上产品编号、本地配对、买家/卖家/拣货备注、采购状态）、买家信息（姓名、国家、省/州、邮编）、时间节点（创建/付款/审核/采购/单号/发货/出库/上网/截止）、发货过程预警（采购预警、发货预警、上网状态、轨迹断更）、物流信息、数据（销售额与收入的 USD/CNY）；示例数据沿用敦煌网订单，共 11759 条。\n- 底部批量操作：一键出库、处理申报信息、修改买家邮箱、修改买家信息、修改物流渠道、提交到平台、标记、邀约采购、删除；已选 0 项。\n\n待确认：\n- Shopify 订单号格式、订单状态到本页 7 个页签的映射规则。\n- 「提交到平台」在 Shopify 侧调用的接口与失败处理。\n- 物流渠道、跟踪号回传（fulfillment）与「上网状态 / 轨迹断更」的数据来源。\n- 费用项构成（平台佣金、支付手续费等）与「收入」计算口径。\n\n## 数据说明\n\n原型内所有列表、统计数据均为静态演示数据，未接入真实接口；示例数据沿用 DHgate 店铺与订单，Shopify 渠道的数据仅在店铺下拉、认领弹窗店铺列表、发布渠道等演示态中出现。已实现的真实交互限于：店铺授权页新增店铺弹窗的打开与关闭、认领中心调起认领商品弹窗及其平台切换、我的商品的平台页签切换与店铺下拉、创建新产品弹窗的关闭与同步提示 toast。\n"
           }
         ]
       },
