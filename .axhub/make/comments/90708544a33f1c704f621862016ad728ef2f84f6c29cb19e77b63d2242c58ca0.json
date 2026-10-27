@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "image-workbench-watermark",
+    "targetPath": "prototypes/image-workbench-watermark",
+    "filePath": ".axhub/make/comments/90708544a33f1c704f621862016ad728ef2f84f6c29cb19e77b63d2242c58ca0.json"
+  },
+  "comments": [],
+  "images": []
+}

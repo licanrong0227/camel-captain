@@ -1,0 +1,919 @@
+/* ============ 图像工作台弹窗（水印 tab）+ 添加水印弹窗 ============
+   1:1 还原线上嵌入的开源编辑器（快图设计 vue-fabric-editor，iView 蓝色风格）。
+   尺寸/配色来自线上实测：header 45px、左菜单 65px、水印面板 315px、属性栏 260px、图片列表 100px、主色 #2D8CF0。 */
+
+:root {
+  --iw-font: "PingFang SC", "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
+  --iw-text: #515a6e;
+  --iw-primary: #2d8cf0;
+  --iw-border: #e8e8e8;
+  --iw-divider: #e8eaec;
+  --iw-mask: #7f7f7f;
+  --iw-thumb-active: #1890ff;
+}
+
+.iw-page,
+.iw-page * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.iw-page {
+  position: fixed;
+  inset: 0;
+  background: var(--iw-mask);
+  font-family: var(--iw-font);
+  font-size: 14px;
+  color: var(--iw-text);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- 弹窗壳（无标题，仅关闭按钮） ---------- */
+
+.iw-dialog {
+  position: relative;
+  width: 95%;
+  max-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.25);
+}
+
+.iw-dialog-header {
+  position: relative;
+  flex: none;
+  height: 46px;
+}
+
+.iw-dialog-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: none;
+  background: transparent;
+  color: #909399;
+  cursor: pointer;
+  display: inline-flex;
+}
+
+.iw-dialog-close:hover {
+  color: #606266;
+}
+
+/* ---------- 编辑器整体 ---------- */
+
+.iw-editor {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.iw-header {
+  flex: none;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  background: #fff;
+  border-bottom: 1px solid #eef2f8;
+}
+
+.iw-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iw-logo {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.iw-v-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--iw-divider);
+  margin: 0 4px;
+}
+
+.iw-menu-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--iw-text);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.iw-icon-btn {
+  border: none;
+  background: transparent;
+  color: #c5c8ce;
+  cursor: not-allowed;
+  display: inline-flex;
+  padding: 4px;
+}
+
+.iw-header-right {
+  display: flex;
+  align-items: center;
+}
+
+/* iView 开关（小） */
+
+.iw-switch {
+  display: inline-block;
+  width: 44px;
+  height: 22px;
+  border-radius: 22px;
+  border: 1px solid #ccc;
+  background: #ccc;
+  position: relative;
+  cursor: pointer;
+  vertical-align: middle;
+  flex: none;
+}
+
+.iw-switch::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: left 0.2s;
+}
+
+.iw-switch-checked {
+  background: var(--iw-primary);
+  border-color: var(--iw-primary);
+}
+
+.iw-switch-checked::after {
+  left: 21px;
+}
+
+.iw-switch-small {
+  width: 36px;
+  height: 16px;
+  line-height: 14px;
+}
+
+.iw-switch-small::after {
+  width: 12px;
+  height: 12px;
+}
+
+.iw-switch-small.iw-switch-checked::after {
+  left: 19px;
+}
+
+/* iView 按钮 */
+
+.ivu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 15px;
+  font-size: 14px;
+  line-height: 1.5;
+  border-radius: 4px;
+  border: 1px solid #dcdee2;
+  background: #fff;
+  color: var(--iw-text);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.ivu-btn-primary {
+  background: var(--iw-primary);
+  border-color: var(--iw-primary);
+  color: #fff;
+}
+
+.ivu-btn-primary:hover {
+  background: #57a3f3;
+  border-color: #57a3f3;
+}
+
+.ivu-btn-text {
+  background: transparent;
+  border-color: transparent;
+  color: var(--iw-text);
+}
+
+.ivu-btn-default {
+  background: #fff;
+  border-color: #dcdee2;
+}
+
+.ivu-btn-small {
+  height: 24px;
+  padding: 0 7px;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+/* ---------- 主体 ---------- */
+
+.iw-content {
+  position: relative;
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* 左侧图标菜单 65px */
+
+.iw-left-menu {
+  flex: none;
+  width: 65px;
+  background: #fff;
+  border-right: 1px solid #f2f2f2;
+  padding-top: 4px;
+}
+
+.iw-menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.iw-menu-item.active {
+  color: var(--iw-primary);
+}
+
+.iw-menu-label {
+  line-height: 1.2;
+}
+
+/* 水印管理面板 */
+
+.iw-watermark-panel {
+  flex: none;
+  width: 315px;
+  background: #fff;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.iw-wm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.iw-wm-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.iw-wm-list {
+  margin-bottom: 30px;
+}
+
+.iw-wm-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--iw-border);
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.iw-wm-preview {
+  width: 80px;
+  height: 80px;
+  margin-right: 12px;
+  flex: none;
+}
+
+.iw-wm-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.iw-wm-info {
+  flex: 1;
+}
+
+.iw-wm-name {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.iw-wm-size {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.iw-wm-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.iw-wm-actions .ivu-btn-text {
+  color: var(--iw-primary);
+}
+
+/* 属性面板 260px */
+
+.iw-props-bar {
+  flex: none;
+  width: 260px;
+  background: #fff;
+  border-right: 1px solid #f2f2f2;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.ivu-divider {
+  display: table;
+  width: 100%;
+  white-space: nowrap;
+  margin: 16px 0;
+  font-weight: 500;
+  color: #17233d;
+}
+
+.ivu-divider::before {
+  content: "";
+  display: table-cell;
+  width: 5%;
+  border-top: 1px solid var(--iw-divider);
+  transform: translateY(50%);
+}
+
+.ivu-divider::after {
+  content: "";
+  display: table-cell;
+  width: 95%;
+  border-top: 1px solid var(--iw-divider);
+  transform: translateY(50%);
+}
+
+.ivu-divider-inner-text {
+  display: inline-block;
+  padding: 0 10px;
+}
+
+.ivu-divider h4 {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.rp-icon-row {
+  display: flex;
+  gap: 6px;
+}
+
+.rp-icon-btn {
+  flex: 1;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #727272;
+  cursor: pointer;
+}
+
+.rp-long-btn-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.rp-long-btn {
+  width: 100%;
+  text-align: center;
+}
+
+.rp-filter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.rp-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.rp-filter-thumb {
+  width: 100%;
+  height: 48px;
+  object-fit: cover;
+  border: 1px solid var(--iw-border);
+  border-radius: 2px;
+  display: block;
+}
+
+.rp-inline-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.rp-inline-label {
+  font-size: 12px;
+}
+
+.rp-slider-label {
+  width: 44px;
+  flex: none;
+  font-size: 12px;
+}
+
+.rp-num-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.rp-num-label {
+  font-size: 12px;
+  flex: none;
+}
+
+.ivu-input {
+  display: block;
+  width: 100%;
+  height: 24px;
+  padding: 4px 7px;
+  font-size: 12px;
+  border: 1px solid #dcdee2;
+  border-radius: 4px;
+  color: var(--iw-text);
+  background: #fff;
+  font-family: inherit;
+}
+
+.rp-num-input {
+  width: 70px;
+}
+
+.rp-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ivu-slider {
+  flex: 1;
+}
+
+.ivu-slider-wrap {
+  position: relative;
+  height: 4px;
+  background: #e1e1e1;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.ivu-slider-bar {
+  position: absolute;
+  height: 4px;
+  background: var(--iw-primary);
+  border-radius: 3px;
+}
+
+.ivu-slider-button-wrap {
+  position: absolute;
+  top: -5px;
+  width: 12px;
+  height: 12px;
+}
+
+.ivu-slider-button {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--iw-primary);
+  border-radius: 50%;
+  background: #fff;
+}
+
+.rp-color-box {
+  width: 40px;
+  height: 22px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background: #fff;
+  flex: none;
+}
+
+.rp-select {
+  flex: 1;
+  height: 24px;
+  border: 1px solid #dcdee2;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  font-size: 12px;
+  background: #fff;
+}
+
+/* 中间画布 */
+
+.iw-workspace {
+  flex: 1;
+  position: relative;
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.iw-canvas {
+  position: relative;
+  width: 484px;
+  height: 100%;
+  max-height: 100%;
+  background: #fff;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iw-canvas-img {
+  max-width: 92%;
+  max-height: 92%;
+  object-fit: contain;
+  display: block;
+}
+
+.iw-selection {
+  position: absolute;
+  inset: 4%;
+  border: 1px dashed #2d8cf0;
+  pointer-events: none;
+}
+
+.iw-handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border: 1px solid #2d8cf0;
+}
+
+.h-tl { top: -4px; left: -4px; }
+.h-t { top: -4px; left: calc(50% - 4px); }
+.h-tr { top: -4px; right: -4px; }
+.h-r { top: calc(50% - 4px); right: -4px; }
+.h-br { bottom: -4px; right: -4px; }
+.h-b { bottom: -4px; left: calc(50% - 4px); }
+.h-bl { bottom: -4px; left: -4px; }
+.h-l { top: calc(50% - 4px); left: -4px; }
+
+.iw-zoom-group {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: flex;
+  border: 1px solid #dcdee2;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.iw-zoom-group button {
+  width: 28px;
+  height: 26px;
+  border: none;
+  background: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #595959;
+}
+
+.iw-zoom-group button + button {
+  border-left: 1px solid #dcdee2;
+}
+
+/* 图片列表 100px */
+
+.iw-thumbs {
+  flex: none;
+  width: 100px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.iw-thumbs-header {
+  flex: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 8px 4px;
+  font-size: 12px;
+}
+
+.iw-thumbs-title {
+  font-weight: 500;
+}
+
+.iw-thumbs-count {
+  color: #999;
+}
+
+.iw-thumbs-list {
+  flex: 1;
+  padding: 8px;
+  overflow-y: auto;
+}
+
+.iw-thumb {
+  position: relative;
+  width: 100%;
+  margin-bottom: 8px;
+  border: 2px solid transparent;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.iw-thumb-size {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 1px 6px;
+  font-size: 10px;
+  line-height: 1.4;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 0 4px 0 0;
+}
+
+.iw-thumb.active {
+  border-color: var(--iw-thumb-active);
+}
+
+.iw-thumb img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------- 添加水印弹窗（iView Modal） ---------- */
+
+.wm-modal-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  overflow: auto;
+  z-index: 10;
+  display: flex;
+}
+
+.wm-modal {
+  position: relative;
+  width: 1110px;
+  max-width: 96%;
+  margin: auto;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.wm-modal-header {
+  position: relative;
+  border-bottom: 1px solid var(--iw-divider);
+  padding: 14px 16px;
+  line-height: 1;
+}
+
+.wm-modal-header-inner {
+  font-size: 16px;
+  color: #17233d;
+}
+
+.wm-modal-close {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  border: none;
+  background: transparent;
+  color: #999;
+  cursor: pointer;
+  display: inline-flex;
+  padding: 4px;
+}
+
+.wm-modal-close:hover {
+  color: #666;
+}
+
+.wm-modal-body {
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.wm-modal-footer {
+  border-top: 1px solid var(--iw-divider);
+  padding: 12px 18px;
+  text-align: right;
+}
+
+.wm-modal-footer .ivu-btn + .ivu-btn {
+  margin-left: 8px;
+}
+
+.wm-modal-footer .ivu-btn-text {
+  color: #808a97;
+}
+
+/* 编辑器内容 */
+
+.wm-editor-section {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--iw-border);
+}
+
+.wm-setting-row {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.wm-setting-item {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.wm-setting-item.required::before {
+  content: "*";
+  color: red;
+  position: absolute;
+  top: 3px;
+  left: -6px;
+}
+
+.wm-label {
+  margin-right: 16px;
+  text-align: right;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #666;
+  flex: none;
+}
+
+.wm-input-wrap {
+  position: relative;
+  width: 320px;
+}
+
+.wm-input {
+  display: inline-block;
+  width: 100%;
+  height: 32px;
+  line-height: 1.5;
+  padding: 4px 7px;
+  padding-right: 60px;
+  font-size: 14px;
+  border: 1px solid #dcdee2;
+  border-radius: 4px;
+  color: var(--iw-text);
+  background: #fff;
+  font-family: inherit;
+}
+
+.wm-input:focus {
+  border-color: var(--iw-primary);
+  outline: none;
+}
+
+.wm-word-count {
+  position: absolute;
+  right: 7px;
+  top: 2px;
+  bottom: 2px;
+  padding-left: 7px;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  color: #808695;
+  font-size: 12px;
+}
+
+.wm-size-input {
+  width: 90px;
+  height: 32px;
+  padding: 4px 7px;
+  font-size: 14px;
+  color: var(--iw-text);
+  border: 1px solid #dcdee2;
+  border-radius: 4px;
+  background: #fff;
+  font-family: inherit;
+}
+
+.wm-size-input:focus {
+  border-color: var(--iw-primary);
+  outline: none;
+}
+
+.wm-size-sep {
+  margin: 0 8px;
+  color: var(--iw-text);
+}
+
+.wm-editor-main {
+  display: flex;
+  gap: 10px;
+}
+
+.wm-toolbar {
+  width: 160px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--iw-border);
+  border-radius: 4px;
+  align-self: flex-start;
+}
+
+.wm-toolbar .ivu-btn {
+  width: 100%;
+}
+
+.wm-toolbar-note {
+  margin-top: 16px;
+  font-size: 12px;
+  color: #999;
+}
+
+.wm-toolbar-note p {
+  margin: 0;
+}
+
+.wm-canvas-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.wm-canvas {
+  flex: none;
+  outline: 1px solid var(--iw-border);
+  background: #fff;
+}
+
+.wm-properties-panel {
+  width: 280px;
+  flex: none;
+  padding: 16px;
+  border: 1px solid var(--iw-border);
+  border-radius: 4px;
+  align-self: flex-start;
+}
+
+.wm-no-selection {
+  text-align: center;
+  color: #999;
+  padding: 40px 0;
+}

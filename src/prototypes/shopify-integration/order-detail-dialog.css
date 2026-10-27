@@ -173,27 +173,6 @@
   color: #303133;
 }
 
-.od-field .od-field__copy {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  margin-left: 10px;
-  padding: 0;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  background: none;
-  color: #1890ff;
-  cursor: pointer;
-}
-
-.od-field__copy svg {
-  width: 14px;
-  height: 14px;
-}
-
 /* --- 商品明细表 --- */
 .od-table {
   height: 460px;
@@ -332,6 +311,12 @@
   flex: 1 1 0;
   font-size: 14px;
   color: #303131;
+}
+
+/* 收入板块字段名带括号说明，标签列需要更宽并允许换行 */
+.od-finance-income .od-info-label {
+  width: 265px;
+  line-height: 1.4;
 }
 
 .od-info-value.is-editable {

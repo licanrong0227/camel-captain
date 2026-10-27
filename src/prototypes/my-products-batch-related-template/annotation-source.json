@@ -1,0 +1,114 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "my-products-batch-related-template",
+    "pageId": "my-products-batch-related-template",
+    "nodes": [
+      {
+        "id": "basic-product-template-row",
+        "index": 1,
+        "title": "关联产品模板：按店铺关联，数据来源与同步规则",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"basic-product-template-row\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=basic-product-template-row",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "createdAt": 1792396800000,
+        "updatedAt": 1792561396432,
+        "annotationText": ""
+      },
+      {
+        "id": "batch-rel-tpl-btn",
+        "index": 2,
+        "title": "批量关联产品模板：按钮出现条件",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"batch-rel-tpl-btn\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=batch-rel-tpl-btn",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792561564314,
+        "updatedAt": 1792561564314,
+        "annotationText": "此操作仅在“已上架”页面批量勾选商品时显示"
+      },
+      {
+        "id": "category-search-input",
+        "index": 3,
+        "title": "类目名称：多选可搜索级联",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"category-search-input\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=category-search-input",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792561996867,
+        "updatedAt": 1792743828203,
+        "annotationText": "选择类目名称时，组件改为Element UI 的多选可搜索级联组件，搜索勾选的选项"
+      },
+      {
+        "id": "annotation-4",
+        "index": 4,
+        "locator": {
+          "selectors": [],
+          "fingerprint": "div",
+          "path": [
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "div",
+              "index": 1
+            },
+            {
+              "tag": "div",
+              "index": 0
+            },
+            {
+              "tag": "div",
+              "index": 0
+            }
+          ]
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#1677FF",
+        "images": [],
+        "createdAt": 1792562931138,
+        "updatedAt": 1792562931138
+      }
+    ],
+    "updatedAt": 1792562931138
+  },
+  "markdownMap": {
+    "basic-product-template-row": "## 关联产品模板：数据来源与同步规则\n\n- 产品模板数据从「dh.relmodel.pageget$2.0（卖家获取关联产品模板详细信息）」接口同步，「relModelList>modelName」就是产品名称；展示位的数量即「relModelProdList」的列表长度（数量）\n- 新增关联产品模板调用「dh.relmodel.add$2.0（卖家增加关联产品模板信息接口）」：新增时，只根据剩余展示位新增前 N 个有产品编号的产品\n- 修改关联产品模板调用「dh.relmodel.modify$2.0（卖家修改关联产品模板信息接口）」：修改时，最多传入前 N 个有产品编号的产品\n- 展示位数量与「新增产品」的关系：剩余展示位 = 上限 6 个 - 该模板已占用的展示位数（relModelProdList 长度）。\n  - 剩余展示位大于 0 时，「新增产品」可选，一次最多新增「剩余展示位数」个有产品编号的产品。\n  - 剩余展示位等于 0（展示位已满）时，「新增产品」置灰不可选并提示「（展示位已满）」，只能选「修改产品」；已选「新增产品」后再改选已满的模板，该选择会被自动清空。",
+    "batch-rel-tpl-btn": "## 批量关联产品模板：按钮出现条件\n\n此操作仅在“已上架”页面批量勾选商品时显示\n",
+    "category-search-input": "选择类目名称时，组件改为Element UI 的多选可搜索级联组件，搜索勾选的选项",
+    "annotation-4": "下拉列表中的“产品ID”改为“产品编号”\n全局搜索替换一下，把“产品ID”都改为“产品编号”，统一叫法"
+  },
+  "assetMap": {}
+}

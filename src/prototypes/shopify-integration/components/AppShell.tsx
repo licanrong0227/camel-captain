@@ -18,9 +18,9 @@ function TopBar({ activeNav }: { activeNav: string }) {
       <span className="si-brand-divider" />
       <nav className="si-nav">
         {NAV_ITEMS.map((item) => (
-          <a key={item} className={'si-nav-item' + (item === activeNav ? ' is-active' : '')} href="#">
+          <span key={item} className={'si-nav-item' + (item === activeNav ? ' is-active' : '')}>
             {item}
-          </a>
+          </span>
         ))}
       </nav>
       <div className="si-topbar-right">

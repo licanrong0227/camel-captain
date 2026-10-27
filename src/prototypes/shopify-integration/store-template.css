@@ -1,0 +1,137 @@
+/* 店铺模板配置 — 复制自 基础配置-渠道定价/上新价模板/店铺模板 (basic-config-pages) */
+
+.bcp-card {
+  --brand-1: #FFEFE5;
+  --brand-3: #FF9148;
+  --brand-4: #FF7D29;
+  --brand-5: #D25909;
+  --n1: #F7F8FA;
+  --n2: #F2F3F5;
+  --n3: #EBEEF5;
+  --n4: #E5E6EB;
+  --n5: #C0C5CF;
+  --n6: #86909C;
+  --n7: #4E5969;
+  --n8: #1D2129;
+
+  background: #fff;
+  border-radius: 8px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  color: var(--n8);
+}
+
+/* Shopify 原型的 AppShell 已经提供白卡容器，页面自带卡片不再重复外观 */
+.si-card .bcp-card {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* ---------- 工具栏 ---------- */
+.bcp-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.bcp-toolbar__left, .bcp-toolbar__right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.bcp-toolbar__label { color: var(--n7); white-space: nowrap; }
+
+/* ---------- 按钮 ---------- */
+.bcp-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 32px; padding: 0 15px;
+  border: 1px solid var(--n4); border-radius: 4px;
+  background: #fff; color: var(--n8);
+  cursor: pointer; font-size: 14px;
+}
+.bcp-btn:hover { border-color: var(--brand-3); color: var(--brand-5); }
+.bcp-btn--primary { background: var(--brand-4); border-color: var(--brand-4); color: #fff; }
+.bcp-btn--primary:hover { background: var(--brand-3); border-color: var(--brand-3); color: #fff; }
+.bcp-btn--primary:active { background: var(--brand-5); border-color: var(--brand-5); }
+
+/* ---------- 输入 / 下拉 ---------- */
+.bcp-input {
+  height: 32px; padding: 0 10px;
+  border: 1px solid var(--n4); border-radius: 4px;
+  background: #fff; color: var(--n8); font-size: 14px; outline: none;
+}
+.bcp-input::placeholder { color: var(--n5); }
+.bcp-input:hover { border-color: var(--n6); }
+.bcp-input:focus { border-color: var(--brand-4); }
+
+.bcp-select { position: relative; display: inline-block; vertical-align: middle; }
+.bcp-select__control {
+  min-height: 32px; padding: 0 28px 0 10px;
+  border: 1px solid var(--n4); border-radius: 4px; background: #fff;
+  display: flex; align-items: center; cursor: pointer; position: relative;
+  max-width: 100%;
+}
+.bcp-select__control:hover { border-color: var(--n6); }
+.bcp-select.is-open .bcp-select__control { border-color: var(--brand-4); }
+.bcp-select.is-disabled .bcp-select__control { background: var(--n1); cursor: not-allowed; }
+.bcp-select__value { color: var(--n8); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bcp-select__placeholder { color: var(--n5); }
+.bcp-select__caret { position: absolute; right: 9px; top: 50%; transform: translateY(-50%); color: var(--n5); }
+.bcp-select.is-open .bcp-select__caret { transform: translateY(-50%) rotate(180deg); }
+.bcp-select__tags { display: flex; flex-wrap: wrap; gap: 4px; padding: 3px 0; }
+.bcp-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--n2); border-radius: 3px; padding: 1px 6px; font-size: 12px; color: var(--n7);
+}
+.bcp-tag button { border: none; background: none; color: var(--n6); cursor: pointer; padding: 0; }
+.bcp-select__dropdown {
+  position: absolute; top: calc(100% + 4px); left: 0; z-index: 30;
+  min-width: 100%; max-height: 240px; overflow: auto;
+  background: #fff; border: 1px solid var(--n3); border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 4px 0;
+}
+.bcp-select__option {
+  padding: 7px 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.bcp-select__option:hover { background: var(--n1); }
+.bcp-select__option.is-selected { color: var(--brand-5); font-weight: 500; }
+.bcp-select__empty { padding: 10px 12px; color: var(--n5); }
+.bcp-check {
+  width: 14px; height: 14px; border: 1px solid var(--n4); border-radius: 3px;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 11px; color: #fff;
+}
+.bcp-check.is-on { background: var(--brand-4); border-color: var(--brand-4); }
+.bcp-select--cell { width: 180px; }
+.bcp-select--cell .bcp-select__value,
+.bcp-select--cell .bcp-select__placeholder { font-size: 13px; }
+
+/* ---------- 表格 ---------- */
+.bcp-table { width: 100%; border-collapse: collapse; }
+.bcp-table th {
+  background: linear-gradient(90deg, #FFF8F1, #FFEFE5);
+  color: var(--n8); font-weight: 500; text-align: center;
+  padding: 11px 8px;
+}
+.bcp-table td {
+  padding: 11px 8px; text-align: center; color: var(--n8);
+  border-bottom: 1px solid var(--n3);
+}
+.bcp-table tbody tr:hover td { background: var(--n1); }
+.bcp-empty { color: var(--n5); padding: 24px 0; }
+
+/* ---------- 分页 ---------- */
+.bcp-pagination { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 16px; color: var(--n7); }
+.bcp-pagination__total { margin-right: 6px; }
+.bcp-pagination__size { border: 1px solid var(--n4); border-radius: 4px; padding: 4px 10px; background: #fff; }
+.bcp-page-btn {
+  min-width: 30px; height: 30px; border: 1px solid var(--n4); border-radius: 4px;
+  background: #fff; color: var(--n7); cursor: pointer;
+}
+.bcp-page-btn:disabled { color: var(--n5); cursor: not-allowed; }
+.bcp-page-btn.is-active { border-color: var(--brand-4); color: var(--brand-4); font-weight: 600; }
+.bcp-pagination__jump { margin-left: 6px; }
+
+/* ---------- toast（挂在 body 上，取不到卡片内的变量，使用字面值） ---------- */
+body > .bcp-toast {
+  position: fixed; top: 70px; left: 50%; transform: translateX(-50%) translateY(-8px);
+  background: #fff; color: #1D2129;
+  border: 1px solid #EBEEF5; border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  padding: 10px 18px; font-size: 14px; z-index: 3000;
+  opacity: 0; transition: opacity 0.25s, transform 0.25s;
+}
+body > .bcp-toast.is-show { opacity: 1; transform: translateX(-50%) translateY(0); }

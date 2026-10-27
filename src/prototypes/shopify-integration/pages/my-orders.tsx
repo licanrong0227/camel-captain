@@ -12,11 +12,11 @@ import icChevronDown from '../assets/icons/chevron-down.svg';
 
 const STATUS_TABS = [
   { label: '全部订单', count: '11759', active: true },
-  { label: '新订单', count: '124' },
+  { label: '新订单', count: '124', annotationId: 'mo-tab-new-order' },
   { label: '采购配货', count: '20' },
   { label: '仓库处理', count: '4' },
-  { label: '物流运输', count: '314' },
-  { label: '已妥投', count: '8874' },
+  { label: '物流运输', count: '314', annotationId: 'mo-tab-logistics-transit' },
+  { label: '已妥投', count: '8874', annotationId: 'mo-tab-delivered' },
   { label: '已作废', count: '5' },
 ];
 
@@ -27,6 +27,7 @@ interface OrderRow {
   store: string;
   id: string;
   orderState: string;
+  detailStatus?: string;
   image: string;
   title: string;
   specs: string;
@@ -41,6 +42,12 @@ interface OrderRow {
   warnPurchase: string;
   warnShip: string;
   logistics: string;
+  logisticsDetail: {
+    warehouse?: string;
+    sellerChannel?: string;
+    trackingNo?: string;
+    extraNo?: string;
+  };
   salesUsd: string;
   salesCny: string;
   incomeUsd: string;
@@ -71,6 +78,7 @@ const ROWS: OrderRow[] = [
       { label: '已支付', tone: 'paid' as const },
       { label: '已签收', tone: 'signed' as const },
     ],
+    detailStatus: '已支付 | 已发货',
     orderNo: '323148090747',
     store: 'sneakerhub8',
     id: '71743',
@@ -88,7 +96,8 @@ const ROWS: OrderRow[] = [
     times: [...EMPTY_TIMES, { label: '截止', value: '2026-10-27 10:06:09', strong: true }],
     warnPurchase: '超0小时未下单',
     warnShip: '发货剩余10天23时',
-    logistics: 'Seller-Defined STD Logitstcs',
+    logistics: 'Seller-Defined STD Logitstics',
+    logisticsDetail: {},
     salesUsd: '34.54',
     salesCny: '231.64',
     incomeUsd: '31.64',
@@ -127,7 +136,8 @@ const ROWS: OrderRow[] = [
     ],
     warnPurchase: '超2小时未下单',
     warnShip: '发货剩余13天21时',
-    logistics: 'Seller-Defined STD Logitstcs',
+    logistics: 'Seller-Defined STD Logitstics',
+    logisticsDetail: { warehouse: '达智仓', sellerChannel: '美国小包专线-普货', trackingNo: '-' },
     salesUsd: '58.67',
     salesCny: '393.47',
     incomeUsd: '40.06',
@@ -166,7 +176,8 @@ const ROWS: OrderRow[] = [
     ],
     warnPurchase: '超2小时未下单',
     warnShip: '发货剩余11天21时',
-    logistics: 'Seller-Defined STD Logitstcs',
+    logistics: 'Seller-Defined STD Logitstics',
+    logisticsDetail: { warehouse: '达智仓', sellerChannel: '全球邮政小包', trackingNo: '-', extraNo: '3316937665110014655' },
     salesUsd: '31.72',
     salesCny: '212.73',
     incomeUsd: '29.03',
@@ -202,7 +213,8 @@ const ROWS: OrderRow[] = [
     ],
     warnPurchase: '超6小时未下单',
     warnShip: '发货剩余12天20时',
-    logistics: 'Seller-Defined STD Logitstcs',
+    logistics: 'Seller-Defined STD Logitstics',
+    logisticsDetail: { warehouse: 'Dhgate线上物流2.0', sellerChannel: '全球标准专线（普）-XSTD', trackingNo: 'XSTD01964742CN', extraNo: 'VR-PO20261015000001' },
     salesUsd: '45.9',
     salesCny: '308.16',
     incomeUsd: '32.4',
@@ -210,9 +222,85 @@ const ROWS: OrderRow[] = [
   },
 ];
 
-const BATCH_BUTTONS = ['一键出库', '处理申报信息', '修改买家邮箱', '修改买家信息', '修改物流渠道', '提交到平台', '标记', '同步订单详情', '邀约采购', '删除'];
+const BATCH_BUTTONS_BY_TAB: Record<string, string[]> = {
+  全部订单: ['一键出库', '处理申报信息', '修改买家邮编', '修改买家信息', '修改物流渠道', '提交到平台', '标记', '同步订单详情', '邀约采购', '删除'],
+  新订单: ['线路审核', '处理申报信息', '修改买家邮编', '修改买家信息', '修改物流渠道', '标记', '合包', '解除合包', '同步订单详情', '邀约采购', '删除'],
+  采购配货: ['申请运单号', '一键出库', '处理申报信息', '修改买家邮编', '修改买家信息', '修改物流渠道', '提交到平台', '标记', '合包', '解除合包', '同步订单详情', '邀约采购', '删除'],
+  仓库处理: ['申请运单号', '一键出库', '处理申报信息', '修改买家邮编', '修改买家信息', '修改物流渠道', '提交到平台', '标记', '合包', '解除合包', '同步订单详情', '邀约采购', '删除'],
+  物流运输: ['处理申报信息', '修改买家邮编', '修改买家信息', '修改物流渠道', '提交到平台', '标记', '合包', '解除合包', '同步订单详情', '邀约采购', '删除'],
+  已妥投: ['请款', '处理申报信息', '修改买家邮编', '修改买家信息', '修改物流渠道', '标记', '同步订单详情', '邀约采购', '删除'],
+  已作废: ['处理申报信息', '修改买家邮编', '修改买家信息', '修改物流渠道', '标记', '同步订单详情', '邀约采购', '删除'],
+};
 
-const ROW_ACTIONS = ['线路审核', '查看订单', '标记', '作废', '删除'];
+const LOGISTICS_CARRIERS = [
+  '4PX', '99 Minutos', '日本郵便', '佐川急便',
+  'Aeronet', 'AGS', 'Alliance Air Freight', 'Amazon',
+  'Amazon Fulfillment', 'Amazon Logistics UK', 'Amm Spedition', 'An Post',
+  'ANDREANI', 'Anjun Logistics', 'APC Postal Logistics', 'APG eCommerce Solutions Ltd.',
+  'Apple Express', 'Aruba Post', 'Asendia USA', 'ASL Canada',
+  'Australia Post', 'Australia Post MyPost Business', 'AxleHire', 'Better Trucks',
+  'Bonshaw', 'Border Express', 'Bpost', 'Bpost international',
+  'Canada Post', 'Canpar Courier', 'Cargo Expreso GT', 'Cargo Expreso SV',
+  'Caribou', 'CDEK', 'CDL', 'CEVA logistics',
+  'Chilexpress', 'China EMS', 'China Post', 'Chit Chats',
+  'Chronopost', 'Chukou1', 'CNE Express', 'Colissimo',
+  'Comingle', 'Coordinadora', 'Correios', 'Correos',
+  'Correos Express', 'CTT', 'CTT Express', 'Cyprus Post',
+  'Deliver It', 'Delnext', 'Deprisa', 'DHL eCommerce',
+  'DHL eCommerce Asia', 'DHL Express', 'DHL Global Mail Asia', 'DHL Sweden',
+  'Dimerco Express Group', 'DoorDash', 'DPD', 'DPD Belgium',
+  'DPD Germany', 'DPD Hungary', 'DPD Local', 'DPD UK',
+  'DTD Express', 'DX', 'Dynamex', 'Eagle',
+  'Emons', 'Estafeta', 'Estes', 'Evri',
+  'FedEx', 'FedEx Freight', 'First Global Logistics', 'First Line',
+  'Fleet Optics', 'FSC', 'Fulfilla', 'Gaash',
+  'GLS Croatia', 'GLS Hungary', 'GLS Slovakia', 'GLS Slovenia',
+  'GLS Spain', 'GLS US', 'GoBolt', 'GP Logistic Service',
+  'Grupo ampm', 'Guangdong Weisuyi Information Technology (WSE)', 'Hanjin', 'Heppner Internationale Spedition GmbH & Co.',
+  'HR Parcel', 'Iceland Post', 'IDEX', 'Intelcom',
+  'Interparcel', 'Israel Post', 'Japan Post', 'Kerry Express Thailand',
+  'La Poste Burkina Faso', 'La Poste Colissimo', 'Landmark Global', 'Landmark Global Reference',
+  'LaserShip', 'Latin Logistics - Avianca', 'Latvia Post', 'Libya Post',
+  'Lietuvos Paštas', 'Logisters', 'Lone Star Overnight', 'M3 Logistics',
+  'Maldives Post', 'Mauritius Post', 'Mayple', 'Meteor Space',
+  'Mondial Relay', 'moovin', 'MyTeamGE', 'Naqel Express',
+  'NCS', 'New Zealand Post', 'Ninja Van', 'NonstopDelivery',
+  'North Russia Supply Chain (Shenzhen) Co.', 'NOX Germany', 'Old Dominion Freight Line', 'OnTrac',
+  'OPT-NC', 'Packeta', 'Pago Logistics', 'Pandion',
+  'Pasar', 'Passport', 'Pilot Freight Services', 'Ping An Da Tengfei Express',
+  'Pitney Bowes', 'Portal PostNord', 'Poste Italiane', 'PostNL',
+  'PostNL International', 'PostNord Denmark', 'PostNord Norway', 'PostNord Sweden',
+  'Purolator', 'Qxpress', 'Qyun Express', 'R+L Carriers',
+  'Royal Mail', 'Royal Shipments', 'S.F International', 'Sagawa',
+  'SEKO Logistics', 'Sendle', 'Servientrega Ecuador', 'SF Express',
+  'SFC Fulfillment', 'ShipBob', 'SHREE NANDAN COURIER', 'Singapore Post',
+  'SmartCat', 'Southwest Air Cargo', 'Spee-Dee Delivery Service', 'SpeedX',
+  'Sprinter', 'StarTrack', 'Step Forward Freight', 'Straightship',
+  'Surpost', 'SwiftX', 'Swiship DE', 'Swiss Post',
+  'Tele Post', 'TForce Final Mile', 'Tinghao', 'TNT',
+  'TNT Reference', 'TNT UK', 'TNT UK Reference', 'Toll IPEC',
+  'Trexity', 'Tuffnells Parcels Express', 'Uni Uni', 'United Delivery Service',
+  'UPS', 'UPS Canada', 'USPS', 'Veho',
+  'Venipak', 'We Pick Up', 'We Post', 'Whistl',
+  'Wizmo', 'WMYC', 'Xpedigo', 'XPO Logistics',
+  'XYY Logistics', 'Yamato', 'YDH', 'YiFan Express',
+  'YunExpress', 'YYZ Logistics', 'ヤマト運輸', '其他',
+];
+
+const ROW_ACTIONS_BY_STATE: Record<string, string[]> = {
+  新订单: ['线路审核', '查看订单', '标记', '拆包', '作废', '删除'],
+  采购配货: ['申请运单号', '代发采购', '查看订单', '标记', '拆包', '提交到平台', '补发', '作废', '一键出库', '删除'],
+  仓库处理: ['申请运单号', '代发采购', '查看订单', '标记', '拆包', '提交到平台', '退回', '作废', '一键出库', '删除'],
+  物流运输: ['申请运单号', '代发采购', '查看订单', '标记', '拆包', '标记已妥投', '提交到平台', '退回', '补发', '作废', '删除'],
+  已妥投: ['代发采购', '查看订单', '标记', '请款', '退回', '补发', '作废', '删除'],
+  已作废: ['查看订单', '标记', '删除'],
+};
+
+function rowActionsFor(tab: string, row: OrderRow) {
+  const actions = ROW_ACTIONS_BY_STATE[tab === '全部订单' ? row.orderState : tab] || [];
+  const tracking = row.logisticsDetail.trackingNo;
+  return tracking && tracking !== '-' ? actions.filter((label) => label !== '申请运单号') : actions;
+}
 
 function specValue(specs: string, key: string) {
   const matched = specs.match(new RegExp(key + ':([\\s\\S]*?)(?=\\s{2,}|$)'));
@@ -227,7 +315,7 @@ function toOrderDetail(row: OrderRow): OrderDetailData {
     amount: row.incomeUsd,
     store: row.store,
     orderState: row.orderState,
-    status: row.statuses[0].label,
+    status: row.detailStatus ?? row.statuses[0].label,
     sortType: '单品单数',
     buyerLogistics: row.logistics,
     sellerLogistics: '-',
@@ -244,6 +332,257 @@ function toOrderDetail(row: OrderRow): OrderDetailData {
       logistics: row.logistics,
     },
   };
+}
+
+function LogisticsCell({ row }: { row: OrderRow }) {
+  const detail = row.logisticsDetail;
+  const hasTracking = !!detail.trackingNo && detail.trackingNo !== '-';
+  const [trackOpen, setTrackOpen] = useState(false);
+  return (
+    <div className="so-logi">
+      <div>{row.logistics}</div>
+      {(detail.warehouse || detail.sellerChannel) && (
+        <div>
+          {detail.warehouse && <div>{detail.warehouse}</div>}
+          {detail.sellerChannel && <div className="so-logi-channel">{detail.sellerChannel}</div>}
+        </div>
+      )}
+      {detail.trackingNo && (
+        <div className="so-logi-no">
+          <span
+            className="so-logi-no-link"
+            {...(hasTracking ? { 'data-annotation-id': 'mo-track-17track' } : {})}
+            onClick={() => hasTracking && setTrackOpen(true)}
+          >
+            {detail.trackingNo}
+          </span>
+          {hasTracking && (
+            <svg className="so-logi-copy" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <rect x="5.4" y="5.4" width="8.2" height="8.2" rx="1.4" />
+              <path d="M10.6 5.4V3.3a1.1 1.1 0 0 0-1.1-1.1H3.3a1.1 1.1 0 0 0-1.1 1.1v6.2a1.1 1.1 0 0 0 1.1 1.1h2.1" />
+            </svg>
+          )}
+        </div>
+      )}
+      {detail.extraNo && <div>{detail.extraNo}</div>}
+      {trackOpen && (
+        <div className="so-track-overlay" role="dialog" aria-modal="true" aria-label="物流跟踪">
+          <div className="so-track-bar">
+            <span className="so-track-no">{detail.trackingNo}</span>
+            <a className="so-track-open" href={'https://t.17track.net/zh-cn#nums=' + detail.trackingNo} target="_blank" rel="noreferrer">
+              新窗口打开
+            </a>
+            <button className="so-track-close" type="button" onClick={() => setTrackOpen(false)}>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+                <path d="M3.6 3.6 12.4 12.4M12.4 3.6 3.6 12.4" />
+              </svg>
+            </button>
+          </div>
+          <iframe
+            className="so-track-frame"
+            title={'17track ' + detail.trackingNo}
+            src={'https://t.17track.net/zh-cn#nums=' + detail.trackingNo}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+interface SplitActionItem {
+  label: string;
+  onClick: () => void;
+}
+
+function SplitAction({
+  label,
+  annotationId,
+  items,
+}: {
+  label: string;
+  annotationId?: string;
+  items: SplitActionItem[];
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <span className="so-action-group">
+      <button
+        className="so-action"
+        type="button"
+        {...(annotationId ? { 'data-annotation-id': annotationId } : {})}
+      >
+        <IconAction name={label} />
+        {label}
+      </button>
+      <button
+        className="so-action is-caret"
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onClick={() => setOpen((prev) => !prev)}
+      >
+        <svg className="so-caret-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m3.6 6 4.4 4.4L12.4 6" />
+        </svg>
+      </button>
+      {open && (
+        <>
+          <span className="so-menu-mask" onClick={() => setOpen(false)} />
+          <div className="so-menu so-action-menu">
+            {items.map((item) => (
+              <div
+                key={item.label}
+                className="so-menu__item"
+                onClick={() => {
+                  setOpen(false);
+                  item.onClick();
+                }}
+              >
+                {item.label}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </span>
+  );
+}
+
+function CarrierSelect({ value, onChange }: { value: string; onChange: (carrier: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const [keyword, setKeyword] = useState('');
+  const q = keyword.trim().toLowerCase();
+  const carriers = q ? LOGISTICS_CARRIERS.filter((name) => name.toLowerCase().includes(q)) : LOGISTICS_CARRIERS;
+
+  return (
+    <div
+      className={'ds-select' + (open ? ' is-open' : '')}
+      onClick={() => {
+        if (!open) setKeyword('');
+        setOpen(!open);
+      }}
+    >
+      <span className={value ? undefined : 'so-ph'}>{value || '请选择承运商'}</span>
+      <img src={icChevronDown} alt="" />
+      {open && (
+        <>
+          <span
+            className="so-menu-mask"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(false);
+            }}
+          />
+          <div className="ds-panel" onClick={(e) => e.stopPropagation()}>
+            <input
+              className="ds-search"
+              autoFocus
+              placeholder="搜索承运商"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+            <div className="ds-list">
+              {carriers.length === 0 ? (
+                <div className="ds-empty">无匹配结果</div>
+              ) : (
+                carriers.map((name) => (
+                  <div
+                    key={name}
+                    className={'ds-item' + (name === value ? ' is-active' : '')}
+                    onClick={() => {
+                      onChange(name);
+                      setOpen(false);
+                    }}
+                  >
+                    {name}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function DirectShipDialog({ onClose }: { onClose: () => void }) {
+  const [carrier, setCarrier] = useState('');
+  return (
+    <div className="so-modal-mask" onClick={onClose}>
+      <div
+        className="at-dialog ds-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-label="指定承运商"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="at-dialog__header" data-annotation-id="mo-carrier-confirm-purchase">
+          <span className="at-dialog__title">指定承运商</span>
+          <button className="at-dialog__close" type="button" aria-label="关闭" onClick={onClose}>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+              <path d="M3.6 3.6 12.4 12.4M12.4 3.6 3.6 12.4" />
+            </svg>
+          </button>
+        </div>
+        <div className="at-dialog__body ds-dialog__body">
+          <div className="ds-row">
+            <span className="ds-label">承运商</span>
+            <CarrierSelect value={carrier} onChange={setCarrier} />
+          </div>
+        </div>
+        <div className="at-dialog__footer">
+          <button className="at-btn" type="button" onClick={onClose}>
+            取消
+          </button>
+          <button className="at-btn is-primary" type="button" onClick={onClose}>
+            确定
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AssignTrackingDialog({ onClose }: { onClose: () => void }) {
+  const [value, setValue] = useState('');
+  return (
+    <div className="so-modal-mask" onClick={onClose}>
+      <div
+        className="at-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-label="请输入运单号"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="at-dialog__header">
+          <span className="at-dialog__title">请输入运单号</span>
+          <button className="at-dialog__close" type="button" aria-label="关闭" onClick={onClose}>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+              <path d="M3.6 3.6 12.4 12.4M12.4 3.6 3.6 12.4" />
+            </svg>
+          </button>
+        </div>
+        <div className="at-dialog__body">
+          <textarea
+            className="at-dialog__input"
+            rows={6}
+            placeholder="请输入内容"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+        </div>
+        <div className="at-dialog__footer">
+          <button className="at-btn" type="button" onClick={onClose}>
+            取消
+          </button>
+          <button className="at-btn is-primary" type="button" onClick={onClose}>
+            确定
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function IconAction({ name }: { name: string }) {
@@ -266,6 +605,60 @@ function IconAction({ name }: { name: string }) {
       <>
         <path d="M2.8 4.4h10.4M6.4 4.4V2.6h3.2v1.8" />
         <path d="M4.2 4.4 5 13.4h6l.8-9M6.8 6.6v4.4M9.2 6.6v4.4" strokeLinecap="round" />
+      </>
+    ),
+    申请运单号: (
+      <>
+        <path d="M3.4 2.6h9.2v10.8H3.4z" />
+        <path d="M5.4 5.4h5.2M5.4 8h5.2M5.4 10.6h3" strokeLinecap="round" />
+      </>
+    ),
+    代发采购: (
+      <>
+        <path d="M2.6 5.4 8 3l5.4 2.4v5.2L8 13 2.6 10.6V5.4Z" strokeLinejoin="round" />
+        <path d="M2.6 5.4 8 7.8l5.4-2.4M8 7.8V13" />
+      </>
+    ),
+    拆包: (
+      <>
+        <path d="M2.8 4.4h10.4v7.8H2.8z" />
+        <path d="M8 4.4v7.8M5.4 4.4v2M10.6 10.2v2" />
+      </>
+    ),
+    标记已妥投: (
+      <>
+        <circle cx="8" cy="8" r="5.6" />
+        <path d="m5.5 8.2 1.7 1.7 3.3-3.7" strokeLinecap="round" strokeLinejoin="round" />
+      </>
+    ),
+    提交到平台: (
+      <>
+        <path d="M8 11.4V3M5.2 5.8 8 3l2.8 2.8" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M2.8 10.4v3h10.4v-3" strokeLinecap="round" />
+      </>
+    ),
+    退回: (
+      <>
+        <path d="M12.6 8a4.6 4.6 0 1 1-1.5-3.4" strokeLinecap="round" />
+        <path d="M13.4 2.2v3h-3" strokeLinecap="round" strokeLinejoin="round" />
+      </>
+    ),
+    补发: (
+      <>
+        <path d="M3.4 8a4.6 4.6 0 1 0 1.5-3.4" strokeLinecap="round" />
+        <path d="M2.6 2.2v3h3" strokeLinecap="round" strokeLinejoin="round" />
+      </>
+    ),
+    一键出库: (
+      <>
+        <path d="M8.6 2.8H3v10.4h5.6" strokeLinecap="round" />
+        <path d="M11.4 8H6.2M9 5.6l2.4 2.4L9 10.4" strokeLinecap="round" strokeLinejoin="round" />
+      </>
+    ),
+    请款: (
+      <>
+        <circle cx="8" cy="8" r="5.6" />
+        <path d="m5.8 5.4 2.2 2.4 2.2-2.4M8 7.8v3M6.2 9.2h3.6" strokeLinecap="round" />
       </>
     ),
   };
@@ -420,6 +813,9 @@ export default function MyOrdersPage() {
   const [store, setStore] = useState('');
   const [detail, setDetail] = useState<OrderDetailData | null>(null);
   const [activeOrderNo, setActiveOrderNo] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('全部订单');
+  const [assignOrderNo, setAssignOrderNo] = useState<string | null>(null);
+  const [directShipOrderNo, setDirectShipOrderNo] = useState<string | null>(null);
 
   const platformOptions: DropdownOption[] = [
     { id: '', label: '全部平台' },
@@ -433,7 +829,15 @@ export default function MyOrdersPage() {
     <div className="so-root">
       <div className="so-tabs">
         {STATUS_TABS.map((tab) => (
-          <span key={tab.label} className={'so-tab' + (tab.active ? ' is-active' : '')}>
+          <span
+            key={tab.label}
+            className={'so-tab' + (tab.label === activeTab ? ' is-active' : '')}
+            {...(tab.annotationId ? { 'data-annotation-id': tab.annotationId } : {})}
+            onClick={() => {
+              setActiveTab(tab.label);
+              setActiveOrderNo(null);
+            }}
+          >
             {tab.label} ({tab.count})
           </span>
         ))}
@@ -516,7 +920,7 @@ export default function MyOrdersPage() {
               <th className="so-th-left">数据</th>
             </tr>
           </thead>
-          {ROWS.map((row) => (
+          {ROWS.map((row, rowIdx) => (
             <tbody key={row.orderNo} className="so-order-group">
               <tr
                 className="so-order-row"
@@ -644,12 +1048,19 @@ export default function MyOrdersPage() {
                     采购预警：<span className="so-warn-orange">{row.warnPurchase}</span>
                   </div>
                   <div>
-                    <span className="so-warn-blue">发货预警：{row.warnShip}</span>
+                    <span
+                      className="so-warn-blue"
+                      {...(rowIdx === 0 ? { 'data-annotation-id': 'mo-warn-ship-deadline' } : {})}
+                    >
+                      发货预警：{row.warnShip}
+                    </span>
                   </div>
                   <div>上网状态：-</div>
                   <div>轨迹断更：</div>
                 </td>
-                <td className="so-cell-logistics">{row.logistics}</td>
+                <td className="so-cell-logistics">
+                  <LogisticsCell row={row} />
+                </td>
                 <td className="so-cell-data">
                   <div>销售额</div>
                   <div>USD {row.salesUsd}</div>
@@ -664,17 +1075,27 @@ export default function MyOrdersPage() {
               <tr className={'so-actions-row' + (activeOrderNo === row.orderNo ? ' is-open' : '')}>
                 <td colSpan={8}>
                   <div className="so-actions">
-                    {ROW_ACTIONS.map((label) => (
-                      <button
-                        key={label}
-                        className="so-action"
-                        type="button"
-                        onClick={() => label === '查看订单' && setDetail(toOrderDetail(row))}
-                      >
-                        <IconAction name={label} />
-                        {label}
-                      </button>
-                    ))}
+                    {rowActionsFor(activeTab, row).map((label) =>
+                      label === '申请运单号' ? (
+                        <SplitAction
+                          key={label}
+                          label={label}
+                          items={[{ label: '指定运单号', onClick: () => setAssignOrderNo(row.orderNo) }]}
+                        />
+                      ) : label === '线路审核' ? (
+                        <SplitAction
+                          key={label}
+                          label={label}
+                          annotationId={rowIdx === 0 ? 'mo-action-line-audit' : undefined}
+                          items={[{ label: '指定承运商', onClick: () => setDirectShipOrderNo(row.orderNo) }]}
+                        />
+                      ) : (
+                        <button key={label} className="so-action" type="button" onClick={() => label === '查看订单' && setDetail(toOrderDetail(row))}>
+                          <IconAction name={label} />
+                          {label}
+                        </button>
+                      ),
+                    )}
                   </div>
                 </td>
               </tr>
@@ -685,8 +1106,13 @@ export default function MyOrdersPage() {
 
       <div className="so-bottombar">
         <div className="so-batch">
-          {BATCH_BUTTONS.map((label) => (
-            <button key={label} className="so-btn-soft" type="button">
+          {(BATCH_BUTTONS_BY_TAB[activeTab] || []).map((label) => (
+            <button
+              key={label}
+              className="so-btn-soft"
+              type="button"
+              {...(label === '提交到平台' ? { 'data-annotation-id': 'mo-direct-ship-submit' } : {})}
+            >
               {label}
             </button>
           ))}
@@ -728,6 +1154,8 @@ export default function MyOrdersPage() {
       </div>
 
       {detail && <OrderDetailDialog data={detail} onClose={() => setDetail(null)} />}
+      {assignOrderNo && <AssignTrackingDialog onClose={() => setAssignOrderNo(null)} />}
+      {directShipOrderNo && <DirectShipDialog onClose={() => setDirectShipOrderNo(null)} />}
     </div>
   );
 }

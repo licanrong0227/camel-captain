@@ -1,0 +1,971 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "presentation": {
+    "layerSelectors": [
+      ".dcc-modal-mask"
+    ]
+  },
+  "data": {
+    "version": 2,
+    "prototypeName": "dhgate-compliance-check",
+    "pageId": "launch",
+    "updatedAt": 1793088781291,
+    "nodes": [
+      {
+        "id": "dcc-demo-preset",
+        "index": 1,
+        "title": "演示场景（整页预设）",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-demo-preset\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-demo-preset",
+          "path": []
+        },
+        "aiPrompt": "根据标注生成实现说明。",
+        "annotationText": "讲解入口：切换整页演示场景，所有场景集中在这一条箱包模板记录（Vintage Quilted Chain Bucket Bag）上，只在这里切换即可看完全部状态，不用跳转其他商品。\n\n入口联动：从质检记录、最近检测、旧记录链接或发起检测进入时，都落到这一页，并按来源记录的结果自动选好对应预设（URL 带上 preset）——点开「违规」「部分失败」「质检中」的记录进来看到的就是对应场景；在面板里手动切换后以面板为准。\n\n展示场景对照：\n\n跟随流程＝按任务真实进度与真实结果展示，这条记录为 6 项全部通过\n\n通过＝通过 6 / 违规 0 / 疑似 0 / 失败 0；商品信息各模块均为「未发现问题」，「整品风险」显示浅灰「未发现整品级问题」\n\n违规＝通过 0 / 违规 12 / 疑似 4，涉及 6 个检测项、13 个位置：8 个模块一起切到违规——类目错放 + 标题品牌词、主图品牌图案 + 手铐挂件、SKU 图疑似印花、SKU 低价 + 阶梯价低、尺码不一致、材质无效、详情图赌博网址与医疗功效 + 两段详情文字违规、整品禁售与限售建议自查\n\n部分失败＝通过 4 / 违规 0 / 疑似 0 / 失败 2：价格、违法违规两项检测失败，结论不完整\n\n检测中＝通过 4、进行中 2：价格检测与违法违规检查仍在检测，进度 4/6\n\n隐含逻辑：\n\n只有三档具体场景：通过、违规（违规和疑似一起展示）、失败；同一档可以包含多张图片、多段文字的问题，覆盖更多情况\n\n切换整页预设时，各商品信息模块的「展示场景」与各检测项的「展示场景」会一起重置回跟随，再按预设叠加\n\n商品信息模块与检测项都可以单独覆盖：单独切换后以单独选择为准，不清空整页预设\n\n采集失败由商品概况的「采集状态」控制，优先于这里的检测场景；采集失败时不展示结论条与质检项\n\n所有场景控制只对箱包模板记录生效；其他记录（西装、运动鞋、连衣裙等）从列表进入时会落到这条箱包记录并按结果带出场景，只有采集失败记录保留自己的采集失败页",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "page_state",
+            "displayName": "整页演示场景",
+            "info": "只对箱包模板记录生效。切换后各模块与各检测项默认回到跟随，结论条、商品视图标记、问题抽屉、检测项卡片一起变化。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "flow",
+            "options": [
+              {
+                "label": "跟随流程",
+                "value": "flow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "multi"
+              },
+              {
+                "label": "部分失败",
+                "value": "partial"
+              },
+              {
+                "label": "检测中",
+                "value": "checking"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793068663730,
+        "updatedAt": 1793083200619
+      },
+      {
+        "id": "dcc-conclusion-bar",
+        "index": 2,
+        "title": "总体结论条",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-conclusion-bar\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-conclusion-bar",
+          "path": []
+        },
+        "aiPrompt": "根据总体结论条标注生成实现说明。",
+        "annotationText": "结论只有两种：全部通过、发现问题。\n\n全部检测通过 → 「全部检测通过，未发现问题」（绿色）\n\n存在违规、疑似违规或检测失败 → 「结论：存在违规、疑似违规或检测失败，请查看下方明细」（违规红色、其余橙色），只给笼统提示，具体位置和数量在下方商品信息标记、问题抽屉与检测项卡片里查看\n\n质检进行中（仍有排队中/检测中的检测项）→ 「质检进行中，已完成 X/6 项」，蓝色带加载动画\n\n与场景的关系：\n\n切换整页演示场景或任一模块/检测项场景后，结论条的底色与文案随之变化，不再有独立的结论切换\n\n采集失败时本页不展示结论条",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [],
+        "createdAt": 1791800000000,
+        "updatedAt": 1793084656709
+      },
+      {
+        "id": "dcc-summary-card",
+        "index": 3,
+        "title": "商品概况与采集状态",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-summary-card\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-summary-card",
+          "path": []
+        },
+        "aiPrompt": "根据商品概况与采集状态标注生成实现说明。",
+        "annotationText": "展示状态对照（整页随采集状态切换）：\n\n首次采集＝任务还没拿到任何商品数据，商品信息区只有加载占位（转圈 + 骨架条），标题、链接、类目、价格、SKU 都不出现；采集完成后信息才出现（与下方质检项先骨架后出结果的节奏一致）\n\n重新采集（采集后重新检测）＝跟初始采集一样：采集期间只有当前卡片 loading（转圈 + 骨架条），结论条与商品信息视图整列隐藏，采集完成后商品信息与质检结果一同出现\n\n成功＝跟随任务真实的采集结果，采集成功：商品信息齐全，结论条、商品信息视图与检测项视图正常展示\n\n失败＝采集失败：商品概况整卡换成「采集失败」卡片（失败原因 + 重新采集入口），不展示价格、SKU 等信息，也不展示结论条，各质检项不会开始检测，质检项卡片整列隐藏\n\n采集失败的可能原因：\n\n链接失效或填写错误\n\n商品已下架或被卖家删除\n\n网站访问限制\n\n外部页面改版导致未能取到数据",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "collect_state",
+            "displayName": "采集状态",
+            "info": "成功＝跟随任务真实采集状态（正常任务为采集成功）；切「失败」演示采集失败页面（采集失败卡片 + 重试入口，质检项不出现）。",
+            "placeholder": "成功（跟随任务状态）",
+            "initialValue": "flow",
+            "options": [
+              {
+                "label": "成功",
+                "value": "flow"
+              },
+              {
+                "label": "失败",
+                "value": "failed"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791972000000,
+        "updatedAt": 1792048565940
+      },
+      {
+        "id": "dcc-pv-basic",
+        "index": 4,
+        "title": "商品信息模块 - 基本信息",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-pv-basic\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-pv-basic",
+          "path": []
+        },
+        "aiPrompt": "根据标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」预设\n\n通过＝类目为「时装包 > 单肩包」，标题没有品牌词\n\n违规＝类目错放（类目改成「时装包 > 双肩包」）+ 标题前置「Gucce Style」，两处违规同时出现\n\n失败＝类目推荐服务未返回候选类目，本项未产生结果\n\n隐含逻辑：\n\n本模块只改变商品标题、类目与对应的检测项结果；切到「按检测项维度查看」时，类目检查与知识产权检查卡片展示的是同一批问题\n\n违规时类目会真正改成双肩包，避免出现标题写违规、正文还是原类目的矛盾画面",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "view_state_basic",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页演示预设；单独选择后以本模块为准，不清空整页预设。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "auto",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "auto"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793068663730,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-pv-main-image",
+        "index": 5,
+        "title": "商品信息模块 - 主图",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-pv-main-image\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-pv-main-image",
+          "path": []
+        },
+        "aiPrompt": "根据标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」预设\n\n通过＝主图为原包袋图，未发现品牌图案\n\n违规＝主图换成带品牌字母交织图案 + 手铐造型挂件的包袋图：知识产权违规（品牌图案）+ 违法违规疑似（手铐挂件），同一张主图 2 处问题\n\n失败＝图片特征检测服务不可用，本项未产生结果\n\n隐含逻辑：\n\n主图场景只替换主图 1 的图片，SKU 图、详情图不受影响\n\n更换后的图片仍为同一款包袋，保证商品视图与检测项卡片看到的是同一件商品",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "view_state_main",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页演示预设；单独选择后以本模块为准，不清空整页预设。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "auto",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "auto"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793068663730,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-pv-sku-image",
+        "index": 6,
+        "title": "商品信息模块 - SKU 图",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-pv-sku-image\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-pv-sku-image",
+          "path": []
+        },
+        "aiPrompt": "根据标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」预设\n\n通过＝两张 SKU 图均未发现品牌元素\n\n违规＝第二张 SKU 图（Black）换成肩带带字母印花的版本，知识产权疑似 1 处\n\n失败＝SKU 图特征识别超时，本项未产生结果\n\n隐含逻辑：\n\n只替换第 2 张 SKU 图，主图与详情图不变\n\n带印花版本用于演示「图案面积小、清晰度有限、未达违规判定标准」的疑似场景",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "view_state_sku",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页演示预设；单独选择后以本模块为准，不清空整页预设。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "auto",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "auto"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793068663730,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-pv-price",
+        "index": 7,
+        "title": "商品信息模块 - 价格",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-pv-price\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-pv-price",
+          "path": []
+        },
+        "aiPrompt": "根据标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」预设\n\n通过＝SKU 价格与批发阶梯价都合规\n\n违规＝Ivory 价改为 $4.20、批发阶梯第 3 档改为 $3.90，两处都低于最高价 $45 × 10%（$4.50），价格检测项下 2 处违规，SKU 表与阶梯表对应行标红\n\n失败＝阶梯价数据不完整，本项未产生结果\n\n隐含逻辑：\n\n价格随 SKU 行、阶梯行一起变化，价格区间与 SKU 数量按改后的数据实时重算\n\n阈值统一按最高价 × 10% 计算，演示数据最高价 $45、阈值 $4.50",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "view_state_price",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页演示预设；单独选择后以本模块为准，不清空整页预设。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "auto",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "auto"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793068663730,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-pv-size-chart",
+        "index": 8,
+        "title": "商品信息模块 - 尺码表",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-pv-size-chart\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-pv-size-chart",
+          "path": []
+        },
+        "aiPrompt": "根据标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」预设\n\n通过＝系统尺码模板（One Size / 26 / 22 / 18 / 120）与详情图尺码表一致，两张表照常展示\n\n违规＝详情图高度标注 24cm、系统模板 22cm，违规 1 处，详情图换成对应的示意图\n\n失败＝尺码表文字识别异常，本项未产生结果\n\n隐含逻辑：\n\n无论是否检出问题，尺码表区块都展示采集到的原始数据：左边系统尺码模板，右边详情图尺码表，不因通过而隐藏\n\n系统模板的尺寸数据在所有场景中保持不变，问题只落在详情图尺码表上\n\n详情图尺码表同时是详情描述里的第 3 张图，商品视图与检测项卡片对照的是同一张表",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "view_state_size",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页演示预设；单独选择后以本模块为准，不清空整页预设。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "auto",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "auto"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793068663730,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-pv-attribute",
+        "index": 9,
+        "title": "商品信息模块 - 商品属性",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-pv-attribute\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-pv-attribute",
+          "path": []
+        },
+        "aiPrompt": "根据标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」预设\n\n通过＝Material 为 PU，与主图识别结果一致\n\n违规＝Material 改为 n/a，材质违规 1 处\n\n失败＝材质识别服务超时，本项未产生结果\n\n隐含逻辑：\n\n只改 Material 一行，其他属性（Closure、Strap、Shape）不变\n\n商品视图与材质检测卡片同步标红",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "view_state_attribute",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页演示预设；单独选择后以本模块为准，不清空整页预设。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "auto",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "auto"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793068663730,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-pv-detail",
+        "index": 10,
+        "title": "商品信息模块 - 详情描述",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-pv-detail\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-pv-detail",
+          "path": []
+        },
+        "aiPrompt": "根据标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」预设\n\n通过＝详情图文未发现问题\n\n违规＝一次覆盖图片与文字：详情图 1 换成带医疗功效与赌博网址的图片（2 处违规）、详情图 2 换成品牌图案（知识产权疑似）；详情文字第 1 段改写为「抗菌防霉，有效抑制 99% 细菌」（1 处违规）、末尾追加一段赌博抽奖文案（1 处违规），命中片段都在正文里高亮\n\n失败＝详情图文字识别超时，违法违规本项未产生结果\n\n隐含逻辑：\n\n详情图 3（尺码示意图）由尺码表场景控制，默认是尺码完整（One Size）的示意图，两个场景可以同时存在，互不覆盖\n\n详情文字与详情图是两类独立位置：文字命中锚在「详情文字 #N」，图片命中锚在「详情图 #N」，同一段文字命中多条规则时合并显示在同一个位置上",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "view_state_detail",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页演示预设；单独选择后以本模块为准，不清空整页预设。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "auto",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "auto"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793068663730,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-pv-risk",
+        "index": 11,
+        "title": "商品信息模块 - 整品风险",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-pv-risk\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-pv-risk",
+          "path": []
+        },
+        "aiPrompt": "根据标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」预设\n\n通过＝整品风险横条显示浅灰「未发现禁售、限售与赌博类整品级问题」，保留常驻位置，不占问题计数\n\n违规＝详情文字出现电子烟烟弹描述（禁售违规 1 处，详情文字末尾会补上这段赠品说明）+ 限售资质建议自查 1 处（REACH / 加州 Prop 65，核验结果「无法核验，请自查」）；横条显示整品风险 2 项\n\n失败＝禁售/限售规则库比对中断，本项未产生结果\n\n隐含逻辑：\n\n整品级问题不落在具体商品信息上，统一汇总在商品视图顶部横条\n\n横条上的数字、问题抽屉里的条目数与结论条四项计数来自同一批问题记录",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "view_state_product",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页演示预设；单独选择后以本模块为准，不清空整页预设。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "auto",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "auto"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793068663730,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-item-material",
+        "index": 12,
+        "title": "质检项结果卡片 - 材质检测",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-material\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-item-material",
+          "path": []
+        },
+        "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」与商品属性模块的状态\n\n通过＝Material 为 PU，与主图识别结果一致\n\n违规＝Material 改为 n/a，材质违规 1 处\n\n失败＝材质识别服务超时，本项未产生结果，展示失败原因并可重新检测\n\n与模块联动：商品属性模块切场景时，本卡片同步显示对应场景；本卡单独选择时以本卡为准。",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "item_state_material",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页预设与商品属性模块；单独选择后以本卡片为准。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "flow",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "flow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-item-size",
+        "index": 13,
+        "title": "质检项结果卡片 - 尺码检测",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-size\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-item-size",
+          "path": []
+        },
+        "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」与尺码表模块的状态\n\n通过＝系统尺码模板（One Size / 26 / 22 / 18 / 120）与详情图尺码表一致\n\n违规＝详情图尺码表高度 24cm 与系统模板 22cm 不一致，违规 1 处\n\n失败＝尺码表文字识别异常，本项未产生结果\n\n与模块联动：尺码表区块在任何状态下都展示系统尺码模板与详情图尺码表；本卡单独选择时以本卡为准。",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "item_state_size",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页预设与尺码表模块；单独选择后以本卡片为准。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "flow",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "flow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-item-ipr",
+        "index": 14,
+        "title": "质检项结果卡片 - 知识产权侵权风险检查",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-ipr\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-item-ipr",
+          "path": []
+        },
+        "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」与主图、SKU 图、详情描述模块的状态\n\n通过＝未发现品牌词、品牌图案\n\n违规＝主图品牌图案 + 手铐挂件待确认；SKU 图与详情图的疑似印花也会汇总到本卡片\n\n失败＝图片特征检测服务不可用，本项未产生结果\n\n涉及图库比对时，会把图库里的字母交织样本一并展示，供人工比对。\n\n与模块联动：主图、SKU 图、详情描述模块发现的知识产权问题都会汇总到本卡片；本卡单独选择时以本卡为准。",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "item_state_ipr",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页预设与主图/SKU 图/详情描述模块；单独选择后以本卡片为准。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "flow",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "flow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-item-category",
+        "index": 15,
+        "title": "质检项结果卡片 - 类目错放检查",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-category\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-item-category",
+          "path": []
+        },
+        "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」与基本信息模块的状态\n\n通过＝当前类目与商品类型兼容\n\n违规＝类目错放，当前类目「双肩包」与商品类型不匹配；建议方案只给一个「箱包及箱包辅料 > 时装包 > 单肩包」，点「复制建议」即可，不做单选\n\n失败＝类目推荐服务未返回候选类目，本项未产生结果\n\n与模块联动：基本信息模块切换类目场景时，商品类目与标题同步变化；本卡单独选择时以本卡为准。",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "item_state_category",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页预设与基本信息模块；单独选择后以本卡片为准。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "flow",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "flow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1793084982593
+      },
+      {
+        "id": "dcc-item-price",
+        "index": 16,
+        "title": "质检项结果卡片 - 价格违规检查",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-price\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-item-price",
+          "path": []
+        },
+        "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」与价格模块的状态\n\n通过＝SKU 价与阶梯价均合规\n\n违规＝Ivory 价 $4.20 与批发阶梯第 3 档 $3.90 都低于最高价 $45 × 10%（$4.50），2 处违规\n\n失败＝阶梯价数据不完整，本项未产生结果\n\n阈值统一按最高价 × 10% 计算；SKU 行、阶梯行会随场景真正改动，不是只改结论文字。\n\n与模块联动：价格模块切换场景时，SKU 表与阶梯表同步变化；本卡单独选择时以本卡为准。",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "item_state_price",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页预设与价格模块；单独选择后以本卡片为准。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "flow",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "flow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-item-legal",
+        "index": 17,
+        "title": "质检项结果卡片 - 违法违规检查",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-legal\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=dcc-item-legal",
+          "path": []
+        },
+        "aiPrompt": "根据质检项结果卡片标注生成实现说明。",
+        "annotationText": "展示场景对照（仅箱包模板记录生效）：\n\n跟随＝跟随整页「演示场景」与详情描述、整品风险模块的状态\n\n通过＝未命中禁售、限售与赌博规则\n\n违规＝图片与文字同时命中：详情图 1 医疗功效 + 赌博网址，详情文字抗菌功效 + 赌博抽奖文案；详情文字里还会出现电子烟配件（禁售）；另有限售资质建议自查与手铐挂件待确认\n\n失败＝禁售/限售规则库比对中断，本项未产生结果\n\n与模块联动：详情描述模块的图片/文字违规、整品风险模块的禁售与限售问题都会汇总到本卡片；本卡单独选择时以本卡为准。",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "item_state_legal",
+            "displayName": "展示场景",
+            "info": "「跟随」表示跟随整页预设与详情描述/整品风险模块；单独选择后以本卡片为准。只对箱包模板记录生效。",
+            "placeholder": "跟随（推荐）",
+            "initialValue": "flow",
+            "options": [
+              {
+                "label": "跟随",
+                "value": "flow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规",
+                "value": "violation"
+              },
+              {
+                "label": "失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1791800000000,
+        "updatedAt": 1793083097593
+      },
+      {
+        "id": "dcc-recheck-entry",
+        "index": 18,
+        "title": "详情页顶部操作",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-recheck-entry\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-recheck-entry",
+          "path": []
+        },
+        "aiPrompt": "根据详情页顶部操作标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n「重新检测」弹窗提供两种方式：\n\n就地重新检测＝沿用已采集的商品信息，在当前这条记录上重跑全部质检项，结果就地更新，不新增记录\n\n重新采集并检测＝基于同一商品链接新建一条检测记录，从头重新采集商品信息再质检，原记录保留不变，新记录出现在最近检测与质检记录列表\n\n就地方式在商品视图各区块显示「检测中」，完成后在结论条内给出本次已修复/仍存在/新增摘要\n\n采集失败的任务不显示这个入口：没有商品信息与质检结果可重跑，页面上只保留采集失败卡里的「重新采集」。",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791970000000,
+        "updatedAt": 1793081670775
+      },
+      {
+        "id": "dcc-item-actions",
+        "index": 19,
+        "title": "检测结果条目与反馈（每张检测项卡片相同）",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-actions-material\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-item-actions-material",
+          "path": []
+        },
+        "aiPrompt": "根据质检项卡片顶部操作标注生成实现说明。",
+        "annotationText": "反馈对象是每一条检测结果，不是整个检测项。\n\n一个检测项查出违规/疑似后，每条结果都单独渲染成一张条目卡片（左侧色条区分违规/疑似），序号从 1 起连续编号；👍 / 👎 放在这张条目卡片的右上角，与「收起」并排，一条结果的反馈只影响它自己。\n\n通过态的卡片没有违规结果、检测失败的卡片没有产生结果，这两种卡片都不提供反馈按钮，只保留「重新检测」。\n\n历史检测记录里同样不显示反馈按钮，反馈只针对最新一轮结果。\n\n👍＝对这条检测结果表示满意，再点一次取消；👎＝弹出反馈原因选择框，可多选（误报、漏报、原因不准、建议不准、参考信息缺失、其他），还能补充说明。\n\n提交不满意后，这条结果卡片内显示已选原因和补充内容；同一条结果再点 👎 直接取消，其他结果不受影响。\n\n问题抽屉里每条问题也各有一组 👍 / 👎，与检测项卡片里同一条结果的反馈状态互通；抽屉不提供「查看检测项」跳转。\n\n「重新检测」只重跑当前这一个质检项，其他项结果不受影响，完成后就地更新本卡片；排队中、检测中不显示该按钮。\n\n满意和不满意只用于评估每条检测结果的检测质量，不会改变检测结果本身。",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791970000000,
+        "updatedAt": 1793080373717
+      },
+      {
+        "id": "dcc-item-attempts",
+        "index": 20,
+        "title": "同一检测项的多次检测记录",
+        "pageId": "detail",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-item-attempts-material\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-item-attempts-material",
+          "path": []
+        },
+        "aiPrompt": "根据检测记录切换标注生成实现说明。",
+        "annotationText": "同一个检测项检测过多次时，卡片标题下方出现「检测记录」切换条，用来查看每一轮的结果。\n\n每个按钮代表一次检测：显示第 N 次 + 检测完成时间（月-日 时:分），最近一次带「最新」，便于分辨先后；正在检测时为「排队中 / 检测中」，不带「最新」。\n\n默认展示最新一轮；点历史按钮，卡片的状态标签、结论、违规/疑似条目、参考信息和建议都切成那一轮的结果，右侧提示「历史记录，仅查看」。\n\n历史记录只读：不显示点赞/点踩，也不显示「重新检测」，避免把反馈和重检动作记到旧结果上。\n\n单项「重新检测」开始前，当前这一轮结果自动进入检测记录；检测完成后新结果成为「最新」，之前的记录依次保留。\n\n检测记录按检测项各自独立；商品信息视图、结论条与问题抽屉仍按最新一轮统计，不随卡片切换变化。",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1793080373717,
+        "updatedAt": 1793080373717
+      },
+      {
+        "id": "dcc-launch-card",
+        "index": 21,
+        "title": "发起检测表单",
+        "pageId": "launch",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-launch-card\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-launch-card",
+          "path": []
+        },
+        "aiPrompt": "根据发起检测表单标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n输入框右侧的「粘贴」一键读取剪贴板内容并填入（去掉首尾空白）；浏览器未授权读取剪贴板或剪贴板为空时给提示，不做成功提示\n\n输入内容既可以是完整商品详情链接，也可以是纯数字 itemCode：检测到纯数字时输入框下方实时提示将补全的链接，提交后任务里存的是补全后的完整链接（最近检测列表与详情页展示的都是完整链接）；不足 6 位数字不按 itemCode 处理，提交时报错\n\n输入框下方的「点数消耗说明」是计费口径展示，具体数值待定（原型统一用 xx 占位），不参与校验与提交逻辑\n\n输入框右下角的「演示链接」是演示入口，正式环境没有，用于一键填入有效/无效链接与仅 itemCode 验证校验逻辑\n\n仅允许敦煌网商品详情链接，非敦煌链接在提交时才报错，输入过程中不拦截\n\n输入框非空才允许点「开始检测」；回车等同点击\n\n「清空」按钮只在内容有值时显示，为空时隐藏\n\n同一链接已有任务还在检测中时再次提交，不新建任务，弹重复检测确认框，确认后跳到进行中的任务\n\n提交检测不新增质检记录：同一商品（链接或 itemCode 一致）已有检测记录时，在这条记录上重新走采集与质检过程（详情页先显示采集占位，再逐项出结果，完成后就地更新），记录仍在检测中时提示「该商品正在检测中，是否查看？」；没有匹配记录的链接同样统一在箱包模板记录上演示采集与质检过程，不另建临时任务、不开相似页面\n\n提交后自动跳转到箱包模板记录的质检详情页（场景演示页）",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791960000000,
+        "updatedAt": 1793004963630
+      },
+      {
+        "id": "dcc-recent-card",
+        "index": 22,
+        "title": "最近检测列表",
+        "pageId": "launch",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-recent-card\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-recent-card",
+          "path": []
+        },
+        "aiPrompt": "根据最近检测列表标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n列表与「质检记录」页共用同一张任务表格（列、字段、操作完全一致），这里只是只取最近提交的 5 条任务（按提交时间倒序），不是全部记录\n\n总记录数超过 5 条时，标题右侧才出现「查看更多>>」，点击跳转「质检记录」页；未超过时不显示\n\n表中状态是实时计算的：任务在后台仍会排队→采集→逐项检测，状态标签与进度会随时间自动刷新\n\n「查看」或点击整行进入质检详情：除采集失败记录外都落到箱包模板记录的详情页，并按这条记录的结果自动带出对应演示场景（通过 / 违规 / 部分失败 / 检测中）；「复制」仅复制商品链接；进行中的任务可在本列表直接「取消」",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791960000000,
+        "updatedAt": 1793083303477
+      },
+      {
+        "id": "dcc-records-filter",
+        "index": 23,
+        "title": "筛选栏",
+        "pageId": "records",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-records-filter\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-records-filter",
+          "path": []
+        },
+        "aiPrompt": "根据筛选栏标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n四个条件之间是「且」的关系，只会改变列表显示，不会重新发起检测\n\n状态里的「检测中」合并了 排队中 / 采集中 / 质检中 三种进行中状态\n\n时间按提交时间距今的滑动窗口计算：「今天」= 最近 24 小时，不是自然日\n\n结果看的是质检项计数：有违规=违规数>0，有疑似=疑似数>0，无违规=违规与疑似都为 0（仍可能包含检测失败或尚未出结果的项）\n\n搜索匹配商品标题或敦煌链接，不区分大小写",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791960896588,
+        "updatedAt": 1791962088441
+      },
+      {
+        "id": "dcc-records-table",
+        "index": 24,
+        "title": "质检记录列表",
+        "pageId": "records",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-records-table\"]"
+          ],
+          "fingerprint": "table|data-annotation-id=dcc-records-table",
+          "path": []
+        },
+        "aiPrompt": "根据质检记录列表标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n按提交时间倒序，最新任务在最上面；每页固定 6 条\n\n任务状态、进度条和质检概览都不是存死的结果，而是按提交时间在时间轴上实时推导，页面每秒刷新一次，所以进行中的任务会自己往前走\n\n质检概览只有两种结果：全部通过＝没有任何问题；否则显示「共 N 处问题」，N 的统计口径与商品信息视图一致（按问题记录计数：同一张图或同一段文字命中多条规则就算多处）；还没有结果或未完成（排队中/采集中/质检中/采集失败/已取消）显示占位符「-」\n\n进度条表示这条任务的质检项完成了多少：6 个质检项里完成 4 个，进度条就走到 4/6 的长度；只在「采集中」「质检中」显示，排队中不显示\n\n各质检项并行独立返回结果，所以同一任务里有的项已出结果、有的项还在检测中\n\n列表里有一条固定在「质检中」的演示数据：价格违规检查和违法违规检查两项一直检测中，专门用于查看该状态下的字段内容，永远不会走到完成态\n\n点击整行任意位置进入质检详情：除采集失败记录外都落到箱包模板记录的详情页，并按这条记录的结果自动带出对应演示场景，只有「复制」按钮不会触发行点击\n\n操作列只有「查看」，进行中的任务也不提供取消入口",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791960896588,
+        "updatedAt": 1793088781291
+      },
+      {
+        "id": "dcc-records-pager",
+        "index": 25,
+        "title": "分页",
+        "pageId": "records",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"dcc-records-pager\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=dcc-records-pager",
+          "path": []
+        },
+        "aiPrompt": "根据分页标注生成实现说明。",
+        "annotationText": "隐含逻辑：\n\n「共 N 条」是筛选之后的条数，不是全部记录数\n\n切换筛选不会重置页码：当前页超出范围时自动回退到最后一页，只有搜索关键字变化才回到第 1 页\n\n页码按钮一次性全部列出，不做省略号折叠",
+        "hasMarkdown": false,
+        "color": "#FF7D29",
+        "images": [],
+        "createdAt": 1791960896588,
+        "updatedAt": 1791960896588
+      }
+    ]
+  },
+  "markdownMap": {},
+  "assetMap": {},
+  "targets": [],
+  "directory": {
+    "nodes": []
+  },
+  "documents": {
+    "nodes": []
+  }
+}

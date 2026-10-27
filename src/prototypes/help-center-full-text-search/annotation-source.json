@@ -1,0 +1,126 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "help-center-full-text-search",
+    "pageId": "help-center-full-text-search",
+    "updatedAt": 1792564612947,
+    "nodes": [
+      {
+        "id": "search-entry",
+        "index": 1,
+        "title": "全文搜索入口",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"search-entry\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=search-entry",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792564612947,
+        "updatedAt": 1792564612947
+      },
+      {
+        "id": "search-drawer",
+        "index": 2,
+        "title": "搜索抽屉的展开、收起与重置",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"search-drawer\"]"
+          ],
+          "fingerprint": "aside|data-annotation-id=search-drawer",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792564612947,
+        "updatedAt": 1792564612947
+      },
+      {
+        "id": "search-input",
+        "index": 3,
+        "title": "搜索逻辑",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"search-input\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=search-input",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792564612947,
+        "updatedAt": 1792564612947
+      },
+      {
+        "id": "search-result-list",
+        "index": 4,
+        "title": "结果列表的展示与定位",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"search-result-list\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=search-result-list",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792564612947,
+        "updatedAt": 1792564612947
+      },
+      {
+        "id": "search-doc-highlight",
+        "index": 5,
+        "title": "正文标红与锁定态",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"search-doc-highlight\"]"
+          ],
+          "fingerprint": "main|data-annotation-id=search-doc-highlight",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792564612947,
+        "updatedAt": 1792564612947
+      },
+      {
+        "id": "search-empty",
+        "index": 6,
+        "title": "搜索无结果的缺省提示",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"search-empty\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=search-empty",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792564612947,
+        "updatedAt": 1792564612947
+      }
+    ]
+  },
+  "markdownMap": {
+    "search-entry": "## 全文搜索入口\n\n位置：内容页右上角的悬浮圆形按钮（放大镜图标），不在顶部导航栏里。\n\n### 和原有搜索的关系\n- 左侧目录上方的「搜索章节」保持原样，只按章节标题筛选目录，不查正文内容。\n- 本入口是新增的**全文搜索**，查找范围是整篇帮助文档的正文（包含表格里的文字）。\n- 两套搜索互不影响：一个管目录显示，一个管正文定位。\n\n### 入口行为\n- 只负责展开 / 收起右侧搜索抽屉，不改变当前阅读位置。\n- 按钮浮在页面右上角，正文滚动时也可随时调用；抽屉展开后会被抽屉挡住，收起后重新露出。",
+    "search-drawer": "## 搜索抽屉\n\n### 位置与遮挡关系\n- 抽屉从屏幕右侧推出，**不带遮罩**：展开时左侧目录和正文照常可以点击、滚动。\n- 展开时正文区域整体向左收缩让出位置，不是盖在内容上面；正文里的段落、表格、图片会随可用宽度自动重排换行，不出现横向滚动。\n- 顶部导航保持整宽，抽屉从导航下方开始。\n\n### 收起方式（两种，效果一致）\n1. 点抽屉右上角的关闭按钮\n2. 在抽屉顶部的横条上按住向右滑动\n\n### 状态重置\n每次重新打开都是全新状态：输入框清空、结果列表清空、正文标红全部还原，不保留上一次的搜索词和结果。\n\n### 正文定位时\n从列表跳到正文某处后，抽屉保持展开，不自动收起，方便连续查看其他结果。",
+    "search-input": "## 搜索逻辑\n\n- **实时搜索**：边输入边出结果，不需要点搜索按钮；按回车可以立刻执行一次。\n- 输入停顿极短时间后才开始查找，避免每敲一个字都全篇重扫。\n- 忽略首尾空格；英文不区分大小写。\n- 查找范围是当前这篇帮助文档的全部正文，包括表格单元格内的文字。\n- 删除字符时结果同步收敛；输入框清空后，结果列表和正文标红同时清空。\n- 同一段文字里多次出现关键词会分别列出，不去重。\n- 搜索只读：标红是临时叠加的显示效果，不会修改正文文字和结构。",
+    "search-result-list": "## 结果列表\n\n### 每行内容\n分两层：\n- 上层：这段内容所属的章节名称\n- 下层：关键词前 6 个字 + 关键词 + 关键词后 6 个字；前后不足 6 字时按实际字数显示，两端用省略号表示被截断\n\n### 排序\n按关键词在文档中出现的先后顺序排列，和左侧章节目录顺序一致。\n\n### 计数口径\n顶部提示「关键词」共找到 N 处，N 按出现次数统计：同一段落出现 3 次算 3 处，不合并。\n\n### 点击定位\n- 点任意一行，正文滚动到该处并居中显示，该行同时进入选中态。\n- 一次只有一个锁定项，切换时上一个自动恢复。\n- 定位到的那一处在正文里用实心橙底单独标出（见「正文标红与锁定态」）。",
+    "search-doc-highlight": "## 正文标红与锁定态\n\n- 有结果时，正文中所有出现关键词的位置同步标红（浅红底 + 红字），与右侧列表一一对应。\n- 点击列表某一行后，正文中对应的那一处变成**实心橙底白字**，用于一眼确认当前锁定位置；其余命中保持浅红底不变。\n- 关闭抽屉、清空输入或重新搜索时，上一轮的标红和锁定态全部清除。\n- 标红只改变显示，不改动正文文字、图片和排版结构。",
+    "search-empty": "## 搜索无结果\n\n- 输入内容在全文中一处都没找到时，列表区域显示缺省提示「没有找到「关键词」相关内容 / 换个关键词试试」。\n- 保留输入的关键词，方便直接修改后重新查找。\n- 无结果时正文不做任何标红，页面停在当前阅读位置。\n- 属于正常结果，不弹提示、不报错。"
+  },
+  "assetMap": {},
+  "directory": {
+    "nodes": []
+  }
+}

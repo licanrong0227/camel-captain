@@ -152,3 +152,8 @@ temp/
 !.axhub/make/comments/**
 !.axhub/make/comment-assets/
 !.axhub/make/comment-assets/**
+
+# Local verification screenshots and scratch data
+.axhub/*.png
+carriers-list.txt
+shopify-tracking-carriers.json

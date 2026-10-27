@@ -36,6 +36,32 @@ const SAMPLE = {
   rate: '6.6927',
   income: [
     ['合计收入', '36.61'],
+    ['订单总金额（含运费、税、关税、小费）', '47.31'],
+    ['已退款总额', '-5'],
+    ['手续费金额', '-1.4'],
+    ['手续费中的税额', '-0.11'],
+    /* 本轮暂不展示的 Shopify 字段
+    ['订单原始总价（未含折扣）', '40.01'],
+    ['原始总关税金额', '0'],
+    ['总折扣金额', '4'],
+    ['商品小计金额（商品总价扣除折扣后，不含运费和税）', '36.01'],
+    ['商品当前小计（退款后实际小计）', '36.01'],
+    ['商品行原始单价', '20.01'],
+    ['商品行折扣后单价', '18.01'],
+    ['商品行折扣总额', '4'],
+    ['总运费（含税）', '8.42'],
+    ['运费原始金额', '8.42'],
+    ['运费折扣后金额', '8.42'],
+    ['总税额', '2.88'],
+    ['总关税金额', '0'],
+    ['当前关税（退款后）', '0'],
+    ['当前实际总金额（退款后）', '47.31'],
+    ['当前税额（退款后）', '2.88'],
+    ['客户支付的小费总额', '0'],
+    ['固定费用部分金额', '-0.3'],
+    ['费率', '2.9%'],
+    */
+    /* 线上原收入字段，已按需求替换
     ['初始订单金额', '40.01'],
     ['Dhgate网关手续费', '-1.4'],
     ['Dhgate佣金金额', '-2'],
@@ -48,6 +74,7 @@ const SAMPLE = {
     ['Dhgate订单退款金额', '0'],
     ['Dhgate运费', '-8.42'],
     ['其他', '0'],
+    */
   ],
   profit: [
     ['合计利润USD', '36.61'],
@@ -60,15 +87,6 @@ function IconClose() {
   return (
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
       <path d="M3.6 3.6 12.4 12.4M12.4 3.6 3.6 12.4" />
-    </svg>
-  );
-}
-
-function IconCopy() {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3">
-      <rect x="5.6" y="2.2" width="8.2" height="8.2" rx="1.4" />
-      <path d="M10.4 12.2v1.2a1.4 1.4 0 0 1-1.4 1.4H3.4A1.4 1.4 0 0 1 2 13.4V7.2a1.4 1.4 0 0 1 1.4-1.4h1.2" />
     </svg>
   );
 }
@@ -308,14 +326,6 @@ function BasePanel({ data }: { data: OrderDetailData }) {
         <div className="od-field">
           <span className="od-field__label">平台订单号</span>
           <span className="od-field__value">{data.orderNo}</span>
-          <button
-            className="od-field__copy"
-            type="button"
-            aria-label="复制平台订单号"
-            onClick={() => navigator.clipboard?.writeText(data.orderNo)}
-          >
-            <IconCopy />
-          </button>
         </div>
         <div className="od-field">
           <span className="od-field__label">状态</span>
@@ -333,7 +343,7 @@ function BasePanel({ data }: { data: OrderDetailData }) {
         </div>
         <div className="od-field">
           <span className="od-field__label">卖家选择的物流</span>
-          <span className="od-field__value">{data.sellerLogistics}</span>
+          <span className="od-field__value" data-annotation-id="mo-seller-logistics-selfship">{data.sellerLogistics}</span>
         </div>
       </div>
 
@@ -605,11 +615,16 @@ function FinancePanel() {
       <SectionTitle first>币种</SectionTitle>
       <FieldRow fields={[f('平台币种', 'USD'), f('当前币种', 'CNY'), f('汇率', SAMPLE.rate)]} />
 
-      <SectionTitle>收入USD</SectionTitle>
-      <FieldRow fields={income.slice(0, 4).map(([l, v]) => f(l, v))} />
-      <FieldRow fields={[null, ...income.slice(4, 7).map(([l, v]) => f(l, v))]} />
-      <FieldRow fields={[null, ...income.slice(7, 10).map(([l, v]) => f(l, v))]} />
-      <FieldRow fields={[null, ...income.slice(10).map(([l, v]) => f(l, v))]} />
+      <SectionTitle annotationId="od-finance-income-formula">收入USD</SectionTitle>
+      <div className="od-finance-income">
+        {Array.from({ length: Math.ceil(income.length / 3) }, (_, i) => {
+          const cells: (FieldDef | null)[] = income.slice(i * 3, i * 3 + 3).map(([l, v]) => f(l, v));
+          while (cells.length < 3) cells.push(null);
+          return cells;
+        }).map((cells, i) => (
+          <FieldRow key={i} fields={cells} />
+        ))}
+      </div>
 
       <SectionTitle>支出RMB</SectionTitle>
       <FieldRow
@@ -629,7 +644,7 @@ function FinancePanel() {
 
 function MemoPanel() {
   return (
-    <div className="od-panel">
+    <div className="od-panel" data-annotation-id="od-memo-api-map">
       <FieldRow full fields={[{ label: '卖家备注', value: '-', editable: true }]} />
       <FieldRow full fields={[{ label: '拣货备注', value: '-', editable: true }]} />
       <FieldRow full fields={[{ label: '客户备注', value: '-', readonly: true }]} />

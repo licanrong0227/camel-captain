@@ -1,0 +1,41 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "presentation": {
+    "layerSelectors": [".biw-modal", ".biw-exit-dialog"]
+  },
+  "data": {
+    "version": 2,
+    "prototypeName": "batch-image-white-bg",
+    "pageId": "batch-image-white-bg",
+    "updatedAt": 1791878937575,
+    "nodes": [
+      {
+        "id": "position-tabs-disable",
+        "index": 1,
+        "title": "处理中禁用位置切换",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"position-tabs-disable\"]"],
+          "fingerprint": "div|data-annotation-id=position-tabs-disable",
+          "path": []
+        },
+        "aiPrompt": "根据处理中禁用位置切换标注生成实现说明。",
+        "annotationText": "处理中时，禁用，避免切换到其他板块导致处理失败",
+        "hasMarkdown": false,
+        "color": "#D97706",
+        "images": [],
+        "createdAt": 1791878937575,
+        "updatedAt": 1791878937575
+      }
+    ]
+  },
+  "markdownMap": {},
+  "assetMap": {},
+  "targets": [],
+  "directory": {
+    "nodes": []
+  },
+  "documents": {
+    "nodes": []
+  }
+}

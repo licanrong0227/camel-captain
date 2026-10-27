@@ -1,0 +1,530 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "basic-config-pages",
+    "pageId": "basic-config-pages",
+    "nodes": [
+      {
+        "id": "size-page-intro",
+        "index": 1,
+        "title": "尺码模板本地存储与接口",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-page-intro\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=size-page-intro",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-series-tabs",
+        "index": 2,
+        "title": "系列切换（页面归类）",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-series-tabs\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=size-series-tabs",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792747714999,
+        "updatedAt": 1792747714999
+      },
+      {
+        "id": "size-category-filter",
+        "index": 3,
+        "title": "发布类目 → catePubId",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-category-filter\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=size-category-filter",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-name-filter",
+        "index": 4,
+        "title": "模板名称筛选",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-name-filter\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=size-name-filter",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-reset-btn",
+        "index": 5,
+        "title": "重置",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-reset-btn\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=size-reset-btn",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-sync-btn",
+        "index": 6,
+        "title": "同步敦煌模板",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-sync-btn\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=size-sync-btn",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792748194242,
+        "updatedAt": 1792748194242
+      },
+      {
+        "id": "size-add-btn",
+        "index": 7,
+        "title": "新增",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-add-btn\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=size-add-btn",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-name-col",
+        "index": 8,
+        "title": "模板名称字段",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-name-col\"]"
+          ],
+          "fingerprint": "th|data-annotation-id=size-name-col",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-id-col",
+        "index": 9,
+        "title": "模板 ID 字段",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-id-col\"]"
+          ],
+          "fingerprint": "th|data-annotation-id=size-id-col",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-edit-op",
+        "index": 10,
+        "title": "编辑",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-edit-op\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=size-edit-op",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-copy-op",
+        "index": 11,
+        "title": "复制",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-copy-op\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=size-copy-op",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-delete-note",
+        "index": 12,
+        "title": "删除（无接口）",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-delete-note\"]"
+          ],
+          "fingerprint": "th|data-annotation-id=size-delete-note",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746886334
+      },
+      {
+        "id": "size-pagination",
+        "index": 13,
+        "title": "本地分页",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-pagination\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=size-pagination",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792748194242,
+        "updatedAt": 1792748194242
+      },
+      {
+        "id": "size-form-class",
+        "index": 14,
+        "title": "尺码表类型 → classId",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-form-class\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=size-form-class",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-form-name",
+        "index": 15,
+        "title": "模板名称 → templateName",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-form-name\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=size-form-name",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-form-error",
+        "index": 16,
+        "title": "尺码误差 → errorValueStart / errorValueEnd",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-form-error\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=size-form-error",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-form-colheads",
+        "index": 17,
+        "title": "测量项（列）",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-form-colheads\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=size-form-colheads",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-form-rowheads",
+        "index": 18,
+        "title": "尺码（行）",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-form-rowheads\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=size-form-rowheads",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-form-matrix",
+        "index": 19,
+        "title": "尺码表 → templateValueList",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-form-matrix\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=size-form-matrix",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-form-save",
+        "index": 20,
+        "title": "保存",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-form-save\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=size-form-save",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-copy-target",
+        "index": 21,
+        "title": "目标发布类目 → targetCatePubId",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-copy-target\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=size-copy-target",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      },
+      {
+        "id": "size-copy-name",
+        "index": 22,
+        "title": "新模板名称 → sizeTemplateName",
+        "pageId": "size-template",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"size-copy-name\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=size-copy-name",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#2C7BFC",
+        "images": [],
+        "createdAt": 1792746211207,
+        "updatedAt": 1792746211207
+      }
+    ],
+    "updatedAt": 1792747714999
+  },
+  "markdownMap": {
+    "size-page-intro": "本页把敦煌网的尺码模板同步到本地，列表查询、筛选和分页都在本地完成；需要刷新时，点击「同步敦煌模板」。\n\n同步使用 [dh.item.template.list$2.0](https://open.dhgate.com/docs/api/detail/c4a859b394d14950893f40a8bd749a33) 按发布类目取全量模板，再用 [dh.item.seller.template.get$2.0](https://open.dhgate.com/docs/api/detail/4985a0cbef4c4c04a5b92d2b293e4b7f) 逐个补齐尺码表详情，按 `sizeTemplateId` 覆盖本地：敦煌新增的补入，已存在的更新，敦煌已删除的从本地移除。本地不保留敦煌之外的模板。\n\n新增、修改、复制成功后都会立即再同步一次，保证本地模板与敦煌一致：\n- 新增：[dh.item.seller.template.add$2.0](https://open.dhgate.com/docs/api/detail/b84e2e87c4a84f31857d1eee31db0fc7)\n- 修改：[dh.item.seller.template.update$2.0](https://open.dhgate.com/docs/api/detail/24fe984e2faa4306a76c775ef7b9f87d)\n- 复制：[dh.item.seller.template.copy$2.0](https://open.dhgate.com/docs/api/detail/0da39f90a4e743dcb2f88dd60f2c6419)\n\n尺码表类型选项来自 [dh.item.cmsz.template.get$2.0](https://open.dhgate.com/docs/api/detail/000ce07ac49241739e155e8aac04ca4c)。\n\n开放平台没有提供删除尺码模板的接口，因此本页不放置删除操作。",
+    "size-category-filter": "发布类目是本地的筛选条件，默认「全部类目」；切换系列后也会回到全部类目。\n\n只有同步、新增和复制时才会把 `catePubId` 传给敦煌接口：\n- 同步：按发布类目循环调用 [dh.item.template.list$2.0](https://open.dhgate.com/docs/api/detail/c4a859b394d14950893f40a8bd749a33)，取回该类目的全部模板。\n- 新增/复制：提交目标 `catePubId`；尺码表类型用同一类目通过 [dh.item.cmsz.template.get$2.0](https://open.dhgate.com/docs/api/detail/000ce07ac49241739e155e8aac04ca4c) 换取。",
+    "size-name-filter": "模板名称在本地过滤，输入即生效，不调用接口，也没有查询按钮。\n\n匹配本地模板的 `templateName` 与 `templateNameCn`，包含关键字即命中；这两个名称字段由 [dh.item.template.list$2.0](https://open.dhgate.com/docs/api/detail/c4a859b394d14950893f40a8bd749a33) 返回。\n\n接口没有名称筛选和分页参数，所以过滤后由本地分页。",
+    "size-reset-btn": "重置只影响本地筛选：发布类目恢复为「全部类目」、清空模板名称关键字、回到第 1 页。不会调用接口，也不会清除本地模板。",
+    "size-add-btn": "新增入口。保存时调用 [dh.item.seller.template.add$2.0](https://open.dhgate.com/docs/api/detail/b84e2e87c4a84f31857d1eee31db0fc7)，成功后立即触发一次同步，把敦煌返回的模板写回本地。\n\n创建前先用 [dh.item.cmsz.template.get$2.0](https://open.dhgate.com/docs/api/detail/000ce07ac49241739e155e8aac04ca4c) 取该发布类目的 `classId`、`cmszColHeadList`、`cmszRowHeadList` 组装尺码表；接口返回新的 `sizeTemplateId` 和 `sizeTemplateName`。",
+    "size-name-col": "模板名称列展示两个返回字段：\n\n- `templateName`：模板默认名称（列表副标题）\n- `templateNameCn`：模板中文名称（列表主标题）\n\n新增/修改时只提交一个 `templateName`；本原型保存后把输入名称同时作为中文名称展示。",
+    "size-id-col": "模板 ID 对应 `sizeTemplateId`（Long，接口中以字符串传递）。\n\n本地以它作为主键：\n- 同步时按 `sizeTemplateId` 新增或覆盖本地模板；\n- 编辑、复制、商品换绑都以它定位模板。\n\n相关接口：\n- 详情 [dh.item.seller.template.get$2.0](https://open.dhgate.com/docs/api/detail/4985a0cbef4c4c04a5b92d2b293e4b7f)\n- 修改 [dh.item.seller.template.update$2.0](https://open.dhgate.com/docs/api/detail/24fe984e2faa4306a76c775ef7b9f87d)\n- 复制 [dh.item.seller.template.copy$2.0](https://open.dhgate.com/docs/api/detail/0da39f90a4e743dcb2f88dd60f2c6419)\n- 商品换绑 [dh.item.product.sztemplate.change$2.0](https://open.dhgate.com/docs/api/detail/f1abc9862d754a939ef5702fe4345631)",
+    "size-edit-op": "编辑基于本地缓存的模板详情回显，保存时调用 [dh.item.seller.template.update$2.0](https://open.dhgate.com/docs/api/detail/24fe984e2faa4306a76c775ef7b9f87d)，成功后立即触发一次同步，确保本地详情与敦煌一致。\n\n- 修改入参：`sizeTemplateId`、`templateName`、`errorValueStart`、`errorValueEnd`、`templateValueList`、`customRowHeadList`。\n- get 不返回 `classId`，update 也没有 `classId` 参数，所以尺码表类型在编辑时只读。\n\n文档说明：只修改名称时可以不传 `templateValueList` / `customRowHeadList`；本原型保存时始终提交完整尺码表。",
+    "size-copy-op": "复制调用 [dh.item.seller.template.copy$2.0](https://open.dhgate.com/docs/api/detail/0da39f90a4e743dcb2f88dd60f2c6419)，成功后立即触发一次同步，把新模板写回本地。\n\n- 入参：`sizeTemplateId`（源模板）、`targetCatePubId`（目标叶子类目）、`sizeTemplateName`（新模板名称）\n- 返回：新的 `sizeTemplateId`、`sizeTemplateName`\n- 复制沿用源模板的尺码表结构，不传 `classId`",
+    "size-delete-note": "删除：开放平台现有的尺码模板接口中没有删除接口，因此本页不放置删除按钮。\n\n列表接口的限制由本地存储补齐：\n- 列表接口只返回模板 ID 和名称，详情在同步时用 get 接口缓存到本地；\n- 列表接口没有分页和名称筛选参数，筛选与分页都在本地完成。\n\n如需下线模板，请在敦煌卖家中心确认处理方式。",
+    "size-form-class": "尺码表类型对应新增入参 `classId`，可选值来自 [dh.item.cmsz.template.get$2.0](https://open.dhgate.com/docs/api/detail/000ce07ac49241739e155e8aac04ca4c) 的 `templateCmszClassList[]`。\n\n- 新增时可切换 `classId`，切换后测量项、尺码和表值重新生成；\n- 编辑时只读：详情接口不返回 `classId`，修改接口也不接收 `classId`，类型创建后无法通过接口修改。",
+    "size-form-name": "模板名称对应新增/修改入参 `templateName`。\n\n- 页面限制 128 个字符（与敦煌卖家中心输入框一致）\n- 新增接口入参为 `templateName`；列表和详情返回 `templateName` + `templateNameCn`\n- 修改接口中 `templateName` 非必填，只在改名时传",
+    "size-form-error": "尺码误差对应 [dh.item.seller.template.add$2.0](https://open.dhgate.com/docs/api/detail/b84e2e87c4a84f31857d1eee31db0fc7) / [dh.item.seller.template.update$2.0](https://open.dhgate.com/docs/api/detail/24fe984e2faa4306a76c775ef7b9f87d) 的：\n\n- `errorValueStart`：误差范围起始值\n- `errorValueEnd`：误差范围结束值\n\n接口要求取值 0~5，最多两位小数；两个字段都非必填，页面按“同时填写或同时留空”校验，起始值不能大于结束值。",
+    "size-form-colheads": "测量项来自 [dh.item.cmsz.template.get$2.0](https://open.dhgate.com/docs/api/detail/000ce07ac49241739e155e8aac04ca4c) 返回的 `cmszColHeadList`：\n\n- `headId` → 保存时写入 `templateValueList[].colHeadId`\n- `headName` / `headNameCn` → 列名称\n- `required=1` 的列必须勾选，页面置为不可取消\n- `valType=1` 单元格填一个值 `val1`；`valType=2` 单元格填区间，`val1` / `val2` 都必填\n\n编辑回显使用 get 返回的 `sellerSzColHeadList`。",
+    "size-form-rowheads": "尺码行来自 [dh.item.cmsz.template.get$2.0](https://open.dhgate.com/docs/api/detail/000ce07ac49241739e155e8aac04ca4c) 返回的 `cmszRowHeadList`，勾选后保存到 `templateValueList[].rowHeadId`。\n\n自定义尺码写入 `customRowHeadList`：\n- `headName`：自定义尺码名称，不能与已有尺码重名\n- `headId`：从 10000 开始自增\n\n编辑回显使用 get 返回的 `sellerSzRowHeadList`。",
+    "size-form-matrix": "尺码表是行头 × 列头的笛卡尔积，每个单元格对应 `templateValueList` 的一条：`{ rowHeadId, colHeadId, val1, val2 }`。\n\n- `rowHeadId`：`cmszRowHeadList[].headId`，或自定义行的 headId（10000+）\n- `colHeadId`：`cmszColHeadList[].headId`\n- `val1` / `val2`：数值字符串，最多两位小数；列 `valType=2` 时 `val2` 必填\n\n编辑回显来自 [dh.item.seller.template.get$2.0](https://open.dhgate.com/docs/api/detail/4985a0cbef4c4c04a5b92d2b293e4b7f) 的 `sellerSzValueList`（字段为 `rowId` / `colId` / `val1` / `val2`）。",
+    "size-form-save": "保存按场景调用不同接口：\n\n- 新增：[dh.item.seller.template.add$2.0](https://open.dhgate.com/docs/api/detail/b84e2e87c4a84f31857d1eee31db0fc7)；入参 `classId`、`templateName`、`errorValueStart`、`errorValueEnd`、`templateValueList`、`customRowHeadList`\n- 修改：[dh.item.seller.template.update$2.0](https://open.dhgate.com/docs/api/detail/24fe984e2faa4306a76c775ef7b9f87d)；入参 `sizeTemplateId` + 上述字段，但没有 `classId`\n\n页面校验：名称必填；至少 1 个测量项和 1 个尺码；必填测量项不可取消；每个单元格需为最多两位小数的数值；区间列 `val2` 必填且不小于 `val1`；误差范围 0~5。",
+    "size-copy-target": "目标发布类目对应复制接口入参 `targetCatePubId`（必填），传目标叶子类目 ID，决定新模板归属的发布类目。\n\n接口文档：[dh.item.seller.template.copy$2.0](https://open.dhgate.com/docs/api/detail/0da39f90a4e743dcb2f88dd60f2c6419)",
+    "size-copy-name": "新模板名称对应复制接口入参 `sizeTemplateName`。\n\n接口文档把该字段标为必填，但参数说明写“非必填”，存在口径冲突；本原型按必填处理，避免生成无名模板。\n\n接口文档：[dh.item.seller.template.copy$2.0](https://open.dhgate.com/docs/api/detail/0da39f90a4e743dcb2f88dd60f2c6419)",
+    "size-series-tabs": "敦煌卖家中心把尺码模板按系列分为男装 / 女装 / 鞋和鞋配件 / 运动户外 / 婚纱。开放接口没有系列字段，本页的系列只用于本地模板库归类：切换后展示该系列下、已同步到本地的模板，发布类目恢复为「全部类目」。\n\n同步时会遍历所有发布类目，不受当前系列影响。\n\n各系列可选的尺码表类型来自 [dh.item.cmsz.template.get$2.0](https://open.dhgate.com/docs/api/detail/000ce07ac49241739e155e8aac04ca4c)：男装 4 类、女装 5 类、鞋和鞋配件 5 类、运动户外 5 类、婚纱 1 类。",
+    "size-sync-btn": "同步把敦煌网的尺码模板同步到本地：\n\n1. 遍历全部发布类目，逐个调用 [dh.item.template.list$2.0](https://open.dhgate.com/docs/api/detail/c4a859b394d14950893f40a8bd749a33)。入参只有 `catePubId`，返回该类目下全量 `templateSzList`，不分页。\n2. 调用 [dh.item.seller.template.get$2.0](https://open.dhgate.com/docs/api/detail/4985a0cbef4c4c04a5b92d2b293e4b7f)，用 `sizeTemplateId` 取回名称、误差范围和尺码表详情。\n3. 按 `sizeTemplateId` 覆盖本地：新增的补入，已存在的更新，敦煌已不存在的从本地移除。本地不会保留敦煌之外的数据。\n4. 同步完成后更新「上次同步」时间，列表仍从本地读取。\n\n页面刷新后，本地模板和上次同步时间会保留。",
+    "size-pagination": "开放接口没有分页参数，全量同步到本地后由本地分页。\n\n- 统计当前系列 + 发布类目 + 模板名称过滤后的模板总数。\n- 默认每页 10 个，可切换 20 / 50。\n- 切换系列、发布类目、模板名称或每页条数后回到第 1 页。\n- 底部同时显示上次从敦煌同步的时间。"
+  },
+  "assetMap": {},
+  "directory": {
+    "nodes": [
+      {
+        "type": "folder",
+        "id": "directory-basic-config",
+        "title": "基础配置",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "route",
+            "id": "route-size-template",
+            "title": "尺码模板设置",
+            "route": "size-template"
+          }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "directory-external-links",
+        "title": "外部链接",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "link",
+            "id": "dhgate-template-list",
+            "title": "尺码模板列表（dh.item.template.list$2.0）",
+            "href": "https://open.dhgate.com/docs/api/detail/c4a859b394d14950893f40a8bd749a33",
+            "target": "blank"
+          },
+          {
+            "type": "link",
+            "id": "dhgate-template-detail",
+            "title": "尺码模板详情（dh.item.seller.template.get$2.0）",
+            "href": "https://open.dhgate.com/docs/api/detail/4985a0cbef4c4c04a5b92d2b293e4b7f",
+            "target": "blank"
+          },
+          {
+            "type": "link",
+            "id": "dhgate-template-add",
+            "title": "新增尺码模板（dh.item.seller.template.add$2.0）",
+            "href": "https://open.dhgate.com/docs/api/detail/b84e2e87c4a84f31857d1eee31db0fc7",
+            "target": "blank"
+          },
+          {
+            "type": "link",
+            "id": "dhgate-template-update",
+            "title": "修改尺码模板（dh.item.seller.template.update$2.0）",
+            "href": "https://open.dhgate.com/docs/api/detail/24fe984e2faa4306a76c775ef7b9f87d",
+            "target": "blank"
+          },
+          {
+            "type": "link",
+            "id": "dhgate-template-copy",
+            "title": "复制尺码模板（dh.item.seller.template.copy$2.0）",
+            "href": "https://open.dhgate.com/docs/api/detail/0da39f90a4e743dcb2f88dd60f2c6419",
+            "target": "blank"
+          },
+          {
+            "type": "link",
+            "id": "dhgate-cmsz-template",
+            "title": "类目尺码表（dh.item.cmsz.template.get$2.0）",
+            "href": "https://open.dhgate.com/docs/api/detail/000ce07ac49241739e155e8aac04ca4c",
+            "target": "blank"
+          },
+          {
+            "type": "link",
+            "id": "dhgate-product-sztemplate-change",
+            "title": "商品换绑尺码模板（dh.item.product.sztemplate.change$2.0）",
+            "href": "https://open.dhgate.com/docs/api/detail/f1abc9862d754a939ef5702fe4345631",
+            "target": "blank"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>我的商品-认领异常 · 主规格</title>
+<style>
+  :root {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --brand: #ff781f;
+    --text: #222832;
+    --muted: #6f7888;
+    --border: #dfe4ee;
+    --red: #f56c6c;
+    color: var(--text);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 20px 64px; background: #f5f7fb; }
+  .shell { width: min(920px, 100%); margin: 0 auto; display: grid; gap: 18px; }
+  section { padding: 20px 22px; border: 1px solid var(--border); border-radius: 10px; background: #fff; }
+  h1 { margin: 0; font-size: 22px; }
+  h2 { margin: 0 0 12px; font-size: 15px; color: var(--brand); }
+  h3 { margin: 18px 0 6px; font-size: 14px; }
+  p, li { font-size: 13px; line-height: 1.8; color: #3b4351; }
+  ul { margin: 0; padding-left: 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 10px; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+  th { background: #f7f8fb; font-weight: 600; }
+  code { padding: 1px 5px; border-radius: 4px; background: #f2f3f7; font-size: 12px; }
+  .meta { color: var(--muted); font-size: 12px; }
+  .tag { display: inline-block; padding: 1px 8px; border-radius: 10px; background: #fff3e8; color: var(--brand); font-size: 12px; }
+  .tag-red { background: #fef0f0; color: var(--red); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <section>
+    <h1>我的商品-认领异常</h1>
+    <p class="meta">原型 ID：<code>my-products-claim-exception</code> ｜ 目录：骆驼队长 ERP / 前台 ｜ 类型：线上页面还原 + 新增认领异常视图 ｜ 更新时间：2026-10-24</p>
+    <p>
+      基于线上 <code>https://test.kuachengjing.com/commodity/my-products</code>（循环刊登视图）还原页面骨架，
+      新增「认领异常」筛选入口与异常提示，用于说明批量认领成功但部分处理失败的沉淀场景。
+    </p>
+  </section>
+
+  <section>
+    <h2>页面结构</h2>
+    <table>
+      <tr><th>区块</th><th>本页表现</th></tr>
+      <tr><td>顶栏 / 面包屑 / 页签</td><td>沿用线上：平台 Logo、主导航（商品高亮）、商品 / 商品管理 / 我的商品、商品采集 / 认领中心 / 我的商品（选中）</td></tr>
+      <tr><td>筛选区</td><td>沿用线上搜索条件与按钮顺序；筛选、搜索、导入导出等仅静态展示，不还原交互</td></tr>
+      <tr><td>左侧统计</td><td>发布管理新增「认领异常 2」<span class="tag">新增</span>，位于「待发布」上方并选中；其余分组与数值按线上当前数据显示（全部商品 9304、待发布 353、发布中 1、循环刊登 35、发布失败 85、已上架 2741、已下架 3080、审核未通过 2835、内容违规 173、品牌商投诉 1 等）</td></tr>
+      <tr><td>商品列表</td><td>共 2 条认领异常商品；列为展开箭头 / 勾选 / 图片 / 商品信息 / 产品编号 / 售价 / 标签 / 时间版本 / 来源</td></tr>
+      <tr><td>认领异常提示条</td><td>位于每条商品信息下方，红色底 + 红色描边 + 警示图标，直接展示全部异常文字，不提供查看、处理与发布入口</td></tr>
+      <tr><td>多项异常展示</td><td>多条异常在同一提示条内逐条换行展示，每条以序号开头，不折叠、不弹窗</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>实例数据</h2>
+    <table>
+      <tr><th>商品</th><th>异常数量</th><th>提示条表现</th><th>异常明细</th></tr>
+      <tr>
+        <td>Women's bag retro vintage…（1130024250，包包）</td>
+        <td>1 项</td>
+        <td>直接展示：商品重量为 0，无法计算国际运费</td>
+        <td>商品重量为 0 / 无法计算国际运费</td>
+      </tr>
+      <tr>
+        <td>Running Shoe Grey Purple Star…（1130916259，鞋子）</td>
+        <td>3 项</td>
+        <td>逐条展示 3 行：1 商品重量为 0…；2 标题翻译失败…；3 规格图片下载失败…</td>
+        <td>商品重量为 0；标题翻译失败（未生成中文标题）；规格图片下载失败（规格图缺失）</td>
+      </tr>
+    </table>
+    <p class="meta">异常数据来自批量认领异常日志；商品本身已认领成功，进入「认领异常」列表等待人工处理，不会被自动发布。</p>
+  </section>
+
+  <section>
+    <h2>交互与状态</h2>
+    <ul>
+      <li>「认领异常」默认选中，选中态沿用侧栏橙色文字 + 浅橙底色。</li>
+      <li>异常提示条直接展示文字，不提供查看详情、展开全部或弹窗。</li>
+      <li>本页仅查看异常，不提供处理与继续发布操作；需要处理时进入编辑商品页完成。其余筛选项、分页、行勾选等按“仅还原界面”要求不实现业务逻辑。</li>
+      <li>商品状态标签显示「认领异常」，样式为浅红底 + 红字；商品信息区不展示批量认领时间标签。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>样式约定</h2>
+    <ul>
+      <li>主色 <code>#ff781f</code>；正文 <code>#606266</code>；表头底色 <code>#f5f7fa</code>；行分隔线 <code>#ebeef5</code>。</li>
+      <li>异常提示条：底色 <code>#fef0f0</code>、描边 <code>#fbc4c4</code>、文字与图标 <code>#f56c6c</code>、圆角 4、内边距 6×10、字号 12。</li>
+      <li>多项异常逐行排列，序号与异常文字同色，不缩进、不折叠。</li>
+      <li>页面主体沿用 1912 设计宽；行内提示条按内容自适应换行，不出现横向溢出。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>说明</h2>
+    <ul>
+      <li>本原型重点在界面表达，筛选、搜索、分页、勾选、导入导出等线上业务交互不还原。</li>
+      <li>两条商品为演示数据，商品名称、编号、店铺与异常日志编号均按线上列表风格构造。</li>
+      <li>本页只负责异常信息查看；处理动作在编辑商品页完成，不在本页提供入口。</li>
+    </ul>
+  </section>
+</div>
+</body>
+</html>

@@ -300,6 +300,85 @@
   font-weight: 500;
 }
 
+/* 行标题问号 + 悬停提示 */
+.ae-row.has-label-tip {
+  overflow: visible;
+  position: relative;
+}
+
+.ae-row.has-label-tip:hover {
+  z-index: 20;
+}
+
+.ae-label-tip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: help;
+}
+
+.ae-label-tip-icon {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #c0c4cc;
+  border-radius: 50%;
+  color: #909399;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.ae-label-tip:hover .ae-label-tip-icon {
+  border-color: var(--ae-primary);
+  color: var(--ae-primary);
+}
+
+.ae-label-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: #303133;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+.ae-label-tip::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - 2px);
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #303133;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+.ae-label-tip:hover::after,
+.ae-label-tip:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
 .ae-row-body {
   flex: 1;
   min-width: 0;
@@ -765,6 +844,10 @@
 
 .ae-scope-group .ae-check-line {
   margin-bottom: 0;
+}
+
+.ae-rmw-version {
+  margin-top: 12px;
 }
 
 .ae-pipeline-hint {

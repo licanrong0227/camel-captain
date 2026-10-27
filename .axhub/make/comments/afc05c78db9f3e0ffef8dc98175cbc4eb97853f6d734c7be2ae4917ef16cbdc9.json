@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 3,
+  "kind": "document-edit-comments",
+  "resource": {
+    "id": "afc05c78db9f3e0ffef8dc98175cbc4eb97853f6d734c7be2ae4917ef16cbdc9",
+    "targetPath": "src/prototypes/my-products-batch-related-template/.spec/spec.html",
+    "filePath": ".axhub/make/comments/afc05c78db9f3e0ffef8dc98175cbc4eb97853f6d734c7be2ae4917ef16cbdc9.json"
+  },
+  "comments": [],
+  "images": [],
+  "documentPath": "src/prototypes/my-products-batch-related-template/.spec/spec.html"
+}

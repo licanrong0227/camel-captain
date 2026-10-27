@@ -1,0 +1,56 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "my-products-claim-exception",
+    "pageId": "my-products-claim-exception",
+    "updatedAt": 1792821450529,
+    "nodes": [
+      {
+        "id": "claim-error-source",
+        "index": 1,
+        "title": "异常信息读取口径",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"claim-error-source\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=claim-error-source",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792821296181,
+        "updatedAt": 1792821296181,
+        "annotationText": ""
+      },
+      {
+        "id": "claim-status-menu",
+        "index": 2,
+        "title": "新增认领异常状态",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"claim-status-menu\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=claim-status-menu",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1792821450529,
+        "updatedAt": 1792821450529,
+        "annotationText": ""
+      }
+    ]
+  },
+  "markdownMap": {
+    "claim-error-source": "异常信息取自该商品最近一次认领产生的错误记录。\n\n只显示最近一次认领的错误：商品认领后被删除、再次重新认领时，这里只显示最后一次认领产生的错误，之前认领产生的错误不再展示。",
+    "claim-status-menu": "新增的独立状态和菜单项，用于单独管理产生认领错误的产品。\n\n- 原来认领成功后的产品都进入「待发布」；现在有认领错误的产品改由「认领异常」单独管理。\n- 认领异常商品的单条操作和批量操作与待发布产品一致。"
+  },
+  "assetMap": {},
+  "directory": {
+    "nodes": []
+  }
+}

@@ -1,7 +1,20 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-20T05:52:06.607Z",
+  "updatedAt": "2026-10-26T01:25:34.878Z",
   "prototypes": [
+    {
+      "id": "folder-1792977929149-qn5xzy",
+      "kind": "folder",
+      "title": "BAL",
+      "children": [
+        {
+          "id": "item:prototypes:dhgate-compliance-check-copy",
+          "kind": "item",
+          "title": "敦煌网商品合规检测",
+          "itemKey": "prototypes/dhgate-compliance-check-copy"
+        }
+      ]
+    },
     {
       "id": "item:prototypes:shopify-integration",
       "kind": "item",
@@ -86,6 +99,12 @@
               "itemKey": "prototypes/my-products-bi"
             },
             {
+              "id": "item:prototypes:my-products-claim-exception",
+              "kind": "item",
+              "title": "我的商品-认领异常",
+              "itemKey": "prototypes/my-products-claim-exception"
+            },
+            {
               "id": "item:prototypes:batch-image-white-bg",
               "kind": "item",
               "title": "批量美图-停止处理",
@@ -126,6 +145,48 @@
               "kind": "item",
               "title": "我的商品 - AI克隆弹窗",
               "itemKey": "prototypes/ai-clone-dialog"
+            },
+            {
+              "id": "item:prototypes:my-products-batch-related-template",
+              "kind": "item",
+              "title": "我的商品 - 批量关联产品模板",
+              "itemKey": "prototypes/my-products-batch-related-template"
+            },
+            {
+              "id": "item:prototypes:help-center-full-text-search",
+              "kind": "item",
+              "title": "帮助中心-搜索全文",
+              "itemKey": "prototypes/help-center-full-text-search"
+            },
+            {
+              "id": "item:prototypes:image-workbench-watermark",
+              "kind": "item",
+              "title": "图像工作台-水印",
+              "itemKey": "prototypes/image-workbench-watermark"
+            },
+            {
+              "id": "item:prototypes:basic-config-pages",
+              "kind": "item",
+              "title": "基础配置-渠道定价/上新价模板/店铺模板",
+              "itemKey": "prototypes/basic-config-pages"
+            },
+            {
+              "id": "item:prototypes:batch-image-white-bg-copy",
+              "kind": "item",
+              "title": "批量美图-多板块图片批量编辑",
+              "itemKey": "prototypes/batch-image-white-bg-copy"
+            },
+            {
+              "id": "item:prototypes:basic-config-pages-copy",
+              "kind": "item",
+              "title": "基础配置-渠道定价/上新价模板/店铺模板",
+              "itemKey": "prototypes/basic-config-pages-copy"
+            },
+            {
+              "id": "item:prototypes:spec-value-template",
+              "kind": "item",
+              "title": "规格值模板",
+              "itemKey": "prototypes/spec-value-template"
             }
           ]
         },
@@ -139,6 +200,12 @@
               "kind": "item",
               "title": "帮助中心",
               "itemKey": "prototypes/help-center-admin-copy"
+            },
+            {
+              "id": "item:prototypes:help-center-admin-copy-copy",
+              "kind": "item",
+              "title": "敏感词管理",
+              "itemKey": "prototypes/help-center-admin-copy-copy"
             }
           ]
         }

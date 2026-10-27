@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>我的商品 - 批量关联产品模板 · 还原主规格</title>
+<style>
+  :root {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --brand: #ff781f;
+    --text: #222832;
+    --muted: #6f7888;
+    --border: #dfe4ee;
+    color: var(--text);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 20px 64px; background: #f5f7fb; }
+  .shell { width: min(920px, 100%); margin: 0 auto; display: grid; gap: 18px; }
+  section { padding: 20px 22px; border: 1px solid var(--border); border-radius: 10px; background: #fff; }
+  h1 { margin: 0; font-size: 22px; }
+  h2 { margin: 0 0 12px; font-size: 15px; color: var(--brand); }
+  h3 { margin: 18px 0 6px; font-size: 14px; }
+  p, li { font-size: 13px; line-height: 1.8; color: #3b4351; }
+  ul { margin: 0; padding-left: 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 10px; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+  th { background: #f7f8fb; font-weight: 600; }
+  code { padding: 1px 5px; border-radius: 4px; background: #f2f3f7; font-size: 12px; }
+  .meta { color: var(--muted); font-size: 12px; }
+  .tag { display: inline-block; padding: 1px 8px; border-radius: 10px; background: #fff3e8; color: var(--brand); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <section>
+    <h1>我的商品 - 批量关联产品模板</h1>
+    <p class="meta">原型 ID：<code>my-products-batch-related-template</code> ｜ 类型：线上页面还原 ｜ 布局：随容器宽度伸缩 ｜ 还原时间：2026-10-21</p>
+    <p>
+      本页还原自 <code>https://test.kuachengjing.com/commodity/my-products</code>（已上架筛选、跨页全选状态）。
+      样式数值取自线上元素的计算样式，非目测估算。
+    </p>
+  </section>
+
+  <section>
+    <h2>还原范围</h2>
+    <table>
+      <tr><th>区块</th><th>内容</th><th>数据来源</th></tr>
+      <tr><td>顶栏</td><td>平台 Logo + 智慧运营中台、主导航（商品高亮）、主题/菜单/帮助、VIP3、头像</td><td>线上 <code>.logo-area</code> 282×50，导航项实测</td></tr>
+      <tr><td>面包屑</td><td>商品 / 商品管理 / 我的商品</td><td>线上文案</td></tr>
+      <tr><td>页签</td><td>商品采集 / 认领中心 / 我的商品（选中）</td><td>线上文案</td></tr>
+      <tr><td>筛选区</td><td>搜索条件下拉（产品编号 / 类目名称）、关键字输入框、价格区间、采集平台、刊登/认领/修改时间、标签、店铺，搜索/重置/创建新产品/排序/导出/导入货源/同步线上/列设置</td><td>线上表单字段与按钮顺序，「采集源」文字按批注删除</td></tr>
+      <tr><td>左侧统计</td><td>商品概览 9285；发布管理 334/2/35/84；销售状态 2741（选中）/3080；审核与风险 0/2835/173/0/1；其他 0/0</td><td>线上当前数值</td></tr>
+      <tr><td>商品表格</td><td>10 行已上架商品，全部处于勾选态；列为 勾选 55 / 图片 100 / 商品信息 自适应 / 产品编号 160 / 售价 120 / 标签 200 / 时间版本 200 / 来源 140</td><td>线上 <code>el-table</code> 列宽与行内文案、商品主图为线上原图</td></tr>
+      <tr><td>跨页全选条</td><td>覆盖在表头左侧：未勾选框 + 「跨页全选 2741 项」（蓝）+ 「取消选中」（橙）</td><td>线上 <code>.cross-page-select-float</code></td></tr>
+      <tr><td>批量操作</td><td>已选 10 项 + 批量编辑 / 批量更新发布 / 批量标签 / 批量删除 / 批量AI克隆 / 批量下架 <span class="tag">新增</span> 批量关联产品模板（点击弹窗）</td><td>线上 <code>.table-footer__actions</code>，按钮 32 高、12px、圆角 4</td></tr>
+      <tr><td>分页</td><td>共 2741 条、10条/页、1（选中）2 3 4 5 6 … 275、前往 1 页；页码 30×28、圆角 8、选中态橙色描边</td><td>线上 <code>.el-pagination.is-background</code></td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>与线上的差异</h2>
+    <ul>
+      <li>批量按钮组末尾新增「批量关联产品模板」入口（红色标注：此操作仅在“已上架”页面批量勾选商品时显示），样式与其他批量按钮一致；点击弹出同名弹窗，内容移植自 <code>auto-edit-dialog-copy2</code> 的按店铺产品模板区块。</li>
+      <li>截图红框圈住的运费模板 / 售后模板 / 线上分组三个下拉与橙色「同步」按钮，按要求<b>不移植</b>；弹窗内每个店铺行只有产品模板、剩余展示位提示、新增/修改产品单选和说明文字。</li>
+      <li>线上表格第一列的展开箭头列宽被压到 1px（不可见），本页未还原该列。</li>
+      <li>商品标题、来源等外链指向线上真实地址，仅用于演示，不做跳转拦截。</li>
+      <li>筛选区搜索条件下拉只保留「类目名称」一项；右侧改为 ElementUI 多选可搜索级联选择器（<code>el-cascader</code> + <code>props.multiple</code> + <code>filterable</code>）：点开按一级/二级/三级类目分列展开，勾选三级类目加入已选标签，勾选上级类目即选中其下全部类目、部分选中显示半选；在框内输入关键字实时搜索，结果按完整路径平铺并高亮命中文字，点击即勾选/取消；标签可单个移除、悬浮可一键清空，已选多个时折叠展示（只显示第一个标签 + 「+ N」，悬浮看全其余类目）、选择框高度固定不撑高，无匹配时显示「无匹配数据」。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>关键样式约定</h2>
+    <ul>
+      <li>主色 <code>#ff781f</code>；正文 <code>#606266</code>；辅助文字 <code>#909399</code>；表头底色 <code>#f5f7fa</code>；行分隔线 <code>#ebeef5</code>。</li>
+      <li>勾选框 14×14、圆角 2；选中态橙色填充 + 白色对勾。</li>
+      <li>「已上架」状态标签：文字 <code>#4caf50</code>、底色 <code>#e8f5e9</code>、圆角 12、内边距 2×10。</li>
+      <li>售价 12px / 600 / 主色；产品编号 14px / 500；时间与版本 12px / 行高 18。</li>
+      <li>批量按钮组 <code>flex-wrap</code>：窗口变窄时按钮换行堆叠，与线上表现一致。</li>
+      <li>布局随容器伸缩：顶栏、筛选区、批量按钮组可换行；表格列在 800px 内按比例收缩，容器再窄时表格区自身横向滚动，内容不会溢出到卡片外。</li>
+      <li>高度同样随容器伸缩：页面撑满视口不整页滚动，左侧统计列表与商品列表各自内部滚动，表头吸顶，批量操作按钮与分页控件固定在卡片底部。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>批量关联产品模板弹窗</h2>
+    <ul>
+      <li>遮罩 <code>rgba(0,0,0,.28)</code> 居中，弹窗宽 900px（窄视口下 <code>calc(100vw - 24px)</code> 收缩）、最高 <code>calc(100vh - 48px)</code>，标题栏 + 可滚动内容区 + 固定底栏；<code>role="dialog"</code> + <code>aria-modal</code>。</li>
+      <li>内容区按店铺分行（服装测试 / bag / shoes），每行左侧店铺名、右侧模板配置，行间 1px 分隔线。</li>
+      <li>产品模板下拉为演示数据：展示位剩余 2 / 5 / 0；下拉面板 <code>position: fixed</code> 定位、空间不足时向上翻、页面滚动即关闭，避免被弹窗裁切。</li>
+      <li>选中模板后，下拉框右侧出现橙色「同步」按钮，点击弹出居中提示「同步成功」，2 秒后自动消失；「剩余展示位：N（最多 6 个展示位）」胶囊放在下拉框正下方，N 为 0 时转红色告警态，并把「新增产品」置灰、追加「（展示位已满）」。</li>
+      <li>单选「新增产品 / 修改产品」选中后才出说明文字，两种模式的文案分别说明加入模板与替换模板的行为。</li>
+      <li>取消 / 确定 / 关闭 / 点遮罩均只关闭弹窗，不做提交。</li>
+      <li>第一个店铺行的模板区块挂了原型标注「关联产品模板：按店铺关联，数据来源与同步规则」，内容从 <code>auto-edit-dialog-copy2</code> 原样移植，说明模板数据来源、新增/修改调用的接口，以及剩余展示位与「新增产品」可选性的关系。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>待确认 / 后续</h2>
+    <ul>
+      <li>批量场景下模板与商品的匹配规则、冲突提示与结果反馈。</li>
+    </ul>
+  </section>
+</div>
+</body>
+</html>

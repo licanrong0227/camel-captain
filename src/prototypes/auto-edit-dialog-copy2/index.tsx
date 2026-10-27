@@ -225,14 +225,15 @@ const mainImageModes: { id: MainImageMode; label: string; hint: string }[] = [
 ];
 
 // ===== 图片操作栏目（转白底 / 去水印 / 加水印）=====
-const imageOps: { id: string; label: string }[] = [
-  { id: 'white-bg', label: '转白底' },
-  { id: 'remove-watermark', label: '去水印' },
+const imageOps: { id: string; label: string; tip?: string }[] = [
+  { id: 'white-bg', label: '转白底', tip: '每处理1张图片消耗xx算力' },
+  { id: 'remove-watermark', label: '去水印', tip: '每处理1张图片消耗xx算力' },
   { id: 'add-watermark', label: '加水印' },
-  { id: 'image-translate', label: '图片翻译' },
+  { id: 'image-translate', label: '图片翻译', tip: '每处理1张图片消耗xx算力' },
 ];
 
 const imageScopes = ['主图', '推广图', 'SKU图', '详情图'];
+const removeWmVersions = ['普通版', 'pro版'];
 
 // ===== 加水印：水印配置（功能沿用「批量美图」的加水印面板）=====
 type WatermarkType = 'text' | 'image';
@@ -658,8 +659,9 @@ function WatermarkCard({ config, onConfigChange, templateId, onPickTemplate }: {
 }
 
 // ===== Row component =====
-function FormRow({ label, checked, onCheck, children, last, disabled, flush, bodyClass, annotationId }: {
+function FormRow({ label, labelTip, checked, onCheck, children, last, disabled, flush, bodyClass, annotationId }: {
   label: string;
+  labelTip?: string;
   checked?: boolean;
   onCheck?: () => void;
   children: React.ReactNode;
@@ -671,7 +673,7 @@ function FormRow({ label, checked, onCheck, children, last, disabled, flush, bod
 }) {
   return (
     <div
-      className={`ae-row${last ? ' ae-row-last' : ''}${disabled ? ' is-disabled' : ''}${flush ? ' is-flush' : ''}`}
+      className={`ae-row${last ? ' ae-row-last' : ''}${disabled ? ' is-disabled' : ''}${flush ? ' is-flush' : ''}${labelTip ? ' has-label-tip' : ''}`}
     >
       <div className="ae-row-label" data-annotation-id={annotationId}>
         <label className="ae-checkbox">
@@ -684,6 +686,11 @@ function FormRow({ label, checked, onCheck, children, last, disabled, flush, bod
           <span className="ae-checkbox-mask" />
         </label>
         <span className="ae-row-label-text">{label}</span>
+        {labelTip && (
+          <span className="ae-label-tip" data-tip={labelTip} aria-label={labelTip}>
+            <span className="ae-label-tip-icon">?</span>
+          </span>
+        )}
       </div>
       <div className={`ae-row-body${bodyClass ? ' ' + bodyClass : ''}`}>{children}</div>
     </div>
@@ -911,6 +918,7 @@ export default function AutoEditDialog() {
   // ===== 转白底 / 去水印 / 加水印 =====
   const [imageOpChecked, setImageOpChecked] = useState<Record<string, boolean>>({});
   const [imageOpScopes, setImageOpScopes] = useState<Record<string, string[]>>({});
+  const [removeWmVersion, setRemoveWmVersion] = useState('普通版');
 
   const toggleImageOpRow = (id: string) =>
     setImageOpChecked((prev) => {
@@ -1570,6 +1578,7 @@ export default function AutoEditDialog() {
                 <FormRow
                   key={op.id}
                   label={op.label}
+                  labelTip={op.tip}
                   checked={on}
                   onCheck={() => toggleImageOpRow(op.id)}
                   annotationId={isLastOp ? 'image-op-pipeline' : `image-${op.id}-row`}
@@ -1587,6 +1596,26 @@ export default function AutoEditDialog() {
                       </label>
                     ))}
                   </div>
+
+                  {op.id === 'remove-watermark' && scopes.length > 0 && (
+                    <div className="ae-rmw-version">
+                      <div className="ae-field-label">去水印版本</div>
+                      <div className="ae-radio-group">
+                        {removeWmVersions.map((version) => (
+                          <label key={version} className="ae-radio">
+                            <input
+                              type="radio"
+                              name="removeWatermarkVersion"
+                              checked={removeWmVersion === version}
+                              onChange={() => setRemoveWmVersion(version)}
+                            />
+                            <span className="ae-radio-mask" />
+                            <span>{version}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {op.id === 'add-watermark' && on && (
                     <WatermarkCard
@@ -1891,6 +1920,7 @@ export default function AutoEditDialog() {
               </>
             )}
 
+            {/* 服务栏目内容沿用线上已有配置，原实现暂注释保留
             {activeMenu === 'service' && (
               <>
                 <FormRow label="商品分级管理" checked={!!serviceChecked.grade} onCheck={() => toggleServiceRow('grade')} annotationId="service-grade-row">
@@ -1995,6 +2025,7 @@ export default function AutoEditDialog() {
                 </FormRow>
               </>
             )}
+            */}
 
             {activeMenu === 'attr' && (
               <>
@@ -2025,7 +2056,7 @@ export default function AutoEditDialog() {
               </>
             )}
 
-            {activeMenu !== 'basic' && activeMenu !== 'image' && activeMenu !== 'sku' && activeMenu !== 'service' && activeMenu !== 'attr' && (
+            {activeMenu !== 'basic' && activeMenu !== 'image' && activeMenu !== 'sku' && activeMenu !== 'attr' && (
               <div className="ae-empty">该栏目内容沿用线上已有配置</div>
             )}
           </div>

@@ -1,0 +1,73 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "image-workbench-watermark",
+    "pageId": "image-workbench-watermark",
+    "nodes": [
+      {
+        "id": "wm-canvas",
+        "index": 1,
+        "title": "画布拖放限制",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"wm-canvas\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=wm-canvas",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1761050000000,
+        "updatedAt": 1792580113403,
+        "annotationText": ""
+      },
+      {
+        "id": "thumb-size-badge",
+        "index": 2,
+        "title": "图片尺寸显示",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"thumb-size-badge\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=thumb-size-badge",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1761050400000,
+        "updatedAt": 1761050400000
+      },
+      {
+        "id": "wm-size-display",
+        "index": 3,
+        "title": "水印尺寸显示",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"wm-size-display\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=wm-size-display",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1761050800000,
+        "updatedAt": 1761050800000
+      }
+    ],
+    "updatedAt": 1792580113403
+  },
+  "markdownMap": {
+    "wm-canvas": "文字及图片禁止拖放到画布外，画布尺寸根据适用图片尺寸等比例调整",
+    "thumb-size-badge": "左下角新增图片尺寸显示",
+    "wm-size-display": "新增画布尺寸显示"
+  },
+  "assetMap": {},
+  "directory": {
+    "nodes": []
+  }
+}

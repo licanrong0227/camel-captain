@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图像工作台-水印 - 主规格</title>
+  <style>
+    body { font-family: "Helvetica Neue", Helvetica, "PingFang SC", sans-serif; padding: 40px; line-height: 1.6; color: #303133; }
+    h1 { font-size: 24px; margin-bottom: 24px; }
+    h2 { font-size: 18px; margin: 24px 0 12px; color: #2c7bfc; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+    th, td { border: 1px solid #dcdfe6; padding: 8px 12px; text-align: left; font-size: 14px; }
+    th { background: #f5f7fa; font-weight: 600; }
+    .tag { display: inline-block; padding: 2px 8px; background: #ecf5ff; color: #2c7bfc; border-radius: 4px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>图像工作台弹窗（水印 tab）+ 添加水印弹窗 - 主规格</h1>
+
+  <h2>当前方案</h2>
+  <ul>
+    <li><strong>原型意图</strong>：1:1 还原线上「图像工作台」弹窗（内嵌开源编辑器 快图设计 vue-fabric-editor）水印页，以及点击「添加水印」后弹出的配置弹窗</li>
+    <li><strong>使用场景</strong>：商品图片批量处理时打开的图像工作台，在水印管理中创建/管理水印</li>
+    <li><strong>还原口径</strong>：独立原型 + 灰色遮罩（#7f7f7f），背后页面不还原；样式按线上实测值，保持编辑器原生 iView 蓝色风格（借壳开源编辑器先例，同主图拼图弹窗）</li>
+  </ul>
+
+  <h2>原型范围</h2>
+  <h3>页面 1：图像工作台弹窗（水印 tab 定位态）</h3>
+  <ul>
+    <li>外层 Element-UI 弹窗壳：95% 宽、margin-top 15vh、无标题、右上角关闭按钮</li>
+    <li>顶部工具栏（45px）：图像工作台 | 文件▾ 插入 | 网格开关（开）撤销/重做（禁用）| 预览 水印 下载▾ 保存 中文▾</li>
+    <li>左侧 65px 图标菜单：AI编辑 / 文字 / 图层 / <strong>水印（选中，#2D8CF0）</strong></li>
+    <li>水印管理面板（315px）：标题 + 添加水印主按钮 + 5 条水印（abc / 1 / 水印1 / 11111 / 撒大声地），每条 80×80 预览图 + 修改/添加/删除</li>
+    <li>属性面板（260px，静态展示）：快捷操作、居中、替换图片/裁剪图片、图片滤镜（简单/复杂 + 8 张滤镜样本图）、图像描边、位置信息、阴影/颜色/模糊、边框、数据</li>
+    <li>中间画布（#f1f1f1）：白色画布 + 当前商品图 + 选中框（8 控制点）+ 缩放按钮组</li>
+    <li>最右图片列表（100px）：「图片列表 1 / 6」+ 6 张缩略图，首个蓝色选中框（#1890FF）</li>
+  </ul>
+  <h3>页面 2：添加水印弹窗</h3>
+  <ul>
+    <li>iView Modal：1110px 宽、top 10px、遮罩覆盖整个编辑器（含顶栏）</li>
+    <li>必填「水印名称」输入框（320px，0/50 计数）</li>
+    <li>三栏：工具条（添加文字 / 添加图片 + PNG 提示）｜650×650 空白画布｜属性面板空态「请选择一个对象进行编辑」</li>
+    <li>底部：取消 / 预览 / 确认</li>
+  </ul>
+  <h3>本次不呈现</h3>
+  <ul>
+    <li>背后「编辑产品」页面；其余 tab（AI编辑/文字/图层）面板内容</li>
+    <li>添加文字/添加图片后的画布编辑流程、水印保存等真实功能</li>
+  </ul>
+
+  <h2>交互与状态方案</h2>
+  <table>
+    <tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr>
+    <tr><td>添加水印按钮</td><td>工作台水印页</td><td>点击</td><td>打开添加水印弹窗，遮罩覆盖编辑器</td><td>弹窗展示</td></tr>
+    <tr><td>取消 / × / 确认</td><td>弹窗打开</td><td>点击任一</td><td>关闭弹窗</td><td>回到工作台水印页</td></tr>
+  </table>
+
+  <h2>设计规格</h2>
+  <table>
+    <tr><th>属性</th><th>值</th></tr>
+    <tr><td>编辑器主色（iView 蓝）</td><td><span class="tag">#2D8CF0</span></td></tr>
+    <tr><td>缩略图选中框</td><td><span class="tag">#1890FF</span></td></tr>
+    <tr><td>正文文字</td><td><span class="tag">#515A6E</span></td></tr>
+    <tr><td>面板边框 / 分隔线</td><td><span class="tag">#E8E8E8 / #E8EAEC</span></td></tr>
+    <tr><td>画布区底色</td><td><span class="tag">#F1F1F1</span></td></tr>
+    <tr><td>灰遮罩</td><td><span class="tag">#7F7F7F</span></td></tr>
+    <tr><td>字体</td><td>PingFang SC / Helvetica Neue / Microsoft YaHei，基准 14px</td></tr>
+  </table>
+
+  <h2>素材来源</h2>
+  <ul>
+    <li>水印样本图 ×5：线上 OSS 原图（yfg-saas-test）</li>
+    <li>商品图 ×6：线上「我的商品」当前编辑商品的速卖通图片</li>
+    <li>滤镜样本图 ×8：线上 vue-fabric-editor 静态资源</li>
+    <li>尺寸/配色：线上渲染后 DOM 与 getComputedStyle 实测</li>
+  </ul>
+</body>
+</html>

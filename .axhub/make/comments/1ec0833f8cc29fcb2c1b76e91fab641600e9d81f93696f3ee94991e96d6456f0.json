@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "help-center-full-text-search",
+    "targetPath": "prototypes/help-center-full-text-search",
+    "filePath": ".axhub/make/comments/1ec0833f8cc29fcb2c1b76e91fab641600e9d81f93696f3ee94991e96d6456f0.json"
+  },
+  "comments": [
+    {
+      "elementKey": "button_10",
+      "label": "button[aria-label=\"搜索全文\"]",
+      "locator": {
+        "selectors": [
+          "[title=\"搜索全文\"]",
+          "[aria-label=\"搜索全文\"]",
+          ".hcft-search-entry",
+          "body > div > div > header > div:nth-of-type(2) > button:nth-of-type(1)",
+          "#root div > header > div:nth-of-type(2) > button:nth-of-type(1)"
+        ],
+        "fingerprint": "button|class=hcft-search-entry",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 1795,
+        "clientY": 27,
+        "documentX": 1795,
+        "documentY": 27,
+        "xPercent": 93.8807531380753,
+        "y": 27,
+        "isFixed": true,
+        "offsetX": 17,
+        "offsetY": 19.5,
+        "dirtySince": 1792648947246
+      },
+      "id": "e93620d9-4828-475f-974d-f3bd55011180",
+      "state": "idle",
+      "comment": "搜索全文的按钮不要放在顶栏，放在内容页的右上角，做成一个悬浮的圆形搜索按钮，点击弹出遮罩时挡住图标\n",
+      "pageScope": "/prototypes/help-center-full-text-search",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    }
+  ],
+  "images": []
+}

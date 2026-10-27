@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "my-products-batch-related-template",
+    "targetPath": "prototypes/my-products-batch-related-template",
+    "filePath": ".axhub/make/comments/6ce17ddc4a2f5f420ecf9c048d6894db4ef0f27b023d900301fa94d650aec8d5.json"
+  },
+  "comments": [
+    {
+      "elementKey": "div_14",
+      "label": "div",
+      "locator": {
+        "selectors": [
+          ".el-input",
+          ".el-input--small",
+          ".el-input--suffix",
+          "body > div > div > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1)",
+          "#root div > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1)"
+        ],
+        "fingerprint": "div|class=el-input.el-input--small.el-input--suffix",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          2,
+          1,
+          0,
+          1,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 253,
+        "clientY": 165,
+        "documentX": 253,
+        "documentY": 165,
+        "xPercent": 13.232217573221758,
+        "y": 165,
+        "isFixed": false,
+        "offsetX": 102,
+        "offsetY": 3,
+        "dirtySince": 1792744560342
+      },
+      "id": "9e264e01-37c0-4b22-9633-417db196180d",
+      "state": "idle",
+      "comment": "不要默认值，提示文字还是双击可批量搜索",
+      "pageScope": "/prototypes/my-products-batch-related-template",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    }
+  ],
+  "images": []
+}
