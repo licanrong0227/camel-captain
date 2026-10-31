@@ -210,7 +210,13 @@ export function ItemCard({
           </button>
           {viewingHistory && <span className="dcc-attempt-note" title="历史记录">历史记录</span>}
           {interactive && !running && (
-            <button type="button" className="dcc-btn dcc-btn--text dcc-attempt-retry" onClick={onRetry}>重新检测</button>
+            <button type="button" className="dcc-retry-btn dcc-attempt-retry" onClick={onRetry}>
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M20 11a8 8 0 1 0-2.34 5.66" />
+                <path d="M20 4v7h-7" />
+              </svg>
+              重新检测
+            </button>
           )}
         </div>
       )}
@@ -218,7 +224,13 @@ export function ItemCard({
       {expanded && !running && interactive && history.length === 0 && (
         <div className="dcc-item-retry-row">
           <span className="dcc-item-latest-note">当前为最新检测结果</span>
-          <button type="button" className="dcc-btn dcc-btn--text" onClick={onRetry}>重新检测</button>
+          <button type="button" className="dcc-retry-btn" onClick={onRetry}>
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M20 11a8 8 0 1 0-2.34 5.66" />
+              <path d="M20 4v7h-7" />
+            </svg>
+            重新检测
+          </button>
         </div>
       )}
 
