@@ -1,0 +1,240 @@
+.erp-portal-root {
+  position: relative;
+  z-index: 2000;
+}
+
+.erp-mask {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.6);
+  animation: erp-fade 0.2s ease-out;
+}
+
+.erp-mask--drawer {
+  justify-content: flex-end;
+  padding: 0;
+}
+
+@keyframes erp-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.erp-dialog {
+  display: flex;
+  flex-direction: column;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 48px);
+  background: #fff;
+  border-radius: var(--erp-radius-card);
+  box-shadow: var(--erp-shadow-base);
+  animation: erp-dialog-in 0.25s ease-out;
+}
+
+@keyframes erp-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.erp-dialog__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 56px;
+  padding: 0 30px;
+  border-bottom: 1px solid var(--erp-n3);
+  flex: 0 0 auto;
+}
+
+.erp-dialog__head h2 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: var(--erp-n8);
+}
+
+.erp-dialog__close {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--erp-radius-control);
+  background: transparent;
+  color: var(--erp-n6);
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.erp-dialog__close:hover {
+  background: var(--erp-n1);
+  color: var(--erp-n8);
+}
+
+.erp-dialog__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 30px;
+  overflow: auto;
+}
+
+.erp-dialog__foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 14px 30px;
+  border-top: 1px solid var(--erp-n3);
+  flex: 0 0 auto;
+}
+
+.erp-drawer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 100vw;
+  background: #fff;
+  box-shadow: var(--erp-shadow-base);
+  animation: erp-drawer-in 0.25s ease-out;
+}
+
+@keyframes erp-drawer-in {
+  from {
+    transform: translateX(24px);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.erp-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 56px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--erp-n3);
+  flex: 0 0 auto;
+}
+
+.erp-drawer__head h2 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+}
+
+.erp-drawer__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 24px;
+  overflow: auto;
+}
+
+.erp-drawer__foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 14px 24px;
+  border-top: 1px solid var(--erp-n3);
+  flex: 0 0 auto;
+}
+
+/* ---------- toast ---------- */
+
+.erp-messages {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.erp-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 220px;
+  max-width: 480px;
+  padding: 9px 16px;
+  border: 1px solid var(--erp-n3);
+  border-radius: var(--erp-radius-control);
+  background: #fff;
+  box-shadow: var(--erp-shadow-light);
+  color: var(--erp-n8);
+  font-size: 13px;
+  line-height: 20px;
+  animation: erp-toast-in 0.25s ease-out;
+}
+
+@keyframes erp-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.erp-message__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  border-radius: 50%;
+  background: var(--erp-n6);
+  color: #fff;
+  font-size: 10px;
+  line-height: 16px;
+}
+
+.erp-message--success .erp-message__icon {
+  background: var(--erp-success-4);
+}
+
+.erp-message--error .erp-message__icon {
+  background: var(--erp-danger-4);
+}
+
+.erp-message--warning .erp-message__icon {
+  background: var(--erp-warning-4);
+}
+
+.erp-message--info .erp-message__icon {
+  background: var(--erp-info-4);
+}
+
+.erp-message--loading .erp-message__icon {
+  background: var(--erp-n7);
+  animation: erp-spin 0.9s linear infinite;
+}
+
+.erp-message__text {
+  flex: 1 1 auto;
+}

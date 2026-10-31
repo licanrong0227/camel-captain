@@ -57,9 +57,9 @@ export function RecordsPage({ onOpenTask }: { onOpenTask: (taskId: string, prese
     if (time === 'today' && age > 24 * 3600_000) return false;
     if (time === '7d' && age > 7 * 24 * 3600_000) return false;
     if (time === '30d' && age > 30 * 24 * 3600_000) return false;
-    if (result === 'hit' && view.summary.hit === 0) return false;
-    if (result === 'suspect' && view.summary.suspect === 0) return false;
-    if (result === 'pass' && (view.summary.hit > 0 || view.summary.suspect > 0)) return false;
+    if (result === 'hit' && view.issueSummary.violation === 0) return false;
+    if (result === 'suspect' && view.issueSummary.suspect === 0) return false;
+    if (result === 'pass' && (view.issueSummary.violation > 0 || view.issueSummary.suspect > 0)) return false;
     if (search.trim()) {
       const key = search.trim().toLowerCase();
       if (!view.task.title.toLowerCase().includes(key) && !view.task.url.toLowerCase().includes(key)) return false;

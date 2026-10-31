@@ -2,7 +2,10 @@
   "documentVersion": 1,
   "format": "axhub-annotation-source",
   "presentation": {
-    "layerSelectors": [".emd-mask", ".cp-mask"]
+    "layerSelectors": [
+      ".emd-mask",
+      ".cp-mask"
+    ]
   },
   "data": {
     "version": 2,
@@ -15,9 +18,13 @@
         "title": "主图拼图弹窗来源",
         "pageId": "edit-product-dialog-media",
         "locator": {
-          "selectors": ["[data-annotation-id=\"collage-embed-source\"]"],
+          "selectors": [
+            "[data-annotation-id=\"collage-embed-source\"]"
+          ],
           "fingerprint": "div|data-annotation-id=collage-embed-source",
-          "path": ["body > div > div > div:nth-of-type(2) > div > div:nth-of-type(1)"]
+          "path": [
+            "body > div > div > div:nth-of-type(2) > div > div:nth-of-type(1)"
+          ]
         },
         "aiPrompt": "根据标注正文说明主图拼图弹窗的内容来源与相对原生项目的改造点。",
         "annotationText": "",
@@ -33,9 +40,13 @@
         "title": "画布格子交互",
         "pageId": "edit-product-dialog-media",
         "locator": {
-          "selectors": ["[data-annotation-id=\"collage-slot-interaction\"]"],
+          "selectors": [
+            "[data-annotation-id=\"collage-slot-interaction\"]"
+          ],
           "fingerprint": "div|data-annotation-id=collage-slot-interaction",
-          "path": ["body > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(1) > div > div > div:nth-of-type(1)"]
+          "path": [
+            "body > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(1) > div > div > div:nth-of-type(1)"
+          ]
         },
         "aiPrompt": "根据标注正文说明画布格子的交互方式。",
         "annotationText": "",
@@ -51,9 +62,13 @@
         "title": "可选图片交互",
         "pageId": "edit-product-dialog-media",
         "locator": {
-          "selectors": ["[data-annotation-id=\"collage-sample-interaction\"]"],
+          "selectors": [
+            "[data-annotation-id=\"collage-sample-interaction\"]"
+          ],
           "fingerprint": "div|data-annotation-id=collage-sample-interaction",
-          "path": ["body > div > div > div:nth-of-type(2) > div > aside:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(1)"]
+          "path": [
+            "body > div > div > div:nth-of-type(2) > div > aside:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(1)"
+          ]
         },
         "aiPrompt": "根据标注正文说明可选图片区域的交互方式。",
         "annotationText": "",
@@ -69,9 +84,13 @@
         "title": "上传到主图",
         "pageId": "edit-product-dialog-media",
         "locator": {
-          "selectors": ["[data-annotation-id=\"collage-upload-main\"]"],
+          "selectors": [
+            "[data-annotation-id=\"collage-upload-main\"]"
+          ],
           "fingerprint": "button|data-annotation-id=collage-upload-main",
-          "path": ["body > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(2) > button:nth-of-type(3)"]
+          "path": [
+            "body > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(2) > button:nth-of-type(3)"
+          ]
         },
         "aiPrompt": "根据标注正文说明上传到主图的判断逻辑。",
         "annotationText": "",
@@ -80,15 +99,84 @@
         "images": [],
         "createdAt": 1791887654158,
         "updatedAt": 1791887654158
+      },
+      {
+        "id": "ai-video-entry",
+        "index": 5,
+        "title": "AI生成视频入口",
+        "pageId": "edit-product-dialog-media",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ai-video-entry\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=ai-video-entry",
+          "path": [
+            "body > div > div > div > div:nth-of-type(3) > div > section:nth-of-type(1) > button:nth-of-type(1)"
+          ]
+        },
+        "aiPrompt": "根据标注正文说明 AI 生成视频入口的位置、参考图来源与提交后的表现。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793176970111,
+        "updatedAt": 1793176970111
+      },
+      {
+        "id": "ai-video-refs",
+        "index": 6,
+        "title": "参考图范围与上限",
+        "pageId": "edit-product-dialog-media",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ai-video-refs\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=ai-video-refs",
+          "path": [
+            "body > div > div > div > div:nth-of-type(3) > div > section:nth-of-type(1) > section:nth-of-type(1)"
+          ]
+        },
+        "aiPrompt": "根据标注正文说明参考图的选择上限、顺序规则与重置规则。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793176970111,
+        "updatedAt": 1793176970111
+      },
+      {
+        "id": "ai-video-options",
+        "index": 7,
+        "title": "时长与比例",
+        "pageId": "edit-product-dialog-media",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ai-video-options\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=ai-video-options",
+          "path": [
+            "body > div > div > div > div:nth-of-type(3) > div > section:nth-of-type(1) > section:nth-of-type(2)"
+          ]
+        },
+        "aiPrompt": "根据标注正文说明时长与算力消耗、比例取值的口径。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793176970111,
+        "updatedAt": 1793176970111
       }
     ],
-    "updatedAt": 1791887654158
+    "updatedAt": 1793176970111
   },
   "markdownMap": {
     "collage-embed-source": "「主图拼图」弹窗的内容嵌入自开源项目 **easy-collage**（简单拼图）。\n\n- GitHub 仓库：https://github.com/goku-open/easy-collage\n- 在线预览 Demo：https://easy-collage.gokuscraper.com\n\n**改造说明（相对原生项目）：**\n- 调整了界面，移除了原生项目的多处功能。\n- 画布比例按照 1:1。\n- 保留：模板选择、传图、以及拖动改变图片露出部位。\n- 增加：图片候选，载入时自动引用主图图片。\n- 新增：编辑后直接上传到主图的功能。\n\n**待确认：** 需评估原生项目的拼图模板是否可编辑——原生提供的模板可能无法完全覆盖实际场景的用途。",
     "collage-slot-interaction": "画布格子的交互：\n\n- 空格子：点击可上传并添加图片，支持一次选择多张；上传数量不超过当前空格子数，提交后图片按顺序依次填入空格子。也可从右侧「可选图片」拖拽图片到某个格子放入。\n- 已放图片的格子：鼠标滚轮缩放图片；放大后按住并拖动，可改变图片露出的部位，拖动范围被限制在格子内，不会出现图片边界脱离格子。\n- 悬停已放图片的格子时，左上角出现拖拽图标，按住拖到另一个格子：目标格有图则两格图片互换，目标格为空则把图片移过去并清空原格。\n- 悬停格子时右上角出现清空按钮，点击移除该格子中的图片。",
     "collage-sample-interaction": "「可选图片」的交互：\n\n- **图片初始来源**：弹窗打开时，自动载入当前产品的主图、SKU图片、商品详情图作为可选图片。\n- 点击缩略图或其左上角复选框可选中该图片；再次点击取消选中。选中数量不超过左侧空格子数，达到上限后其余未选图片置灰、不可再选。\n- 顶部「全选」复选框：按空格子数量上限一次性选中靠前的图片。\n- 拖拽缩略图到某个格子：把图片放入该格子。\n- 底部「导入已选图片」按钮：未选中时置灰；点击后按顺序把已选图片放入左侧空格子，全部放完后取消选中。\n- 悬停缩略图时右上角出现删除按钮，点击移除这张可选图片。",
-    "collage-upload-main": "「上传到主图」按钮的判断逻辑：\n\n- 点击后先判断当前产品的主图数量是否已达到上限（主图上限为 8 张）。\n- **未达上限**：关闭拼图弹窗，把拼图结果作为一张新主图追加到主图列表。\n- **已达上限**：弹出提示弹窗「主图上传数量已达上限，是否继续上传并替换掉最后一张主图」，提供两个操作：\n  - 「关闭」：关闭提示弹窗，不执行上传。\n  - 「上传并替换」：关闭提示弹窗，用拼图结果替换掉当前最后一张主图。"
+    "collage-upload-main": "「上传到主图」按钮的判断逻辑：\n\n- 点击后先判断当前产品的主图数量是否已达到上限（主图上限为 8 张）。\n- **未达上限**：关闭拼图弹窗，把拼图结果作为一张新主图追加到主图列表。\n- **已达上限**：弹出提示弹窗「主图上传数量已达上限，是否继续上传并替换掉最后一张主图」，提供两个操作：\n  - 「关闭」：关闭提示弹窗，不执行上传。\n  - 「上传并替换」：关闭提示弹窗，用拼图结果替换掉当前最后一张主图。",
+    "ai-video-entry": "视频区块分割线下方、视频名称上方新增「AI生成视频」，点击打开 AI 生成视频弹窗。\n\n- 参考图取自当前商品已上传的图片，分主图、站外推广图、SKU 图、详情图四组。\n- 生成过程中，入口按钮置灰不可点（悬停提示「视频生成中，暂不可再次生成」）。\n- 提交后弹窗切换为「视频生成中」页面：展示本次时长、比例与参考图张数，并提示「关闭弹窗不会影响视频生成」。关闭后视频区域的图片上传位保持「AI 生成中」，同样显示本次参数。\n\n**待确认：** 生成完成后视频如何回填（占用当前视频位还是进入视频列表）、失败如何提示尚未定义；当前只演示提交后的生成中占位。\n- 生成中可停止：生成中弹窗底部、视频位上的「停止生成」都会先弹出确认框「停止后本次视频生成将中断，已消耗的算力无法返还」；确认后回到「上传视频」状态，入口按钮恢复可点。",
+    "ai-video-refs": "- 参考图最多选 9 张；选满后未选图片置灰不可点，继续点击提示「参考图最多选择 9 张」。\n- 缩略图左上角序号即参考顺序，取消选中后其余序号顺延。\n- 未选任何参考图时，底部「生成视频」不可点。\n- 每次重新打开弹窗，参考图、时长、比例都重置为初始状态。\n- 每张缩略图左下角显示图片分辨率。",
+    "ai-video-options": "- 时长 5 / 10 / 15 秒；每个时长后的 ? 悬停显示该时长的单次算力消耗（当前演示值 10 / 20 / 30）。\n- 底部「预计消耗」随所选时长同步变化。\n- 比例「自适应」按参考图比例生成，其余为固定画幅。\n- 算力数值为演示口径，实际消耗以后端定价为准。\n- 时长下方高亮提示「生成过程中可随时停止，但已消耗的算力不返还」。"
   },
   "assetMap": {}
 }

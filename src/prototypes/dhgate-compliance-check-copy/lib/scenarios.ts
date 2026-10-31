@@ -56,8 +56,8 @@ export interface Anchor {
 }
 
 export interface HitRecord {
-  /** 单条记录的风险类型；不填时跟随质检项状态 */
-  severity?: 'violation' | 'suspect';
+  /** 单条记录的风险类型；manual 表示限售类建议自查，不参与违规/疑似计数 */
+  severity?: 'violation' | 'suspect' | 'manual';
   /** 覆盖风险类型标签，如限售资质用「建议自查」 */
   severityLabel?: string;
   reason: string;
@@ -147,7 +147,7 @@ export const ITEM_COVERAGE: Record<ItemCode, string[]> = {
   ipr: ['title', 'mainImage:*', 'skuImage:*', 'detailImage:*'],
   category: ['category'],
   price: ['skuTable', 'ladder'],
-  legal: ['product'],
+  legal: ['product', 'detailText:*', 'detailImage:*'],
 };
 
 export const PASS: Partial<Record<ItemCode, ItemOutcome>> = {

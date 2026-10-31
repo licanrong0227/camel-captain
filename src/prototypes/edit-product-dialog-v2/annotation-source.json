@@ -1,0 +1,570 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "presentation": {
+    "layerSelectors": [
+      ".ep-overlay",
+      ".av-mask",
+      ".ep-c-mask"
+    ]
+  },
+  "data": {
+    "version": 2,
+    "prototypeName": "edit-product-dialog-v2",
+    "pageId": "edit-product-dialog-v2",
+    "updatedAt": 1793260000000,
+    "nodes": [
+      {
+        "id": "ai-video-entry",
+        "index": 1,
+        "title": "AI生成视频入口",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ai-video-entry\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=ai-video-entry",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明 AI 生成视频入口的位置、参考图来源与提交后的表现。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793176970111,
+        "updatedAt": 1793176970111
+      },
+      {
+        "id": "ai-video-refs",
+        "index": 2,
+        "title": "参考图范围与上限",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ai-video-refs\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=ai-video-refs",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明参考图的选择上限、顺序规则与重置规则。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793176970111,
+        "updatedAt": 1793176970111
+      },
+      {
+        "id": "ai-video-options",
+        "index": 3,
+        "title": "时长与比例",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ai-video-options\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=ai-video-options",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明时长与算力消耗、比例取值的口径。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793176970111,
+        "updatedAt": 1793176970111
+      },
+      {
+        "id": "compliance-entry",
+        "index": 4,
+        "title": "商品合规检测入口与演示场景",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"compliance-entry\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=compliance-entry",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明商品合规检测入口的位置、检测流程、算力口径与演示场景切换。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "compliance_scenario",
+            "displayName": "演示场景",
+            "placeholder": "违规 + 疑似 + 失败",
+            "initialValue": "mixed",
+            "info": "只影响最近一次检测结果，切换后立即重算，不新增记录、不扣算力。",
+            "options": [
+              {
+                "label": "全部通过",
+                "value": "all-pass"
+              },
+              {
+                "label": "违规 + 疑似 + 失败",
+                "value": "mixed"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793250000000,
+        "updatedAt": 1793250000000
+      },
+      {
+        "id": "compliance-caret",
+        "index": 5,
+        "title": "检测记录下拉与空态",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"compliance-caret\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=compliance-caret",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明下拉箭头的位置、二级菜单内容与有无记录时的表现。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793250000000,
+        "updatedAt": 1793250000000
+      },
+      {
+        "id": "compliance-dialog-head",
+        "index": 6,
+        "title": "结果弹窗头部与批次切换",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"compliance-dialog-head\"]"
+          ],
+          "fingerprint": "header|data-annotation-id=compliance-dialog-head",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明结果弹窗头部的批次切换、只读规则与关闭方式。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793250000000,
+        "updatedAt": 1793250000000
+      },
+      {
+        "id": "compliance-conclusion",
+        "index": 7,
+        "title": "检测结论条与算力汇总",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"compliance-conclusion\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=compliance-conclusion",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明结论条的汇总规则、两种视觉与算力展示。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793250000000,
+        "updatedAt": 1793250000000,
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "compliance_conclusion_state",
+            "displayName": "结论状态",
+            "placeholder": "跟随检测结果",
+            "initialValue": "follow",
+            "info": "只切换结论条的展示样式，不改检测结果。",
+            "options": [
+              {
+                "label": "跟随检测结果",
+                "value": "follow"
+              },
+              {
+                "label": "全部通过",
+                "value": "pass"
+              },
+              {
+                "label": "未通过",
+                "value": "issue"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "compliance-item-ipr",
+        "index": 8,
+        "title": "问题检测项卡片",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"compliance-item-ipr\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=compliance-item-ipr",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明问题项卡片的展开规则、信息顺序、参考信息要求与配色。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793250000000,
+        "updatedAt": 1793250000000,
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "compliance_item_state_ipr",
+            "displayName": "卡片状态",
+            "placeholder": "跟随演示场景",
+            "initialValue": "follow",
+            "info": "只切换这张卡片的展示样式，不改检测数据、不写入检测记录；点「重新检测」会退出演示状态并跑真实重检。",
+            "options": [
+              {
+                "label": "跟随演示场景",
+                "value": "follow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规或疑似违规",
+                "value": "issue"
+              },
+              {
+                "label": "检测失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "compliance-item-size",
+        "index": 9,
+        "title": "通过检测项折叠态",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"compliance-item-size\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=compliance-item-size",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明通过态卡片的折叠规则、展示内容与仍可用的操作。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793250000000,
+        "updatedAt": 1793250000000,
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "compliance_item_state_size",
+            "displayName": "卡片状态",
+            "placeholder": "跟随演示场景",
+            "initialValue": "follow",
+            "info": "只切换这张卡片的展示样式，不改检测数据、不写入检测记录；点「重新检测」会退出演示状态并跑真实重检。",
+            "options": [
+              {
+                "label": "跟随演示场景",
+                "value": "follow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规或疑似违规",
+                "value": "issue"
+              },
+              {
+                "label": "检测失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "compliance-item-actions",
+        "index": 10,
+        "title": "单项重检、历史轮次与反馈",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"compliance-item-actions\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=compliance-item-actions",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明单项重新检测的流程、轮次切换、点赞点踩与反馈口径。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793250000000,
+        "updatedAt": 1793250000000
+      },
+      {
+        "id": "compliance-item-material",
+        "index": 11,
+        "title": "材质检测项（多错误样式）",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"compliance-item-material\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=compliance-item-material",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明多错误卡片的样式与卡片状态控件。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "compliance_item_state_material",
+            "displayName": "卡片状态",
+            "placeholder": "跟随演示场景",
+            "initialValue": "follow",
+            "info": "只切换这张卡片的展示样式，不改检测数据、不写入检测记录；点「重新检测」会退出演示状态并跑真实重检。",
+            "options": [
+              {
+                "label": "跟随演示场景",
+                "value": "follow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规或疑似违规",
+                "value": "issue"
+              },
+              {
+                "label": "检测失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793260000000,
+        "updatedAt": 1793260000000
+      },
+      {
+        "id": "compliance-item-category",
+        "index": 12,
+        "title": "类目检测项（状态样式）",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"compliance-item-category\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=compliance-item-category",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明通过态与疑似态的切换方式。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "compliance_item_state_category",
+            "displayName": "卡片状态",
+            "placeholder": "跟随演示场景",
+            "initialValue": "follow",
+            "info": "只切换这张卡片的展示样式，不改检测数据、不写入检测记录；点「重新检测」会退出演示状态并跑真实重检。",
+            "options": [
+              {
+                "label": "跟随演示场景",
+                "value": "follow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规或疑似违规",
+                "value": "issue"
+              },
+              {
+                "label": "检测失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793260000000,
+        "updatedAt": 1793260000000
+      },
+      {
+        "id": "compliance-item-price",
+        "index": 13,
+        "title": "价格检测项（检测失败样式）",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"compliance-item-price\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=compliance-item-price",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明检测失败态的展示位置与切换方式。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "compliance_item_state_price",
+            "displayName": "卡片状态",
+            "placeholder": "跟随演示场景",
+            "initialValue": "follow",
+            "info": "只切换这张卡片的展示样式，不改检测数据、不写入检测记录；点「重新检测」会退出演示状态并跑真实重检。",
+            "options": [
+              {
+                "label": "跟随演示场景",
+                "value": "follow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规或疑似违规",
+                "value": "issue"
+              },
+              {
+                "label": "检测失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793260000000,
+        "updatedAt": 1793260000000
+      },
+      {
+        "id": "compliance-item-legal",
+        "index": 14,
+        "title": "违法违规检测项（图片错误样式）",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"compliance-item-legal\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=compliance-item-legal",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明图片识别错误的展示方式与状态切换。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "controls": [
+          {
+            "type": "select",
+            "attributeId": "compliance_item_state_legal",
+            "displayName": "卡片状态",
+            "placeholder": "跟随演示场景",
+            "initialValue": "follow",
+            "info": "只切换这张卡片的展示样式，不改检测数据、不写入检测记录；点「重新检测」会退出演示状态并跑真实重检。",
+            "options": [
+              {
+                "label": "跟随演示场景",
+                "value": "follow"
+              },
+              {
+                "label": "通过",
+                "value": "pass"
+              },
+              {
+                "label": "违规或疑似违规",
+                "value": "issue"
+              },
+              {
+                "label": "检测失败",
+                "value": "fail"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1793260000000,
+        "updatedAt": 1793260000000
+      },
+      {
+        "id": "price-submit-api",
+        "index": 15,
+        "title": "提交并更新价格接口",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"price-submit\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=price-submit",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明提交并更新价格按钮调用的接口与更新范围。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793261330723,
+        "updatedAt": 1793261330723
+      },
+      {
+        "id": "purchase-price",
+        "index": 16,
+        "title": "采购价（采集价）选填",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"purchase-price\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=purchase-price",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明采购价的填写规则与价格公式的默认值。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793268769371,
+        "updatedAt": 1793268769371
+      }
+    ]
+  },
+  "markdownMap": {
+    "ai-video-entry": "视频区块分割线下方、视频名称上方新增「AI生成视频」，点击打开 AI 生成视频弹窗。\n\n**接口信息**：LinkFox 图生视频 v3（[扣费标准](https://wiki.linkfox.com/docs/linkfox-ai/image-to-video-v3#%E6%89%A3%E8%B4%B9%E6%A0%87%E5%87%86)）｜模型 MiniMax H3\n- 分辨率固定 768P；请求参数：参考图、时长、比例\n\n- 参考图取自当前商品已上传的图片，分主图、站外推广图、SKU 图、详情图四组。\n- 生成过程中，入口按钮置灰不可点（悬停提示「视频生成中，暂不可再次生成」）。\n- 提交后弹窗切换为「视频生成中」页面：展示本次时长、比例与参考图张数，并提示「关闭弹窗不会影响视频生成」。关闭后视频区域的图片上传位保持「AI 生成中」，同样显示本次参数。\n\n**待确认：** 生成完成后视频如何回填（占用当前视频位还是进入视频列表）尚未定义；当前演示为提交后生成中 → 约 4 秒生成失败 → 重新生成。\n- 演示中提交后约 4 秒进入「视频生成失败」状态：视频位显示失败与「重新生成」，生成中弹窗也切换为失败页；点击「重新生成」会用本次参考图、时长、比例重新发起；也可点「取消生成」直接清除失败状态，视频位回到「上传视频」。\n- 生成中可停止：生成中弹窗底部、视频位上的「停止生成」点击后直接结束本次生成，不再二次确认；随后回到「上传视频」状态，入口按钮恢复可点。",
+    "ai-video-refs": "- 参考图最多选 9 张；选满后未选图片置灰不可点，继续点击提示「参考图最多选择 9 张」。\n- 缩略图左上角序号即参考顺序，取消选中后其余序号顺延。\n- 未选任何参考图时，底部「生成视频」不可点。\n- 每次重新打开弹窗，参考图、时长、比例都重置为初始状态。\n- 每张缩略图左下角显示图片分辨率。",
+    "ai-video-options": "- 时长 5 / 10 / 15 秒；每个时长后的 ? 悬停显示单次算力消耗，算力值未确定、统一用 xx 表示。\n- 底部「预计消耗」显示 xx 算力。\n- 比例「自适应」按参考图比例生成，其余为固定画幅。\n- 算力值未确定，用 xx 代替，实际消耗以后端定价为准。",
+    "compliance-entry": "**位置**：页脚右侧，与居中的「关闭 / 保存 / 保存并发布」同一行，单独靠右放置，用浅橙描边与三个实心主操作区分；主体按钮与右侧箭头是两个独立按钮，同一外壳中间用 1px 分隔线。\n\n**点击主体**\n- 对当前商品整单检测 6 项：材质、尺码、知识产权、类目、价格、违法违规。\n- 点下后按钮转圈约 1.5 秒，期间不打开任何中间态；结束后直接弹出检测结果弹窗。\n- 检测取的是当前编辑中的商品数据，不要求先保存；检测期间可继续编辑，也可关闭结果弹窗，后台不中断。\n- 检测记录按检测项分别保存：整单检测等同于同时发起 6 项检测，每项各自新增一条记录，不覆盖旧记录；每项最多保留最近 20 条。\n- 检测中按钮置灰，不能重复发起；右侧箭头仍可点开记录。\n- **提交前的校验与「保存并发布」一致**：按发布规则校验商品，所有必填项都通过才允许提交检测；校验不通过时定位到对应必填项并提示，不进入检测、不扣算力。原型暂未模拟这套校验。\n\n**算力**\n- 每项检测单独计费，整单消耗 = 6 项消耗之和。\n- 原型统一用 xx 占位，真实数值以后端定价为准；标题后的问号悬停提示「单个商品检测消耗 xx 算力」。\n\n**演示场景切换（右侧控件）**\n- 只影响最近一次检测结果，切换后立即重算，不新增记录、不扣算力。\n- 尚无检测记录时切换，只提示「已切换演示场景，下次检测生效」。\n- 「全部通过」用于演示干净结果；「违规 + 疑似 + 失败」用于演示三类问题同时出现。",
+    "compliance-caret": "- 箭头与主体同一外壳，中间 1px 分隔线，高度与主体一致；展开时箭头翻转。\n- 菜单向上弹出、右对齐按钮，点击遮罩或 Esc 关闭。\n- 菜单只有一项「查看检测记录」。\n- 无记录时右侧显示「暂无记录」并置灰，点击只提示「暂无检测记录，完成一次检测后可查看」，不打开空弹窗。\n- 有记录时直接打开最近的检测结果；更早的记录在各检测项卡片内的「检测记录」下拉里查看。\n- 检测中箭头不禁用，方便关掉结果弹窗后从记录回到进行中的检测。",
+    "compliance-dialog-head": "- 头部只有标题与关闭按钮，不设商品级的批次切换；记录按检测项分别保存在各自卡片里。\n- 弹窗展示每项的最新一条结果；要看更早的结果，进入对应检测项的「检测记录」下拉。\n- 关闭方式：右上角 ×、点击遮罩、Esc。\n- 弹窗宽 720，内容区独立滚动，头部与底部固定；底部只有「关闭」。",
+    "compliance-conclusion": "- 结论由 6 个检测项的状态汇总得出，不是独立字段：有违规即「未通过」，疑似与失败分别计数后拼进同一句。\n- 全部通过：绿底 + 对勾 +「全部检测通过」。\n- 存在问题：浅红底 + 左侧红条，文案形如「未通过：1 项违规、1 项疑似违规、1 项检测失败」。\n- 右侧显示「N 项通过 · N 项违规 · N 项疑似 · N 项失败」，为 0 的项不展示。\n- 切换演示场景后结论文案与配色即时变化。\n- 「结论状态」控件可单独切换结论条的两种样式（全部通过 / 未通过），只改展示、不改检测结果。\n- 结论条随内容一起滚动，不吸顶；左右边界与下方检测项卡片对齐。",
+    "compliance-item-ipr": "- 违规、疑似违规默认展开；通过、检测失败默认折叠。\n- 每条错误先说明「原因」（触发了什么规则、为什么算违规；图片类在原因里写清识别到的内容），再给原文（文字类，命中词高亮）或原图（图片类，缩略图）；不再展示「位置」行。\n- 图片类错误不展示识别内容文字，内容行改为「原图」并展示该图缩略图，识别到的内容并入原因说明。\n- 「原图」行的缩略图下方标注来源「首张主图 / 主图 / 详情图」，不带序号；缩略图可点击查看大图。\n- 同一检测项可以有多条错误：演示场景下本项为 3 条，前两条是标题里命中的两个品牌型号词，第三条是主图检出的品牌 logo（图片识别）；卡片标题后显示「2 处违规 · 1 处疑似」。\n- 卡片状态由最严重的一条决定：有违规即按「违规」展示，只有疑似才按「疑似错误」展示。\n- 建议方案最多一条，只给可执行动作；没有建议时不出现该区块。\n- 在「全部通过」演示场景下，本卡片变为通过态，展开后只有一行结论。",
+    "compliance-item-size": "- 通过态只有一行：名称 + 绿色「通过」，不展示建议和点赞点踩；单项算力通过「重新检测」按钮内的问号悬停查看。\n- 折叠是默认状态，点「展开」后只多一行结论。\n- 「重新检测」仍可用，重检只消耗该项算力。\n- 本商品该项的通过结论是「该类目不要求尺码信息」，属于规则判断结果，不需要商家补充。\n- 演示「全部通过」时，6 个检测项都是这种折叠形态。",
+    "compliance-item-actions": "- **重新检测**只作用于当前检测项：当前结果归档为上一轮，卡片先显示「检测中」约 0.8 秒，再写入新结果。\n- 算力问号在「重新检测」按钮内、紧随文字之后，悬停提示「单项检测消耗xx算力」；点问号不会触发重新检测。\n- 重检只消耗该项算力，不重新消耗整单。\n- 整单检测等同于同时发起 6 项检测，本质仍按检测项分别记录，各项的轮次互不影响。\n- 每次检测（整单或单项重检）都会在该项的「检测记录」里留一条：卡片标题下出现「第 N 次 · 月-日 时:分」下拉，默认停在最新一次，展开可选更早轮次。\n- 切到历史轮次时显示「历史记录，仅查看」，同时隐藏重检与反馈；序号按该检测项累计，不会回退。\n- 标注面板把某张卡片切成演示状态时，该卡仍保留「重新检测」和违规/疑似结果上的「检测不准？」；点重新检测会先退出演示状态，再跑该项真实重检。\n- **反馈挂在每条检测结果上，不按检测项**：每条违规 / 疑似违规结果底部有「检测不准？」按钮，点击弹出原因多选（误报 / 漏报 / 原因不准 / 建议不准 / 其他）+ 补充说明，至少选一项或填写说明才能提交；提交后该条下方显示「已反馈：…」，可再次点击修改，或点旁边的「取消反馈」清除。\n- 只做负面反馈，没有「点赞」；通过态与检测失败没有可反馈的结果条目；切到历史轮次时不显示反馈。",
+    "compliance-item-material": "- 演示场景下本项为 1 条疑似违规：属性材质填「塑料」，首张主图识别为「金属边框」，两者不一致。\n- 展开后的顺序：原因（写明属性材质与首张主图识别结果）→ 原图缩略图（来源标注首张主图）→ 建议方案；单条结果不显示「N 处疑似」计数。\n- 用「卡片状态」控件可切换查看通过 / 违规或疑似违规 / 检测失败的样式；切换只改展示，不写入检测记录。\n- 多条错误里同时出现违规与疑似违规时，卡片状态按「违规」展示，标签与左侧色条都取违规色。",
+    "compliance-item-category": "- 演示场景下本项通过，卡片折叠成一行：名称 + 绿色「通过」。\n- 「卡片状态」切到「违规或疑似违规」可查看单条疑似的样式（类目与商品类型可能不匹配）。\n- 该类目只有 1 条结果时，不再显示「N 处疑似」计数。",
+    "compliance-item-price": "- 演示场景下本项为检测失败：卡片折叠，头部直接给出失败原因摘要，展开后是「失败原因」一行。\n- 检测失败没有错误条目、没有建议、不提供点赞点踩，但可以「重新检测」。\n- 「卡片状态」切到通过 / 违规或疑似违规可对照另外两种样式。",
+    "compliance-item-legal": "- 演示场景下本项为 1 条违规，错误来自图片：详情图检出外部网址与扫码二维码。\n- 图片类错误与文字类结构一致：内容行改为「原图」并展示缩略图，缩略图下方只标来源「主图 / 首张主图 / 详情图」，不带序号；识别到的网址与二维码写在原因里，不再单独展示识别内容，也不再展示「位置」行。\n- 「原图」行的缩略图点击可查看大图。\n- 「卡片状态」可切到通过 / 检测失败，对照另外两种样式。",
+    "price-submit-api": "点击「提交并更新价格」调用敦煌开放平台接口更新价格，仅更新价格信息，无需重新发布审核。\n\n- 接口文档：[更新产品价格](https://open.dhgate.com/docs/api/detail/3a30562ba9154e07afd02a9283a65f51)\n- 如同时调整价格以外的信息，仍需重新发布审核。",
+    "purchase-price": "采购价即采集价，选填。\n\n没有填写时，套用价格公式按 0 元处理。"
+  },
+  "assetMap": {}
+}

@@ -814,6 +814,59 @@
   line-height: 18px;
 }
 
+/* AI 重新生成：指定包含关键词 */
+.up-ai {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 10px 0 0 4px;
+}
+
+.up-ai__field {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.up-ai__label {
+  color: var(--up-text-secondary);
+  font-size: 13px;
+}
+
+.up-ai__control {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+}
+
+.up-ai__input {
+  width: 100%;
+  padding-right: 54px;
+}
+
+.up-ai__count {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: var(--up-text-placeholder);
+  font-size: 12px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.up-ai__count.is-limit {
+  color: var(--up-danger);
+}
+
+.up-ai__hint {
+  margin: 0;
+  color: var(--up-text-secondary);
+  font-size: 12px;
+  line-height: 18px;
+}
+
 /* 子策略区块 */
 .up-sub-strategy {
   display: flex;

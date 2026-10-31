@@ -300,6 +300,11 @@
   font-weight: 500;
 }
 
+/* 行内容很高时（详情页面）：行标题贴顶，避免被拉到中间 */
+.ae-row.has-label-top .ae-row-label {
+  align-items: flex-start;
+}
+
 /* 行标题问号 + 悬停提示 */
 .ae-row.has-label-tip {
   overflow: visible;
@@ -708,7 +713,61 @@
 .ae-op-btns {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
+}
+
+/* 标题处理方式：组内可多选，组间由分割线隔开且互斥 */
+.ae-op-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.ae-op-divider {
+  flex: 0 0 auto;
+  align-self: center;
+  width: 1px;
+  height: 22px;
+  background: #c8ccd4;
+}
+
+/* 标题处理方式一行放得下：略微收紧间距，避免分割线把最后一项挤到第二行 */
+.ae-title-row .ae-op-btns {
+  gap: 6px;
+}
+
+.ae-title-row .ae-op-btn {
+  padding: 0 10px;
+}
+
+/* AI生成标题 / AI生成短描：指定包含关键词 */
+.ae-keyword-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ae-keyword-field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ae-keyword-input {
+  width: 360px;
+  padding: 0 68px 0 12px;
+  text-align: left;
+}
+
+.ae-keyword-count {
+  position: absolute;
+  right: 10px;
+  font-size: 12px;
+  color: var(--ae-text-secondary);
+  pointer-events: none;
 }
 
 .ae-op-btn {
@@ -848,6 +907,97 @@
 
 .ae-rmw-version {
   margin-top: 12px;
+}
+
+/* 图片翻译：翻译方式选择（沿用批量美图的卡片单选） */
+.ae-translate-mode {
+  margin-top: 12px;
+}
+
+.ae-choice-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ae-choice {
+  flex: 1 1 340px;
+  min-width: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--ae-border);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.ae-choice:hover {
+  border-color: var(--ae-primary);
+}
+
+.ae-choice.is-checked {
+  border-color: var(--ae-primary);
+  background: var(--ae-soft);
+}
+
+.ae-choice input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ae-choice-dot {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  flex: none;
+  border: 1px solid #dcdfe6;
+  border-radius: 50%;
+  background: #fff;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.ae-choice.is-checked .ae-choice-dot {
+  border-color: var(--ae-primary);
+  background: var(--ae-primary);
+}
+
+.ae-choice.is-checked .ae-choice-dot::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.ae-choice-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ae-choice-title {
+  color: var(--ae-text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.ae-choice-desc {
+  color: var(--ae-text-secondary);
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 .ae-pipeline-hint {
@@ -2022,6 +2172,534 @@
 
 .ae-num-stepper.is-disabled {
   background: #f5f7fa;
+}
+
+/* ===== 视频：生成视频配置卡片 ===== */
+.ae-av-card {
+  margin-top: 14px;
+  padding: 16px 18px 18px;
+  border: 1px solid var(--ae-border-light);
+  border-radius: var(--ae-radius);
+  background: #fafbfd;
+}
+
+.ae-av-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-bottom: 14px;
+}
+
+.ae-av-row:last-child {
+  margin-bottom: 0;
+}
+
+.ae-av-row--top {
+  align-items: flex-start;
+}
+
+.ae-av-label {
+  width: 168px;
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--ae-text-regular);
+}
+
+/* 时长选项后的问号：紧跟文字 */
+.ae-av-q {
+  margin-left: -3px;
+}
+
+.ae-av-req {
+  margin-right: 2px;
+  color: #f56c6c;
+  font-style: normal;
+}
+
+.ae-av-note {
+  margin: 0;
+  max-width: 640px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--ae-text-secondary);
+}
+
+/* 销售国家/地区、语言下拉 */
+.ae-vs {
+  position: relative;
+}
+
+.ae-vs-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 220px;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--ae-border);
+  border-radius: var(--ae-radius-sm);
+  background: #fff;
+  font-size: 13px;
+  color: var(--ae-text-primary);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.ae-vs-trigger:hover,
+.ae-vs-trigger.is-open {
+  border-color: var(--ae-primary);
+}
+
+.ae-vs-trigger > svg {
+  flex-shrink: 0;
+  color: var(--ae-text-secondary);
+}
+
+.ae-vs-flag {
+  display: inline-flex;
+  width: 17px;
+  height: 12px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.ae-vs-flag svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.ae-vs-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+.ae-vs-menu.ae-wm-menu--fixed {
+  max-height: 272px;
+}
+
+.ae-vs-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ae-vs-opt-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ===== 详情页面：处理方式面板 ===== */
+.ae-proc-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.ae-proc-label {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ae-text-primary);
+  line-height: 30px;
+}
+
+.ae-proc-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ae-proc-btn {
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--ae-border);
+  border-radius: var(--ae-radius-sm);
+  background: #fff;
+  color: var(--ae-text-regular);
+  font-size: 13px;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ae-proc-btn:hover {
+  border-color: var(--ae-primary);
+  color: var(--ae-primary);
+}
+
+.ae-proc-btn.active {
+  border-color: var(--ae-primary);
+  color: var(--ae-primary);
+  background: var(--ae-soft);
+}
+
+.ae-proc-tip {
+  margin: 10px 0 12px;
+  font-size: 12px;
+  color: var(--ae-text-secondary);
+}
+
+.ae-proc-card {
+  position: relative;
+  display: flex;
+  margin-bottom: 12px;
+  border: 1px solid var(--ae-border-light);
+  border-radius: var(--ae-radius);
+  background: #fff;
+}
+
+/* 卡片内的问号提示要能溢出卡片 */
+.ae-proc-card:hover {
+  z-index: 3;
+}
+
+.ae-proc-card-side {
+  width: 96px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 10px;
+  border-right: 1px solid var(--ae-border-light);
+  border-radius: var(--ae-radius) 0 0 var(--ae-radius);
+  background: #fafafa;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--ae-primary);
+  text-align: center;
+}
+
+.ae-proc-card-body {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding: 14px 36px 14px 16px;
+}
+
+.ae-proc-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #c0c4cc;
+  cursor: pointer;
+}
+
+.ae-proc-close svg {
+  width: 12px;
+  height: 12px;
+}
+
+.ae-proc-close:hover {
+  color: var(--ae-text-secondary);
+}
+
+.ae-proc-field {
+  margin-top: 10px;
+}
+
+.ae-proc-field-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--ae-text-regular);
+}
+
+.ae-proc-textarea {
+  display: block;
+  width: 100%;
+  min-height: 80px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border: 1px solid var(--ae-border);
+  border-radius: var(--ae-radius-sm);
+  font-size: 14px;
+  line-height: 20px;
+  font-family: inherit;
+  color: var(--ae-text-primary);
+  resize: vertical;
+  outline: none;
+}
+
+.ae-proc-textarea:focus {
+  border-color: var(--ae-primary);
+}
+
+.ae-proc-vars {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--ae-text-secondary);
+}
+
+.ae-var-tag {
+  padding: 1px 6px;
+  border: 1px solid var(--ae-border-light);
+  border-radius: 10px;
+  background: #f5f7fa;
+  color: var(--ae-text-regular);
+  font-size: 12px;
+}
+
+.ae-proc-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+}
+
+.ae-proc-checks .ae-check-line {
+  margin-bottom: 0;
+}
+
+.ae-seg {
+  display: inline-flex;
+  margin-top: 10px;
+}
+
+.ae-seg-btn {
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid var(--ae-border);
+  background: #fff;
+  color: var(--ae-text-regular);
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ae-seg-btn:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.ae-seg-btn:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.ae-seg-btn + .ae-seg-btn {
+  border-left: none;
+}
+
+.ae-seg-btn.active {
+  border-color: var(--ae-primary);
+  background: var(--ae-primary);
+  color: #fff;
+}
+
+.ae-rich {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  border: 1px solid var(--ae-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ae-rich-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--ae-border-light);
+  background: #fafafa;
+  font-size: 12px;
+  color: var(--ae-text-regular);
+}
+
+.ae-rich-tool {
+  padding: 2px 6px;
+}
+
+.ae-rich-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--ae-border-light);
+}
+
+.ae-rich-body {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ae-text-primary);
+  outline: none;
+  overflow-y: auto;
+}
+
+.ae-rich-body:empty::before {
+  content: attr(data-placeholder);
+  color: var(--ae-text-placeholder);
+}
+
+.ae-proc-num {
+  display: inline-flex;
+  align-items: stretch;
+  width: 250px;
+  height: 34px;
+  border: 1px solid var(--ae-border);
+  border-radius: 4px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.ae-proc-num input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 12px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--ae-text-primary);
+}
+
+.ae-proc-num-ctl {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--ae-border);
+}
+
+.ae-proc-num-ctl button {
+  flex: 1;
+  width: 28px;
+  padding: 0;
+  border: none;
+  background: #fff;
+  color: #909399;
+  font-size: 8px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ae-proc-num-ctl button + button {
+  border-top: 1px solid var(--ae-border);
+}
+
+.ae-proc-num-ctl button:hover {
+  color: var(--ae-primary);
+}
+
+.ae-append-block + .ae-append-block {
+  margin-top: 16px;
+}
+
+.ae-append-sub {
+  margin: 10px 0 0 25px;
+}
+
+.ae-append-sub .ae-proc-field {
+  margin-top: 10px;
+}
+
+.ae-find-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.ae-find-label {
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--ae-text-regular);
+}
+
+.ae-find-input {
+  width: 250px;
+}
+
+.ae-find-del {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: var(--ae-primary);
+  cursor: pointer;
+}
+
+.ae-find-del:hover {
+  background: var(--ae-primary-hover);
+}
+
+.ae-proc-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 4px;
+  background: var(--ae-primary);
+  color: #fff;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ae-proc-add:hover {
+  background: var(--ae-primary-hover);
+}
+
+.ae-proc-add:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 标注锚点：给圆点留出空间，避免盖住单选按钮（负边距抵消，不影响布局） */
+.ae-ann-anchor {
+  display: inline-flex;
+  padding: 4px 0 0 12px;
+  margin: -4px 0 0 -12px;
+}
+
+.ae-proc-uploads {
+  margin-top: 10px;
+}
+
+.ae-proc-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100px;
+  height: 100px;
+  border: 2px solid #d9d9d9;
+  border-radius: 4px;
+  color: #909399;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ae-proc-upload:hover {
+  border-color: var(--ae-primary);
+  color: var(--ae-primary);
+}
+
+.ae-proc-upload input {
+  display: none;
 }
 
 /* 全局轻提示 */

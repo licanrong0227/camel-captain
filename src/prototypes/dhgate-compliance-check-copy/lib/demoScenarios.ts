@@ -21,6 +21,8 @@ export function demoEntryForView(view: TaskView): { taskId: string; preset?: Pag
   // 箱包模板记录与由它复制出的记录本身就是场景演示页，直接打开
   if (isDemoRecord(view.task)) return { taskId: view.task.id };
   if (view.status === 'collect-failed') return { taskId: view.task.id };
+  // 采集失败后重新采集的记录仍打开自己的详情页，避免重试后被当成普通记录跳到箱包演示页
+  if (view.task.collectRetryAt) return { taskId: view.task.id };
   if (view.status === 'pending' || view.status === 'collecting' || view.status === 'checking') {
     return { taskId: DEMO_TASK_ID, preset: 'checking' };
   }
@@ -76,7 +78,7 @@ export interface ModuleDef {
   scenarios: ModuleScenario[];
 }
 
-export type PagePresetValue = 'flow' | 'pass' | 'multi' | 'partial' | 'checking';
+export type PagePresetValue = 'flow' | 'pass' | 'multi' | 'mixed' | 'partial' | 'checking';
 
 export interface PagePreset {
   value: PagePresetValue;
@@ -119,6 +121,14 @@ export const PAGE_PRESETS: PagePreset[] = [
       basic: 'violation', main: 'violation', sku: 'violation', price: 'violation',
       size: 'violation', attribute: 'violation', detail: 'violation', product: 'violation',
     },
+  },
+  {
+    value: 'mixed',
+    label: '部分违规+失败',
+    name: '主图品牌违规 + 手铐挂件待确认 + 价格检测失败，其余通过',
+    resetBase: true,
+    status: 'partial-fail',
+    modules: { main: 'violation', price: 'fail' },
   },
   {
     value: 'partial',
@@ -270,7 +280,7 @@ const vapeBannedHit = {
 };
 
 const restrictedSelfCheckHit = {
-  severity: 'suspect' as const,
+  severity: 'manual' as const,
   severityLabel: '建议自查',
   reason: '商品含金属链条、五金扣件与 PU 涂层织物，销往欧盟需符合 REACH 化学品限制，销往美国（加州）需按 Prop 65 提供化学物质暴露警示；资质与检测报告是否齐全系统无法核验，不判定违规，建议商家对照规则自查',
   position: '商品整体（限售规则）',
@@ -445,7 +455,7 @@ export const MODULE_SCENARIOS: Record<ModuleId, ModuleDef> = {
         value: 'violation',
         label: '违规',
         name: '主图品牌图案 + 手铐挂件待确认',
-        snapshot: replaceMainImages(['bag-brand-charm']),
+        snapshot: replaceMainImages(['bag-brand-charm', 'bag', 'bag']),
         items: {
           ipr: { status: 'violation', hits: [mainImageBrandHit] },
           legal: { status: 'suspect', hits: [handcuffSuspectHit] },
@@ -733,6 +743,18 @@ export const MODULE_SCENARIOS: Record<ModuleId, ModuleDef> = {
         },
       },
       {
+        value: 'manual',
+        label: '建议自查',
+        name: '仅限售资质建议自查，不判定违规',
+        items: {
+          legal: {
+            status: 'manual',
+            conclusion: '未发现违规，1 项限售规则建议商家自查',
+            hits: [restrictedSelfCheckHit],
+          },
+        },
+      },
+      {
         value: 'fail',
         label: '失败',
         name: '禁售/限售规则库比对中断',
@@ -787,6 +809,7 @@ export const ITEM_PREVIEW_OPTIONS: Record<ItemCode, ItemPreviewOption[]> = {
   legal: [
     { value: 'pass', label: '通过', module: 'product', scenario: 'pass' },
     { value: 'violation', label: '违规', module: 'product', scenario: 'violation' },
+    { value: 'manual', label: '建议自查', module: 'product', scenario: 'manual' },
     { value: 'fail', label: '失败', module: 'product', scenario: 'fail' },
   ],
 };
@@ -848,7 +871,7 @@ function contributionSeverity(contribution: ItemContribution): SceneStatus {
   if (contribution.hits && contribution.hits.length > 0) {
     const severities = contribution.hits.map((hit) => hit.severity ?? 'violation');
     if (severities.includes('violation')) return 'violation';
-    if (contribution.status === 'manual' || contribution.hits.some((hit) => hit.severityLabel === '建议自查')) return 'manual';
+    if (contribution.status === 'manual' || severities.includes('manual') || contribution.hits.some((hit) => hit.severityLabel === '建议自查')) return 'manual';
     return 'suspect';
   }
   if (contribution.status === 'violation' || contribution.status === 'suspect' || contribution.status === 'manual') {
@@ -857,7 +880,7 @@ function contributionSeverity(contribution: ItemContribution): SceneStatus {
   return 'pass';
 }
 
-const STATUS_RANK: Record<SceneStatus, number> = { violation: 4, manual: 3, suspect: 2, fail: 1, pass: 0 };
+const STATUS_RANK: Record<SceneStatus, number> = { violation: 4, suspect: 3, manual: 2, fail: 1, pass: 0 };
 
 function itemStatusOf(contributions: ItemContribution[]): SceneStatus {
   return contributions.reduce<SceneStatus>(
@@ -891,9 +914,11 @@ function buildOutcome(contributions: ItemContribution[], status: SceneStatus): I
   const hits = contributions.flatMap((contribution) => contribution.hits ?? []);
   const violations = hits.filter((hit) => (hit.severity ?? 'violation') === 'violation').length;
   const suspects = hits.filter((hit) => (hit.severity ?? 'violation') === 'suspect').length;
+  const notices = hits.filter((hit) => hit.severity === 'manual' || hit.severityLabel === '建议自查').length;
   const parts: string[] = [];
   if (violations) parts.push(`${violations} 处违规`);
   if (suspects) parts.push(`${suspects} 处待确认`);
+  if (notices) parts.push(`${notices} 项建议自查`);
   return {
     status,
     hits,

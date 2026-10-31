@@ -6,6 +6,8 @@ import React from 'react';
 import './style.css';
 
 import CollageDialog from './components/CollageDialog';
+import AiVideoDialog, { type AiVideoParams } from './components/AiVideoDialog';
+import StopVideoDialog from './components/StopVideoDialog';
 
 import thumb1 from './assets/thumb-1.png';
 import thumb2 from './assets/thumb-2.png';
@@ -91,6 +93,19 @@ const MAIN_SHOTS = [
 
 export default function Prototype() {
   const [collageOpen, setCollageOpen] = React.useState(false);
+  const [aiOpen, setAiOpen] = React.useState(false);
+  const [aiJob, setAiJob] = React.useState<AiVideoParams | null>(null);
+  const [stopOpen, setStopOpen] = React.useState(false);
+
+  const handleAiGenerate = (params: AiVideoParams) => {
+    setAiJob(params);
+  };
+
+  const handleStopConfirm = () => {
+    setAiJob(null);
+    setStopOpen(false);
+    setAiOpen(false);
+  };
 
   return (
     <>
@@ -156,6 +171,16 @@ export default function Prototype() {
                   <section className="emd-card emd-card--video">
                     <h3 className="emd-card__title--clip">视频</h3>
                     <span className="emd-card__divider emd-card__divider--video" />
+                    <button
+                      className="emd-btn-tool emd-btn-tool--ai"
+                      type="button"
+                      data-annotation-id="ai-video-entry"
+                      disabled={!!aiJob}
+                      title={aiJob ? "视频生成中，暂不可再次生成" : undefined}
+                      onClick={() => setAiOpen(true)}
+                    >
+                      AI生成视频
+                    </button>
                     <span className="emd-field-label emd-field-label--name">视频名称</span>
                     <div className="emd-input emd-input--name">
                       <span className="emd-input__placeholder">请输入视频名称</span>
@@ -166,10 +191,30 @@ export default function Prototype() {
                       <span className="emd-input__placeholder">请输入视频描述</span>
                       <span className="emd-input__counter">0/200</span>
                     </div>
-                    <div className="emd-upload emd-upload--video">
-                      <img src={iconCamera} alt="" />
-                      <span className="emd-upload__text">上传视频</span>
-                    </div>
+                    {aiJob ? (
+                      <div className="emd-upload emd-upload--video emd-upload--video-gen">
+                        <span className="emd-spinner" aria-hidden="true">
+                          {Array.from({ length: 12 }).map((_, index) => (
+                            <span key={index} style={{ transform: `rotate(${index * 30}deg)`, animationDelay: `${index * 0.083}s` }} />
+                          ))}
+                        </span>
+                        <span className="emd-upload__text emd-upload__text--gen">AI 生成中</span>
+                        <span className="emd-upload__meta">
+                          {aiJob.duration} 秒 · {aiJob.ratioLabel} · {aiJob.refs.length} 张参考图
+                        </span>
+                        <button className="emd-upload__stop" type="button" onClick={() => setStopOpen(true)}>
+                          停止生成
+                        </button>
+                        <span className="emd-upload__bar" aria-hidden="true">
+                          <i />
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="emd-upload emd-upload--video">
+                        <img src={iconCamera} alt="" />
+                        <span className="emd-upload__text">上传视频</span>
+                      </div>
+                    )}
                   </section>
       
                   <section className="emd-card emd-card--main">
@@ -215,6 +260,13 @@ export default function Prototype() {
             </div>
       
             <CollageDialog open={collageOpen} onClose={() => setCollageOpen(false)} mainCount={8} mainLimit={8} />
+            <AiVideoDialog
+              open={aiOpen}
+              onClose={() => setAiOpen(false)}
+              onGenerate={handleAiGenerate}
+              onRequestStop={() => setStopOpen(true)}
+            />
+            <StopVideoDialog open={stopOpen} onClose={() => setStopOpen(false)} onConfirm={handleStopConfirm} />
           </div>
       <AnnotationViewer
         source={annotationSourceDocument as unknown as AnnotationSourceDocument}

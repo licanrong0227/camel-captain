@@ -1,0 +1,63 @@
+@import './legacy/css/chunk-libs.cbfaa4de.css';
+@import './legacy/css/app.b1604601.css';
+@import './legacy/css/chunk-4e73e3b9.9b296807.css';
+@import './legacy/css/chunk-8194e0c4.195cf2c1.css';
+@import './legacy/css/chunk-ed48087c.534ae668.css';
+@import './legacy/css/chunk-496c62ba.c8afb3c9.css';
+@import './legacy/css/chunk-0b21b352.411cc968.css';
+@import './legacy/css/chunk-af72c770.0f003643.css';
+@import './legacy/css/chunk-a7613762.336dfe59.css';
+
+:root,
+body,
+#app {
+  --primary-color: #ff781f;
+  --primary-color-muted: #b35416;
+  --current-color: #ff781f;
+  --success-color: #13ce66;
+  --warning-color: #ffba00;
+  --danger-color: #ff4949;
+  --info-color: #909399;
+  --button-primary: #ff781f;
+  --button-soft-bg: #ffe9d5;
+  --button-success: #13ce66;
+  --button-warning: #ffba00;
+  --button-danger: #ff4949;
+  --button-info: #909399;
+  --button-text: #606266;
+  --button-border-radius: 8px;
+  --text-primary: #303133;
+  --text-regular: #606266;
+  --text-secondary: #909399;
+  --text-placeholder: #c0c4cc;
+  --selected-background: #ff781f;
+  --selected-border: #ffc29a;
+  --selected-text: #ff781f;
+  --menu-text: #fff;
+  --menu-active-text: #ff781f;
+  --menu-bg: #ffe9d5;
+  --menu-hover: #ff781f;
+  --table-header-background: linear-gradient(180deg, #fff5ef 0%, #ffede0 100%);
+  --table-header-background-start: #fff5ef;
+  --table-header-background-end: #ffede0;
+  --table-header-font-size: 14px;
+  --table-body-font-size: 12px;
+  --table-row-divider-color: #ebeef5;
+  --table-row-divider-width: 1px;
+  --table-column-divider-color: #ebeef5;
+  --table-column-divider-width: 0px;
+  --theme-background: #ffe9d5;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+.erp-live-root,
+.erp-live-root #app {
+  min-height: 100vh;
+}

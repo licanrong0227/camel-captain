@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/* BAL-agent 设计规范主题变量：与 DESIGN.md / theme.json / assets/tokens.json 同源 */
+.dmb-page {
+  /* ── 品牌与语义色 ── */
+  --dmb-brand: #2563eb;
+  --dmb-brand-deep: #1e40af;
+  --dmb-brand-soft: #edf4ff;
+
+  --dmb-success: #24b47e;
+  --dmb-success-text: #168560;
+  --dmb-success-soft: #eaf7f0;
+
+  --dmb-warning: #f5a623;
+  --dmb-warning-text: #b76e12;
+  --dmb-warning-soft: #fdf2de;
+
+  --dmb-danger: #f04452;
+  --dmb-danger-text: #d92d43;
+  --dmb-danger-soft: #fff0f2;
+
+  /* ── 中性色 ── */
+  --dmb-ink: #1d2129;
+  --dmb-ink-secondary: #687384;
+  --dmb-canvas: #f6f7f9;
+  --dmb-surface: #ffffff;
+  --dmb-border: #ebebf0;
+
+  /* ── 合作阶段识别色 ── */
+  --dmb-stage-reply: #2563eb;
+  --dmb-stage-reply-soft: #e7efff;
+  --dmb-stage-negotiating: #8b5cf6;
+  --dmb-stage-negotiating-soft: #f1ebfe;
+  --dmb-stage-sampling: #0abcd8;
+  --dmb-stage-sampling-soft: #e1f2f6;
+  --dmb-stage-logistics: #f5a623;
+  --dmb-stage-logistics-soft: #fdf2de;
+  --dmb-stage-review: #4f46e5;
+  --dmb-stage-review-soft: #eae9fc;
+  --dmb-stage-publishing: #db2777;
+  --dmb-stage-publishing-soft: #fbe5ef;
+  --dmb-stage-settlement: #24b47e;
+  --dmb-stage-settlement-soft: #eaf7f0;
+
+  /* ── AI 渐变 ── */
+  --dmb-gradient-flow: linear-gradient(100deg, #3f71fe 0%, #6d65f9 24%, #b95bda 52%, #fe9d49 82%, #ffb24c 100%);
+  --dmb-gradient-edit: linear-gradient(100deg, #4291ff 0%, #ab6fff 55%, #f79160 100%);
+
+  --dmb-primary: var(--dmb-brand);
+  --dmb-link: var(--dmb-brand);
+  --dmb-muted: var(--dmb-ink-secondary);
+  --dmb-background: var(--dmb-canvas);
+  --dmb-selected: var(--dmb-brand-soft);
+  --dmb-active-surface: var(--dmb-brand-soft);
+
+  --dmb-text-primary: var(--dmb-ink);
+  --dmb-text-secondary: var(--dmb-ink-secondary);
+  --dmb-text-inverse: #ffffff;
+  --dmb-text-disabled: #b9c0cc;
+
+  --dmb-mask-dialog: rgba(29, 33, 41, 0.4);
+
+  /* ── 字体 ── */
+  --dmb-font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+  --dmb-font-size-12: 12px;
+  --dmb-line-height-12: 20px;
+  --dmb-font-size-14: 14px;
+  --dmb-line-height-14: 22px;
+  --dmb-font-size-16: 16px;
+  --dmb-line-height-16: 24px;
+  --dmb-font-size-18: 18px;
+  --dmb-line-height-18: 28px;
+  --dmb-font-size-28: 28px;
+  --dmb-line-height-28: 40px;
+  --dmb-font-size-30: 30px;
+  --dmb-line-height-30: 38px;
+  --dmb-font-weight-regular: 400;
+  --dmb-font-weight-medium: 500;
+  --dmb-font-weight-semibold: 600;
+
+  /* ── 间距（保守默认，规范未提供间距页） ── */
+  --dmb-spacing-xs: 4px;
+  --dmb-spacing-sm: 8px;
+  --dmb-spacing-md: 12px;
+  --dmb-spacing-lg: 16px;
+  --dmb-spacing-xl: 20px;
+  --dmb-spacing-2xl: 24px;
+  --dmb-spacing-3xl: 32px;
+  --dmb-spacing-4xl: 40px;
+
+  /* ── 圆角（截图量测推断） ── */
+  --dmb-radius-control: 8px;
+  --dmb-radius-card: 12px;
+  --dmb-radius-panel: 16px;
+  --dmb-radius-tag: 8px;
+  --dmb-radius-full: 999px;
+
+  /* ── 边框 ── */
+  --dmb-border-width: 1px;
+  --dmb-border-control: 1px solid var(--dmb-border);
+  --dmb-border-divider: 1px solid var(--dmb-border);
+  --dmb-border-selected: 1px solid var(--dmb-brand);
+  --dmb-border-error: 1px solid var(--dmb-danger);
+
+  /* ── 阴影（界面以边框分层，仅浮层使用） ── */
+  --dmb-shadow-overlay: 0 8px 24px rgba(29, 33, 41, 0.08);
+
+  /* ── 布局 ── */
+  --dmb-navbar-height: 52px;
+  --dmb-card-gap: 24px;
+  --dmb-card-padding: 20px;
+
+  /* ── 动效（保守默认） ── */
+  --dmb-transition-color: 0.2s ease-out;
+  --dmb-transition-expand: 0.24s cubic-bezier(0.2, 0, 0, 1);
+  --dmb-transition-overlay: 0.2s ease-out;
+
+  font-family: var(--dmb-font-family);
+  font-size: var(--dmb-font-size-14);
+  line-height: var(--dmb-line-height-14);
+  color: var(--dmb-text-primary);
+  background-color: var(--dmb-background);
+}

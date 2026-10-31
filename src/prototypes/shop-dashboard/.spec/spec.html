@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>规格文档 HTML 模板</title>
+  <style>
+    :root {
+      font-family:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --brand: #008f5d;
+      --brand-ink: #007a50;
+      --brand-soft: #e6f5ef;
+      --brand-surface: #f2faf7;
+      --brand-border: #b7ddcf;
+      --text: #222832;
+      --text-secondary: #4b5565;
+      --text-muted: #6f7888;
+      --text-placeholder: #8b94a3;
+      color: var(--text);
+      background: #f5f7fb;
+      scrollbar-gutter: stable;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px 20px 64px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 32px;
+      padding: 18px 14px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .sidebar-title {
+      margin: 0 8px 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .page-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .page-nav button {
+      width: 100%;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .page-nav button:hover,
+    .page-nav button[aria-current="page"] {
+      color: var(--brand-ink);
+      background: var(--brand-soft);
+    }
+
+    .page-nav button[aria-current="page"] { font-weight: 600; }
+
+    main {
+      min-width: 0;
+      padding: 40px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 16px rgb(30 45 75 / 6%);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.3;
+    }
+
+    h2 {
+      margin: 44px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e7eaf0;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    h3 {
+      margin: 28px 0 12px;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    p,
+    li {
+      font-size: 15px;
+      line-height: 2;
+    }
+
+    p { margin: 20px 0; }
+
+    td,
+    th {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .definition {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-left: 3px solid var(--brand);
+      color: var(--text-secondary);
+      background: var(--brand-surface);
+    }
+
+    .hint { color: var(--text-muted); }
+
+    ul {
+      margin: 10px 0 20px;
+      padding-left: 22px;
+    }
+
+    .placeholder-list { padding-left: 0; }
+
+    .placeholder-list li {
+      list-style: none;
+      color: var(--text-placeholder);
+    }
+
+    .placeholder-list li::before {
+      margin-right: 8px;
+      color: #b2bac6;
+      content: "—";
+    }
+
+    table {
+      width: 100%;
+      margin-top: 14px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 1px solid #dfe4ee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f6f8fb; }
+
+    td:empty::after {
+      content: "待补充";
+      color: var(--text-placeholder);
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #eef1f6;
+    }
+
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--brand-border);
+      border-radius: 8px;
+      background: var(--brand-surface);
+    }
+
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .spec-page[hidden] { display: none; }
+
+    @media (max-width: 720px) {
+      body { padding: 0 8px 40px; }
+      .shell { display: block; }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        margin: 0 -8px 12px;
+        padding: 10px 8px;
+        border-width: 0 0 1px;
+        border-radius: 0;
+      }
+
+      .sidebar-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .page-nav {
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .page-nav::-webkit-scrollbar { display: none; }
+
+      .page-nav button {
+        width: auto;
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 24px 18px;
+        border-radius: 8px;
+      }
+
+      .table-wrap { overflow: visible; }
+
+      table,
+      tbody,
+      tr,
+      td {
+        display: block;
+        width: 100%;
+      }
+
+      thead { display: none; }
+
+      tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      tr {
+        overflow: hidden;
+        border: 1px solid #dfe4ee;
+        border-radius: 6px;
+        background: #fff;
+      }
+
+      td {
+        display: grid;
+        grid-template-columns: minmax(96px, 36%) minmax(0, 1fr);
+        gap: 12px;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 0;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      td:last-child { border-bottom: 0; }
+
+      td::before {
+        content: attr(data-label);
+        color: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <p class="sidebar-title">目录</p>
+      <nav class="page-nav" aria-label="规格文档页面">
+        <button type="button" data-page-target="overview" aria-current="page">当前方案</button>
+      </nav>
+    </aside>
+
+    <main>
+
+      <article class="spec-page" data-spec-page="overview">
+        <h1>店铺看板（还原线上报表）</h1>
+        <p class="definition">本文档是当前原型的方案事实依据。当前版本还原线上「报表 / 店铺 / 店铺看板」，覆盖单店模式与店群模式的内容与交互。</p>
+
+        <section id="current-plan">
+          <h2>当前方案</h2>
+          <ul>
+            <li>原型意图：把内置浏览器中打开的线上「店铺看板」还原为可运行原型，覆盖单店模式与店群模式。</li>
+            <li>使用场景：运营在单店模式查看单个店铺的经营数据；切换到店群模式横向对比多个店铺。</li>
+            <li>当前表达：单店模式仅保留店铺数据（按评审要求去掉商家能力诊断、处罚通知、今日商家能力评分）；店群模式按线上还原；数据取自骆驼队长测试环境 2026-10-28 快照。</li>
+          </ul>
+        </section>
+
+        <section id="facts-inputs">
+          <h2>事实与输入</h2>
+          <h3>用户确认事实</h3>
+          <ul>
+            <li>还原对象：内置浏览器打开的「店铺看板 - 骆驼队长BI」（https://test.kuachengjing.com/report/shop-sign）。</li>
+            <li>范围：单店模式、店群模式的页面内容与交互。</li>
+            <li>设计基底：沿用项目默认主题 camel-captain-erp，主色 #ff781f。</li>
+          </ul>
+          <h3>参考资料</h3>
+          <ul>
+            <li>线上页面及其页面级 CSS、组件逻辑（webpack chunk）与接口返回。</li>
+            <li>测试环境接口：店铺列表、店铺账号、处罚列表、店铺数据（按周期/国家）、店群看板列表。</li>
+          </ul>
+          <h3>当前假设</h3>
+          <ul>
+            <li>线上店群等级/评分接口为空，列表显示 0；原型对有数据的 sneakerhub8 补齐 V4 / 3.29 / 3.67 与展开明细。</li>
+            <li>店群「今日评分」展开依赖店铺标签明细，线上当前无数据；原型用同一套四维能力指标补齐展开列。</li>
+            <li>导出与账号模板在线上为 xlsx，原型用同字段 CSV 代替。</li>
+            <li>广告卡片由自身的查询条件控制（默认店群、近 7 天、剔除补单），不随左侧店铺与周期筛选变化。</li>
+            <li>测试环境 echvolt 无经营数据；原型为 echvolt 的「成交」页签补了一段 mock 序列（KPI、按周期汇总与 30 天趋势），并补齐对应访客数用于汇总转化率；其他页签仍按测试数据展示。</li>
+            <li>顶部单店模式的店铺下拉与广告查询的店铺范围联动；选择全部店铺（店群）时，店铺数据卡展示当前店铺分组内店铺合计（未选分组为 5 家）。</li>
+          </ul>
+        </section>
+
+        <section id="prototype-scope">
+          <h2>原型范围</h2>
+          <h3>本次呈现</h3>
+          <ul>
+            <li>单店模式：广告查询条件（店铺分组、店铺范围、时间）；广告卡片内提供 GMV 口径与剔除设置；店铺数据（成交/下单/流量/潜在页签、国家筛选、KPI、趋势图；范围由顶部店铺范围与时间驱动，店群为当前分组内店铺合计，默认 5 家）与广告看板核心指标、趋势图并排各占一半宽度。</li>
+            <li>店群明细：位于两张卡片下方，表格首行为成交/下单/流量/潜在/广告分类页签，右侧为导出；切换页签更换指标列组，首列固定；店铺数据趋势图与广告数据趋势图两列常驻，点击分别查看该店铺的经营/广告数据；点击店铺行可展开该店的商品广告数据，同一时间只展开一个店铺；数据跟随顶部店铺分组/店铺范围/时间。</li>
+            <li>顶部导航、面包屑、联系我们悬浮入口、报表二级菜单（店铺看板可跳转）。</li>
+          </ul>
+          <h3>本次不呈现</h3>
+          <ul>
+            <li>首页、商品、交易、采购、物流、系统、工具箱、即时咨询等其它页面。</li>
+            <li>真实登录、消息通知、主题切换、帮助等浮层。</li>
+            <li>真实接口请求、服务端导出 xlsx、权限差异。</li>
+          </ul>
+        </section>
+
+        <section id="pages-content">
+          <h2>页面与内容方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>页面/视图</th><th>页面作用</th><th>主要模块与内容</th><th>示例数据或素材</th><th>与其他页面的关系</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td data-label="页面/视图">店铺看板 · 单店模式</td>
+                  <td data-label="页面作用">查看单个店铺的经营表现，并按广告口径查询广告产出</td>
+                  <td data-label="主要模块与内容">广告查询条件（店铺分组、店铺范围、时间）；广告卡片内提供 GMV 口径与剔除设置；左半：店铺数据（成交/下单/流量/潜在，国家筛选，KPI + 所选区间趋势；店群为当前分组内店铺合计，默认 5 家）；右半：广告核心指标（广告消耗、广告 GMV、整店 GMV、广告 GMV 占比、ROAS）与所选指标的单条趋势曲线</td>
+                  <td data-label="示例数据或素材">5 个店铺；经营数据与趋势取自测试接口；广告卡片取广告看板 2026-10-22 至 2026-10-28 店群数据</td>
+                  <td data-label="与其他页面的关系">店群明细固定在两张卡片下方</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图">店铺看板 · 店群模式</td>
+                  <td data-label="页面作用">按店铺横向对比经营指标与风险</td>
+                  <td data-label="主要模块与内容">表格卡片不设标题栏，首行为成交/下单/流量/潜在/广告页签，右侧为导出；固定列为店铺、等级、能力分、店铺数据趋势图、广告数据趋势图，其余列随页签切换（成交 7 / 下单 4 / 流量 4 / 潜在 3 / 广告 5）；首列固定、各页签指标列表头均带 ? 悬停说明（口径与店铺数据/广告数据卡片的指标提示一致）、指标列可排序；导出当前页签表格的列（该页签的经营指标或广告指标）；广告页签点击店铺行展开商品广告数据（其他页签不显示下拉；商品、广告数据趋势图、广告消耗、广告 GMV、链接产出 GMV、广告 GMV 占比、ROAS；表格总宽与主表一致，左右各留 20px 内边距，趋势图与指标列的分隔线对齐主表竖向网格；指标列可排序，不设合计行；面板头右侧提供导出，按当前排序导出该店商品数据 CSV）；点击商品趋势图打开该商品的广告数据弹窗；广告页签按当前剔除口径展示广告消耗、广告 GMV、整店 GMV、广告 GMV 占比、ROAS；数据跟随顶部店铺分组/店铺范围/时间</td>
+                  <td data-label="示例数据或素材">5 个店铺数据；店铺趋势图取近 30 天成交金额，广告趋势图取近 30 天广告消耗</td>
+                  <td data-label="与其他页面的关系">固定展示在单店两张卡片下方，保留排序、店铺趋势弹窗与广告趋势弹窗</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="interaction-states">
+          <h2>交互与状态方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr></thead>
+              <tbody>
+                <tr><td data-label="对象/场景">单店店铺切换</td><td data-label="前置状态">echvolt</td><td data-label="用户操作">选择 sneakerhub8 / clothes / 鞋子 / 包包</td><td data-label="原型表现">店铺数据（KPI、趋势图、日期范围）随之更新</td><td data-label="后续状态">保持当前模式与筛选</td></tr>
+                <tr><td data-label="对象/场景">广告查询条件</td><td data-label="前置状态">店群 · 近 7 天 · 剔除补单</td><td data-label="用户操作">切换店铺分组 / 店铺范围 / 时间预设 / 自定义日期</td><td data-label="原型表现">广告卡片 KPI 与趋势图即时重算；自定义日期超出数据范围或超过 31 天时提示不可查询</td><td data-label="后续状态">左侧店铺数据筛选不受影响</td></tr>
+                <tr><td data-label="对象/场景">店铺分组筛选</td><td data-label="前置状态">全部</td><td data-label="用户操作">选择分组1 / 分组2 / 测试分组 / 未分组</td><td data-label="原型表现">店铺范围下拉只列出该分组内店铺，且提供「全部店铺（分组名）」选项；当前店铺不在分组内时自动回到分组全部；左侧店铺数据与广告卡按分组口径重算</td><td data-label="后续状态">切回全部分组恢复全部店铺</td></tr>
+                <tr><td data-label="对象/场景">剔除设置</td><td data-label="前置状态">剔除补单口径</td><td data-label="用户操作">打开剔除设置，勾选订单标签、填写手动订单号或扣减金额后保存</td><td data-label="原型表现">按选中标签与手动订单重新计算整店 GMV、广告占比、ROAS，并更新说明行的已剔除金额与单数</td><td data-label="后续状态">口径切换为原始数据时恢复未剔除口径</td></tr>
+                <tr><td data-label="对象/场景">店铺数据筛选</td><td data-label="前置状态">成交 · 全部国家</td><td data-label="用户操作">切换页签 / 国家 / 点击 KPI</td><td data-label="原型表现">KPI 数值随国家更新；选中的 KPI 决定趋势图指标；趋势图展示近 30 天</td><td data-label="后续状态">保持当前国家与页签</td></tr>
+                <tr><td data-label="对象/场景">广告指标卡与趋势图</td><td data-label="前置状态">默认选中广告消耗</td><td data-label="用户操作">点击广告指标卡 / 悬停趋势图</td><td data-label="原型表现">选中卡高亮，趋势图切换为该指标的单条曲线（占比按百分比、ROAS 按倍数展示）；悬停显示日期与对应数值</td><td data-label="后续状态">保持当前选中指标与查询条件</td></tr>
+                <tr><td data-label="对象/场景">店群明细跟随查询</td><td data-label="前置状态">顶部为全部店铺/近 7 天</td><td data-label="用户操作">切换顶部店铺分组 / 店铺范围 / 时间</td><td data-label="原型表现">表格行数与各指标即时重算；分组只显示组内店铺，选定单店时只显示该行；保留排序、展开与导出</td><td data-label="后续状态">表格与两张卡片口径一致</td></tr>
+                <tr><td data-label="对象/场景">店群排序</td><td data-label="前置状态">默认顺序</td><td data-label="用户操作">点击指标列表头（含广告页签的广告消耗、广告 GMV、整店 GMV、广告 GMV 占比、ROAS）</td><td data-label="原型表现">升序 → 降序 → 取消排序，表头显示方向箭头；无广告数据的店铺在两种方向下都排在最后；切换分类页签后排序重置</td><td data-label="后续状态">行顺序更新</td></tr>
+                <tr><td data-label="对象/场景">店群表格分类页签</td><td data-label="前置状态">成交</td><td data-label="用户操作">切换成交 / 下单 / 流量 / 潜在 / 广告</td><td data-label="原型表现">店铺、等级、能力分与两个趋势图列宽固定（店铺列 150px，切换时不变），指标列均分剩余宽度；广告页签按当前剔除补单口径展示 5 个广告指标，列宽保持单屏无需横向滚动</td><td data-label="后续状态">保持当前分类与顶部查询条件</td></tr>
+                <tr><td data-label="对象/场景">店铺行展开商品广告数据</td><td data-label="前置状态">店铺行收起</td><td data-label="用户操作">在广告页签点击店铺行</td><td data-label="原型表现">仅广告页签显示下拉箭头并可展开，其他页签点击店铺行不响应；在该行下方展开「商品广告数据」面板，标题右侧显示共 N 个商品，面板头最右侧提供导出；表格总宽与主表一致，左右各留 20px 内边距，趋势图与 5 个指标列的分隔线对齐主表竖向网格；列出该店全部商品、广告数据趋势图、广告消耗、广告 GMV、链接产出 GMV、广告 GMV 占比、ROAS；指标列可升/降序/取消排序，无广告数据的商品固定排在末尾；不设合计行；再次点击收起；展开另一家店铺时自动收起上一家；切换到其他页签自动收起并清空展开状态</td><td data-label="后续状态">回到广告页签为收起态</td></tr>
+                <tr><td data-label="对象/场景">商品广告数据导出</td><td data-label="前置状态">某店铺已展开商品广告数据</td><td data-label="用户操作">点击面板头右侧「导出」</td><td data-label="原型表现">按当前排序下载该店商品广告数据 CSV（商品ID、商品名称、类目、广告消耗、广告 GMV、链接产出 GMV、广告 GMV 占比、ROAS），文件名「商品广告数据-店铺ID.csv」</td><td data-label="后续状态">无页面变化</td></tr>
+                <tr><td data-label="对象/场景">商品广告数据趋势图</td><td data-label="前置状态">某店铺已展开商品广告数据</td><td data-label="用户操作">点击某商品的趋势图</td><td data-label="原型表现">打开与店铺广告数据趋势相同的弹窗样式，标题为「广告数据 - 商品名」；5 个指标卡（广告消耗、广告 GMV、链接产出 GMV、广告 GMV 占比、ROAS）可点击切换单条曲线，数值与曲线按该商品当前查询区间计算；点遮罩、关闭按钮或按 Esc 关闭</td><td data-label="后续状态">关闭后回到展开的店铺行</td></tr>
+                <tr><td data-label="对象/场景">商品标题</td><td data-label="前置状态">某店铺已展开商品广告数据</td><td data-label="用户操作">点击商品标题</td><td data-label="原型表现">商品标题为纯文本，不响应点击，暂不提供商品详情抽屉入口（抽屉实现保留）</td><td data-label="后续状态">无变化</td></tr>
+                <tr><td data-label="对象/场景">店铺数据趋势图</td><td data-label="前置状态">店群表格</td><td data-label="用户操作">点击店铺数据趋势图</td><td data-label="原型表现">1100px 弹窗，标题带店铺名；仅保留页签、KPI 与 360px 趋势图（周期跟随当前查询）</td><td data-label="后续状态">关闭后恢复列表</td></tr>
+                <tr><td data-label="对象/场景">广告数据趋势图</td><td data-label="前置状态">店群表格</td><td data-label="用户操作">点击广告数据趋势图</td><td data-label="原型表现">弹窗展示当前店铺的广告核心指标与所选指标趋势曲线，指标卡可点击切换</td><td data-label="后续状态">关闭后恢复列表</td></tr>
+                <tr><td data-label="对象/场景">导出</td><td data-label="前置状态">店群筛选结果 · 当前页签</td><td data-label="用户操作">点击页签栏右侧导出</td><td data-label="原型表现">按当前页签下载表格数据 CSV（店铺横向对比-页签.csv），包含店铺、店铺ID、等级、能力分与该页签的指标列；广告页签导出广告消耗、广告 GMV、整店 GMV、广告 GMV 占比、ROAS</td><td data-label="后续状态">无页面变化</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="hint">空状态：店铺无广告数据时对应广告指标显示 -；无经营数据时趋势图为 0 基线。</p>
+        </section>
+
+        <section id="design-basis">
+          <h2>设计基底与原型特有调整</h2>
+          <ul>
+            <li>采用的 <code>DESIGN.md</code>：<code>src/themes/camel-captain-erp/DESIGN.md</code></li>
+            <li>继承方式：默认严格遵循，并按线上页面的主题变量还原。</li>
+            <li>本原型特有调整：主色 #ff781f；导航高 50px、面包屑条 26px；卡片圆角 4px；表格表头渐变 #fff5ef → #ffede0；店群表格按分类页签切换指标列、首列固定。单店两张趋势图共用同一套平滑曲线、虚线网格、坐标轴、数据点与悬停浮层，高度一致并底部对齐；店铺数据页签切换导致指标数量变化时，趋势图位置保持不变。</li>
+          </ul>
+        </section>
+
+        <section id="open-questions">
+          <h2>当前待确认事项</h2>
+          <ul>
+            <li>店群等级/能力分/今日评分与展开明细用演示数据补齐，是否保留；若需严格按线上空值显示，可改回 0 与空展开。</li>
+            <li>导出/模板下载是否需要在原型中做成 xlsx。</li>
+            <li>三种店群布局方案（指标转置 / 主表展开 / 分类页签）确定后选一个替换当前店群表格。</li>
+          </ul>
+        </section>
+
+        <section id="decision-history">
+          <h2>用户重要决策与变更</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr></thead>
+              <tbody>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">要求还原内置浏览器打开的店铺看板，包含单店模式与店群模式</td><td data-label="对当前原型的影响">新建 shop-dashboard 原型，按线上页面和测试数据实现两种模式及配套账号配置页</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">单店模式的商家能力诊断、今日商家能力评分、处罚通知三块「去掉」</td><td data-label="对当前原型的影响">单店模式仅保留店铺数据；两处账号配置入口随之移除</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">把原型下的「账号配置」页面去掉</td><td data-label="对当前原型的影响">删除账号配置页面、路由与相关入口，原型只保留店铺看板一个页面</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">店铺数据卡片改为半宽，并把广告看板（链接产出）的核心指标与趋势图放到右侧并排</td><td data-label="对当前原型的影响">单店模式改为两列等宽卡片；右列取广告看板店群 7 天口径的核心指标、图例与趋势图</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">把广告看板的查询条件搬到看板顶部，原有模式/店铺条件保留</td><td data-label="对当前原型的影响">新增店铺范围、时间与说明行；GMV 口径与剔除设置放入广告卡片</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">成交状态下造一些 mock 数据</td><td data-label="对当前原型的影响">为 echvolt 的成交页签补充 KPI 与 30 天趋势 mock 数据，按周期与国家联动</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">去掉所有卡片的环比</td><td data-label="对当前原型的影响">广告核心指标卡只保留指标名与数值，移除环比涨跌和上期值</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">去掉广告趋势图标题</td><td data-label="对当前原型的影响">广告趋势图不保留标题、图例与口径说明，仅展示曲线</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">去掉「同步广告数据」按钮</td><td data-label="对当前原型的影响">广告查询条件不再包含同步按钮，说明行保留最近同步时间</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">店铺数据筛选只保留国家，去掉时间周期与日期范围</td><td data-label="对当前原型的影响">店铺数据固定按最近 1 天口径展示 KPI，趋势图仍展示近 30 天</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">去掉广告卡片的范围标签</td><td data-label="对当前原型的影响">广告核心指标只保留标题、指标卡与趋势图，不再显示日期与范围</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">广告趋势图只保留一条曲线，指标卡改为可点击切换</td><td data-label="对当前原型的影响">点击任一指标卡，趋势图展示该指标的走势并高亮当前卡片</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">把 GMV 口径查询条件移到广告指标卡内</td><td data-label="对当前原型的影响">顶部查询条件只保留店铺范围、时间与重置；剔除补单/原始数据与剔除设置移到核心指标卡标题右侧</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">顶部查询条件要能查询店铺数据</td><td data-label="对当前原型的影响">店铺范围与时间同时驱动两张卡；单店时店铺数据切到该店，店群时展示 5 家店合计；顶部店铺下拉与店铺范围联动</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">去掉查询条件下方的数据说明行</td><td data-label="对当前原型的影响">查询栏只保留条件与操作，不再展示数据截止、剔除金额与同步时间</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">去掉查询条件里的重置按钮</td><td data-label="对当前原型的影响">查询栏只保留店铺范围与时间条件</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">增加店铺分组查询条件，选分组后店铺范围只显示组内店铺</td><td data-label="对当前原型的影响">新增店铺分组下拉；店铺范围与顶部店铺下拉按分组过滤，数据按分组内店铺汇总</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">把店铺模式（模式/店铺选择）移到两张卡片下方</td><td data-label="对当前原型的影响">页面顶部只有查询条件；模式切换与店铺选择作为卡片下方工具行，店群模式下位于表格下方</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">去掉模式/店铺选择工具行</td><td data-label="对当前原型的影响">页面只保留查询条件与两张卡；模式切换入口移除</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">把店群模式页面内容放到两张卡片下方</td><td data-label="对当前原型的影响">店群明细表格固定展示在店铺数据/广告数据下方</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">店群明细去掉自身查询条件和说明，只保留导出，并跟随顶部查询条件</td><td data-label="对当前原型的影响">表格行与指标按顶部店铺分组/店铺范围/时间重算</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">趋势图弹窗除国家外的查询条件去掉</td><td data-label="对当前原型的影响">弹窗只保留页签、国家和 KPI/趋势图，周期跟随当前查询</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">店群表去掉处罚通知、今日评分，趋势图改为店铺数据趋势图并新增广告数据趋势图</td><td data-label="对当前原型的影响">表格列调整；店铺趋势开原弹窗，广告趋势开当前店铺广告数据弹窗；处罚弹窗与评分展开移除</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">店铺数据趋势弹窗去掉国家筛选</td><td data-label="对当前原型的影响">弹窗不再提供筛选，直接展示页签、KPI 与趋势图</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">导出按钮放到查询条件区域最右侧</td><td data-label="对当前原型的影响">店群表格上方的工具行移除，导出并入顶部查询栏右侧</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">店群表增加「店铺横向对比」标题栏，导出移到标题栏右侧</td><td data-label="对当前原型的影响">按广告看板表格卡片样式，表头上方增加卡片头；顶部查询栏不再放导出；三个方案页同步</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">先不改当前页面，新增 3 个店群布局方案对比页</td><td data-label="对当前原型的影响">新增 group-transpose / group-master / group-tabs 三个页面，均带广告数据，等待选定后再合并</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">删除 3 个店群布局方案对比页</td><td data-label="对当前原型的影响">移除 group-transpose / group-master / group-tabs 的路由、页面文件、Make 页面目录与标注目录，仅保留主页面店群表格（已采用分类页签）</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">店群表格按方案 C（指标分类页签）调整</td><td data-label="对当前原型的影响">主页面店群表格改为固定店铺/等级/能力分/两个趋势图列 + 成交/下单/流量/潜在/广告页签切换指标列；广告页签展示 5 个广告指标；导出保留全部指标；切换页签重置排序</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">商品广告数据面板去掉提示文案与合计行，新增广告数据趋势图列，商品标题取消点击，左右留边距并与主表同宽对齐，指标列增加排序</td><td data-label="对当前原型的影响">标题只保留「共 N 个商品」；表格总宽与主表一致，左右各留 20px 内边距，趋势图与指标列分隔线对齐主表网格；指标列均可升/降序且空值排末尾；商品标题为纯文本；点击商品趋势图打开「广告数据 - 商品名」弹窗，5 个指标卡切换单条曲线；商品详情抽屉保留实现但无入口</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">商品广告数据面板头右侧增加导出</td><td data-label="对当前原型的影响">按当前排序导出该店商品广告数据 CSV，文件名带店铺 ID</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">去掉店群表格标题栏，导出移到页签行右侧，按当前页签导出当前表格</td><td data-label="对当前原型的影响">表格卡片首行改为页签 + 导出；导出列随成交/下单/流量/潜在/广告切换，文件名带页签；CSV 字段统一加引号避免金额逗号错列</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">商品广告下拉只在广告页签显示</td><td data-label="对当前原型的影响">其他页签不再渲染下拉箭头、店铺行不可展开；从广告页签切走时自动收起展开面板</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">店群表格所有页签的指标表头增加问号说明</td><td data-label="对当前原型的影响">成交/下单/流量/潜在复用卡片指标提示，广告页签复用广告 KPI 提示；问号悬停展示，点击不触发排序</td></tr>
+                <tr><td data-label="日期">2026-10-30</td><td data-label="用户决策或变更">补齐广告页签指标列的排序</td><td data-label="对当前原型的影响">广告消耗、广告 GMV、整店 GMV、广告 GMV 占比、ROAS 均可升/降序切换；无广告数据的店铺两种方向都排末尾</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const navItems = [...document.querySelectorAll('[data-page-target]')];
+    const pages = [...document.querySelectorAll('[data-spec-page]')];
+
+    const showPage = (pageId) => {
+      for (const navItem of navItems) {
+        const isCurrent = navItem.dataset.pageTarget === pageId;
+        if (isCurrent) {
+          navItem.setAttribute('aria-current', 'page');
+        } else {
+          navItem.removeAttribute('aria-current');
+        }
+      }
+
+      for (const page of pages) {
+        page.hidden = page.dataset.specPage !== pageId;
+      }
+    };
+
+    for (const navItem of navItems) {
+      navItem.addEventListener('click', () => showPage(navItem.dataset.pageTarget));
+    }
+  </script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#e6f5ef',
+        primaryTextColor: '#222832',
+        primaryBorderColor: '#008f5d',
+        lineColor: '#008f5d',
+        secondaryColor: '#f2faf7',
+        tertiaryColor: '#ffffff',
+        edgeLabelBackground: '#ffffff',
+        fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      },
+    });
+  </script>
+</body>
+</html>

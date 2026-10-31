@@ -44,7 +44,7 @@ export function getProductSnapshot(task: Task): ProductSnapshot {
   switch (task.image) {
     case 'bag':
       return snapshot(task, {
-        mainImages: ['bag'],
+        mainImages: ['bag', 'bag', 'bag'],
         skuImages: [
           { label: 'Brown', src: 'bag' },
           { label: 'Black', src: 'bag' },

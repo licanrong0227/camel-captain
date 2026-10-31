@@ -152,9 +152,27 @@
         "createdAt": 1792398543097,
         "updatedAt": 1792561423135,
         "title": "品牌未填写时保留原值"
+      },
+      {
+        "id": "detail-size-image-ocr",
+        "index": 9,
+        "title": "删除尺码表以外图像：识别口径",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"detail-size-image-ocr\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=detail-size-image-ocr",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793262546020,
+        "updatedAt": 1793262680225,
+        "annotationText": ""
       }
     ],
-    "updatedAt": 1792467813070
+    "updatedAt": 1793262680225
   },
   "markdownMap": {
     "upload-image-dialog": "## 「上传图片」弹窗\n\n从「替换主图」「附加主图」的上传控件点击进入，本原型只还原弹窗样式，不实现真实上传与确认逻辑。\n\n### 结构\n- 标题栏：上传图片 + 关闭按钮\n- 页签：本地（当前选中）/ URL / 引用\n- 上传方式：单个上传；「附加主图」入口额外出现「批量上传」，「替换主图」只做单张上传，因此没有批量上传选项\n- 拖拽区：将文件拖到此处，或点击上传；提示「按 Ctrl+V 可从剪贴板上传」\n- 底部：取消 / 确认",
@@ -163,7 +181,8 @@
     "basic-product-template-row": "## 关联产品模板：数据来源与同步规则\n\n- 产品模板数据从「dh.relmodel.pageget$2.0（卖家获取关联产品模板详细信息）」接口同步，「relModelList>modelName」就是产品名称；展示位的数量即「relModelProdList」的列表长度（数量）\n- 新增关联产品模板调用「dh.relmodel.add$2.0（卖家增加关联产品模板信息接口）」：新增时，只根据剩余展示位新增前 N 个有产品编号的产品\n- 修改关联产品模板调用「dh.relmodel.modify$2.0（卖家修改关联产品模板信息接口）」：修改时，最多传入前 N 个有产品编号的产品\n- 展示位数量与「新增产品」的关系：剩余展示位 = 上限 6 个 - 该模板已占用的展示位数（relModelProdList 长度）。\n  - 剩余展示位大于 0 时，「新增产品」可选，一次最多新增「剩余展示位数」个有产品编号的产品。\n  - 剩余展示位等于 0（展示位已满）时，「新增产品」置灰不可选并提示「（展示位已满）」，只能选「修改产品」；已选「新增产品」后再改选已满的模板，该选择会被自动清空。",
     "sku-spec-value-row": "## 商品规格值\n\n这里的配置逻辑与「编辑产品」中的批量编辑 SKU 规格值相同，只有两处不同：\n\n- 「追加文本」不提供规格选择，默认处理全部规格\n- 「清空规格属性名称」不提供规格选择，默认处理全部规格",
     "image-op-pipeline": "当转白底、去水印、加水印、图片翻译被同时选中多项时，按照「转白底 → 去水印 → 图片翻译 → 加水印」的流程依次处理",
-    "annotation-8": "如果勾选了“品牌”但没有填写品牌名称，则不更改品牌信息，保留原值"
+    "annotation-8": "如果勾选了“品牌”但没有填写品牌名称，则不更改品牌信息，保留原值",
+    "detail-size-image-ocr": "## 删除尺码表以外图像\n\n- 调用阿里 qwen-vl-ocr 接口\n- 提示词中要求模型识别图像是否包含尺码表信息，只回答「是」或「否」\n- 回答「是」：保留该图像；回答「否」：删除该图像\n\n接口文档：[qwen-vl-ocr](https://docs.bailian.console.aliyun.com/zh/model-studio/qwenvl-ocr)"
   },
   "assetMap": {},
   "directory": {

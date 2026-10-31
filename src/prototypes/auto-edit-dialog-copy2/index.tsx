@@ -47,6 +47,114 @@ const CloseIcon = () => (
   </svg>
 );
 
+// 销售国家/地区旗帜（简化 SVG，与编辑产品弹窗保持一致）
+const Flag = ({ code }: { code: string }) => {
+  switch (code) {
+    case 'US':
+      return (
+        <svg viewBox="0 0 20 14" aria-hidden="true">
+          <rect width="20" height="14" fill="#fff" />
+          {[0, 2, 4, 6, 8, 10, 12].map((index) => (
+            <rect key={index} y={(index * 14) / 13} width="20" height={14 / 13} fill="#b22234" />
+          ))}
+          <rect width="8.6" height={7.54} fill="#3c3b6e" />
+          {Array.from({ length: 12 }).map((_, index) => (
+            <circle key={index} cx={1.2 + (index % 4) * 2} cy={1.3 + Math.floor(index / 4) * 2.2} r="0.38" fill="#fff" />
+          ))}
+        </svg>
+      );
+    case 'GB':
+      return (
+        <svg viewBox="0 0 20 14" aria-hidden="true">
+          <rect width="20" height="14" fill="#012169" />
+          <path d="M0 0 20 14M20 0 0 14" stroke="#fff" strokeWidth="3" />
+          <path d="M0 0 20 14M20 0 0 14" stroke="#c8102e" strokeWidth="1.2" />
+          <path d="M10 0v14M0 7h20" stroke="#fff" strokeWidth="3.2" />
+          <path d="M10 0v14M0 7h20" stroke="#c8102e" strokeWidth="1.6" />
+        </svg>
+      );
+    case 'DE':
+      return (
+        <svg viewBox="0 0 20 14" aria-hidden="true">
+          <rect width="20" height="4.67" fill="#000" />
+          <rect y="4.67" width="20" height="4.67" fill="#dd0000" />
+          <rect y="9.33" width="20" height="4.67" fill="#ffce00" />
+        </svg>
+      );
+    case 'EU':
+      return (
+        <svg viewBox="0 0 20 14" aria-hidden="true">
+          <rect width="20" height="14" fill="#003399" />
+          {Array.from({ length: 12 }).map((_, index) => {
+            const angle = ((index * 30 - 90) * Math.PI) / 180;
+            return <circle key={index} cx={10 + 4.1 * Math.cos(angle)} cy={7 + 4.1 * Math.sin(angle)} r="0.52" fill="#ffcc00" />;
+          })}
+        </svg>
+      );
+    case 'JP':
+      return (
+        <svg viewBox="0 0 20 14" aria-hidden="true">
+          <rect width="20" height="14" fill="#fff" stroke="#e4e4e4" strokeWidth="0.6" />
+          <circle cx="10" cy="7" r="4" fill="#bc002d" />
+        </svg>
+      );
+    case 'KR':
+      return (
+        <svg viewBox="0 0 20 14" aria-hidden="true">
+          <rect width="20" height="14" fill="#fff" stroke="#e4e4e4" strokeWidth="0.6" />
+          <path d="M6.3 7a3.7 3.7 0 0 1 7.4 0Z" fill="#cd2e3a" />
+          <path d="M6.3 7a3.7 3.7 0 0 0 7.4 0Z" fill="#0047a0" />
+          <path d="M2.2 3.2h2.4M15.4 10.8h2.4M2.2 10.8h2.4M15.4 3.2h2.4" stroke="#2b2b2b" strokeWidth="0.7" />
+        </svg>
+      );
+    case 'RU':
+      return (
+        <svg viewBox="0 0 20 14" aria-hidden="true">
+          <rect width="20" height="4.67" fill="#fff" />
+          <rect y="4.67" width="20" height="4.67" fill="#0039a6" />
+          <rect y="9.33" width="20" height="4.67" fill="#d52b1e" />
+        </svg>
+      );
+    case 'MX':
+      return (
+        <svg viewBox="0 0 20 14" aria-hidden="true">
+          <rect width="6.67" height="14" fill="#006847" />
+          <rect x="6.67" width="6.66" height="14" fill="#fff" />
+          <rect x="13.33" width="6.67" height="14" fill="#ce1126" />
+          <circle cx="10" cy="7" r="1.5" fill="#8a6a3b" />
+        </svg>
+      );
+    case 'CN':
+      return (
+        <svg viewBox="0 0 20 14" aria-hidden="true">
+          <rect width="20" height="14" fill="#de2910" />
+          <polygon points="4.6,1.9 5.3,3.9 7.4,3.9 5.7,5.1 6.3,7.1 4.6,5.9 2.9,7.1 3.5,5.1 1.8,3.9 3.9,3.9" fill="#ffde00" />
+          {[
+            [8.2, 2.3],
+            [9.5, 3.6],
+            [9.5, 5.3],
+            [8.2, 6.6],
+          ].map(([cx, cy], index) => (
+            <circle key={index} cx={cx} cy={cy} r="0.55" fill="#ffde00" />
+          ))}
+        </svg>
+      );
+    default:
+      return (
+        <svg viewBox="0 0 20 14" aria-hidden="true">
+          <rect width="20" height="14" fill="#eaf4fb" />
+          <circle cx="10" cy="7" r="6.3" fill="#5eb6e6" />
+          <path
+            d="M4.6 5.2c1.1-1.2 2.5-1.7 3.7-1.2.9.4.5 1.6 1.3 2.1.8.5 1.8.3 2.4 1.1.6.8-.2 1.6-.9 1.9-1.2.5-1.6 1.8-2.9 1.6-1.3-.2-2.4-1.2-2.9-2.5-.3-.8-.9-1.5-1.3-2.1-.2-.3.1-.6.6-.9Z"
+            fill="#5fbf62"
+          />
+          <path d="M13.6 4.2c.8-.2 1.7.3 2 1 .2.7-.2 1.2-.8 1.4-.7.2-1.3-.2-1.5-.9-.2-.6-.1-1.3.3-1.5Z" fill="#5fbf62" />
+          <path d="M12 10.2c.6-.1 1.1.3 1.2.8.1.5-.3.9-.9.9-.6 0-1-.4-1-.9 0-.4.3-.7.7-.8Z" fill="#5fbf62" />
+        </svg>
+      );
+  }
+};
+
 const CheckCircle = ({ color = '#ff781f' }: { color?: string }) => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill={color}>
     <circle cx="12" cy="12" r="10" />
@@ -193,6 +301,7 @@ const keywordModes = ['AI生成关键词', '覆盖关键词', '替换关键词',
 const featureModes = ['AI生成短描', '免费生成短描', '新增短描'];
 const MAX_FEATURE_TEXTS = 5;
 const APPEND_FEATURE_MODE = '新增短描';
+const AI_FEATURE_MODE = 'AI生成短描';
 const attrBasisModes = ['平台类目属性'];
 
 // ===== 关联产品模板 =====
@@ -207,7 +316,12 @@ const tplSyncModes = [
   { id: 'add', label: '新增产品', hint: '把当前选中的、已有产品编号的产品加入模板。最多能加几个，取决于模板的剩余展示位。' },
   { id: 'modify', label: '修改产品', hint: '用当前选中的、已有产品编号的产品直接替换模板中已有的产品，只替换不新增。' },
 ];
-const titleOps = ['过滤文字', '追加文本', '裁剪', '随机打乱', '随机插入', '查找替换', '首字母大写', '使用采集源标题', 'AI生成标题'];
+// 标题处理方式分三组，组间互斥（单选），文本处理组内部可多选
+const titleOpGroups = [
+  { id: 'text', ops: ['过滤文字', '追加文本', '裁剪', '随机打乱', '随机插入', '查找替换', '首字母大写'] },
+  { id: 'source', ops: ['使用采集源标题'] },
+  { id: 'ai', ops: ['AI生成标题'] },
+];
 const skuSpecValueOps = ['删除超出的字符', '删除名称中的', '查找替换', '追加文本', '清空规格属性名称'];
 const specValueAppendModes = ['自定义', '自增长'];
 
@@ -224,6 +338,87 @@ const mainImageModes: { id: MainImageMode; label: string; hint: string }[] = [
   { id: 'append', label: '附加主图', hint: '上传新的图片附加到结尾，如果主图数量超过限制，则自动替换最后的主图（主图数量最高限制 8 张）' },
 ];
 
+// ===== 视频 =====
+type VideoMode = 'upload' | 'generate' | 'delete';
+
+const videoModes: { id: VideoMode; label: string }[] = [
+  { id: 'upload', label: '上传视频' },
+  { id: 'generate', label: '生成视频' },
+  { id: 'delete', label: '删除视频' },
+];
+const videoExistModes = ['保留原视频', '生成并替换原视频'];
+const videoDurations = ['5 秒', '10 秒', '15 秒'];
+const videoTemplates = [
+  { value: 'product', label: '产品展示' },
+  { value: 'ugc', label: 'UGC 种草' },
+  { value: 'pain', label: '痛点解决' },
+  { value: 'home', label: '家居场景' },
+];
+const videoRatios = ['自适应', '9:16', '16:9', '1:1', '4:3', '3:4', '21:9'];
+const videoMarkets: { value: string; label: string; flag: string }[] = [
+  { value: 'US', label: 'US(美国)', flag: 'US' },
+  { value: 'GB', label: 'GB(英国)', flag: 'GB' },
+  { value: 'DE', label: 'DE(德国)', flag: 'DE' },
+  { value: 'EU', label: 'EU(欧洲)', flag: 'EU' },
+  { value: 'JP', label: 'JP(日本)', flag: 'JP' },
+  { value: 'KR', label: 'KR(韩国)', flag: 'KR' },
+  { value: 'RU', label: 'RU(俄罗斯)', flag: 'RU' },
+  { value: 'UK', label: 'UK(英国)', flag: 'GB' },
+  { value: 'MX', label: 'MX(墨西哥)', flag: 'MX' },
+  { value: 'SEA', label: 'SEA(东南亚)', flag: 'GLOBE' },
+  { value: 'ASIA', label: 'ASIA(亚洲)', flag: 'GLOBE' },
+  { value: 'LATAM', label: 'LATAM(拉美)', flag: 'GLOBE' },
+  { value: 'GCC', label: 'GCC(中东)', flag: 'GLOBE' },
+  { value: 'CN', label: 'CN(中国)', flag: 'CN' },
+];
+const videoLanguages = [
+  '中文',
+  '英语',
+  '印尼语',
+  '日语',
+  '韩语',
+  '法语',
+  '西班牙语',
+  '德语',
+  '葡萄牙语',
+  '意大利语',
+  '俄语',
+  '泰语',
+  '越南语',
+  '马来语',
+  '荷兰语',
+  '波兰语',
+  '瑞典语',
+  '土耳其语',
+];
+
+// ===== 详情页面 =====
+const detailOps: { id: string; label: string }[] = [
+  { id: 'replace-all', label: '全部替换' },
+  { id: 'filter', label: '过滤详情' },
+  { id: 'append', label: '追加文本' },
+  { id: 'find-replace', label: '查找替换' },
+  { id: 'uppercase', label: '首字母改大写' },
+  { id: 'image-pre', label: '图像附加到详情前面' },
+  { id: 'image-post', label: '图像附加到详情后面' },
+  { id: 'delete-image', label: '删除详情图像' },
+];
+const detailDeleteImageModes = ['删除全部图像', '删除尺码表以外图像'];
+const detailFilterOptions = [
+  '过滤HTML',
+  '过滤指定文字',
+  '过滤电话号码',
+  '过滤网址',
+  '过滤所有文字',
+  '去除文字链接',
+  '限制字数',
+  '过滤空白行',
+  '过滤图片',
+];
+const detailAppendModes = ['自定义文本', '随机字符', '主货号', '店铺名称'];
+const detailImageScopes = ['主图', 'SKU图', '自定义图片'];
+const MAX_FIND_ROWS = 5;
+
 // ===== 图片操作栏目（转白底 / 去水印 / 加水印）=====
 const imageOps: { id: string; label: string; tip?: string }[] = [
   { id: 'white-bg', label: '转白底', tip: '每处理1张图片消耗xx算力' },
@@ -234,6 +429,15 @@ const imageOps: { id: string; label: string; tip?: string }[] = [
 
 const imageScopes = ['主图', '推广图', 'SKU图', '详情图'];
 const removeWmVersions = ['普通版', 'pro版'];
+// 翻译方式沿用「批量美图」的两种口径
+const imageTranslateModes = [
+  { id: 'full', title: '全量翻译', desc: '每翻译1张图片消耗 xx 算力' },
+  {
+    id: 'detect',
+    title: '识别后翻译',
+    desc: 'AI 先识别图片是否含有中文字符等需要翻译的内容：识别后无需翻译，每识别1张图片消耗 xx 算力；识别后需要翻译，翻译另需消耗 xx 算力',
+  },
+];
 
 // ===== 加水印：水印配置（功能沿用「批量美图」的加水印面板）=====
 type WatermarkType = 'text' | 'image';
@@ -659,7 +863,7 @@ function WatermarkCard({ config, onConfigChange, templateId, onPickTemplate }: {
 }
 
 // ===== Row component =====
-function FormRow({ label, labelTip, checked, onCheck, children, last, disabled, flush, bodyClass, annotationId }: {
+function FormRow({ label, labelTip, checked, onCheck, children, last, disabled, flush, bodyClass, annotationId, labelTop }: {
   label: string;
   labelTip?: string;
   checked?: boolean;
@@ -670,10 +874,11 @@ function FormRow({ label, labelTip, checked, onCheck, children, last, disabled, 
   flush?: boolean;
   bodyClass?: string;
   annotationId?: string;
+  labelTop?: boolean;
 }) {
   return (
     <div
-      className={`ae-row${last ? ' ae-row-last' : ''}${disabled ? ' is-disabled' : ''}${flush ? ' is-flush' : ''}${labelTip ? ' has-label-tip' : ''}`}
+      className={`ae-row${last ? ' ae-row-last' : ''}${disabled ? ' is-disabled' : ''}${flush ? ' is-flush' : ''}${labelTip ? ' has-label-tip' : ''}${labelTop ? ' has-label-top' : ''}`}
     >
       <div className="ae-row-label" data-annotation-id={annotationId}>
         <label className="ae-checkbox">
@@ -693,6 +898,136 @@ function FormRow({ label, labelTip, checked, onCheck, children, last, disabled, 
         )}
       </div>
       <div className={`ae-row-body${bodyClass ? ' ' + bodyClass : ''}`}>{children}</div>
+    </div>
+  );
+}
+
+// ===== 详情页面：数字输入框（右侧上下调节）=====
+function ProcNumber({ value, onChange, placeholder, min = 1 }: {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  min?: number;
+}) {
+  const step = (delta: number) => {
+    const next = Math.max(min, Number(value || 0) + delta);
+    onChange(String(next));
+  };
+  return (
+    <div className="ae-proc-num">
+      <input
+        value={value}
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value.replace(/[^\d]/g, ''))}
+      />
+      <span className="ae-proc-num-ctl">
+        <button type="button" aria-label="增加" onClick={() => step(1)}>▲</button>
+        <button type="button" aria-label="减少" onClick={() => step(-1)}>▼</button>
+      </span>
+    </div>
+  );
+}
+
+// ===== 详情页面：富文本编辑器外壳 =====
+function RichEditor({ placeholder, height = 200 }: { placeholder: string; height?: number }) {
+  return (
+    <div className="ae-rich" style={{ height }}>
+      <div className="ae-rich-toolbar">
+        <span className="ae-rich-tool"><b>B</b></span>
+        <span className="ae-rich-tool"><i>I</i></span>
+        <span className="ae-rich-tool"><u>U</u></span>
+        <span className="ae-rich-sep" />
+        <span className="ae-rich-tool">字号</span>
+        <span className="ae-rich-tool">图片</span>
+        <span className="ae-rich-tool">模板</span>
+      </div>
+      <div className="ae-rich-body" contentEditable suppressContentEditableWarning data-placeholder={placeholder} />
+    </div>
+  );
+}
+
+// ===== 详情页面：追加文本（前缀 / 后缀）=====
+type DetailAppendState = { on: boolean; mode: string; text: string; len: string; rich: string };
+
+function DetailAppendBlock({ title, state, onChange }: {
+  title: string;
+  state: DetailAppendState;
+  onChange: (patch: Partial<DetailAppendState>) => void;
+}) {
+  return (
+    <div className="ae-append-block">
+      <label className="ae-check-line">
+        <input
+          type="checkbox"
+          checked={state.on}
+          onChange={() => onChange(state.on ? { on: false, mode: '', text: '', len: '', rich: '' } : { on: true })}
+        />
+        <span className="ae-checkbox-mask" />
+        <span>{title}</span>
+      </label>
+
+      {state.on && (
+        <div className="ae-append-sub">
+          <div className="ae-radio-group">
+            {detailAppendModes.map((mode) => (
+              <label key={mode} className="ae-radio">
+                <input
+                  type="radio"
+                  name={`detailAppend-${title}`}
+                  checked={state.mode === mode}
+                  onChange={() => onChange({ mode })}
+                />
+                <span className="ae-radio-mask" />
+                <span>{mode}</span>
+              </label>
+            ))}
+          </div>
+
+          {state.mode === '自定义文本' && (
+            <>
+              <div className="ae-seg">
+                <button
+                  className={`ae-seg-btn${state.rich === 'text' ? ' active' : ''}`}
+                  type="button"
+                  onClick={() => onChange({ rich: 'text' })}
+                >
+                  纯文本
+                </button>
+                <button
+                  className={`ae-seg-btn${state.rich === 'rich' ? ' active' : ''}`}
+                  type="button"
+                  onClick={() => onChange({ rich: 'rich' })}
+                >
+                  富文本
+                </button>
+              </div>
+              {state.rich === 'text' && (
+                <div className="ae-proc-field">
+                  <textarea
+                    className="ae-proc-textarea"
+                    rows={3}
+                    placeholder="请输入自定义文本"
+                    value={state.text}
+                    onChange={(e) => onChange({ text: e.target.value })}
+                  />
+                  <div className="ae-proc-vars">
+                    插入变量：
+                    <span className="ae-var-tag">%subject%</span>
+                    <span className="ae-var-tag">%skucode%</span>
+                  </div>
+                </div>
+              )}
+              {state.rich === 'rich' && <RichEditor placeholder="请输入自定义文本" height={180} />}
+            </>
+          )}
+
+          {state.mode === '随机字符' && (
+            <div className="ae-proc-field">
+              <ProcNumber value={state.len} onChange={(v) => onChange({ len: v })} placeholder="字符数" />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -876,10 +1211,44 @@ export default function AutoEditDialog() {
   const [brandValue, setBrandValue] = useState('');
   const [weight, setWeight] = useState('');
   const [titleOpsOn, setTitleOpsOn] = useState<string[]>([]);
+  const [aiTitleKeywords, setAiTitleKeywords] = useState('');
+  const [aiFeatureKeywords, setAiFeatureKeywords] = useState('');
   const [tagAdd, setTagAdd] = useState(false);
   const [tagRemove, setTagRemove] = useState(false);
   const [mainImageChecked, setMainImageChecked] = useState(false);
   const [mainImageMode, setMainImageMode] = useState<MainImageMode | ''>('');
+  // 视频：上传 / 生成 / 删除；生成视频时下方展开配置卡片
+  const [videoMode, setVideoMode] = useState<VideoMode | ''>('');
+  const [videoExistMode, setVideoExistMode] = useState('');
+  const [videoDuration, setVideoDuration] = useState(videoDurations[0]);
+  const [videoTemplate, setVideoTemplate] = useState('product');
+  const [videoRatio, setVideoRatio] = useState(videoRatios[0]);
+  const [videoMarket, setVideoMarket] = useState('US');
+  const [videoLanguage, setVideoLanguage] = useState('英语');
+  const [videoPick, setVideoPick] = useState<{
+    id: 'market' | 'language';
+    left: number;
+    width: number;
+    maxHeight: number;
+    top?: number;
+    bottom?: number;
+  } | null>(null);
+  const videoPickTrigger = useRef<HTMLElement | null>(null);
+
+  // ===== 详情页面 =====
+  const [detailChecked, setDetailChecked] = useState(false);
+  const [detailOpsOn, setDetailOpsOn] = useState<string[]>([]);
+  const [detailReplaceMode, setDetailReplaceMode] = useState<'text' | 'rich'>('text');
+  const [detailReplaceText, setDetailReplaceText] = useState('');
+  const [detailFilterChecks, setDetailFilterChecks] = useState<string[]>([]);
+  const [detailFilterText, setDetailFilterText] = useState('');
+  const [detailFilterLimit, setDetailFilterLimit] = useState('');
+  const [detailAppendPrefix, setDetailAppendPrefix] = useState({ on: false, mode: '', text: '', len: '', rich: '' });
+  const [detailAppendSuffix, setDetailAppendSuffix] = useState({ on: false, mode: '', text: '', len: '', rich: '' });
+  const [detailFindRows, setDetailFindRows] = useState<{ find: string; replace: string }[]>([{ find: '', replace: '' }]);
+  const [detailDeleteImageMode, setDetailDeleteImageMode] = useState('');
+  const [detailImageChecks, setDetailImageChecks] = useState<Record<string, string[]>>({ 'image-pre': [], 'image-post': [] });
+  const [detailImageCustom, setDetailImageCustom] = useState<Record<string, UploadedImage | null>>({ 'image-pre': null, 'image-post': null });
   const [slotIds, setSlotIds] = useState<number[]>(() =>
     Array.from({ length: MAX_MAIN_IMAGES }, (_, i) => i + 1));
   const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -919,6 +1288,7 @@ export default function AutoEditDialog() {
   const [imageOpChecked, setImageOpChecked] = useState<Record<string, boolean>>({});
   const [imageOpScopes, setImageOpScopes] = useState<Record<string, string[]>>({});
   const [removeWmVersion, setRemoveWmVersion] = useState('普通版');
+  const [imageTranslateMode, setImageTranslateMode] = useState('full');
 
   const toggleImageOpRow = (id: string) =>
     setImageOpChecked((prev) => {
@@ -955,6 +1325,10 @@ export default function AutoEditDialog() {
   };
 
   const handleSubmit = () => {
+    if (basicChecked.video && videoMode === 'generate' && !videoExistMode) {
+      setToast('请选择已有视频的商品处理方式');
+      return;
+    }
     const watermarkOn = !!imageOpChecked['add-watermark'];
     const watermarkScopes = imageOpScopes['add-watermark'] ?? [];
     if (watermarkOn && watermarkScopes.length > 0) {
@@ -1052,8 +1426,10 @@ export default function AutoEditDialog() {
     if (value) setSuffixOn(true);
   };
 
-  const stepStockQty = (delta: number) =>
+  const stepStockQty = (delta: number) => {
+    ensureSku('stock');
     setStockQty((prev) => numValue(prev, delta));
+  };
 
   const positions = Array.from({ length: MAX_MAIN_IMAGES }, (_, i) => i + 1);
   const currentHint = mainImageModes.find((m) => m.id === mainImageMode)?.hint;
@@ -1077,9 +1453,116 @@ export default function AutoEditDialog() {
   const resetOrder = () =>
     setSlotIds(Array.from({ length: MAX_MAIN_IMAGES }, (_, i) => i + 1));
 
+  // 视频：点选任一方式即视为启用该行
+  const selectVideoMode = (mode: VideoMode) => {
+    ensureBasic('video');
+    setVideoMode(mode);
+    setVideoPick(null);
+  };
+
+  const placeVideoPick = (id: 'market' | 'language', trigger: HTMLElement) => {
+    const rect = trigger.getBoundingClientRect();
+    const bounds = trigger.closest('.ae-content')?.getBoundingClientRect();
+    const spaceBelow = (bounds?.bottom ?? window.innerHeight) - rect.bottom;
+    const spaceAbove = rect.top - (bounds?.top ?? 0);
+    // 优先向上展开（与编辑产品弹窗一致），上方放不下时改为向下；高度跟随可用空间
+    const openUp = spaceAbove >= 280 || spaceAbove > spaceBelow;
+    const maxHeight = Math.max(160, Math.min(272, (openUp ? spaceAbove : spaceBelow) - 8));
+    setVideoPick({
+      id,
+      left: rect.left,
+      width: rect.width,
+      maxHeight,
+      ...(openUp ? { bottom: window.innerHeight - rect.top + 4 } : { top: rect.bottom + 4 }),
+    });
+  };
+
+  const toggleVideoPick = (id: 'market' | 'language', trigger: HTMLElement) => {
+    if (videoPick?.id === id) {
+      setVideoPick(null);
+      return;
+    }
+    videoPickTrigger.current = trigger;
+    placeVideoPick(id, trigger);
+  };
+
+  // 销售国家/地区、语言下拉：点外部收起，滚动/缩放时跟随触发元素重新定位
+  useEffect(() => {
+    if (!videoPick) return;
+    const onDown = (e: MouseEvent) => {
+      if (videoPickTrigger.current?.contains(e.target as Node)) return;
+      setVideoPick(null);
+    };
+    const reposition = () => {
+      if (videoPickTrigger.current) placeVideoPick(videoPick.id, videoPickTrigger.current);
+    };
+    document.addEventListener('mousedown', onDown);
+    window.addEventListener('resize', reposition);
+    window.addEventListener('scroll', reposition, true);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      window.removeEventListener('resize', reposition);
+      window.removeEventListener('scroll', reposition, true);
+    };
+  }, [videoPick]);
+
+  // ===== 详情页面：点选处理方式即视为启用该行 =====
+  const toggleDetailOp = (id: string) => {
+    setDetailChecked(true);
+    setDetailOpsOn((prev) => (prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]));
+  };
+
+  const removeDetailOp = (id: string) => setDetailOpsOn((prev) => prev.filter((v) => v !== id));
+
+  const toggleDetailRow = () => {
+    if (detailChecked) {
+      setDetailOpsOn([]);
+      setDetailFilterChecks([]);
+      setDetailFilterText('');
+      setDetailFilterLimit('');
+      setDetailFindRows([{ find: '', replace: '' }]);
+      setDetailDeleteImageMode('');
+      setDetailImageChecks({ 'image-pre': [], 'image-post': [] });
+      setDetailImageCustom({ 'image-pre': null, 'image-post': null });
+      setDetailAppendPrefix({ on: false, mode: '', text: '', len: '', rich: '' });
+      setDetailAppendSuffix({ on: false, mode: '', text: '', len: '', rich: '' });
+      setDetailReplaceMode('text');
+      setDetailReplaceText('');
+    }
+    setDetailChecked(!detailChecked);
+  };
+
+  const toggleDetailFilter = (opt: string) =>
+    setDetailFilterChecks((prev) => (prev.includes(opt) ? prev.filter((v) => v !== opt) : [...prev, opt]));
+
+  const toggleDetailImageScope = (opId: string, scope: string) =>
+    setDetailImageChecks((prev) => {
+      const current = prev[opId] ?? [];
+      return {
+        ...prev,
+        [opId]: current.includes(scope) ? current.filter((v) => v !== scope) : [...current, scope],
+      };
+    });
+
+  const patchDetailAppend = (
+    which: 'prefix' | 'suffix',
+    patch: Partial<{ on: boolean; mode: string; text: string; len: string; rich: string }>,
+  ) =>
+    (which === 'prefix' ? setDetailAppendPrefix : setDetailAppendSuffix)((prev) => ({ ...prev, ...patch }));
+
+  const patchDetailFindRow = (index: number, patch: Partial<{ find: string; replace: string }>) =>
+    setDetailFindRows((prev) => prev.map((row, i) => (i === index ? { ...row, ...patch } : row)));
+
+  const uploadDetailImage = async (opId: string, file?: File) => {
+    if (!file) return;
+    const uploaded = await readImageFile(file);
+    if (!uploaded) return;
+    setDetailImageCustom((prev) => ({ ...prev, [opId]: uploaded }));
+  };
+
   const selectFeatureMode = (mode: string) => {
-    // 新增短描允许在未勾选产品特性时直接点选，点击即视为启用该行
-    if (mode === APPEND_FEATURE_MODE) setBasicChecked((prev) => ({ ...prev, feature: true }));
+    // 点击任一短描方式即视为启用该行
+    ensureBasic('feature');
     setFeatureMode(mode);
     if (mode !== APPEND_FEATURE_MODE) setFeatureTexts([]);
   };
@@ -1093,6 +1576,12 @@ export default function AutoEditDialog() {
   const updateFeatureText = (index: number, value: string) =>
     setFeatureTexts((prev) => prev.map((v, i) => (i === index ? value : v)));
 
+  // 点选行内选项时自动勾选左侧行项目，不用先勾选
+  const ensureBasic = (id: string) =>
+    setBasicChecked((prev) => (prev[id] ? prev : { ...prev, [id]: true }));
+  const ensureSku = (id: string) =>
+    setSkuChecked((prev) => (prev[id] ? prev : { ...prev, [id]: true }));
+
   const toggleBasicRow = (id: string) =>
     setBasicChecked((prev) => {
       const next = { ...prev, [id]: !prev[id] };
@@ -1101,25 +1590,45 @@ export default function AutoEditDialog() {
       if (id === 'feature') {
         setFeatureMode('');
         setFeatureTexts([]);
+        setAiFeatureKeywords('');
       }
       if (id === 'category') setAttrBasis('');
       if (id === 'weight') setWeight('');
-      if (id === 'title') setTitleOpsOn([]);
+      if (id === 'title') {
+        setTitleOpsOn([]);
+        setAiTitleKeywords('');
+      }
       if (id === 'tag') {
         setTagAdd(false);
         setTagRemove(false);
       }
+      if (id === 'video') {
+        setVideoMode('');
+        setVideoExistMode('');
+      }
       return next;
     });
 
-  const toggleTitleOp = (op: string) =>
-    setTitleOpsOn((prev) => (prev.includes(op) ? prev.filter((v) => v !== op) : [...prev, op]));
+  // 组间互斥：选中某一组时清空其他组的已选项；组内仍可多选
+  const toggleTitleOp = (op: string) => {
+    ensureBasic('title');
+    setTitleOpsOn((prev) => {
+      if (prev.includes(op)) return prev.filter((v) => v !== op);
+      const group = titleOpGroups.find((item) => item.ops.includes(op));
+      const otherOps = titleOpGroups
+        .filter((item) => item !== group)
+        .flatMap((item) => item.ops);
+      return [...prev.filter((v) => !otherOps.includes(v)), op];
+    });
+  };
 
-  const stepWeight = (delta: number) =>
+  const stepWeight = (delta: number) => {
+    ensureBasic('weight');
     setWeight((prev) => {
       const value = Math.max(0, Math.round((Number(prev || 0) + delta) * 1000) / 1000);
       return String(value);
     });
+  };
 
   // 拖拽经过某个位置时立即换位，而不是松手才生效
   const handleDragEnter = (index: number) => {
@@ -1216,6 +1725,267 @@ export default function AutoEditDialog() {
           </div>
 
           <div className="ae-content" data-annotation-id="content">
+            {activeMenu === 'detail' && (
+              <FormRow label="产品详情" checked={detailChecked} onCheck={toggleDetailRow} labelTop>
+                <div className="ae-proc-header">
+                  <span className="ae-proc-label">详情 处理方式</span>
+                  <div className="ae-proc-btns">
+                    {detailOps.map((op) => (
+                      <button
+                        key={op.id}
+                        className={`ae-proc-btn${detailOpsOn.includes(op.id) ? ' active' : ''}`}
+                        type="button"
+                        onClick={() => toggleDetailOp(op.id)}
+                      >
+                        {op.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="ae-proc-tip">可同时配置多个操作，按顺序依次应用到详情</div>
+
+                {detailOpsOn
+                  .filter((id) => id !== 'uppercase')
+                  .map((id) => {
+                    const op = detailOps.find((item) => item.id === id);
+                    if (!op) return null;
+                    return (
+                      <div className="ae-proc-card" key={id}>
+                        <div className="ae-proc-card-side">{op.label}</div>
+                        <div className="ae-proc-card-body">
+                          <button
+                            className="ae-proc-close"
+                            type="button"
+                            aria-label="移除该操作"
+                            onClick={() => removeDetailOp(id)}
+                          >
+                            <CloseIcon />
+                          </button>
+
+                          {id === 'replace-all' && (
+                            <>
+                              <div className="ae-seg">
+                                <button
+                                  className={`ae-seg-btn${detailReplaceMode === 'text' ? ' active' : ''}`}
+                                  type="button"
+                                  onClick={() => setDetailReplaceMode('text')}
+                                >
+                                  纯文本
+                                </button>
+                                <button
+                                  className={`ae-seg-btn${detailReplaceMode === 'rich' ? ' active' : ''}`}
+                                  type="button"
+                                  onClick={() => setDetailReplaceMode('rich')}
+                                >
+                                  富文本
+                                </button>
+                              </div>
+                              {detailReplaceMode === 'text' ? (
+                                <div className="ae-proc-field">
+                                  <textarea
+                                    className="ae-proc-textarea"
+                                    rows={3}
+                                    placeholder="请输入替换文本"
+                                    value={detailReplaceText}
+                                    onChange={(e) => setDetailReplaceText(e.target.value)}
+                                  />
+                                  <div className="ae-proc-vars">
+                                    插入变量：
+                                    <span className="ae-var-tag">%subject%</span>
+                                    <span className="ae-var-tag">%skucode%</span>
+                                  </div>
+                                </div>
+                              ) : (
+                                <RichEditor placeholder="请输入替换文本" />
+                              )}
+                            </>
+                          )}
+
+                          {id === 'filter' && (
+                            <>
+                              <div className="ae-proc-checks">
+                                {detailFilterOptions.map((opt) => (
+                                  <label key={opt} className="ae-check-line">
+                                    <input
+                                      type="checkbox"
+                                      checked={detailFilterChecks.includes(opt)}
+                                      onChange={() => toggleDetailFilter(opt)}
+                                    />
+                                    <span className="ae-checkbox-mask" />
+                                    <span>{opt}</span>
+                                  </label>
+                                ))}
+                              </div>
+                              {detailFilterChecks.includes('过滤指定文字') && (
+                                <div className="ae-proc-field">
+                                  <span className="ae-proc-field-label">过滤指定文字</span>
+                                  <textarea
+                                    className="ae-proc-textarea"
+                                    rows={3}
+                                    placeholder="请输入过滤文字，每行一个"
+                                    value={detailFilterText}
+                                    onChange={(e) => setDetailFilterText(e.target.value)}
+                                  />
+                                </div>
+                              )}
+                              {detailFilterChecks.includes('限制字数') && (
+                                <div className="ae-proc-field">
+                                  <span className="ae-proc-field-label">限制字数</span>
+                                  <ProcNumber
+                                    value={detailFilterLimit}
+                                    onChange={setDetailFilterLimit}
+                                    placeholder="请输入字数"
+                                  />
+                                </div>
+                              )}
+                            </>
+                          )}
+
+                          {id === 'append' && (
+                            <>
+                              <DetailAppendBlock
+                                title="增加前缀"
+                                state={detailAppendPrefix}
+                                onChange={(patch) => patchDetailAppend('prefix', patch)}
+                              />
+                              <DetailAppendBlock
+                                title="增加后缀"
+                                state={detailAppendSuffix}
+                                onChange={(patch) => patchDetailAppend('suffix', patch)}
+                              />
+                            </>
+                          )}
+
+                          {id === 'find-replace' && (
+                            <>
+                              {detailFindRows.map((row, index) => (
+                                <div className="ae-find-row" key={index}>
+                                  <span className="ae-find-label">查找</span>
+                                  <input
+                                    className="ae-input ae-find-input"
+                                    placeholder="请输入查找"
+                                    value={row.find}
+                                    onChange={(e) => patchDetailFindRow(index, { find: e.target.value })}
+                                  />
+                                  <span className="ae-find-label">替换</span>
+                                  <input
+                                    className="ae-input ae-find-input"
+                                    placeholder="请输入替换"
+                                    value={row.replace}
+                                    onChange={(e) => patchDetailFindRow(index, { replace: e.target.value })}
+                                  />
+                                  <button
+                                    className="ae-find-del"
+                                    type="button"
+                                    aria-label="删除该行"
+                                    onClick={() => setDetailFindRows((prev) => prev.filter((_, i) => i !== index))}
+                                  >
+                                    <TrashIcon />
+                                  </button>
+                                </div>
+                              ))}
+                              <button
+                                className="ae-proc-add"
+                                type="button"
+                                disabled={detailFindRows.length >= MAX_FIND_ROWS}
+                                onClick={() =>
+                                  setDetailFindRows((prev) =>
+                                    prev.length >= MAX_FIND_ROWS ? prev : [...prev, { find: '', replace: '' }],
+                                  )
+                                }
+                              >
+                                <PlusIcon /> 增加
+                              </button>
+                            </>
+                          )}
+
+                          {id === 'delete-image' && (
+                            <div className="ae-radio-group">
+                              {detailDeleteImageModes.map((mode) => {
+                                const option = (
+                                  <label className="ae-radio">
+                                    <input
+                                      type="radio"
+                                      name="detailDeleteImage"
+                                      checked={detailDeleteImageMode === mode}
+                                      onChange={() => setDetailDeleteImageMode(mode)}
+                                    />
+                                    <span className="ae-radio-mask" />
+                                    <span>{mode}</span>
+                                    {mode === '删除尺码表以外图像' && (
+                                      <span
+                                        className="ae-label-tip"
+                                        data-tip="每识别一张图像消耗 xx 算力"
+                                        aria-label="每识别一张图像消耗 xx 算力"
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                        }}
+                                      >
+                                        <span className="ae-label-tip-icon">?</span>
+                                      </span>
+                                    )}
+                                  </label>
+                                );
+                                if (mode !== '删除尺码表以外图像') {
+                                  return <React.Fragment key={mode}>{option}</React.Fragment>;
+                                }
+                                return (
+                                  <span className="ae-ann-anchor" key={mode} data-annotation-id="detail-size-image-ocr">
+                                    {option}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          )}
+
+                          {(id === 'image-pre' || id === 'image-post') && (
+                            <>
+                              <div className="ae-proc-checks">
+                                {detailImageScopes.map((scope) => (
+                                  <label key={scope} className="ae-check-line">
+                                    <input
+                                      type="checkbox"
+                                      checked={(detailImageChecks[id] ?? []).includes(scope)}
+                                      onChange={() => toggleDetailImageScope(id, scope)}
+                                    />
+                                    <span className="ae-checkbox-mask" />
+                                    <span>{scope}</span>
+                                  </label>
+                                ))}
+                              </div>
+                              {(detailImageChecks[id] ?? []).includes('自定义图片') && (
+                                <div className="ae-proc-uploads">
+                                  {detailImageCustom[id] ? (
+                                    <div className="ae-upload ae-thumb is-filled">
+                                      <img src={detailImageCustom[id]!.url} alt="" />
+                                      <span className="ae-size">{sizeText(detailImageCustom[id]!)}</span>
+                                      <ImageHoverActions
+                                        onDelete={() => setDetailImageCustom((prev) => ({ ...prev, [id]: null }))}
+                                      />
+                                    </div>
+                                  ) : (
+                                    <label className="ae-proc-upload">
+                                      <CloudUploadIcon />
+                                      <span>上传图片</span>
+                                      <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => uploadDetailImage(id, e.target.files?.[0])}
+                                      />
+                                    </label>
+                                  )}
+                                </div>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+              </FormRow>
+            )}
+
             {activeMenu === 'basic' && (
               <>
             {/* 关键词 */}
@@ -1226,9 +1996,11 @@ export default function AutoEditDialog() {
                     <input
                       type="radio"
                       name="keywordMode"
-                      disabled={!basicChecked.keyword}
                       checked={keywordMode === mode}
-                      onChange={() => setKeywordMode(mode)}
+                      onChange={() => {
+                        ensureBasic('keyword');
+                        setKeywordMode(mode);
+                      }}
                     />
                     <span className="ae-radio-mask" />
                     <span>{mode}</span>
@@ -1245,7 +2017,6 @@ export default function AutoEditDialog() {
                     <input
                       type="radio"
                       name="featureMode"
-                      disabled={!basicChecked.feature && mode !== APPEND_FEATURE_MODE}
                       checked={featureMode === mode}
                       onChange={() => selectFeatureMode(mode)}
                     />
@@ -1254,6 +2025,22 @@ export default function AutoEditDialog() {
                   </label>
                 ))}
               </div>
+              {featureMode === AI_FEATURE_MODE && (
+                <div className="ae-keyword-row">
+                  <span className="ae-field-label inline">指定包含关键词</span>
+                  <span className="ae-keyword-field">
+                    <input
+                      className="ae-input ae-keyword-input"
+                      type="text"
+                      placeholder="多个关键词用,分隔，不填则不指定"
+                      maxLength={150}
+                      value={aiFeatureKeywords}
+                      onChange={(e) => setAiFeatureKeywords(e.target.value.slice(0, 150))}
+                    />
+                    <span className="ae-keyword-count">{aiFeatureKeywords.length}/150</span>
+                  </span>
+                </div>
+              )}
               {featureMode === APPEND_FEATURE_MODE && (
                 <div className="ae-feature-list">
                   {featureTexts.map((text, index) => (
@@ -1293,9 +2080,11 @@ export default function AutoEditDialog() {
                     <input
                       type="radio"
                       name="attrBasis"
-                      disabled={!basicChecked.category}
                       checked={attrBasis === mode}
-                      onChange={() => setAttrBasis(mode)}
+                      onChange={() => {
+                        ensureBasic('category');
+                        setAttrBasis(mode);
+                      }}
                     />
                     <span className="ae-radio-mask" />
                     <span>{mode}</span>
@@ -1318,13 +2107,15 @@ export default function AutoEditDialog() {
                   type="text"
                   inputMode="decimal"
                   placeholder="KG"
-                  disabled={!basicChecked.weight}
                   value={weight}
-                  onChange={(e) => setWeight(e.target.value.replace(/[^\d.]/g, ''))}
+                  onChange={(e) => {
+                    ensureBasic('weight');
+                    setWeight(e.target.value.replace(/[^\d.]/g, ''));
+                  }}
                 />
                 <div className="ae-input-steps">
-                  <button className="ae-step" type="button" disabled={!basicChecked.weight} onClick={() => stepWeight(1)}>▲</button>
-                  <button className="ae-step" type="button" disabled={!basicChecked.weight} onClick={() => stepWeight(-1)}>▼</button>
+                  <button className="ae-step" type="button" onClick={() => stepWeight(1)}>▲</button>
+                  <button className="ae-step" type="button" onClick={() => stepWeight(-1)}>▼</button>
                 </div>
               </div>
             </FormRow>
@@ -1334,20 +2125,40 @@ export default function AutoEditDialog() {
               <div className="ae-title-row">
                 <span className="ae-field-label inline"><strong>标题</strong> 处理方式</span>
                 <div className="ae-op-btns">
-                  {titleOps.map((op) => (
-                    <button
-                      key={op}
-                      className={`ae-op-btn${titleOpsOn.includes(op) ? ' active' : ''}`}
-                      type="button"
-                      disabled={!basicChecked.title}
-                      onClick={() => toggleTitleOp(op)}
-                    >
-                      {op}
-                    </button>
+                  {titleOpGroups.map((group, groupIndex) => (
+                    <span className="ae-op-group" key={group.id}>
+                      {groupIndex > 0 && <span className="ae-op-divider" aria-hidden="true" />}
+                      {group.ops.map((op) => (
+                        <button
+                          key={op}
+                          className={`ae-op-btn${titleOpsOn.includes(op) ? ' active' : ''}`}
+                          type="button"
+                          onClick={() => toggleTitleOp(op)}
+                        >
+                          {op}
+                        </button>
+                      ))}
+                    </span>
                   ))}
                 </div>
               </div>
-              <div className="ae-hint sub">可同时配置多个操作，按顺序依次应用到标题</div>
+              <div className="ae-hint sub">文本处理可同时配置多个操作，按顺序依次应用到标题</div>
+              {titleOpsOn.includes('AI生成标题') && (
+                <div className="ae-keyword-row">
+                  <span className="ae-field-label inline">指定包含关键词</span>
+                  <span className="ae-keyword-field">
+                    <input
+                      className="ae-input ae-keyword-input"
+                      type="text"
+                      placeholder="多个关键词用,分隔，不填则不指定"
+                      maxLength={70}
+                      value={aiTitleKeywords}
+                      onChange={(e) => setAiTitleKeywords(e.target.value.slice(0, 70))}
+                    />
+                    <span className="ae-keyword-count">{aiTitleKeywords.length}/70</span>
+                  </span>
+                </div>
+              )}
             </FormRow>
 
             {/* 标签 */}
@@ -1355,9 +2166,11 @@ export default function AutoEditDialog() {
               <label className="ae-check-line">
                 <input
                   type="checkbox"
-                  disabled={!basicChecked.tag}
                   checked={tagAdd}
-                  onChange={() => setTagAdd((v) => !v)}
+                  onChange={() => {
+                    ensureBasic('tag');
+                    setTagAdd((v) => !v);
+                  }}
                 />
                 <span className="ae-checkbox-mask" />
                 <span>添加标签</span>
@@ -1365,9 +2178,11 @@ export default function AutoEditDialog() {
               <label className="ae-check-line">
                 <input
                   type="checkbox"
-                  disabled={!basicChecked.tag}
                   checked={tagRemove}
-                  onChange={() => setTagRemove((v) => !v)}
+                  onChange={() => {
+                    ensureBasic('tag');
+                    setTagRemove((v) => !v);
+                  }}
                 />
                 <span className="ae-checkbox-mask" />
                 <span>移除标签</span>
@@ -1541,16 +2356,199 @@ export default function AutoEditDialog() {
             </FormRow>
 
             {/* 视频 */}
-            <FormRow label="视频" disabled>
+            <FormRow label="视频" checked={!!basicChecked.video} onCheck={() => toggleBasicRow('video')} annotationId="basic-video-row">
               <div className="ae-radio-group">
-                {['上传视频', '删除视频'].map((opt) => (
-                  <label key={opt} className="ae-radio">
-                    <input type="radio" name="video" disabled checked={false} onChange={() => {}} />
+                {videoModes.map((mode) => (
+                  <label key={mode.id} className="ae-radio">
+                    <input
+                      type="radio"
+                      name="video"
+                      checked={videoMode === mode.id}
+                      onChange={() => selectVideoMode(mode.id)}
+                    />
                     <span className="ae-radio-mask" />
-                    <span>{opt}</span>
+                    <span>{mode.label}</span>
                   </label>
                 ))}
               </div>
+
+              {videoMode === 'generate' && (
+                <div className="ae-av-card">
+                  <div className="ae-av-row">
+                    <span className="ae-av-label">
+                      <i className="ae-av-req">*</i>已有视频的商品处理方式
+                    </span>
+                    <div className="ae-radio-group">
+                      {videoExistModes.map((item) => (
+                        <label key={item} className="ae-radio">
+                          <input
+                            type="radio"
+                            name="videoExist"
+                            checked={videoExistMode === item}
+                            onChange={() => setVideoExistMode(item)}
+                          />
+                          <span className="ae-radio-mask" />
+                          <span>{item}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="ae-av-row ae-av-row--top">
+                    <span className="ae-av-label">参考图</span>
+                    <p className="ae-av-note">
+                      默认传入主图作为参考图；没有主图时，依次传入 SKU 图和详情图，无需手动选择。
+                    </p>
+                  </div>
+
+                  <div className="ae-av-row">
+                    <span className="ae-av-label">视频模板</span>
+                    <div className="ae-op-btns">
+                      {videoTemplates.map((item) => (
+                        <button
+                          key={item.value}
+                          className={`ae-op-btn${videoTemplate === item.value ? ' active' : ''}`}
+                          type="button"
+                          onClick={() => setVideoTemplate(item.value)}
+                        >
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="ae-av-row">
+                    <span className="ae-av-label">视频时长</span>
+                    <div className="ae-radio-group">
+                      {videoDurations.map((item) => (
+                        <label key={item} className="ae-radio">
+                          <input
+                            type="radio"
+                            name="videoDuration"
+                            checked={videoDuration === item}
+                            onChange={() => setVideoDuration(item)}
+                          />
+                          <span className="ae-radio-mask" />
+                          <span>{item}</span>
+                          <span
+                            className="ae-label-tip ae-av-q"
+                            data-tip="每生成一个视频消耗 xx 算力"
+                            aria-label="每生成一个视频消耗 xx 算力"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                            }}
+                          >
+                            <span className="ae-label-tip-icon">?</span>
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="ae-av-row">
+                    <span className="ae-av-label">视频比例</span>
+                    <div className="ae-op-btns">
+                      {videoRatios.map((item) => (
+                        <button
+                          key={item}
+                          className={`ae-op-btn${videoRatio === item ? ' active' : ''}`}
+                          type="button"
+                          onClick={() => setVideoRatio(item)}
+                        >
+                          {item}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="ae-av-row">
+                    <span className="ae-av-label">销售国家/地区</span>
+                    <div className="ae-vs">
+                      <div
+                        className={`ae-vs-trigger${videoPick?.id === 'market' ? ' is-open' : ''}`}
+                        role="button"
+                        tabIndex={0}
+                        aria-haspopup="listbox"
+                        aria-expanded={videoPick?.id === 'market'}
+                        onClick={(e) => toggleVideoPick('market', e.currentTarget)}
+                      >
+                        <span className="ae-vs-flag">
+                          <Flag code={(videoMarkets.find((m) => m.value === videoMarket) ?? videoMarkets[0]).flag} />
+                        </span>
+                        <span className="ae-vs-text">
+                          {(videoMarkets.find((m) => m.value === videoMarket) ?? videoMarkets[0]).label}
+                        </span>
+                        <ChevronDown size={12} />
+                      </div>
+                      {videoPick?.id === 'market' && (
+                        <div
+                          className="ae-wm-menu ae-wm-menu--fixed ae-vs-menu"
+                          role="listbox"
+                          style={{ left: videoPick.left, width: videoPick.width, maxHeight: videoPick.maxHeight, top: videoPick.top, bottom: videoPick.bottom }}
+                        >
+                          {videoMarkets.map((m) => (
+                            <div
+                              key={m.value}
+                              className={`ae-wm-menu-item ae-vs-opt${m.value === videoMarket ? ' is-active' : ''}`}
+                              role="option"
+                              aria-selected={m.value === videoMarket}
+                              onClick={() => {
+                                setVideoMarket(m.value);
+                                setVideoPick(null);
+                              }}
+                            >
+                              <span className="ae-vs-flag">
+                                <Flag code={m.flag} />
+                              </span>
+                              <span className="ae-vs-opt-label">{m.label}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="ae-av-row">
+                    <span className="ae-av-label">语言</span>
+                    <div className="ae-vs">
+                      <div
+                        className={`ae-vs-trigger${videoPick?.id === 'language' ? ' is-open' : ''}`}
+                        role="button"
+                        tabIndex={0}
+                        aria-haspopup="listbox"
+                        aria-expanded={videoPick?.id === 'language'}
+                        onClick={(e) => toggleVideoPick('language', e.currentTarget)}
+                      >
+                        <span className="ae-vs-text">{videoLanguage}</span>
+                        <ChevronDown size={12} />
+                      </div>
+                      {videoPick?.id === 'language' && (
+                        <div
+                          className="ae-wm-menu ae-wm-menu--fixed ae-vs-menu"
+                          role="listbox"
+                          style={{ left: videoPick.left, width: videoPick.width, maxHeight: videoPick.maxHeight, top: videoPick.top, bottom: videoPick.bottom }}
+                        >
+                          {videoLanguages.map((lang) => (
+                            <div
+                              key={lang}
+                              className={`ae-wm-menu-item ae-vs-opt${lang === videoLanguage ? ' is-active' : ''}`}
+                              role="option"
+                              aria-selected={lang === videoLanguage}
+                              onClick={() => {
+                                setVideoLanguage(lang);
+                                setVideoPick(null);
+                              }}
+                            >
+                              <span className="ae-vs-opt-label">{lang}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </FormRow>
 
             {/* 推广图变白底图（已注释，改由下方 转白底 / 去水印 / 加水印 三个栏目承接） */}
@@ -1617,6 +2615,32 @@ export default function AutoEditDialog() {
                     </div>
                   )}
 
+                  {op.id === 'image-translate' && scopes.length > 0 && (
+                    <div className="ae-translate-mode">
+                      <div className="ae-field-label">翻译方式</div>
+                      <div className="ae-choice-group">
+                        {imageTranslateModes.map((mode) => (
+                          <label
+                            key={mode.id}
+                            className={`ae-choice${imageTranslateMode === mode.id ? ' is-checked' : ''}`}
+                          >
+                            <input
+                              type="radio"
+                              name="imageTranslateMode"
+                              checked={imageTranslateMode === mode.id}
+                              onChange={() => setImageTranslateMode(mode.id)}
+                            />
+                            <span className="ae-choice-dot" />
+                            <span className="ae-choice-content">
+                              <span className="ae-choice-title">{mode.title}</span>
+                              <span className="ae-choice-desc">{mode.desc}</span>
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   {op.id === 'add-watermark' && on && (
                     <WatermarkCard
                       config={wmConfig}
@@ -1669,8 +2693,10 @@ export default function AutoEditDialog() {
               <button
                 className="ae-btn-primary ae-add-spec"
                 type="button"
-                disabled={!skuChecked.spec}
-                onClick={() => setSkuSpecs((prev) => [...prev, `规格${prev.length + 1}`])}
+                onClick={() => {
+                  ensureSku('spec');
+                  setSkuSpecs((prev) => [...prev, `规格${prev.length + 1}`]);
+                }}
               >
                 <PlusIcon /> 添加规格
               </button>
@@ -1697,9 +2723,11 @@ export default function AutoEditDialog() {
                     <input
                       type="radio"
                       name="skuSpecCover"
-                      disabled={!skuChecked.spec}
                       checked={skuSpecCover === mode}
-                      onChange={() => setSkuSpecCover(mode)}
+                      onChange={() => {
+                        ensureSku('spec');
+                        setSkuSpecCover(mode);
+                      }}
                     />
                     <span className="ae-radio-mask" />
                     <span>{mode}</span>
@@ -1713,9 +2741,11 @@ export default function AutoEditDialog() {
                     <input
                       type="radio"
                       name="skuSpecPrice"
-                      disabled={!skuChecked.spec}
                       checked={skuSpecPrice === mode}
-                      onChange={() => setSkuSpecPrice(mode)}
+                      onChange={() => {
+                        ensureSku('spec');
+                        setSkuSpecPrice(mode);
+                      }}
                     />
                     <span className="ae-radio-mask" />
                     <span>{mode}</span>
@@ -1844,9 +2874,11 @@ export default function AutoEditDialog() {
                 <label key={opt} className="ae-check-line">
                   <input
                     type="checkbox"
-                    disabled={!skuChecked.code}
                     checked={skuCodeOpts.includes(opt)}
-                    onChange={() => toggleSkuCodeOpt(opt)}
+                    onChange={() => {
+                      ensureSku('code');
+                      toggleSkuCodeOpt(opt);
+                    }}
                   />
                   <span className="ae-checkbox-mask" />
                   <span>{opt}</span>
@@ -1862,9 +2894,11 @@ export default function AutoEditDialog() {
                     <input
                       type="radio"
                       name="skuWeight"
-                      disabled={!skuChecked.weight}
                       checked={skuWeightMode === mode}
-                      onChange={() => setSkuWeightMode(mode)}
+                      onChange={() => {
+                        ensureSku('weight');
+                        setSkuWeightMode(mode);
+                      }}
                     />
                     <span className="ae-radio-mask" />
                     <span>{mode}</span>
@@ -1882,9 +2916,11 @@ export default function AutoEditDialog() {
                     <input
                       type="radio"
                       name="stockCalc"
-                      disabled={!skuChecked.stock}
                       checked={stockCalc === mode}
-                      onChange={() => setStockCalc(mode)}
+                      onChange={() => {
+                        ensureSku('stock');
+                        setStockCalc(mode);
+                      }}
                     />
                     <span className="ae-radio-mask" />
                     <span>{mode}</span>
@@ -1897,21 +2933,25 @@ export default function AutoEditDialog() {
                   className="ae-input"
                   type="text"
                   inputMode="numeric"
-                  disabled={!skuChecked.stock}
                   value={stockQty}
-                  onChange={(e) => setStockQty(e.target.value.replace(/[^\d]/g, ''))}
+                  onChange={(e) => {
+                    ensureSku('stock');
+                    setStockQty(e.target.value.replace(/[^\d]/g, ''));
+                  }}
                 />
                 <div className="ae-input-steps">
-                  <button className="ae-step" type="button" disabled={!skuChecked.stock} onClick={() => stepStockQty(1)}>▲</button>
-                  <button className="ae-step" type="button" disabled={!skuChecked.stock} onClick={() => stepStockQty(-1)}>▼</button>
+                  <button className="ae-step" type="button" onClick={() => stepStockQty(1)}>▲</button>
+                  <button className="ae-step" type="button" onClick={() => stepStockQty(-1)}>▼</button>
                 </div>
               </div>
               <label className="ae-check-line ae-stock-zero">
                 <input
                   type="checkbox"
-                  disabled={!skuChecked.stock}
                   checked={stockZeroSkip}
-                  onChange={() => setStockZeroSkip((v) => !v)}
+                  onChange={() => {
+                    ensureSku('stock');
+                    setStockZeroSkip((v) => !v);
+                  }}
                 />
                 <span className="ae-checkbox-mask" />
                 <span>当平台记录的库存为0时不做任何修改</span>
@@ -2046,9 +3086,11 @@ export default function AutoEditDialog() {
                   className="ae-input"
                   type="text"
                   placeholder="请输入品牌名称"
-                  disabled={!basicChecked.brand}
                   value={brandValue}
-                  onChange={(e) => setBrandValue(e.target.value)}
+                  onChange={(e) => {
+                    ensureBasic('brand');
+                    setBrandValue(e.target.value);
+                  }}
                   style={{ textAlign: 'left' }}
                 />
                 <div className="ae-hint sub" style={{ color: '#ff781f' }}>请输入完整品牌名称，系统根据名称精准匹配，如对应产品类目不存在该品牌，则更改不生效，品牌默认留空</div>
@@ -2056,7 +3098,7 @@ export default function AutoEditDialog() {
               </>
             )}
 
-            {activeMenu !== 'basic' && activeMenu !== 'image' && activeMenu !== 'sku' && activeMenu !== 'attr' && (
+            {activeMenu !== 'basic' && activeMenu !== 'image' && activeMenu !== 'sku' && activeMenu !== 'attr' && activeMenu !== 'detail' && (
               <div className="ae-empty">该栏目内容沿用线上已有配置</div>
             )}
           </div>

@@ -4,41 +4,44 @@ import { IssueSeverity } from '../lib/issues';
 export const SEVERITY_LABEL: Record<IssueSeverity, string> = {
   violation: '违规',
   suspect: '疑似违规',
+  notice: '建议自查',
   fail: '检测失败',
 };
 
-/** 位置角标：数字为该位置的问题条数，颜色取最高等级 */
-export function MarkerBadge({
-  count,
+/** 定位点：不带数字，数量只在区块标题与检测项卡片头展示 */
+export function LocateDot({
   severity,
   active,
   inline,
+  label,
+  anchorKey,
+  issueKey,
   onClick,
 }: {
-  count: number;
   severity: IssueSeverity;
   active?: boolean;
   inline?: boolean;
+  label?: string;
+  anchorKey?: string;
+  issueKey?: string;
   onClick?: () => void;
 }) {
   return (
     <button
       type="button"
-      className={`dcc-marker dcc-marker--${severity}${inline ? ' dcc-marker--inline' : ''}${active ? ' is-active' : ''}`}
-      title={`${count} 处问题`}
+      data-locate-dot={anchorKey}
+      data-locate-dot-for={issueKey}
+      className={`dcc-locate-dot dcc-locate-dot--${severity}${inline ? ' is-inline' : ''}${active ? ' is-active' : ''}`}
+      title={label ?? '定位到对应检测项'}
+      aria-label="定位到对应检测项"
       onClick={(event) => {
         event.stopPropagation();
         onClick?.();
       }}
     >
-      {count}
+      <span className="dcc-locate-dot__ring" />
     </button>
   );
-}
-
-/** 已检查且未发现问题 */
-export function WeakCheck({ title = '已检查，未发现问题' }: { title?: string }) {
-  return <span className="dcc-weak-check" title={title}>✓</span>;
 }
 
 export function SectionHead({
@@ -49,13 +52,15 @@ export function SectionHead({
 }: {
   title: string;
   meta?: string;
-  tone?: 'clean' | 'checking' | 'issue';
+  tone?: 'clean' | 'checking' | 'issue' | 'violation' | 'suspect' | 'notice' | 'fail';
   children?: React.ReactNode;
 }) {
   return (
     <header className="dcc-pv-head">
       <span className="dcc-pv-section-title">{title}</span>
-      {meta ? <span className={`dcc-pv-meta dcc-pv-meta--${tone}`}>{meta}</span> : null}
+      {meta ? (
+        <span className={`dcc-pv-meta dcc-pv-meta--${tone}`} onClick={(event) => event.stopPropagation()}>{meta}</span>
+      ) : null}
       {children}
     </header>
   );

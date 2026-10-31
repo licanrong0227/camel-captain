@@ -1,0 +1,293 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "dhgate-ad-report",
+    "pageId": "dhgate-ad-report",
+    "nodes": [
+      {
+        "id": "adr-data-source",
+        "index": 1,
+        "title": "数据来源与取数方式",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-data-source\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=adr-data-source",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793100000000,
+        "updatedAt": 1794000000000
+      },
+      {
+        "id": "adr-fetch",
+        "index": 2,
+        "title": "明细拉取与分页",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-fetch\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=adr-fetch",
+          "path": []
+        },
+        "annotationText": "这里是本地分页：明细同步进本地库后，在库里聚合、排序、翻页，不再请求平台。\n\n接口的分页与切片只发生在同步任务里：时间切片（单次最多 31 天，跨月按自然月切）+ 按返回的 count / pages 翻完每片明细。\n\n数据量 ≈ 商品数 × 计划数 × 广告组数 × 天数，100 商品 × 3 计划 × 30 天接近 1 万行，所以必须落库再算，不能打开页面时实时拉。\n\n商品 ID 若必须逐个传，同步的调用量会从「月数 × 页数」放大到「商品数 × 月数 × 页数」，需要限流重试、只拉在投商品。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793400000000,
+        "updatedAt": 1793600000000
+      },
+      {
+        "id": "adr-sync",
+        "index": 3,
+        "title": "同步按钮做什么",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-sync\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=adr-sync",
+          "path": []
+        },
+        "annotationText": "同步负责把敦煌的数据搬进本地库，页面上的数字都读本地库，不会因为点这个按钮去实时调接口。\n\n一次同步 = 两份广告报表 × 时间切片（单次最多 31 天，跨月按自然月切）× 分页翻完明细。日常由定时任务每天 T+1 跑一次，并回补最近 7 天覆盖归因回刷；这个按钮用于手动补一次。\n\n演示里点击后约 1.2 秒完成，只更新「最近同步」时间和写入行数，不改动查询条件。真实环境同步耗时长，可能超时或部分失败，需要展示进度与失败原因。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793500000000,
+        "updatedAt": 1793600000000
+      },
+      {
+        "id": "adr-filter-date",
+        "index": 4,
+        "title": "日期区间与统计口径",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-filter-date\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=adr-filter-date",
+          "path": []
+        },
+        "annotationText": "日期控件直接对应接口的 datelineFrom / datelineTo，接口只接受自然日，没有小时粒度。\n\n· 单次最多 31 天：超过就拦住不让查，因为接口本身限制一个月内，放开也拉不全；\n· 最晚只能选到昨天：数据 T+1 更新，今天的广告数据还没跑完；\n· 环比取「等长且紧邻的前一段」，不是上月同期；前一段早于有数据的第一天时显示「-」。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793003000000,
+        "updatedAt": 1793600000000
+      },
+      {
+        "id": "adr-store",
+        "index": 5,
+        "title": "店铺筛选与汇总",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-store\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=adr-store",
+          "path": []
+        },
+        "annotationText": "店铺不占接口参数：商品维度和订单维度的每条明细都带 nickname，店铺筛选是在拉回来的明细上按 nickname 过滤。\n\n· 选具体店铺 → 只保留该 nickname 的行，表格隐藏店铺列；\n· 选「全部店铺」 → 各店的明细直接相加（明细行本身不会跨店，所以不需要去重），表格多出一列店铺。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793003000001,
+        "updatedAt": 1793600000000
+      },
+      {
+        "id": "adr-cards",
+        "index": 6,
+        "title": "指标卡来源与环比",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-cards\"]"
+          ],
+          "fingerprint": "section|data-annotation-id=adr-cards",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793003000002,
+        "updatedAt": 1793800000000
+      },
+      {
+        "id": "adr-trend",
+        "index": 7,
+        "title": "趋势图来源与口径",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-trend\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=adr-trend",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793003000003,
+        "updatedAt": 1794200000000
+      },
+      {
+        "id": "adr-tabs",
+        "index": 8,
+        "title": "三个视图的分工与来源",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-tabs\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=adr-tabs",
+          "path": []
+        },
+        "annotationText": "三个视图对应两份数据：\n· 商品视图、计划视图 → 商品维度报表，共用同一份明细，只是分组键不同（商品按 nickname + itemcode，计划按 nickname + adType + planName + groupName），所以这两个视图的合计能和指标卡对上；\n· 成单词视图 → 订单维度报表，换了数据源，合计和另外两个对不上是预期的。\n\nGMV 和订单数统一以商品维度为准；成单词视图的订单数只用于选词参考，不要用来核总账。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793003000004,
+        "updatedAt": 1793600000000
+      },
+      {
+        "id": "adr-item-table",
+        "index": 9,
+        "title": "商品视图来源与汇总规则",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-item-table\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=adr-item-table",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793003000005,
+        "updatedAt": 1794700000000
+      },
+      {
+        "id": "adr-plan-table",
+        "index": 10,
+        "title": "计划视图来源与「-」",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-plan-table\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=adr-plan-table",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793003000006,
+        "updatedAt": 1794700000000
+      },
+      {
+        "id": "adr-word-table",
+        "index": 11,
+        "title": "成单词来源与去重",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-word-table\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=adr-word-table",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793003000007,
+        "updatedAt": 1794700000000
+      },
+      {
+        "id": "adr-anomaly",
+        "index": 12,
+        "title": "异常标记的判定",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-anomaly\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=adr-anomaly",
+          "path": []
+        },
+        "annotationText": "两个标记都基于商品维度报表，在「当前筛选 + 当前区间」的加总结果上判断：\n\n· ROAS 低于 1：Σ gmv ÷ Σ usdCost < 1，且消费 > 0、订单 > 0，该行 ROAS 数字标红；\n· 零转化：消费 > 0 但 Σ orders = 0，在商品名后面打标；这类行的 ROAS 会显示 0.00x，不再重复标红。\n\n换个日期、换家店，判定结果会跟着变，不是固定标签。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793003000008,
+        "updatedAt": 1793600000000
+      },
+      {
+        "id": "adr-drawer",
+        "index": 13,
+        "title": "商品下钻的范围",
+        "pageId": "ad-report",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"adr-drawer\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=adr-drawer",
+          "path": []
+        },
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793003000009,
+        "updatedAt": 1794500000000
+      }
+    ],
+    "updatedAt": 1794900000000
+  },
+  "markdownMap": {
+    "adr-cards": "来源：本地库商品维度表，先加总再算比率（非逐行平均）。\n\n**原始量（直接相加）**\n- 广告花费 = Σ usdCost\n- 广告 GMV = Σ gmv\n- 订单数 = Σ orders\n- 曝光量 = Σ imp\n- 点击量 = Σ click\n\n**派生指标（相除得出）**\n- 点击率 = Σ click ÷ Σ imp\n- 点击单价 = Σ usdCost ÷ Σ click\n- 转化率 = Σ orders ÷ Σ click\n- 单均花费 = Σ usdCost ÷ Σ orders\n- 客单价 = Σ gmv ÷ Σ orders\n- ROAS = Σ gmv ÷ Σ usdCost\n\n分母为 0 显示「-」；环比取等长前一段。",
+    "adr-data-source": "数据来自本地库的两张表，都由同步任务写入。\n\n**① 商品维度表**\n- 行粒度：nickname + itemcode + adType + planName + groupName + dateline\n- 字段：imp 曝光、click 点击、usdCost 消费、orders 订单数、gmv GMV\n\n**② 订单维度表**\n- 行粒度：一笔订单里的一个商品行\n- 字段：order_no 订单号、searchword 成单词、order_itemcode / order_product_name 成交商品、gmv、dateline\n\n筛选都作用在本地表的列上：店铺 → nickname，广告类型 → adType，日期 → dateline，所以切换筛选即时出数。",
+    "adr-item-table": "来源：本地库商品维度表，一行 = nickname + itemcode 相同的明细相加；Σ 指按明细行求和。\n\n- 店铺 = nickname\n- 商品 = itemcode（名称、主图按 itemcode 关联商品库）\n- 广告类型 = adType（该商品投过的类型都列出）\n- 曝光量 = Σ imp\n- 点击量 = Σ click\n- 点击率 = Σ click ÷ Σ imp\n- 点击单价 = Σ usdCost ÷ Σ click\n- 订单数 = Σ orders\n- 转化率 = Σ orders ÷ Σ click\n- 单均花费 = Σ usdCost ÷ Σ orders\n- 广告花费 = Σ usdCost\n- 广告 GMV = Σ gmv\n- ROAS = Σ gmv ÷ Σ usdCost",
+    "adr-plan-table": "来源：本地库商品维度表。一行 = nickname + adType + planName + groupName 相同的明细相加。\n\n- 店铺 = nickname\n- 广告类型 = adType\n- 计划 = planName，全店自动为空，显示「-」\n- 广告组 = groupName，商品自动、全店自动为空，显示「-」\n- 指标列与商品视图完全一致：先把 imp、click、usdCost、orders、gmv 分别求和，再用合计值相除算比率\n- 同名计划会合并（只有名称没有 ID），计划改名后历史与新数据分两行",
+    "adr-word-table": "来源：本地库订单维度表（商品维度表里没有成单词，也没有订单号）。一行 = nickname + searchword 相同。\n\n- 店铺 = nickname\n- 成单词 = searchword，空值归「无搜索词」\n- 来源广告 = adType 去重后的类型标签\n- 订单数 = 去重 order_no 的个数（一笔订单买两个商品也只算一单）\n- GMV = Σ gmv\n- 涉及商品数 = 去重 order_itemcode 的个数\n- 最近成单日 = 最大的 dateline\n- 订单明细 = 按 order_no 聚合，列出成交商品与金额，只显示金额最高的 6 笔\n- 订单数据里没有曝光、点击、花费，所以不出流量列，也算不出成单词的 ROAS",
+    "adr-trend": "来源：把当天所有商品、所有计划的花费（或 GMV / 订单 / 点击）相加，得到日值；切换指标只换取值字段，不换数据源。\n\n- 区间内没有投放的日期补 0 占位，不跳过，断档才看得出来\n- 图上只有一条线：当天日值，没有叠加均线等平滑处理\n- 悬停看这一天的数值，同时给出订单数和花费做参照\n- 停在成单词视图时，趋势仍取商品口径——订单数据里没有花费，画不了这个走势",
+    "adr-drawer": "抽屉只统计「当前商品 + 当前筛选区间」，数据读本地库，来源分两块。\n\n**顶部指标（商品维度表）**\n- 花费 = Σ usdCost，GMV = Σ gmv，订单数 = Σ orders，ROAS = Σ gmv ÷ Σ usdCost\n- 取数范围：nickname + itemcode 匹配当前商品的明细行\n\n**按天走势**：同一批明细按 dateline 分组求和，切换花费/GMV/ROAS 只换取值字段\n\n**按计划拆分**：同一批明细按 adType + planName + groupName 分组；商品自动没有广告组、全店自动没有计划，显示「-」\n\n**带单成单词（订单维度表）**：按 nickname + itemcode 取订单行，再按 searchword 分组；订单数去重 order_no，金额 Σ gmv，只列金额最高的 6 个词"
+  },
+  "assetMap": {},
+  "directory": {
+    "nodes": [
+      {
+        "type": "folder",
+        "id": "directory-report",
+        "title": "报表",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "route",
+            "id": "route-ad-report",
+            "title": "广告看板",
+            "route": "ad-report"
+          },
+          {
+            "type": "markdown",
+            "id": "doc-backend-pipeline",
+            "title": "后端实现说明",
+            "markdownPath": "docs/backend-data-pipeline.md"
+          }
+        ]
+      }
+    ]
+  }
+}

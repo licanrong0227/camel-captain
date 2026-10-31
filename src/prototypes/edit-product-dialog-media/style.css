@@ -559,17 +559,17 @@
 .emd-btn-tool--download { left: 200px; top: 59px; }
 .emd-btn-tool--batch-promo { left: 20px; top: 62px; }
 
-.emd-field-label--name { left: 19px; top: 37px; width: 56px; }
-.emd-field-label--desc { left: 361px; top: 37px; width: 56px; }
+.emd-field-label--name { left: 19px; top: 62px; width: 56px; }
+.emd-field-label--desc { left: 361px; top: 62px; width: 56px; }
 
-.emd-input--name { left: 88px; top: 31px; width: 250px; }
-.emd-input--desc { left: 430px; top: 31px; width: 808px; }
+.emd-input--name { left: 88px; top: 56px; width: 250px; }
+.emd-input--desc { left: 430px; top: 56px; width: 808px; }
 
 .emd-upload--video {
   left: 20px;
-  top: 73px;
+  top: 98px;
   width: 160px;
-  height: 120px;
+  height: 96px;
   gap: 10px;
 }
 
@@ -614,3 +614,118 @@
   height: 60px;
 }
 
+/* ---------- AI 生成视频入口 ---------- */
+
+.emd-btn-tool--ai {
+  left: 20px;
+  top: 22px;
+  width: auto;
+  height: 26px;
+  padding: 0 10px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.emd-btn-tool--ai:disabled {
+  background: #ffc59b;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+
+/* ---------- 视频生成中占位 ---------- */
+
+.emd-upload--video-gen {
+  gap: 4px;
+  border-style: solid;
+  border-color: var(--emd-active-border);
+  background: var(--emd-active-bg);
+}
+
+.emd-upload__text--gen {
+  font-weight: 500;
+  color: var(--emd-primary);
+}
+
+.emd-upload__meta {
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--emd-text-secondary);
+}
+
+.emd-spinner {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.emd-spinner span {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 6px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--emd-primary);
+  transform-origin: 50% 9px;
+  animation: emd-spin-fade 1s linear infinite;
+}
+
+@keyframes emd-spin-fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.15;
+  }
+}
+
+.emd-upload__stop {
+  border: 0;
+  padding: 0;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--emd-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.emd-upload__stop:hover {
+  opacity: 0.8;
+}
+
+.emd-upload__bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  overflow: hidden;
+  background: #ffe6d2;
+}
+
+.emd-upload__bar i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--emd-primary);
+  animation: emd-bar-run 1.3s ease-in-out infinite;
+}
+
+@keyframes emd-bar-run {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(230%);
+  }
+}

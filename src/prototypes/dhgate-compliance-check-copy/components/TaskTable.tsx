@@ -46,14 +46,27 @@ export function TaskTable({
               </td>
               <td data-label="质检概览">
                 {(() => {
-                  // 统计口径与商品信息视图一致：一张图/一段文字违反多项时按条计数
-                  const issueCount = view.issueSummary.violation + view.issueSummary.suspect + view.issueSummary.fail;
+                  // 计数按命中记录：违规 / 疑似 / 建议自查 / 检测失败分开统计，检测失败不计入违规
                   const finished = view.status === 'done' || view.status === 'partial-fail';
                   if (!finished) return <span className="dcc-muted">-</span>;
-                  if (issueCount === 0) return <span className="dcc-overview-text is-pass">全部通过</span>;
+                  const { violation, suspect, notice, fail } = view.issueSummary;
+                  if (violation + suspect + notice + fail === 0) {
+                    return <span className="dcc-overview-text is-pass">全部通过</span>;
+                  }
+                  const segments = [
+                    { key: 'v', text: `${violation} 处违规`, className: 'is-reject', show: violation > 0 },
+                    { key: 's', text: `${suspect} 处疑似`, className: 'is-issue', show: suspect > 0 },
+                    { key: 'n', text: `${notice} 项建议自查`, className: 'is-notice', show: notice > 0 },
+                    { key: 'f', text: `${fail} 项检测失败`, className: 'is-muted', show: fail > 0 },
+                  ].filter((segment) => segment.show);
                   return (
-                    <span className={`dcc-overview-text ${view.issueSummary.violation > 0 ? 'is-reject' : 'is-issue'}`}>
-                      共 {issueCount} 处问题
+                    <span className="dcc-overview-text">
+                      {segments.map((segment, index) => (
+                        <React.Fragment key={segment.key}>
+                          {index > 0 ? ' · ' : ''}
+                          <span className={segment.className}>{segment.text}</span>
+                        </React.Fragment>
+                      ))}
                     </span>
                   );
                 })()}

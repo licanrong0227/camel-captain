@@ -11,7 +11,9 @@ import {
   itemFinishedAt,
   setFeedback,
   resolveDhgateInput,
+  ItemStatus,
   ItemView,
+  ResultFeedback,
   TaskStatus,
 } from '../lib/store';
 import { ItemCode, ITEM_DEFS } from '../lib/scenarios';
@@ -22,33 +24,42 @@ import {
   PagePresetValue,
   isDemoRecord,
 } from '../lib/demoScenarios';
-import { countBySeverity, flattenIssues, groupByAnchor, Issue } from '../lib/issues';
+import { Issue, countBySeverity, flattenIssues, highestIssue } from '../lib/issues';
 import { getProductSnapshot } from '../lib/product';
-import { IMAGES, fmtTime, showToast } from '../components/ui';
-import { ItemCard } from '../components/ItemCard';
+import { showToast } from '../components/ui';
+import { ConnectorLines } from '../components/ConnectorLines';
+import { ItemCard, PassItemRow } from '../components/ItemCard';
 import { FeedbackDialog, RecheckDialog, RecheckMode } from '../components/Dialogs';
 import { ProductView } from '../components/ProductView';
-import { IssueDrawer } from '../components/IssueDrawer';
-import { IssueNav } from '../components/IssueNav';
 
-type DialogState = { type: 'feedback'; code: ItemCode; resultKey: string; name: string } | { type: 'recheck' };
-type ViewMode = 'product' | 'items';
+type DialogState =
+  | { type: 'feedback'; code: ItemCode; resultKey: string; context: string; presetReasons?: string[] }
+  | { type: 'recheck' };
 
-const issueDiffKey = (issue: Issue) => `${issue.code}|${issue.anchorKey}`;
+const issueDiffKey = (issue: { code: ItemCode; anchorKey: string }) => `${issue.code}|${issue.anchorKey}`;
 
+const STATUS_ORDER: Record<ItemStatus, number> = {
+  violation: 0,
+  suspect: 1,
+  manual: 2,
+  fail: 3,
+  running: 4,
+  queued: 5,
+  pass: 6,
+};
 
 export function DetailPage({
   taskId,
-  initialView = 'product',
   initialFocus,
   initialPreset,
+  initialLive,
   onBack,
   onOpenTask,
 }: {
   taskId: string;
-  initialView?: ViewMode;
   initialFocus?: ItemCode;
   initialPreset?: PagePresetValue;
+  initialLive?: boolean;
   onBack: () => void;
   onOpenTask: (taskId: string) => void;
 }) {
@@ -56,13 +67,23 @@ export function DetailPage({
   const [dialog, setDialog] = useState<DialogState | null>(null);
   const [urlDraft, setUrlDraft] = useState('');
   const [urlError, setUrlError] = useState('');
-  const [version, setVersion] = useState(0); // 强制在 mutate 后刷新
-  const [viewMode, setViewMode] = useState<ViewMode>(initialView);
-  const [drawerKey, setDrawerKey] = useState<string | null>(null);
-  const [focusCode, setFocusCode] = useState<ItemCode | undefined>(initialFocus);
+  const [version, setVersion] = useState(0);
+  const [activeAnchor, setActiveAnchor] = useState<string | null>(null);
+  const [activeIssueKey, setActiveIssueKey] = useState<string | null>(null);
+  const [linkedKeys, setLinkedKeys] = useState<string[]>([]);
+  const [historyResetToken, setHistoryResetToken] = useState(0);
+  const [linkMode, setLinkMode] = useState<'anchor' | 'issue'>('anchor');
+  const [hoverAnchor, setHoverAnchor] = useState<string | null>(null);
+  const [expandedCodes, setExpandedCodes] = useState<ItemCode[]>([]);
+  const [passOpen, setPassOpen] = useState(false);
+  const [showBackTop, setShowBackTop] = useState(false);
   const [diffBase, setDiffBase] = useState<string[] | null>(null);
   const [diff, setDiff] = useState<{ fixed: number; remain: number; added: number } | null>(null);
   const protoState = useProtoDevState<Record<string, unknown>>();
+  const sideRef = useRef<HTMLDivElement>(null);
+  const userToggled = useRef(false);
+  const autoExpanded = useRef(false);
+  const passToggled = useRef(false);
 
   const task = useMemo(() => getTask(taskId), [taskId, version]);
   const now = Date.now();
@@ -75,17 +96,17 @@ export function DetailPage({
   }, [taskId]);
 
   useEffect(() => {
-    setViewMode(initialView);
-  }, [initialView, taskId]);
-
-  useEffect(() => {
-    setFocusCode(initialFocus);
-  }, [initialFocus, taskId]);
-
-  useEffect(() => {
     setDiff(null);
     setDiffBase(null);
-    setDrawerKey(null);
+    setActiveAnchor(null);
+    setActiveIssueKey(null);
+    setLinkedKeys([]);
+    setHoverAnchor(null);
+    setExpandedCodes([]);
+    setPassOpen(false);
+    userToggled.current = false;
+    autoExpanded.current = false;
+    passToggled.current = false;
   }, [taskId]);
 
   const running = view ? ['pending', 'collecting', 'checking'].includes(view.status) : false;
@@ -94,6 +115,27 @@ export function DetailPage({
     const timer = window.setInterval(() => setTick((prev) => prev + 1), 1000);
     return () => window.clearInterval(timer);
   }, [running]);
+
+  useEffect(() => {
+    const onScroll = () => setShowBackTop(window.scrollY > 400);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [taskId]);
+
+  // 点击页面留白隐藏连线并取消选中/定位；条目、商品信息问题位置、按钮等交互区域忽略
+  useEffect(() => {
+    const onBlankClick = (event: MouseEvent) => {
+      const target = event.target as Element | null;
+      if (!target?.closest) return;
+      if (target.closest('.dcc-issue-entry, [data-locate-dot], [data-locate-dot-for], .dcc-pv-overall-item, .has-issue, .dcc-modal, [role="dialog"], .dcc-lightbox, .dcc-toast-host, button, a, input, select, textarea, label')) return;
+      setLinkedKeys([]);
+      setActiveAnchor(null);
+      setActiveIssueKey(null);
+    };
+    document.addEventListener('click', onBlankClick, true);
+    return () => document.removeEventListener('click', onBlankClick, true);
+  }, []);
 
   /* ---- 演示场景合成：整页预设 + 模块场景 + 单检测项覆盖（仅箱包模板记录） ---- */
   const isDemoTask = isDemoRecord(task);
@@ -104,7 +146,6 @@ export function DetailPage({
 
   useEffect(() => {
     if (!isDemoTask) return;
-    // 面板切换预设后写回 URL 的 preset 不应再触发一次入口预设
     appliedPreset.current = pageState;
     if (lastPageState.current === null || lastPageState.current === pageState) {
       lastPageState.current = pageState;
@@ -114,7 +155,6 @@ export function DetailPage({
     setProtoDevState(OVERRIDE_RESET_STATE);
   }, [isDemoTask, pageState]);
 
-  // 入口预设：按记录结果或 URL 带出场景；同一挂载内 URL 预设变化时重新套用
   useEffect(() => {
     if (!isDemoTask) return;
     const target = initialPreset ?? 'flow';
@@ -126,7 +166,6 @@ export function DetailPage({
       : { ...OVERRIDE_RESET_STATE, page_state: target, collect_state: 'flow' });
   }, [isDemoTask, initialPreset]);
 
-  // 非场景演示记录（只可能是采集失败页）不消费场景状态，面板回到「跟随」，避免出现点了没反应的状态
   useEffect(() => {
     if (isDemoTask) return;
     setProtoDevState(DEMO_RESET_STATE);
@@ -144,53 +183,165 @@ export function DetailPage({
       })
     : null;
 
-  // 采集失败可单独演示，且优先于检测场景
+  const liveCollecting = Boolean(initialLive && isDemoTask && view && (view.status === 'pending' || view.status === 'collecting'));
+  const liveProgressive = Boolean(initialLive && isDemoTask && scene && view && view.status === 'checking');
+  const liveItems = liveProgressive && scene && view
+    ? view.items.map((real) => {
+        const revealed = !['queued', 'running'].includes(real.status);
+        return revealed ? (scene.items.find((item) => item.code === real.code) ?? real) : real;
+      })
+    : null;
+
   const statusShown: TaskStatus = protoState.collect_state === 'failed'
     ? 'collect-failed'
-    : (scene?.statusShown ?? view?.status ?? 'pending');
+    : liveCollecting && view
+      ? view.status
+      : liveProgressive
+        ? 'checking'
+        : (scene?.statusShown ?? view?.status ?? 'pending');
   const composedSnapshot = scene?.snapshot ?? snapshot;
 
-  // 采集期间只展示当前卡片 loading，结论条与质检项卡片不展示
   const collectLoading = statusShown === 'pending' || statusShown === 'collecting';
-  const itemsShown: ItemView[] = !scene || statusShown === 'collect-failed' || collectLoading ? [] : scene.items;
+  const itemsShown: ItemView[] = !scene || statusShown === 'collect-failed' || collectLoading
+    ? []
+    : (liveItems ?? scene.items);
   const issues = flattenIssues(itemsShown);
-  const groups = groupByAnchor(issues);
   const issueCounts = countBySeverity(issues);
+  const settled = statusShown === 'done' || statusShown === 'partial-fail';
+  const checking = itemsShown.some((item) => item.status === 'queued' || item.status === 'running');
   const progress = {
     done: itemsShown.filter((item) => item.status !== 'queued' && item.status !== 'running').length,
     total: ITEM_DEFS.length,
   };
-  const issueMapByCode = new Map<ItemCode, { violation: number; suspect: number; fail: number }>();
-  issues.forEach((issue) => {
-    const entry = issueMapByCode.get(issue.code) ?? { violation: 0, suspect: 0, fail: 0 };
-    if (issue.severity === 'violation') entry.violation += 1;
-    else if (issue.severity === 'suspect') entry.suspect += 1;
-    else entry.fail += 1;
-    issueMapByCode.set(issue.code, entry);
-  });
-  const checking = itemsShown.some((item) => item.status === 'queued' || item.status === 'running');
 
-  let conclusionView: { level: string; text: string };
-  if (!view) {
-    conclusionView = { level: 'checking', text: '' };
-  } else if (statusShown === 'collect-failed' || statusShown === 'canceled') {
-    conclusionView = { level: view.conclusion.level, text: view.conclusion.text };
-  } else if (collectLoading) {
-    conclusionView = { level: 'checking', text: view.conclusion.text };
-  } else if (checking) {
-    conclusionView = {
-      level: 'checking',
-      text: `质检进行中，已完成 ${progress.done}/${progress.total} 项`,
-    };
-  } else {
-    const level = issueCounts.violation > 0 ? 'reject' : issueCounts.suspect > 0 ? 'manual' : issueCounts.fail > 0 ? 'partial' : 'pass';
-    const text = level === 'pass'
-      ? '全部检测通过，未发现问题'
-      : '存在违规、疑似违规或检测失败，请查看下方明细';
-    conclusionView = { level, text };
-  }
+  const activeItems = itemsShown
+    .filter((item) => item.status !== 'pass')
+    .sort((a, b) => (settled ? STATUS_ORDER[a.status] - STATUS_ORDER[b.status] : 0));
+  const passItems = itemsShown.filter((item) => item.status === 'pass');
+
+  /* ---- 默认展开第一个问题项；用户手动操作后不再自动改 ---- */
+  const firstProblemCode = itemsShown.find((item) => ['violation', 'suspect', 'manual'].includes(item.status))?.code;
+  useEffect(() => {
+    if (collectLoading || userToggled.current || autoExpanded.current || !firstProblemCode) return;
+    autoExpanded.current = true;
+    setExpandedCodes([firstProblemCode]);
+  }, [firstProblemCode, collectLoading]);
+
+  // 全部通过时没有展开项可看，直接把通过分组展开；出现问题时再收起
+  useEffect(() => {
+    if (!passToggled.current && activeItems.length === 0 && passItems.length > 0) setPassOpen(true);
+  }, [activeItems.length, passItems.length]);
+
+  useEffect(() => {
+    if (!passToggled.current && activeItems.length > 0) setPassOpen(false);
+  }, [activeItems.length]);
+
+  /* ---- 右栏滚动：只滚侧栏，不带动左侧商品信息 ---- */
+  const scrollSideTo = (element: HTMLElement | null) => {
+    const side = sideRef.current;
+    if (!side || !element) return;
+    const head = side.querySelector('.dcc-side-head') as HTMLElement | null;
+    const offset = (head?.offsetHeight ?? 0) + 16;
+    const sideRect = side.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+    side.scrollTo({ top: side.scrollTop + elementRect.top - sideRect.top - offset, behavior: 'smooth' });
+  };
+
+  const locate = (anchorKey: string, issueKey?: string, source: 'anchor' | 'issue' = 'anchor') => {
+    // 历史轮次下从商品信息发起连线时，先让右栏回到最新一轮
+    setHistoryResetToken((prev) => prev + 1);
+    setLinkMode(source);
+    setActiveAnchor(anchorKey);
+    const matches = issues.filter((issue) => issue.anchorKey === anchorKey);
+    const target = issueKey ?? highestIssue(matches)?.key ?? null;
+    const targetIssue = target ? issues.find((issue) => issue.key === target) : undefined;
+    if (matches.length > 0) {
+      if (source === 'issue' && targetIssue) {
+        // 点右栏某条记录：只展开它所属的检测项，不连带展开同位置的其他卡片
+        setExpandedCodes((prev) => (prev.includes(targetIssue.code) ? prev : [...prev, targetIssue.code]));
+      } else {
+        const codes = [...new Set(matches.map((issue) => issue.code))];
+        setExpandedCodes(codes);
+      }
+    }
+    setActiveIssueKey(target);
+    setLinkedKeys(source === 'issue' && issueKey ? [issueKey] : matches.map((issue) => issue.key));
+    window.requestAnimationFrame(() => {
+      // 滚动到商品信息上的圆点而不是整块内容：长图高过视口时圆点仍可见，连线才有落点
+      const issueDot = target
+        ? (document.querySelector(`[data-locate-dot-for="${target}"]`) as HTMLElement | null)
+        : null;
+      const anchorDot = document.querySelector(`[data-locate-dot="${anchorKey}"]`) as HTMLElement | null;
+      (issueDot ?? anchorDot ?? document.getElementById(`anchor-${anchorKey}`))?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
+    if (target) {
+      window.setTimeout(() => scrollSideTo(document.getElementById(`issue-${target}`)), 120);
+    }
+  };
+
+  useEffect(() => {
+    if (!initialFocus) return undefined;
+    autoExpanded.current = true;
+    setExpandedCodes([initialFocus]);
+    const timer = window.setTimeout(() => scrollSideTo(document.getElementById(`item-${initialFocus}`)), 160);
+    return () => window.clearTimeout(timer);
+  }, [initialFocus, taskId]);
+
+  const jumpTo = (status: ItemStatus) => {
+    if (status === 'pass') {
+      setPassOpen(true);
+      window.setTimeout(() => scrollSideTo(document.getElementById('dcc-pass-group')), 120);
+      return;
+    }
+    const item = activeItems.find((entry) => entry.status === status);
+    if (!item) return;
+    setExpandedCodes([item.code]);
+    window.setTimeout(() => scrollSideTo(document.getElementById(`item-${item.code}`)), 120);
+  };
+
+  const clearFocus = () => {
+    setLinkedKeys([]);
+    setActiveAnchor(null);
+    setActiveIssueKey(null);
+  };
+
+  const toggleItem = (code: ItemCode) => {
+    userToggled.current = true;
+    clearFocus();
+    setExpandedCodes((prev) => (prev.includes(code) ? prev.filter((entry) => entry !== code) : [...prev, code]));
+  };
+
+  const collapseAll = () => {
+    userToggled.current = true;
+    passToggled.current = true;
+    clearFocus();
+    setExpandedCodes([]);
+    setPassOpen(false);
+  };
+
+  const expandAll = () => {
+    userToggled.current = true;
+    passToggled.current = true;
+    clearFocus();
+    setExpandedCodes(activeItems.map((item) => item.code));
+    setPassOpen(passItems.length > 0);
+  };
+
+  const openCount = activeItems.filter((item) => expandedCodes.includes(item.code)).length;
+  const anyOpen = openCount > 0 || (passOpen && passItems.length > 0);
+  const allCollapsed = !anyOpen;
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   const issueSignature = issues.map(issueDiffKey).join(',');
+  const connectorLinks = useMemo(
+    () =>
+      linkedKeys.flatMap((key) => {
+        const issue: Issue | undefined = issues.find((entry) => entry.key === key);
+        return issue ? [{ key: issue.key, anchorKey: issue.anchorKey, severity: issue.severity }] : [];
+      }),
+    [linkedKeys, issueSignature],
+  );
   useEffect(() => {
     if (!diffBase) return;
     if (statusShown !== 'done' && statusShown !== 'partial-fail') return;
@@ -210,14 +361,6 @@ export function DetailPage({
     setDiffBase(null);
   }, [diffBase, statusShown, issueSignature]);
 
-  useEffect(() => {
-    if (viewMode !== 'items' || !focusCode) return undefined;
-    const timer = window.setTimeout(() => {
-      document.getElementById(`item-${focusCode}`)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    }, 80);
-    return () => window.clearTimeout(timer);
-  }, [viewMode, focusCode, version]);
-
   if (!task || !view || !snapshot) {
     return (
       <div className="dcc-card">
@@ -231,36 +374,22 @@ export function DetailPage({
     setVersion((prev) => prev + 1);
   };
 
-  const handleFeedback = (code: ItemCode, resultKey: string, mode: 'up' | 'down', label?: string) => {
-    const item = itemsShown.find((entry) => entry.code === code);
-    const current = item?.override?.resultFeedback?.[resultKey]?.mode ?? null;
-    if (current === mode) {
-      mutate(() => {
-        setFeedback(task.id, code, resultKey, null);
-        showToast('info', mode === 'up' ? '已取消满意' : '已取消不满意');
-      });
-      return;
-    }
-    if (mode === 'up') {
-      mutate(() => {
-        setFeedback(task.id, code, resultKey, 'up');
-        showToast('success', '感谢反馈：已标记满意');
-      });
-      return;
-    }
-    const def = ITEM_DEFS.find((entry) => entry.code === code);
-    setDialog({ type: 'feedback', code, resultKey, name: label ?? item?.name ?? def?.name ?? '' });
-  };
-
-  const feedbackByResult: Record<string, 'up' | 'down' | null> = {};
+  const feedbackMap: Record<string, ResultFeedback | undefined> = {};
   itemsShown.forEach((item) => {
     Object.entries(item.override?.resultFeedback ?? {}).forEach(([key, feedback]) => {
-      feedbackByResult[key] = feedback.mode;
+      feedbackMap[key] = feedback;
     });
   });
 
-  const onRecheck = () => {
-    setDialog({ type: 'recheck' });
+  const openFeedback = (code: ItemCode, resultKey: string, context: string, presetReasons?: string[]) => {
+    setDialog({ type: 'feedback', code, resultKey, context, presetReasons });
+  };
+
+  const cancelFeedback = (code: ItemCode, resultKey: string) => {
+    mutate(() => {
+      setFeedback(task.id, code, resultKey, null);
+      showToast('info', '已取消反馈');
+    });
   };
 
   const onRetryCollect = () => {
@@ -273,20 +402,18 @@ export function DetailPage({
     }
     mutate(() => {
       if (raw && result.url !== task.url) {
-        mutateTask(task.id, (t) => {
-          t.url = result.url!;
-          if (result.productId) t.productId = result.productId;
+        mutateTask(task.id, (entry) => {
+          entry.url = result.url!;
+          if (result.productId) entry.productId = result.productId;
         });
       }
       retryCollect(task.id);
-      // 采集失败卡可能是标注面板强制展示的，点击后恢复跟随真实任务状态，页面重新进入采集中
       setProtoDevState({ ...DEMO_RESET_STATE, collect_state: 'flow' });
       setUrlError('');
       showToast('success', '已重新发起采集');
     });
   };
 
-  // 就地重新检测在当前记录上完成（会给出变化摘要）；重新采集并检测另建一条新记录
   const onRecheckConfirm = (mode: RecheckMode) => {
     const before = issues.map(issueDiffKey);
     setDialog(null);
@@ -297,10 +424,16 @@ export function DetailPage({
       if (isDemoTask) setProtoDevState({ ...DEMO_RESET_STATE, collect_state: 'flow' });
       setDiff(null);
       setDiffBase(before.length > 0 ? before : null);
+      setActiveAnchor(null);
+      setActiveIssueKey(null);
+      setLinkedKeys([]);
+      setExpandedCodes([]);
+      userToggled.current = false;
+      autoExpanded.current = false;
+      passToggled.current = false;
       showToast('success', '已在当前记录重新检测，结果将逐项更新');
       return;
     }
-    // 重新采集并检测：创建一条新记录，原记录保留不变
     const newId = recheckAsNewRecord(task.id, isDemoTask);
     if (!newId) return;
     setDiff(null);
@@ -309,40 +442,52 @@ export function DetailPage({
     onOpenTask(newId);
   };
 
-  const switchView = (mode: ViewMode, focus?: ItemCode) => {
-    setViewMode(mode);
-    setDrawerKey(null);
-    if (mode === 'items' && focus) setFocusCode(focus);
-    const params = new URLSearchParams({ page: 'detail', task: taskId, view: mode });
-    if (focus) params.set('focus', focus);
-    if (isDemoTask && pageState !== 'flow') params.set('preset', pageState);
-    window.location.hash = params.toString();
-  };
-
-  const scrollToAnchor = (key: string) => {
-    document.getElementById(`anchor-${key}`)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
-  };
-
-  const openDrawerGroup = (key: string) => {
-    setDrawerKey(key);
-    scrollToAnchor(key);
-  };
+  let conclusionLevel = 'checking';
+  let conclusionPrefix = '';
+  let conclusionSuffix = '';
+  if (checking) {
+    conclusionPrefix = `检测进行中，已完成 ${progress.done}/${progress.total} 项`;
+  } else if (issueCounts.violation > 0) {
+    conclusionLevel = 'reject';
+    conclusionPrefix = '不通过：';
+  } else if (issueCounts.suspect > 0) {
+    conclusionLevel = 'suspect';
+    conclusionPrefix = '未发现违规：';
+    conclusionSuffix = '，建议人工确认';
+  } else if (issueCounts.notice > 0) {
+    conclusionLevel = 'notice';
+    conclusionPrefix = '未发现违规：';
+  } else if (issueCounts.fail > 0) {
+    conclusionLevel = 'partial';
+    conclusionPrefix = '检测未完成：';
+  } else {
+    conclusionLevel = 'pass';
+    conclusionPrefix = '全部检测通过，未发现问题';
+  }
+  const conclusionSegments = checking
+    ? []
+    : [
+        { key: 'violation', tone: 'violation', text: `${issueCounts.violation} 处违规`, show: issueCounts.violation > 0 },
+        { key: 'suspect', tone: 'suspect', text: `${issueCounts.suspect} 处疑似`, show: issueCounts.suspect > 0 },
+        { key: 'notice', tone: 'notice', text: `${issueCounts.notice} 项建议自查`, show: issueCounts.notice > 0 },
+        { key: 'fail', tone: 'fail', text: `${issueCounts.fail} 项检测失败`, show: issueCounts.fail > 0 },
+      ].filter((segment) => segment.show);
 
   return (
-    <div className={`dcc-detail${drawerKey ? ' has-drawer' : ''}`}>
+    <div className="dcc-detail">
       <div className="dcc-detail-topbar">
         <div data-annotation-id="dcc-demo-preset">
           <button type="button" className="dcc-btn" onClick={onBack}>← 返回质检记录</button>
         </div>
         <div className="dcc-detail-topbar-actions" data-annotation-id="dcc-recheck-entry">
           {statusShown !== 'collect-failed' && (
-            <button type="button" className="dcc-btn" onClick={onRecheck}>重新检测</button>
+            <button type="button" className="dcc-btn" onClick={() => setDialog({ type: 'recheck' })}>重新检测</button>
           )}
         </div>
       </div>
 
       {statusShown === 'collect-failed' ? (
-        <div className="dcc-card dcc-fail-card">
+        <section className="dcc-card dcc-fail-card" data-annotation-id="dcc-summary-card">
           <div className="dcc-fail-title">采集失败</div>
           <div className="dcc-fail-reason">失败原因：{task.collectFailedReason ?? '未获取到商品数据，请检查链接后重试采集。'}</div>
           <div className="dcc-fail-tip">任务已保存，可修正链接问题后重新采集；期间可离开页面，不影响任务。</div>
@@ -351,8 +496,8 @@ export function DetailPage({
               <input
                 className={`dcc-input${urlError ? ' is-error' : ''}`}
                 value={urlDraft}
-                onChange={(e) => {
-                  setUrlDraft(e.target.value);
+                onChange={(event) => {
+                  setUrlDraft(event.target.value);
                   setUrlError('');
                 }}
                 placeholder="粘贴正确的敦煌网商品链接或商品 itemCode"
@@ -361,16 +506,10 @@ export function DetailPage({
             </div>
             <div className="dcc-edit-url-hint">链接填错了？直接在这里改成正确的链接或商品 itemCode（会自动补全）；留空则按原链接重新采集。</div>
           </div>
-          <button
-            type="button"
-            className="dcc-btn dcc-btn--primary"
-            onClick={onRetryCollect}
-          >
-            重新采集
-          </button>
-        </div>
+          <button type="button" className="dcc-btn dcc-btn--primary" onClick={onRetryCollect}>重新采集</button>
+        </section>
       ) : collectLoading ? (
-        <div className="dcc-card dcc-summary-card dcc-summary-card--loading">
+        <section className="dcc-card dcc-summary-card dcc-summary-card--loading" data-annotation-id="dcc-summary-card">
           <div className="dcc-summary-img dcc-img-skeleton" />
           <div className="dcc-summary-info">
             <div className="dcc-collect-loading-head">
@@ -383,13 +522,20 @@ export function DetailPage({
               <i style={{ width: '40%' }} />
             </div>
           </div>
-        </div>
+        </section>
       ) : (
         <>
-          <div data-annotation-id="dcc-conclusion-bar" className={`dcc-conclusion-bar dcc-conclusion-bar--${conclusionView.level}`}>
+          <div data-annotation-id="dcc-conclusion-bar" className={`dcc-conclusion-bar dcc-conclusion-bar--${conclusionLevel}`}>
             <div className="dcc-conclusion-text">
-              结论：{conclusionView.text}
-              {conclusionView.level === 'checking' && <span className="dcc-spinner dcc-spinner--small" />}
+              <span>{conclusionPrefix}</span>
+              {conclusionSegments.map((segment, index) => (
+                <React.Fragment key={segment.key}>
+                  {index > 0 ? ' · ' : ''}
+                  <span className={`dcc-count-seg dcc-count-seg--${segment.tone}`}>{segment.text}</span>
+                </React.Fragment>
+              ))}
+              {conclusionSuffix ? <span>{conclusionSuffix}</span> : null}
+              {checking && <span className="dcc-spinner dcc-spinner--small" />}
               {diff && (
                 <span className="dcc-recheck-diff">
                   本次重新检测：{diff.fixed} 处已修复 · {diff.remain} 处仍存在 · {diff.added} 处新增
@@ -399,56 +545,69 @@ export function DetailPage({
             </div>
           </div>
 
-          <div className="dcc-view-bar">
-            <div className="dcc-view-tabs" role="tablist">
-              <button
-                type="button"
-                role="tab"
-                aria-selected={viewMode === 'product'}
-                className={`dcc-view-tab${viewMode === 'product' ? ' is-active' : ''}`}
-                onClick={() => switchView('product')}
-              >按商品信息维度查看</button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={viewMode === 'items'}
-                className={`dcc-view-tab${viewMode === 'items' ? ' is-active' : ''}`}
-                onClick={() => switchView('items')}
-              >按检测项维度查看</button>
-            </div>
-            {checking ? (
-              <span className="dcc-view-progress">
-                <span className="dcc-spinner dcc-spinner--small" />
-                检测中 {progress.done}/{progress.total}
-              </span>
-            ) : (
-              <span className="dcc-view-note">共 {issues.length} 处问题 · {issues.length ? `${groups.length} 个位置` : '未发现问题'}</span>
-            )}
-          </div>
-
-          {itemsShown.length > 0 && (
-            viewMode === 'product' ? (
+          <div className="dcc-split" data-annotation-id="dcc-split">
+            <div className="dcc-split__main">
               <ProductView
                 task={task}
                 snapshot={composedSnapshot ?? snapshot}
                 items={itemsShown}
                 issues={issues}
-                groups={groups}
                 statusShown={statusShown}
-                activeKey={drawerKey}
-                onOpenGroup={openDrawerGroup}
+                activeAnchor={activeAnchor}
+                activeIssueKey={activeIssueKey}
+                hoverAnchor={hoverAnchor}
+                onLocate={locate}
+                onHover={setHoverAnchor}
               />
-            ) : (
-              <div className="dcc-item-list">
-                {itemsShown.map((item) => (
+            </div>
+
+            <aside className="dcc-split__side" ref={sideRef} data-annotation-id="dcc-side-groups">
+              <header className={`dcc-side-head${linkedKeys.length > 0 ? ' is-dimmed' : ''}`}>
+                <div className="dcc-side-head-row">
+                  <span className="dcc-side-title">检测项汇总</span>
+                  <span className="dcc-side-total">{itemsShown.length} 项</span>
+                  {checking ? (
+                    <span className="dcc-side-progress"><span className="dcc-spinner dcc-spinner--small" />{progress.done}/{progress.total}</span>
+                  ) : null}
+                  <button type="button" className="dcc-btn dcc-btn--text dcc-side-collapse" onClick={allCollapsed ? expandAll : collapseAll}>
+                    {allCollapsed ? '全部展开' : '全部收起'}
+                  </button>
+                </div>
+                <div className="dcc-side-chips" role="group" aria-label="按结果筛选检测项">
+                  {issueCounts.violation > 0 && (
+                    <button type="button" className="dcc-side-chip dcc-side-chip--violation" onClick={() => jumpTo('violation')}>违规 {issueCounts.violation}</button>
+                  )}
+                  {issueCounts.suspect > 0 && (
+                    <button type="button" className="dcc-side-chip dcc-side-chip--suspect" onClick={() => jumpTo('suspect')}>疑似 {issueCounts.suspect}</button>
+                  )}
+                  {issueCounts.notice > 0 && (
+                    <button type="button" className="dcc-side-chip dcc-side-chip--notice" onClick={() => jumpTo('manual')}>建议自查 {issueCounts.notice}</button>
+                  )}
+                  {issueCounts.fail > 0 && (
+                    <button type="button" className="dcc-side-chip dcc-side-chip--fail" onClick={() => jumpTo('fail')}>检测失败 {issueCounts.fail}</button>
+                  )}
+                  {passItems.length > 0 && (
+                    <button type="button" className="dcc-side-chip dcc-side-chip--pass" onClick={() => jumpTo('pass')}>通过 {passItems.length}</button>
+                  )}
+                </div>
+              </header>
+
+              <div className={`dcc-side-list${linkedKeys.length > 0 ? ' is-linking' : ''}`}>
+                {activeItems.map((item) => (
                   <ItemCard
                     key={item.code}
                     view={item}
-                    issueCount={issueMapByCode.get(item.code)}
-                    focused={focusCode === item.code}
-                    resultFeedback={item.override?.resultFeedback}
-                    currentAt={itemFinishedAt(task, item.code)}
-                    onFeedback={(resultKey, mode, label) => handleFeedback(item.code, resultKey, mode, label)}
+                    issues={issues.filter((issue) => issue.code === item.code)}
+                    expanded={expandedCodes.includes(item.code)}
+                    onToggle={() => toggleItem(item.code)}
+                    selectedIssueKey={activeIssueKey}
+                    activeAnchor={activeAnchor}
+                    hoverAnchor={hoverAnchor}
+                    feedbackMap={feedbackMap}
+                    onLocate={locate}
+                    onHover={setHoverAnchor}
+                    onFeedback={(resultKey, context, presetReasons) => openFeedback(item.code, resultKey, context, presetReasons)}
+                    onCancelFeedback={(resultKey) => cancelFeedback(item.code, resultKey)}
                     onRetry={() =>
                       mutate(() => {
                         retryItem(task.id, item.code, {
@@ -459,36 +618,63 @@ export function DetailPage({
                         showToast('success', `已重试「${item.name}」，仅该项重新检测`);
                       })
                     }
+                    linkedIssueKeys={linkedKeys}
+                    anchorLinkMode={linkMode === 'anchor'}
+                    historyResetToken={historyResetToken}
+                    onHistoryViewChange={(viewingHistory) => {
+                      // 历史轮次可能命中不同位置，切过去时断开连线并取消当前定位/选中
+                      if (!viewingHistory) return;
+                      setLinkedKeys([]);
+                      setActiveAnchor(null);
+                      setActiveIssueKey(null);
+                    }}
+                    currentAt={itemFinishedAt(task, item.code)}
                   />
                 ))}
+
+                {passItems.length > 0 && (
+                  <section id="dcc-pass-group" className="dcc-side-pass">
+                    <button
+                      type="button"
+                      className="dcc-side-pass-head"
+                      aria-expanded={passOpen}
+                      aria-label={passOpen ? '收起通过项' : '展开通过项'}
+                      onClick={() => { passToggled.current = true; clearFocus(); setPassOpen((prev) => !prev); }}
+                    >
+                      <span className="dcc-side-pass-title">检测通过 {passItems.length} 项</span>
+                      <span className={`dcc-side-pass-toggle${passOpen ? ' is-open' : ''}`} aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="m6 15 6-6 6 6" />
+                        </svg>
+                      </span>
+                    </button>
+                    {passOpen && (
+                      <div className="dcc-pass-list">
+                        {passItems.map((item) => (
+                          <PassItemRow
+                            key={item.code}
+                            view={item}
+                            feedback={feedbackMap[`${item.code}:0`]}
+                            onFeedback={(resultKey, context, presetReasons) => openFeedback(item.code, resultKey, context, presetReasons)}
+                            onCancelFeedback={(resultKey) => cancelFeedback(item.code, resultKey)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </section>
+                )}
               </div>
-            )
-          )}
+            </aside>
+          </div>
         </>
       )}
 
-      {(view.status === 'canceled') && (
+      {view.status === 'canceled' && (
         <div className="dcc-card dcc-fail-card">
           <div className="dcc-fail-title">任务已取消</div>
           <div className="dcc-fail-tip">可点击右上角「重新检测」创建新任务。</div>
         </div>
       )}
-
-      <IssueDrawer
-        open={drawerKey !== null}
-        groups={groups}
-        activeKey={drawerKey}
-        feedbackByResult={feedbackByResult}
-        onClose={() => setDrawerKey(null)}
-        onSelectGroup={scrollToAnchor}
-        onFeedback={handleFeedback}
-      />
-
-      <IssueNav
-        issues={issues}
-        onLocate={openDrawerGroup}
-        hidden={viewMode !== 'product' || collectLoading || statusShown === 'collect-failed' || statusShown === 'canceled' || drawerKey !== null}
-      />
 
       {dialog?.type === 'recheck' && (
         <RecheckDialog
@@ -499,16 +685,33 @@ export function DetailPage({
 
       {dialog?.type === 'feedback' && (
         <FeedbackDialog
-          itemName={dialog.name}
+          context={dialog.context}
+          initialReasons={dialog.presetReasons}
           onCancel={() => setDialog(null)}
           onSubmit={(reasons, text) =>
             mutate(() => {
-              setFeedback(task.id, dialog.code, dialog.resultKey, 'down', reasons, text);
+              setFeedback(task.id, dialog.code, dialog.resultKey, { reasons, text, at: Date.now() });
               setDialog(null);
-              showToast('success', '感谢反馈，将用于评估这条检测结果的质量');
+              showToast('success', '已提交反馈，感谢');
             })
           }
         />
+      )}
+
+      <ConnectorLines links={connectorLinks} />
+
+      {showBackTop && (
+        <button
+          type="button"
+          className="dcc-back-top"
+          data-annotation-id="dcc-back-top"
+          aria-label="返回顶部"
+          title="返回顶部"
+          onClick={scrollToTop}
+        >
+          <span className="dcc-back-top-icon" aria-hidden="true">↑</span>
+          返回顶部
+        </button>
       )}
     </div>
   );

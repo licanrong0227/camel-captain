@@ -20,6 +20,7 @@ import thumb9 from './assets/thumb-9.jpg';
 import icSun from './assets/icons/sun.svg';
 import icMenu from './assets/icons/menu.svg';
 import icHelp from './assets/icons/help.svg';
+import icQuestion from './assets/icons/question-blue.svg';
 import icCrown from './assets/icons/crown.svg';
 import icCaret from './assets/icons/caret-down.svg';
 import icChevron from './assets/icons/chevron-down.svg';
@@ -252,7 +253,54 @@ const ROWS: ProductRow[] = [
   },
 ];
 
-const BATCH_ACTIONS = ['批量编辑', '批量更新发布', '批量标签', '批量删除', '批量AI克隆', '批量下架', '批量关联产品模板'];
+const BATCH_ACTIONS = ['批量编辑', '批量更新价格', '批量更新发布', '批量标签', '批量删除', '批量AI克隆', '批量下架', '批量关联产品模板'];
+
+const ROW_ACTIONS = ['编辑', '更新价格', '更新发布', '标签', '删除', 'AI一键克隆'];
+
+const PRICE_UPDATE_TIP = '仅提交并更新价格信息，无需审核；如果有调整价格以外的其他信息，仍需重新发布审核';
+
+function PriceUpdateTip() {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [tip, setTip] = useState<{ left: number; top: number; arrow: number } | null>(null);
+  const WIDTH = 300;
+
+  const show = () => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const center = rect.left + rect.width / 2;
+    const left = Math.max(12, Math.min(center - WIDTH / 2, window.innerWidth - WIDTH - 12));
+    setTip({ left, top: rect.top - 8, arrow: Math.min(Math.max(center - left, 14), WIDTH - 14) });
+  };
+
+  const hide = () => setTip(null);
+
+  useEffect(() => {
+    if (!tip) return;
+    window.addEventListener('scroll', hide, true);
+    return () => window.removeEventListener('scroll', hide, true);
+  }, [tip]);
+
+  return (
+    <span
+      ref={ref}
+      className="mpb-q"
+      onMouseEnter={show}
+      onMouseLeave={hide}
+      onClick={(e) => e.stopPropagation()}
+      aria-label="价格更新说明"
+    >
+      <img className="mpb-q-icon" src={icQuestion} alt="" />
+      {tip && (
+        <span className="mpb-tip" style={{ left: tip.left, top: tip.top, width: WIDTH }}>
+          {PRICE_UPDATE_TIP}
+          <i className="mpb-tip-arrow" style={{ left: tip.arrow }} />
+        </span>
+      )}
+    </span>
+  );
+}
+
 // ===== 批量关联产品模板：按店铺分别关联（移植自 auto-edit-dialog-copy2）=====
 // 示例数据对应接口 dh.relmodel.pageget$2.0：展示位数量 = relModelProdList 列表长度
 const MAX_TEMPLATE_SLOTS = 6;
@@ -831,6 +879,15 @@ function SideStats() {
 }
 
 function ProductTable({ onOpenTplDialog }: { onOpenTplDialog: () => void }) {
+  const [expandedRows, setExpandedRows] = useState<Set<number>>(() => new Set());
+  const toggleRow = (index: number) => {
+    setExpandedRows((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
   return (
     <div className="mpb-table">
       <div className="mpb-thead">
@@ -852,7 +909,15 @@ function ProductTable({ onOpenTplDialog }: { onOpenTplDialog: () => void }) {
       </div>
       <div className="mpb-tbody">
       {ROWS.map((row, index) => (
-        <div key={index} className="mpb-tr">
+        <React.Fragment key={index}>
+        <div
+          className={'mpb-tr' + (expandedRows.has(index) ? ' is-expanded' : '')}
+          onClick={(e) => {
+            const target = e.target as HTMLElement;
+            if (target.closest('a, button, input, label, .mpb-checkbox')) return;
+            toggleRow(index);
+          }}
+        >
           <span className="mpb-col-check">
             <Checkbox checked />
           </span>
@@ -894,6 +959,22 @@ function ProductTable({ onOpenTplDialog }: { onOpenTplDialog: () => void }) {
             <a className="mpb-source-link" href="#">-</a>
           </span>
         </div>
+        {expandedRows.has(index) && (
+          <div className="mpb-row-actions">
+            {ROW_ACTIONS.map((action) => (
+              <button
+                key={action}
+                type="button"
+                className="mpb-row-action-btn"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {action}
+                {action === '更新价格' && <PriceUpdateTip />}
+              </button>
+            ))}
+          </div>
+        )}
+        </React.Fragment>
       ))}
       </div>
       <div className="mpb-table-footer">
@@ -908,6 +989,7 @@ function ProductTable({ onOpenTplDialog }: { onOpenTplDialog: () => void }) {
               onClick={() => action === '批量关联产品模板' && onOpenTplDialog()}
             >
               {action}
+              {action === '批量更新价格' && <PriceUpdateTip />}
             </button>
           ))}
         </div>

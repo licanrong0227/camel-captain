@@ -17,9 +17,9 @@ export type ItemStatus = 'queued' | 'running' | 'pass' | 'violation' | 'suspect'
 
 /** 反馈按检测结果项记录：一次检测可能产出多条违规/疑似，每条单独反馈 */
 export interface ResultFeedback {
-  mode: 'up' | 'down';
-  reasons?: string[];
-  text?: string;
+  reasons: string[];
+  text: string;
+  at: number;
 }
 
 /** 已完成的一轮检测：单项重新检测后，上一轮结果归档为历史 */
@@ -77,11 +77,11 @@ export interface TaskView {
   status: TaskStatus;
   items: ItemView[];
   progress: { done: number; total: number };
-  summary: { hit: number; pass: number; suspect: number; fail: number };
-  /** 按问题条目统计（商品视图与结论条口径），与按检测项的 summary 区分 */
-  issueSummary: { violation: number; suspect: number; fail: number };
+  summary: { hit: number; pass: number; suspect: number; notice: number; fail: number };
+  /** 按问题条目统计（结论条、记录页与右栏共用这一口径） */
+  issueSummary: { violation: number; suspect: number; notice: number; fail: number };
   involvedItems: number;
-  conclusion: { level: 'checking' | 'pass' | 'reject' | 'manual' | 'partial' | 'failed' | 'canceled'; text: string; hitCount: number };
+  conclusion: { level: 'checking' | 'pass' | 'reject' | 'suspect' | 'notice' | 'partial' | 'failed' | 'canceled'; text: string; hitCount: number };
 }
 
 const STORAGE_KEY = 'dcc-tasks-v1';
@@ -117,7 +117,7 @@ export const ITEM_STATUS_TEXT: Record<ItemStatus, string> = {
   running: '检测中',
   pass: '通过',
   violation: '违规',
-  suspect: '疑似错误',
+  suspect: '疑似违规',
   manual: '建议自查',
   fail: '检测失败',
 };
@@ -239,19 +239,31 @@ function buildView(task: Task, status: TaskStatus, items: ItemView[], now: numbe
   const done = items.filter((item) => !['queued', 'running'].includes(item.status)).length;
   const hit = items.filter((item) => item.status === 'violation').length;
   const pass = items.filter((item) => item.status === 'pass').length;
-  const suspect = items.filter((item) => item.status === 'suspect' || item.status === 'manual').length;
+  const suspect = items.filter((item) => item.status === 'suspect').length;
+  const notice = items.filter((item) => item.status === 'manual').length;
   const fail = items.filter((item) => item.status === 'fail').length;
 
-  // 问题条目口径：一张图违反多项时按条计数，与商品视图的标记数保持一致
-  const issueSummary = { violation: 0, suspect: 0, fail: 0 };
+  // 问题条目口径：一条命中 = 一条问题；建议自查单独计数，检测失败不计入违规/疑似
+  const issueSummary = { violation: 0, suspect: 0, notice: 0, fail: 0 };
   const involved = new Set<ItemCode>();
   items.forEach((item) => {
     const outcome = item.outcome;
     if (!outcome) return;
     if (outcome.hits && outcome.hits.length > 0) {
       outcome.hits.forEach((record) => {
-        const severity = record.severity ?? (item.status === 'violation' ? 'violation' : 'suspect');
-        issueSummary[severity] += 1;
+        if (record.severity === 'manual' || record.severityLabel === '建议自查') {
+          issueSummary.notice += 1;
+        } else if (record.severity === 'suspect') {
+          issueSummary.suspect += 1;
+        } else if (record.severity === 'violation') {
+          issueSummary.violation += 1;
+        } else if (item.status === 'violation') {
+          issueSummary.violation += 1;
+        } else if (item.status === 'manual') {
+          issueSummary.notice += 1;
+        } else {
+          issueSummary.suspect += 1;
+        }
         involved.add(item.code);
       });
       return;
@@ -259,8 +271,11 @@ function buildView(task: Task, status: TaskStatus, items: ItemView[], now: numbe
     if (item.status === 'violation') {
       issueSummary.violation += 1;
       involved.add(item.code);
-    } else if (item.status === 'suspect' || item.status === 'manual') {
+    } else if (item.status === 'suspect') {
       issueSummary.suspect += 1;
+      involved.add(item.code);
+    } else if (item.status === 'manual') {
+      issueSummary.notice += 1;
       involved.add(item.code);
     } else if (item.status === 'fail') {
       issueSummary.fail += 1;
@@ -268,17 +283,29 @@ function buildView(task: Task, status: TaskStatus, items: ItemView[], now: numbe
     }
   });
 
+  const suffix: string[] = [];
+  if (issueSummary.suspect) suffix.push(`${issueSummary.suspect} 处疑似`);
+  if (issueSummary.notice) suffix.push(`${issueSummary.notice} 项建议自查`);
+  if (issueSummary.fail) suffix.push(`${issueSummary.fail} 项检测失败`);
+  const tail = suffix.length ? ` · ${suffix.join(' · ')}` : '';
+
   let conclusion: TaskView['conclusion'];
   if (status === 'canceled') conclusion = { level: 'canceled', text: '任务已取消', hitCount: 0 };
   else if (status === 'collect-failed') conclusion = { level: 'failed', text: `采集失败：${task.collectFailedReason ?? '未知原因'}`, hitCount: 0 };
   else if (status === 'pending' || status === 'collecting') conclusion = { level: 'checking', text: status === 'collecting' ? '正在采集商品信息…' : '任务排队中，等待采集…', hitCount: 0 };
-  else if (status === 'checking') conclusion = { level: 'checking', text: `质检进行中，已完成 ${done}/${total} 项，各质检项独立并行执行`, hitCount: issueSummary.violation };
-  else if (issueSummary.violation > 0) conclusion = { level: 'reject', text: `不通过：${issueSummary.violation} 处违规，涉及 ${involved.size} 个检测项`, hitCount: issueSummary.violation };
-  else if (issueSummary.suspect > 0) conclusion = { level: 'manual', text: `建议人工审核：存在 ${issueSummary.suspect} 处待确认`, hitCount: 0 };
-  else if (issueSummary.fail > 0) conclusion = { level: 'partial', text: '部分质检项失败，请查看详情并重试', hitCount: 0 };
-  else conclusion = { level: 'pass', text: '通过：全部质检项均未发现违规', hitCount: 0 };
+  else if (status === 'checking') conclusion = { level: 'checking', text: `检测进行中，已完成 ${done}/${total} 项，各检测项独立并行执行`, hitCount: issueSummary.violation };
+  else if (issueSummary.violation > 0) conclusion = { level: 'reject', text: `不通过：${issueSummary.violation} 处违规${tail}`, hitCount: issueSummary.violation };
+  else if (issueSummary.suspect > 0) conclusion = { level: 'suspect', text: `未发现违规：${issueSummary.suspect} 处疑似违规，建议人工确认${tail}`, hitCount: 0 };
+  else if (issueSummary.notice > 0) conclusion = { level: 'notice', text: `未发现违规：${issueSummary.notice} 项限售规则建议自查${tail}`, hitCount: 0 };
+  else if (issueSummary.fail > 0) conclusion = { level: 'partial', text: `检测未完成：${issueSummary.fail} 项检测失败`, hitCount: 0 };
+  else conclusion = { level: 'pass', text: '全部检测通过，未发现问题', hitCount: 0 };
 
-  return { task, status, items, progress: { done, total }, summary: { hit, pass, suspect, fail }, issueSummary, involvedItems: involved.size, conclusion };
+  return { task, status, items, progress: { done, total }, summary: { hit, pass, suspect, notice, fail }, issueSummary, involvedItems: involved.size, conclusion };
+}
+
+/** 用指定的检测项结果重算一份完整视图，供发起页摘要卡演示场景使用 */
+export function buildTaskView(task: Task, status: TaskStatus, items: ItemView[], now = Date.now()): TaskView {
+  return buildView(task, status, items, now);
 }
 
 /* ---------------- 持久化 ---------------- */
@@ -369,6 +396,7 @@ export function loadTasks(): Task[] {
       migrateSeedTitles(cache);
       migrateSeedOrder(cache);
       migrateSeedItemHistory(cache);
+      migrateFeedback(cache);
       return cache;
     }
   } catch {
@@ -438,10 +466,33 @@ function migrateSeedItemHistory(tasks: Task[]) {
   if (localStorage.getItem(SEED_HISTORY_FLAG_KEY) === '1') return;
   const bag = tasks.find((task) => task.id === 't-seed-bag');
   if (bag && !bag.overrides.material?.attempts?.length) {
-    bag.overrides = { ...bag.overrides, ...seedBagHistory(bag.submitTime) };
+    const history = seedBagHistory(bag.submitTime).material;
+    bag.overrides = { ...bag.overrides, material: { ...bag.overrides.material, ...history } };
   }
   localStorage.setItem(SEED_HISTORY_FLAG_KEY, '1');
   persist();
+}
+
+// 旧版点赞/点踩反馈改为「检测不准」的 reasons/text；满意的记录直接丢弃
+function migrateFeedback(tasks: Task[]) {
+  let changed = false;
+  tasks.forEach((task) => {
+    Object.values(task.overrides).forEach((override) => {
+      const map = override?.resultFeedback;
+      if (!map) return;
+      Object.entries(map).forEach(([key, value]) => {
+        const legacy = value as unknown as { mode?: 'up' | 'down'; reasons?: string[]; text?: string; at?: number };
+        if (!legacy || !legacy.mode) return;
+        if (legacy.mode === 'down') {
+          map[key] = { reasons: legacy.reasons ?? [], text: legacy.text ?? '', at: legacy.at ?? Date.now() };
+        } else {
+          delete map[key];
+        }
+        changed = true;
+      });
+    });
+  });
+  if (changed) persist();
 }
 
 function persist() {
@@ -557,14 +608,12 @@ export function setFeedback(
   id: string,
   code: ItemCode,
   resultKey: string,
-  feedback: 'up' | 'down' | null,
-  reasons?: string[],
-  text?: string,
+  feedback: ResultFeedback | null,
 ) {
   mutateTask(id, (task) => {
     const current = { ...task.overrides[code] };
     const map = { ...(current.resultFeedback ?? {}) };
-    if (feedback) map[resultKey] = { mode: feedback, reasons, text };
+    if (feedback) map[resultKey] = feedback;
     else delete map[resultKey];
     current.resultFeedback = map;
     task.overrides[code] = current;

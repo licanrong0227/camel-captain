@@ -1,0 +1,487 @@
+{
+  "schemaVersion": "1.0",
+  "source": {
+    "type": "figma-screenshot-capture",
+    "url": "https://www.figma.com/design/uiva9kZAG6fcSLtXW4pEkA/BAL-agent?node-id=788-10549",
+    "accessDate": "2026-10-31",
+    "method": "游客态只读打开 Figma，50% 缩放逐屏截图 + 截图取色复核（Figma MCP 不可用，Variables / Styles / Auto Layout 未采集）",
+    "notes": "颜色、字号、组件形态为设计稿已观察事实；间距、圆角、阴影、动效、响应式为截图量测或保守默认，详见 SOURCES.md 缺口与冲突表"
+  },
+  "identity": {
+    "slug": "bal-agent",
+    "titleZh": "BAL-agent 设计规范主题",
+    "descriptionZh": "出海达人营销 Agent 中后台主题：品牌蓝 #2563EB + 浅蓝选中底 + 白卡浅灰画布 + 阶段浅底标签",
+    "version": "1.0.0"
+  },
+  "tags": [
+    "AI Agent",
+    "达人营销",
+    "中后台",
+    "设计规范",
+    "浅色工作台",
+    "蓝色品牌",
+    "卡片流"
+  ],
+  "assets": {
+    "tokensPath": "./assets/tokens.json",
+    "previewImages": [
+      "./assets/source-preview.png",
+      "./assets/preview-color.png",
+      "./assets/preview-typography.png",
+      "./assets/preview-components.png"
+    ]
+  },
+  "tokens": {
+    "palette": {
+      "brand": {
+        "main": "#2563EB",
+        "deep": "#1E40AF",
+        "soft": "#EDF4FF",
+        "role": "main 主按钮·链接·选中 / deep 浅蓝底强调文字 / soft 选中底·浅底按钮"
+      },
+      "success": {
+        "main": "#24B47E",
+        "text": "#168560",
+        "soft": "#EAF7F0"
+      },
+      "warning": {
+        "main": "#F5A623",
+        "text": "#B76E12",
+        "soft": "#FDF2DE"
+      },
+      "danger": {
+        "main": "#F04452",
+        "text": "#D92D43",
+        "soft": "#FFF0F2"
+      },
+      "neutral": {
+        "ink": "#1D2129",
+        "inkSecondary": "#687384",
+        "canvas": "#F6F7F9",
+        "surface": "#FFFFFF",
+        "border": "#EBEBF0"
+      },
+      "stage": {
+        "reply": {
+          "fg": "#2563EB",
+          "bg": "#E7EFFF",
+          "label": "待回复"
+        },
+        "negotiating": {
+          "fg": "#8B5CF6",
+          "bg": "#F1EBFE",
+          "label": "议价中"
+        },
+        "sampling": {
+          "fg": "#0ABCD8",
+          "bg": "#E1F2F6",
+          "label": "待寄样"
+        },
+        "logistics": {
+          "fg": "#F5A623",
+          "bg": "#FDF2DE",
+          "label": "物流追踪"
+        },
+        "review": {
+          "fg": "#4F46E5",
+          "bg": "#EAE9FC",
+          "label": "待审核"
+        },
+        "publishing": {
+          "fg": "#DB2777",
+          "bg": "#FBE5EF",
+          "label": "待发布"
+        },
+        "settlement": {
+          "fg": "#24B47E",
+          "bg": "#EAF7F0",
+          "label": "待结算"
+        }
+      },
+      "gradient": {
+        "flow": [
+          "#3F71FE",
+          "#6D65F9",
+          "#B95BDA",
+          "#FE9D49",
+          "#FFB24C"
+        ],
+        "edit": [
+          "#4291FF",
+          "#AB6FFF",
+          "#F79160"
+        ]
+      },
+      "text": {
+        "primary": "#1D2129",
+        "secondary": "#687384",
+        "link": "#2563EB",
+        "inverse": "#FFFFFF",
+        "disabled": "#B9C0CC"
+      },
+      "background": {
+        "page": "#F6F7F9",
+        "surface": "#FFFFFF",
+        "selected": "#EDF4FF"
+      },
+      "mask": {
+        "dialog": "rgba(29,33,41,0.4)"
+      }
+    },
+    "typography": {
+      "fontFamily": "\"PingFang SC\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Helvetica, Arial, sans-serif",
+      "familyRule": "PingFang SC 贯穿标题、正文、操作与数据；不引入 Web Font",
+      "numericRule": "金额、人数、单号、比例使用 font-variant-numeric: tabular-nums",
+      "scale": [
+        {
+          "size": "30px",
+          "lineHeight": "38px",
+          "weight": "600",
+          "role": "关键数据"
+        },
+        {
+          "size": "28px",
+          "lineHeight": "40px",
+          "weight": "600",
+          "role": "页面标题"
+        },
+        {
+          "size": "18px",
+          "lineHeight": "28px",
+          "weight": "600",
+          "role": "模块标题"
+        },
+        {
+          "size": "16px",
+          "lineHeight": "24px",
+          "weight": "500",
+          "role": "卡片标题"
+        },
+        {
+          "size": "14px",
+          "lineHeight": "22px",
+          "weight": "500",
+          "role": "正文强调 / 操作"
+        },
+        {
+          "size": "14px",
+          "lineHeight": "22px",
+          "weight": "400",
+          "role": "正文"
+        },
+        {
+          "size": "12px",
+          "lineHeight": "20px",
+          "weight": "400",
+          "role": "辅助说明"
+        }
+      ],
+      "fontWeight": {
+        "regular": "400",
+        "medium": "500",
+        "semibold": "600"
+      }
+    },
+    "spacing": {
+      "note": "规范页未提供间距页，按 4px 基准保守默认",
+      "xs": "4px",
+      "sm": "8px",
+      "md": "12px",
+      "lg": "16px",
+      "xl": "20px",
+      "2xl": "24px",
+      "3xl": "32px",
+      "4xl": "40px"
+    },
+    "radius": {
+      "note": "规范页未标注圆角数值，按截图量测推断",
+      "control": "8px",
+      "card": "12px",
+      "panel": "16px",
+      "tag": "8px",
+      "full": "999px"
+    },
+    "border": {
+      "width": "1px",
+      "style": "solid",
+      "control": "1px solid #EBEBF0",
+      "divider": "1px solid #EBEBF0",
+      "selected": "1px solid #2563EB",
+      "error": "1px solid #F04452"
+    },
+    "shadow": {
+      "note": "规范页未提供阴影层级，界面以边框分层为主",
+      "overlay": "0 8px 24px rgba(29,33,41,0.08)"
+    },
+    "layout": {
+      "designWidth": "1440px",
+      "navbarHeight": "52px",
+      "cardGap": "24px",
+      "cardPadding": "20px",
+      "breakpoints": "未提供断点规范：保守默认 >=1440 三列 / 1280-1440 两列 / <1280 单列并收起侧栏"
+    },
+    "transition": {
+      "note": "未提供动效规范，以下为保守默认",
+      "color": "0.2s ease-out",
+      "expand": "0.24s cubic-bezier(0.2, 0, 0, 1)",
+      "overlay": "0.2s ease-out"
+    }
+  },
+  "display": {
+    "palette": {
+      "title": "BAL-agent 色彩系统",
+      "description": "品牌蓝承担主行动与选中，业务状态用浅底 + 深字 + 圆点的阶段色，AI 能力单独用固定渐变",
+      "colors": [
+        {
+          "name": "品牌主色",
+          "en": "brand",
+          "hex": "#2563EB",
+          "description": "主按钮、链接、选中、进行中"
+        },
+        {
+          "name": "行动深色",
+          "en": "actionText",
+          "hex": "#1E40AF",
+          "description": "浅蓝底上的强调文字"
+        },
+        {
+          "name": "品牌浅底",
+          "en": "brandSoft",
+          "hex": "#EDF4FF",
+          "description": "选中底、浅底按钮、提示条"
+        },
+        {
+          "name": "成功",
+          "en": "success",
+          "hex": "#24B47E",
+          "description": "已完成、已合作、通过"
+        },
+        {
+          "name": "警示",
+          "en": "warning",
+          "hex": "#F5A623",
+          "description": "待处理、暂缓"
+        },
+        {
+          "name": "错误",
+          "en": "danger",
+          "hex": "#F04452",
+          "description": "失败、校验错误、紧急"
+        },
+        {
+          "name": "正文",
+          "en": "ink",
+          "hex": "#1D2129",
+          "description": "标题与正文主色"
+        },
+        {
+          "name": "次要文字",
+          "en": "inkSecondary",
+          "hex": "#687384",
+          "description": "说明、辅助信息"
+        },
+        {
+          "name": "画布",
+          "en": "canvas",
+          "hex": "#F6F7F9",
+          "description": "页面底色"
+        },
+        {
+          "name": "卡片",
+          "en": "surface",
+          "hex": "#FFFFFF",
+          "description": "卡片与浮层表面"
+        },
+        {
+          "name": "边框",
+          "en": "border",
+          "hex": "#EBEBF0",
+          "description": "卡片边框与分割线"
+        },
+        {
+          "name": "议价中标签",
+          "en": "stage/negotiating",
+          "hex": "#8B5CF6",
+          "description": "阶段标签示例（浅底 #F1EBFE）"
+        },
+        {
+          "name": "待发布标签",
+          "en": "stage/publishing",
+          "hex": "#DB2777",
+          "description": "阶段标签示例（浅底 #FBE5EF）"
+        },
+        {
+          "name": "AI Flow 渐变",
+          "en": "ai/flow",
+          "hex": "#3F71FE",
+          "description": "解析产品、生成 Brief（蓝 → 紫 → 橙）"
+        }
+      ]
+    },
+    "typography": {
+      "title": "BAL-agent 字体系统",
+      "description": "PingFang SC + 系统回退；7 级固定字号，数字使用等宽数字",
+      "samples": [
+        {
+          "name": "关键数据",
+          "fontSize": "30px",
+          "fontWeight": "600",
+          "lineHeight": "38px"
+        },
+        {
+          "name": "页面标题",
+          "fontSize": "28px",
+          "fontWeight": "600",
+          "lineHeight": "40px"
+        },
+        {
+          "name": "模块标题",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "lineHeight": "28px"
+        },
+        {
+          "name": "卡片标题",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "24px"
+        },
+        {
+          "name": "正文强调 / 操作",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "lineHeight": "22px"
+        },
+        {
+          "name": "正文",
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "lineHeight": "22px"
+        },
+        {
+          "name": "辅助说明",
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "lineHeight": "20px"
+        }
+      ]
+    },
+    "radius": {
+      "title": "BAL-agent 圆角规范",
+      "description": "规范页未标注圆角；控制件 8、卡片 12、大面板 16、标签 8、胶囊全圆",
+      "samples": [
+        {
+          "name": "控制件",
+          "value": "8px",
+          "usage": "按钮、输入框、下拉"
+        },
+        {
+          "name": "卡片",
+          "value": "12px",
+          "usage": "任务卡、报价卡、弹窗"
+        },
+        {
+          "name": "大面板",
+          "value": "16px",
+          "usage": "抽屉、分组容器"
+        },
+        {
+          "name": "标签",
+          "value": "8px",
+          "usage": "阶段 Tag"
+        },
+        {
+          "name": "胶囊",
+          "value": "999px",
+          "usage": "AI 渐变按钮、头像"
+        }
+      ]
+    },
+    "spacing": {
+      "title": "BAL-agent 间距系统",
+      "description": "4px 基准；卡片内边距 20、卡片之间 24（规范未提供间距页）",
+      "samples": [
+        {
+          "name": "图标与文字",
+          "value": "4px / 8px",
+          "usage": "紧凑元素"
+        },
+        {
+          "name": "表单项",
+          "value": "8px / 12px",
+          "usage": "标签与控件"
+        },
+        {
+          "name": "卡片内边距",
+          "value": "20px",
+          "usage": "卡片内容区"
+        },
+        {
+          "name": "卡片间距",
+          "value": "24px",
+          "usage": "卡片之间"
+        },
+        {
+          "name": "区块间距",
+          "value": "32px / 40px",
+          "usage": "页面分区"
+        }
+      ]
+    },
+    "borders": {
+      "title": "BAL-agent 边框规范",
+      "description": "统一 1px 实线；边框与分割线同色，靠底色差区分层级",
+      "samples": [
+        {
+          "name": "卡片边框",
+          "value": "1px solid #EBEBF0",
+          "usage": "卡片、面板"
+        },
+        {
+          "name": "分割线",
+          "value": "1px solid #EBEBF0",
+          "usage": "行线、区块分隔"
+        },
+        {
+          "name": "选中边框",
+          "value": "1px solid #2563EB",
+          "usage": "选中卡片、聚焦控件"
+        },
+        {
+          "name": "错误边框",
+          "value": "1px solid #F04452",
+          "usage": "校验失败"
+        }
+      ]
+    },
+    "shadows": {
+      "title": "BAL-agent 阴影层级",
+      "description": "界面以边框分层，仅浮层使用一档轻阴影（规范未提供，量测推断）",
+      "samples": [
+        {
+          "name": "浮层阴影",
+          "value": "0 8px 24px rgba(29,33,41,0.08)",
+          "usage": "下拉、弹窗、气泡"
+        }
+      ]
+    },
+    "usageGuidance": {
+      "title": "BAL-agent 使用指南",
+      "description": "出海达人营销 Agent 中后台主题",
+      "dos": [
+        "页面底 #F6F7F9 + 白色卡片（圆角 12、1px #EBEBF0、无阴影），卡片间距 24",
+        "主行动用 #2563EB 实心按钮（40 / 32 高、圆角 8、白字），次要动作用白底描边",
+        "业务状态用「浅底 + 深字 + 8px 圆点」Tag，按 7 个阶段色取值",
+        "AI 能力入口用固定渐变按钮（Flow / Edit），渐变不用于其他元素",
+        "文本只用 #1D2129 / #687384 两级，数字列使用 tabular-nums"
+      ],
+      "donts": [
+        "不要用说明文字里的 #2555EB 替代色块实取 #2563EB（冲突未确认）",
+        "不要把阶段色用于按钮或页面底色",
+        "不要给卡片加投影、渐变、玻璃拟态或彩色描边",
+        "不要自造第 4 组功能色，也不给功能色推导 5 级色板",
+        "不要外推设计稿未出现的更大字号（如 38 / 46 / 56）"
+      ]
+    }
+  }
+}

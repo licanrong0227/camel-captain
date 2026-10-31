@@ -1,25 +1,63 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-26T01:25:34.878Z",
+  "updatedAt": "2026-10-31T04:27:59.962Z",
   "prototypes": [
+    {
+      "id": "item:prototypes:camel-captain-erp-console",
+      "kind": "item",
+      "title": "骆驼队长 ERP · 全站原型",
+      "itemKey": "prototypes/camel-captain-erp-console"
+    },
+    {
+      "id": "item:prototypes:shop-dashboard",
+      "kind": "item",
+      "title": "店铺看板",
+      "itemKey": "prototypes/shop-dashboard"
+    },
+    {
+      "id": "folder-1793243018426-mvwgle",
+      "kind": "folder",
+      "title": "广告看板设计",
+      "children": [
+        {
+          "id": "item:prototypes:dhgate-ad-report-copy",
+          "kind": "item",
+          "title": "广告看板 1",
+          "itemKey": "prototypes/dhgate-ad-report-copy"
+        },
+        {
+          "id": "item:prototypes:ad-link-board",
+          "kind": "item",
+          "title": "广告看板 2",
+          "itemKey": "prototypes/ad-link-board"
+        }
+      ]
+    },
     {
       "id": "folder-1792977929149-qn5xzy",
       "kind": "folder",
       "title": "BAL",
       "children": [
         {
-          "id": "item:prototypes:dhgate-compliance-check-copy",
-          "kind": "item",
-          "title": "敦煌网商品合规检测",
-          "itemKey": "prototypes/dhgate-compliance-check-copy"
+          "id": "folder-1793419124142-4ike21",
+          "kind": "folder",
+          "title": "敦煌商品合规检测",
+          "children": [
+            {
+              "id": "item:prototypes:dhgate-compliance-check-copy-copy",
+              "kind": "item",
+              "title": "商品合规检测 第 1 版",
+              "itemKey": "prototypes/dhgate-compliance-check-copy-copy"
+            },
+            {
+              "id": "item:prototypes:dhgate-compliance-check-copy",
+              "kind": "item",
+              "title": "商品合规检测 第 2 版",
+              "itemKey": "prototypes/dhgate-compliance-check-copy"
+            }
+          ]
         }
       ]
-    },
-    {
-      "id": "item:prototypes:shopify-integration",
-      "kind": "item",
-      "title": "Shopify 对接",
-      "itemKey": "prototypes/shopify-integration"
     },
     {
       "id": "folder-1791797215018-7mge1v",
@@ -187,6 +225,24 @@
               "kind": "item",
               "title": "规格值模板",
               "itemKey": "prototypes/spec-value-template"
+            },
+            {
+              "id": "item:prototypes:shopify-integration",
+              "kind": "item",
+              "title": "Shopify 对接",
+              "itemKey": "prototypes/shopify-integration"
+            },
+            {
+              "id": "item:prototypes:edit-product-dialog-v2",
+              "kind": "item",
+              "title": "编辑产品弹窗",
+              "itemKey": "prototypes/edit-product-dialog-v2"
+            },
+            {
+              "id": "item:prototypes:claim-exception-dialog",
+              "kind": "item",
+              "title": "认领异常弹窗",
+              "itemKey": "prototypes/claim-exception-dialog"
             }
           ]
         },
@@ -231,6 +287,12 @@
       "kind": "item",
       "title": "element-ui",
       "itemKey": "themes/element-ui"
+    },
+    {
+      "id": "item-themes-bal-agent",
+      "kind": "item",
+      "title": "bal agent",
+      "itemKey": "themes/bal-agent"
     }
   ],
   "themes": [

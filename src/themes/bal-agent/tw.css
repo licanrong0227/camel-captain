@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+/* BAL-agent 设计规范主题 Tailwind v4 片段（与 DESIGN.md tokens 同源） */
+@theme {
+  --color-brand: #2563eb;
+  --color-brand-deep: #1e40af;
+  --color-brand-soft: #edf4ff;
+
+  --color-success: #24b47e;
+  --color-success-text: #168560;
+  --color-success-soft: #eaf7f0;
+
+  --color-warning: #f5a623;
+  --color-warning-text: #b76e12;
+  --color-warning-soft: #fdf2de;
+
+  --color-danger: #f04452;
+  --color-danger-text: #d92d43;
+  --color-danger-soft: #fff0f2;
+
+  --color-ink: #1d2129;
+  --color-ink-secondary: #687384;
+  --color-canvas: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-border: #ebebf0;
+
+  --color-stage-reply: #2563eb;
+  --color-stage-reply-soft: #e7efff;
+  --color-stage-negotiating: #8b5cf6;
+  --color-stage-negotiating-soft: #f1ebfe;
+  --color-stage-sampling: #0abcd8;
+  --color-stage-sampling-soft: #e1f2f6;
+  --color-stage-logistics: #f5a623;
+  --color-stage-logistics-soft: #fdf2de;
+  --color-stage-review: #4f46e5;
+  --color-stage-review-soft: #eae9fc;
+  --color-stage-publishing: #db2777;
+  --color-stage-publishing-soft: #fbe5ef;
+  --color-stage-settlement: #24b47e;
+  --color-stage-settlement-soft: #eaf7f0;
+
+  --color-primary: #2563eb;
+  --color-link: #2563eb;
+  --color-selected: #edf4ff;
+  --color-disabled-text: #b9c0cc;
+
+  --font-family-interface: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+
+  --text-12: 12px;
+  --text-12--line-height: 20px;
+  --text-14: 14px;
+  --text-14--line-height: 22px;
+  --text-16: 16px;
+  --text-16--line-height: 24px;
+  --text-18: 18px;
+  --text-18--line-height: 28px;
+  --text-28: 28px;
+  --text-28--line-height: 40px;
+  --text-30: 30px;
+  --text-30--line-height: 38px;
+
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --radius-panel: 16px;
+  --radius-tag: 8px;
+  --radius-full: 999px;
+
+  --shadow-overlay: 0 8px 24px rgba(29, 33, 41, 0.08);
+
+  --ease-expand: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* 未被 Tailwind 命名空间映射的 token 保留为 CSS 变量 */
+.dmb-page {
+  --tw-gradient-flow: linear-gradient(100deg, #3f71fe 0%, #6d65f9 24%, #b95bda 52%, #fe9d49 82%, #ffb24c 100%);
+  --tw-gradient-edit: linear-gradient(100deg, #4291ff 0%, #ab6fff 55%, #f79160 100%);
+  --tw-mask-dialog: rgba(29, 33, 41, 0.4);
+  --tw-navbar-height: 52px;
+  --tw-card-gap: 24px;
+  --tw-card-padding: 20px;
+  --tw-border-control: 1px solid var(--color-border);
+  --tw-border-divider: 1px solid var(--color-border);
+  --tw-border-selected: 1px solid var(--color-brand);
+  --tw-border-error: 1px solid var(--color-danger);
+}

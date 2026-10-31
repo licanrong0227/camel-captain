@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal } from './ui';
 
-export const DISLIKE_REASONS = ['误报', '漏报', '原因不准', '建议不准', '参考信息缺失', '其他'];
+export const DISLIKE_REASONS = ['误报', '漏报', '原因不准', '建议不准', '其他'];
 
 export type RecheckMode = 'in-place' | 'recollect';
 
@@ -48,14 +48,24 @@ export function RecheckDialog({ onCancel, onConfirm }: { onCancel: () => void; o
   );
 }
 
-export function FeedbackDialog({ itemName, onCancel, onSubmit }: { itemName: string; onCancel: () => void; onSubmit: (reasons: string[], text: string) => void }) {
-  const [reasons, setReasons] = useState<string[]>([]);
+export function FeedbackDialog({
+  context,
+  initialReasons,
+  onCancel,
+  onSubmit,
+}: {
+  context: string;
+  initialReasons?: string[];
+  onCancel: () => void;
+  onSubmit: (reasons: string[], text: string) => void;
+}) {
+  const [reasons, setReasons] = useState<string[]>(initialReasons ?? []);
   const [text, setText] = useState('');
   const toggle = (reason: string) =>
     setReasons((prev) => (prev.includes(reason) ? prev.filter((item) => item !== reason) : [...prev, reason]));
   return (
     <Modal
-      title="反馈质检结果"
+      title="反馈检测结果"
       onClose={onCancel}
       footer={
         <>
@@ -64,7 +74,7 @@ export function FeedbackDialog({ itemName, onCancel, onSubmit }: { itemName: str
         </>
       }
     >
-      <p className="dcc-dialog-text">您对「{itemName}」的检测结果不满意，请选择原因（可多选）：</p>
+      <p className="dcc-dialog-text">您认为「{context}」的检测结果不准确，请选择原因（可多选）：</p>
       <div className="dcc-reason-chips">
         {DISLIKE_REASONS.map((reason) => (
           <button
@@ -85,7 +95,7 @@ export function FeedbackDialog({ itemName, onCancel, onSubmit }: { itemName: str
         maxLength={300}
         onChange={(event) => setText(event.target.value)}
       />
-      <p className="dcc-dialog-sub">反馈将用于评估对应质检功能的检测质量。</p>
+      <p className="dcc-dialog-sub">反馈将用于评估对应检测功能的检测质量，不会改变本次检测结果。</p>
     </Modal>
   );
 }

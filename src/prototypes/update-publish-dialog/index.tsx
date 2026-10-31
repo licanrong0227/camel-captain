@@ -273,6 +273,34 @@ const SegmentCard = ({ title, seg, on, onToggle, onSegChange }: {
   </div>
 );
 
+const AI_KEYWORDS_MAX = 70;
+
+const AiKeywordField = ({ value, onChange, annotationId }: {
+  value: string;
+  onChange: (next: string) => void;
+  annotationId: string;
+}) => (
+  <div className="up-ai" data-annotation-id={annotationId}>
+    <div className="up-ai__field">
+      <span className="up-ai__label">指定包含关键词</span>
+      <div className="up-ai__control">
+        <input
+          type="text"
+          className="up-input up-ai__input"
+          value={value}
+          maxLength={AI_KEYWORDS_MAX}
+          placeholder="多个关键词用逗号分隔"
+          onChange={(e) => onChange(e.target.value)}
+        />
+        <span className={`up-ai__count${value.length >= AI_KEYWORDS_MAX ? ' is-limit' : ''}`}>
+          {value.length}/{AI_KEYWORDS_MAX}
+        </span>
+      </div>
+    </div>
+    <p className="up-ai__hint">让AI生成标题时包含指定的关键词</p>
+  </div>
+);
+
 const SampleSegment = ({ seg, on }: { seg: SegmentState; on: boolean }) => {
   if (!on) return null;
   return (
@@ -375,9 +403,11 @@ const UpdatePublishDialog = () => {
 
   const [titleOn, setTitleOn] = useState(false);
   const [titleMode, setTitleMode] = useState<'shuffle' | 'increment' | 'ai' | 'backup'>('shuffle');
+  const [titleAiKeywords, setTitleAiKeywords] = useState('');
   const [titleIncrement, setTitleIncrement] = useState<IncrementValue>(defaultIncrement);
   const [backupTitles, setBackupTitles] = useState<string[]>(['']);
   const [backupTitleStrategy, setBackupTitleStrategy] = useState<'shuffle' | 'increment' | 'ai'>('shuffle');
+  const [backupAiKeywords, setBackupAiKeywords] = useState('');
   const [backupIncrement, setBackupIncrement] = useState<IncrementValue>(defaultIncrement);
 
   const [imageOn, setImageOn] = useState(false);
@@ -501,6 +531,9 @@ const UpdatePublishDialog = () => {
                       {titleMode === 'increment' ? (
                         <IncrementGroup value={titleIncrement} onChange={setTitleIncrement} annotationId="title-increment" />
                       ) : null}
+                      {titleMode === 'ai' ? (
+                        <AiKeywordField value={titleAiKeywords} onChange={setTitleAiKeywords} annotationId="title-ai-keywords" />
+                      ) : null}
                       {titleMode === 'backup' ? (
                         <div className="up-backup" data-annotation-id="backup-titles">
                           <div className="up-backup__list">
@@ -534,6 +567,9 @@ const UpdatePublishDialog = () => {
                             </div>
                             {backupTitleStrategy === 'increment' ? (
                               <IncrementGroup value={backupIncrement} onChange={setBackupIncrement} annotationId="backup-title-increment" />
+                            ) : null}
+                            {backupTitleStrategy === 'ai' ? (
+                              <AiKeywordField value={backupAiKeywords} onChange={setBackupAiKeywords} annotationId="backup-title-ai-keywords" />
                             ) : null}
                           </div>
                         </div>

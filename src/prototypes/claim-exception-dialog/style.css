@@ -1,0 +1,284 @@
+/* ============ 认领异常弹窗（设计基底：camel-captain-erp） ============ */
+
+:root {
+  --ced-brand-1: #ffefe5;
+  --ced-brand-2: #ffd9bf;
+  --ced-brand-3: #ff9148;
+  --ced-brand-4: #ff7d29;
+  --ced-brand-5: #d25909;
+  --ced-danger-1: #fee9e7;
+  --ced-danger-4: #f44837;
+  --ced-danger-5: #c51708;
+  --ced-n1: #f7f8fa;
+  --ced-n2: #f2f3f5;
+  --ced-n3: #ebeef5;
+  --ced-n4: #e5e6eb;
+  --ced-n6: #86909c;
+  --ced-n7: #4e5969;
+  --ced-n8: #1d2129;
+  --ced-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+  --ced-shadow-base: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+.ced-layer {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.45);
+  font-family: var(--ced-font);
+  color: var(--ced-n8);
+  font-variant-numeric: tabular-nums;
+}
+
+.ced-layer *,
+.ced-layer *::before,
+.ced-layer *::after { box-sizing: border-box; }
+
+.ced-layer p { margin: 0; }
+
+.ced-layer button {
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* ===== 弹窗容器 ===== */
+.ced-dialog {
+  display: flex;
+  flex-direction: column;
+  width: 660px;
+  max-height: calc(100vh - 64px);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--ced-shadow-base);
+  overflow: hidden;
+}
+
+.ced-dialog-head {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 12px;
+}
+
+.ced-dialog-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--ced-n8);
+}
+
+.ced-icon-btn {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--ced-n6);
+}
+
+.ced-icon-btn:hover { color: var(--ced-brand-4); background: var(--ced-n2); }
+.ced-icon-btn svg { width: 16px; height: 16px; }
+
+/* ===== 汇总条 ===== */
+.ced-error-body {
+  display: flex;
+  min-height: 0;
+  padding: 0 24px;
+  flex-direction: column;
+}
+
+.ced-summary {
+  display: flex;
+  flex: none;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 4px;
+  background: var(--ced-danger-1);
+}
+
+.ced-summary-icon {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  margin-top: 2px;
+  color: var(--ced-danger-4);
+}
+
+.ced-summary-icon svg { width: 20px; height: 20px; }
+
+.ced-summary-title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  color: var(--ced-danger-5);
+}
+
+.ced-summary-desc {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--ced-n7);
+}
+
+/* ===== 异常明细列表 ===== */
+.ced-fail-list {
+  flex: 1;
+  min-height: 0;
+  max-height: 560px;
+  margin: 4px -8px 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.ced-fail-list::-webkit-scrollbar { width: 6px; }
+.ced-fail-list::-webkit-scrollbar-thumb { border-radius: 3px; background: var(--ced-n4); }
+
+.ced-fail-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 8px;
+  border-bottom: 1px solid var(--ced-n3);
+  transition: background 0.2s;
+}
+
+.ced-fail-item:last-child { border-bottom: 0; }
+.ced-fail-item:hover { background: var(--ced-n1); }
+
+.ced-fail-thumb {
+  display: block;
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border: 1px solid var(--ced-n4);
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.ced-fail-main { min-width: 0; flex: 1; }
+
+.ced-fail-title {
+  display: -webkit-box;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--ced-n8);
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ced-fail-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--ced-n6);
+}
+
+.ced-fail-sku b { font-weight: 400; color: var(--ced-n7); }
+.ced-fail-meta i { width: 1px; height: 10px; background: var(--ced-n4); }
+
+.ced-fail-errors {
+  margin: 6px 0 0;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: var(--ced-danger-1);
+  list-style: none;
+}
+
+.ced-fail-errors li {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--ced-danger-5);
+}
+
+.ced-fail-dot { display: inline-flex; flex: none; margin-top: 4px; color: var(--ced-danger-4); }
+.ced-fail-dot svg { width: 12px; height: 12px; }
+
+/* ===== 行内操作 ===== */
+.ced-edit-btn {
+  display: inline-flex;
+  height: 32px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 12px;
+  border: 1px solid var(--ced-brand-4);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--ced-brand-4);
+  white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.ced-edit-btn svg { width: 14px; height: 14px; }
+
+.ced-edit-btn:hover {
+  border-color: var(--ced-brand-3);
+  background: var(--ced-brand-1);
+}
+
+.ced-edit-btn:active {
+  border-color: var(--ced-brand-5);
+  color: var(--ced-brand-5);
+  background: var(--ced-brand-2);
+}
+
+/* ===== 底部 ===== */
+.ced-error-foot {
+  flex: none;
+  padding: 16px 24px 20px;
+  text-align: center;
+}
+
+.ced-btn {
+  display: inline-flex;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 16px;
+  border: 1px solid var(--ced-n4);
+  border-radius: 4px;
+  background: #fff;
+  font-size: 14px;
+  color: var(--ced-n8);
+  white-space: nowrap;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.ced-btn--primary {
+  border-color: var(--ced-brand-4);
+  background: var(--ced-brand-4);
+  color: #fff;
+}
+
+.ced-btn--primary:hover {
+  border-color: var(--ced-brand-3);
+  background: var(--ced-brand-3);
+}
+
+.ced-btn--primary:active {
+  border-color: var(--ced-brand-5);
+  background: var(--ced-brand-5);
+}
+
+.ced-btn--foot { width: 104px; height: 36px; }

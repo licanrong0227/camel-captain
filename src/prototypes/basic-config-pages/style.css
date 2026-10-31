@@ -324,6 +324,11 @@
 .bcp-radios--stack { flex-direction: column; align-items: flex-start; gap: 4px; }
 .bcp-formula-line { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 6px; }
 .bcp-unit { display: inline-flex; align-items: center; gap: 4px; }
+.bcp-formula-expr { color: var(--n7); font-size: 12px; line-height: 22px; }
+.bcp-formula-expr__line { display: block; word-break: keep-all; }
+.bcp-formula-expr__line .bcp-stepper { height: 22px; margin: 0 2px; vertical-align: middle; }
+.bcp-formula-expr__line .bcp-stepper button { width: 18px; }
+.bcp-formula-expr__line .bcp-stepper input { font-size: 12px; }
 .bcp-cell-hint { margin-top: 6px; color: var(--n6); font-size: 12px; line-height: 1.4; }
 .bcp-cell-muted { color: var(--n5); }
 .bcp-extra-name { display: flex; align-items: center; gap: 6px; }

@@ -2,34 +2,59 @@
   "documentVersion": 1,
   "format": "axhub-annotation-source",
   "presentation": {
-    "layerSelectors": [".biw-modal", ".biw-exit-dialog"]
+    "layerSelectors": [
+      ".biw-dialog",
+      ".biw-dialog--prompt",
+      ".biw-dialog--version"
+    ]
   },
   "data": {
     "version": 2,
     "prototypeName": "batch-image-white-bg",
     "pageId": "batch-image-white-bg",
-    "updatedAt": 1791878937575,
+    "updatedAt": 1793264556588,
     "nodes": [
       {
         "id": "position-tabs-disable",
         "index": 1,
         "title": "处理中禁用位置切换",
         "locator": {
-          "selectors": ["[data-annotation-id=\"position-tabs-disable\"]"],
+          "selectors": [
+            "[data-annotation-id=\"position-tabs-disable\"]"
+          ],
           "fingerprint": "div|data-annotation-id=position-tabs-disable",
           "path": []
         },
         "aiPrompt": "根据处理中禁用位置切换标注生成实现说明。",
         "annotationText": "处理中时，禁用，避免切换到其他板块导致处理失败",
         "hasMarkdown": false,
-        "color": "#D97706",
+        "color": "#F5222D",
         "images": [],
         "createdAt": 1791878937575,
-        "updatedAt": 1791878937575
+        "updatedAt": 1793262116099
+      },
+      {
+        "id": "translate-detect",
+        "index": 2,
+        "title": "识别后翻译判定",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"translate-detect\"]"
+          ],
+          "fingerprint": "label|data-annotation-id=translate-detect",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793264497063,
+        "updatedAt": 1793264497063
       }
     ]
   },
-  "markdownMap": {},
+  "markdownMap": {
+    "translate-detect": "## 识别后翻译判定\n\n- 调用阿里 qwen-vl-ocr 接口\n- 提示词中要求模型识别图像是否包含中文等需要翻译的信息，只回答「是」或「否」\n- 回答「是」：翻译该图像；回答「否」：跳过图像翻译\n- 接口文档：[qwen-vl-ocr](https://docs.bailian.console.aliyun.com/zh/model-studio/qwenvl-ocr)"
+  },
   "assetMap": {},
   "targets": [],
   "directory": {

@@ -1,11 +1,15 @@
 /**
- * 检测结果的统一投影：同一批结果按「检测项」或按「商品信息位置」聚合。
- * 商品视图与检测项视图必须共用这里的数据，保证两边问题条目数一致。
+ * 检测结果的统一投影：一条命中记录 = 一条问题，归属一个检测项，带一个位置。
+ * 位置只用于定位，不作为计数单位；商品整体也只是位置之一，不再单独聚合「整品风险」。
  */
-import { Anchor, AnchorType, Block, ItemCode } from './scenarios';
+import { Anchor, AnchorType, Block, ImageKey, ItemCode } from './scenarios';
 import { ItemView } from './store';
 
-export type IssueSeverity = 'violation' | 'suspect' | 'fail';
+export type IssueSeverity = 'violation' | 'suspect' | 'notice' | 'fail';
+
+export type IssueEvidence =
+  | { kind: 'text'; label?: string; text: string; word?: string }
+  | { kind: 'image'; label?: string; src: ImageKey };
 
 export interface Issue {
   key: string;
@@ -18,9 +22,18 @@ export interface Issue {
   anchorKey: string;
   reason: string;
   position?: string;
+  /** 参考信息仅随结果保存，前端不展示 */
   reference?: Block[];
   suggestion?: string;
   suggestionValue?: string;
+  evidence?: IssueEvidence;
+}
+
+export interface IssueCounts {
+  violation: number;
+  suspect: number;
+  notice: number;
+  fail: number;
 }
 
 export interface AnchorGroup {
@@ -29,14 +42,14 @@ export interface AnchorGroup {
   label: string;
   issues: Issue[];
   severity: IssueSeverity;
-  counts: { violation: number; suspect: number; fail: number };
+  counts: IssueCounts;
 }
 
 const SECTION_ORDER: AnchorType[] = [
   'product', 'title', 'category', 'mainImage', 'skuImage', 'skuTable', 'ladder', 'sizeChart', 'attribute', 'detailText', 'detailImage',
 ];
 
-const SEVERITY_RANK: Record<IssueSeverity, number> = { violation: 3, suspect: 2, fail: 1 };
+export const SEVERITY_RANK: Record<IssueSeverity, number> = { violation: 4, suspect: 3, notice: 2, fail: 1 };
 
 export function anchorKey(anchor: Anchor): string {
   switch (anchor.type) {
@@ -73,13 +86,13 @@ export function anchorLabel(anchor: Anchor): string {
     case 'sizeChart':
       return '尺码表';
     case 'mainImage':
-      return `主图 #${anchor.index ?? 1}`;
+      return `主图 ${anchor.index ?? 1}`;
     case 'skuImage':
-      return `SKU 图 #${anchor.index ?? 1}`;
+      return `SKU 图 ${anchor.index ?? 1}`;
     case 'detailText':
-      return `详情文字 #${anchor.index ?? 1}`;
+      return `详情文字 ${anchor.index ?? 1}`;
     case 'detailImage':
-      return `详情图 #${anchor.index ?? 1}`;
+      return `详情图 ${anchor.index ?? 1}`;
     default:
       return '商品信息';
   }
@@ -110,6 +123,33 @@ export function inferAnchor(position?: string): Anchor {
   return { type: 'product' };
 }
 
+/** 从参考信息里抽一条可展示的证据，参考信息本身不渲染 */
+function evidenceOf(blocks?: Block[]): IssueEvidence | undefined {
+  if (!blocks) return undefined;
+  for (const block of blocks) {
+    if (block.kind === 'text') {
+      return { kind: 'text', label: block.label ?? block.field, text: block.fragment, word: block.word };
+    }
+    if (block.kind === 'image') {
+      return { kind: 'image', label: block.label, src: block.src };
+    }
+    if (block.kind === 'ocr') {
+      const line = block.lines.find((entry) => entry.hit) ?? block.lines[0];
+      if (line) return { kind: 'text', label: block.label, text: line.text, word: line.text };
+    }
+  }
+  return undefined;
+}
+
+function severityOfHit(hit: { severity?: 'violation' | 'suspect' | 'manual'; severityLabel?: string }, itemStatus: ItemView['status']): IssueSeverity {
+  if (hit.severity === 'manual' || hit.severityLabel === '建议自查') return 'notice';
+  if (hit.severity === 'suspect') return itemStatus === 'manual' ? 'notice' : 'suspect';
+  if (hit.severity === 'violation') return 'violation';
+  if (itemStatus === 'violation') return 'violation';
+  if (itemStatus === 'manual') return 'notice';
+  return 'suspect';
+}
+
 export function flattenIssues(items: ItemView[]): Issue[] {
   const issues: Issue[] = [];
 
@@ -121,7 +161,7 @@ export function flattenIssues(items: ItemView[]): Issue[] {
     const problematic = item.status === 'violation' || item.status === 'suspect' || item.status === 'manual';
     if (problematic && outcome.hits && outcome.hits.length > 0) {
       outcome.hits.forEach((hit, index) => {
-        const severity: IssueSeverity = hit.severity ?? (item.status === 'violation' ? 'violation' : 'suspect');
+        const severity = severityOfHit(hit, item.status);
         const anchor = hit.anchor ?? inferAnchor(hit.position);
         issues.push({
           key: `${item.code}:${index}`,
@@ -135,6 +175,7 @@ export function flattenIssues(items: ItemView[]): Issue[] {
           position: hit.position,
           reference: hit.reference,
           suggestion: hit.suggestion,
+          evidence: evidenceOf(hit.reference),
         });
       });
       return;
@@ -142,11 +183,13 @@ export function flattenIssues(items: ItemView[]): Issue[] {
 
     if (problematic) {
       const anchor = outcome.anchor ?? inferAnchor(outcome.hitPosition);
+      const severity: IssueSeverity = item.status === 'violation' ? 'violation' : item.status === 'manual' ? 'notice' : 'suspect';
       issues.push({
         key: `${item.code}:0`,
         code: item.code,
         itemName: item.name,
-        severity: item.status === 'violation' ? 'violation' : 'suspect',
+        severity,
+        severityLabel: item.status === 'manual' ? '建议自查' : undefined,
         anchor,
         anchorKey: anchorKey(anchor),
         reason: outcome.hitReason ?? outcome.conclusion,
@@ -154,6 +197,7 @@ export function flattenIssues(items: ItemView[]): Issue[] {
         reference: outcome.reference,
         suggestion: outcome.suggestion,
         suggestionValue: outcome.suggestionValue,
+        evidence: evidenceOf(outcome.reference),
       });
       return;
     }
@@ -202,6 +246,7 @@ export function groupByAnchor(issues: Issue[]): AnchorGroup[] {
       counts: {
         violation: issue.severity === 'violation' ? 1 : 0,
         suspect: issue.severity === 'suspect' ? 1 : 0,
+        notice: issue.severity === 'notice' ? 1 : 0,
         fail: issue.severity === 'fail' ? 1 : 0,
       },
     });
@@ -209,16 +254,42 @@ export function groupByAnchor(issues: Issue[]): AnchorGroup[] {
   return [...map.values()];
 }
 
-/** 锚点是否被某个检测项覆盖（用于渲染「已检查 ✓」） */
+/** 锚点是否被某个检测项覆盖（用于渲染「已检查」） */
 export function coverageMatches(pattern: string, key: string): boolean {
   if (pattern.endsWith(':*')) return key.startsWith(pattern.slice(0, -1));
   return key === pattern || key.startsWith(`${pattern}:`);
 }
 
-export function countBySeverity(issues: Issue[]) {
+export function countBySeverity(issues: Issue[]): IssueCounts {
   return {
     violation: issues.filter((issue) => issue.severity === 'violation').length,
     suspect: issues.filter((issue) => issue.severity === 'suspect').length,
+    notice: issues.filter((issue) => issue.severity === 'notice').length,
     fail: issues.filter((issue) => issue.severity === 'fail').length,
   };
+}
+
+/** 结构化计数文案：违规 → 疑似 → 建议自查 → 检测失败 */
+export function describeCounts(counts: IssueCounts): string {
+  const parts: string[] = [];
+  if (counts.violation) parts.push(`${counts.violation} 处违规`);
+  if (counts.suspect) parts.push(`${counts.suspect} 处疑似`);
+  if (counts.notice) parts.push(`${counts.notice} 项建议自查`);
+  if (counts.fail) parts.push(`${counts.fail} 项检测失败`);
+  return parts.join(' · ');
+}
+
+/** 同一位置取最高等级，用于高亮配色 */
+export function highestSeverity(issues: Issue[]): IssueSeverity | undefined {
+  return issues.reduce<IssueSeverity | undefined>((current, issue) => {
+    if (!current) return issue.severity;
+    return SEVERITY_RANK[issue.severity] > SEVERITY_RANK[current] ? issue.severity : current;
+  }, undefined);
+}
+
+export function highestIssue(issues: Issue[]): Issue | undefined {
+  return issues.reduce<Issue | undefined>((current, issue) => {
+    if (!current) return issue;
+    return SEVERITY_RANK[issue.severity] > SEVERITY_RANK[current.severity] ? issue : current;
+  }, undefined);
 }

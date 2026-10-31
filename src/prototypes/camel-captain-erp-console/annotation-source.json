@@ -1,0 +1,134 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "camel-captain-erp-console",
+    "pageId": "camel-captain-erp-console",
+    "nodes": [],
+    "updatedAt": "2026-10-31T10:00:00.000Z"
+  },
+  "markdownMap": {},
+  "assetMap": {},
+  "directory": {
+    "nodes": [
+      {
+        "type": "folder",
+        "id": "folder-home",
+        "title": "首页",
+        "defaultExpanded": true,
+        "children": [{ "type": "route", "id": "route-home", "title": "首页", "route": "home" }]
+      },
+      {
+        "type": "folder",
+        "id": "folder-commodity",
+        "title": "商品",
+        "defaultExpanded": true,
+        "children": [
+          { "type": "route", "id": "route-commodity-collect", "title": "商品采集", "route": "commodity-collect" },
+          { "type": "route", "id": "route-commodity-claim", "title": "认领中心", "route": "commodity-claim" },
+          { "type": "route", "id": "route-commodity-my-products", "title": "我的商品", "route": "commodity-my-products" },
+          { "type": "route", "id": "route-commodity-distribute", "title": "分发中心", "route": "commodity-distribute" },
+          { "type": "route", "id": "route-config-new-arrival-price", "title": "上新价模板配置", "route": "config-new-arrival-price" },
+          { "type": "route", "id": "route-config-pricing", "title": "渠道定价配置", "route": "config-pricing" },
+          { "type": "route", "id": "route-config-store-template", "title": "店铺模板配置", "route": "config-store-template" }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "folder-trade",
+        "title": "交易",
+        "defaultExpanded": true,
+        "children": [
+          { "type": "route", "id": "route-trade-my-order", "title": "我的订单", "route": "trade-my-order" },
+          { "type": "route", "id": "route-trade-labeling", "title": "自动打标配置", "route": "trade-labeling" }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "folder-procurement",
+        "title": "采购",
+        "defaultExpanded": true,
+        "children": [
+          { "type": "route", "id": "route-procurement-tracking", "title": "采购单跟踪", "route": "procurement-tracking" },
+          { "type": "route", "id": "route-procurement-inbound-outbound", "title": "出入库管理", "route": "procurement-inbound-outbound" },
+          { "type": "route", "id": "route-procurement-exception", "title": "出库异常", "route": "procurement-exception" },
+          { "type": "route", "id": "route-procurement-supplier", "title": "供应商管理", "route": "procurement-supplier" },
+          { "type": "route", "id": "route-procurement-receipt", "title": "收货地址管理", "route": "procurement-receipt" }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "folder-logistics",
+        "title": "物流",
+        "defaultExpanded": true,
+        "children": [
+          { "type": "route", "id": "route-logistics-provider", "title": "物流商管理", "route": "logistics-provider" },
+          { "type": "route", "id": "route-logistics-international", "title": "国际物流轨迹跟踪", "route": "logistics-international" },
+          { "type": "route", "id": "route-logistics-address", "title": "常用地址管理", "route": "logistics-address" }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "folder-report",
+        "title": "报表",
+        "defaultExpanded": true,
+        "children": [
+          { "type": "route", "id": "route-report-order-detail", "title": "订单明细报表", "route": "report-order-detail" },
+          { "type": "route", "id": "route-report-shop-sign", "title": "店铺看板", "route": "report-shop-sign" },
+          { "type": "route", "id": "route-report-crawler-account", "title": "账号配置", "route": "report-crawler-account" }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "folder-system",
+        "title": "系统",
+        "defaultExpanded": true,
+        "children": [
+          { "type": "route", "id": "route-system-dept", "title": "部门管理", "route": "system-dept" },
+          { "type": "route", "id": "route-system-role", "title": "角色管理", "route": "system-role" },
+          { "type": "route", "id": "route-system-sub-account", "title": "子账号管理", "route": "system-sub-account" },
+          { "type": "route", "id": "route-system-store-auth", "title": "店铺授权", "route": "system-store-auth" },
+          { "type": "route", "id": "route-system-purchase-account-auth", "title": "采购账号授权", "route": "system-purchase-account-auth" },
+          { "type": "route", "id": "route-system-approval", "title": "审批流", "route": "system-approval" },
+          { "type": "route", "id": "route-system-oper-log", "title": "操作日志", "route": "system-oper-log" },
+          { "type": "route", "id": "route-system-help-admin", "title": "帮助中心", "route": "system-help-admin" }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "folder-toolbox",
+        "title": "工具箱",
+        "defaultExpanded": true,
+        "children": [
+          { "type": "route", "id": "route-toolbox-last-mile", "title": "尾程签收凭证查询", "route": "toolbox-last-mile" },
+          { "type": "route", "id": "route-toolbox-postal-code", "title": "地址邮编校验", "route": "toolbox-postal-code" },
+          { "type": "route", "id": "route-toolbox-exchange-rate", "title": "汇率", "route": "toolbox-exchange-rate" },
+          { "type": "route", "id": "route-toolbox-quality", "title": "商品信息质量检测", "route": "toolbox-quality" }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "folder-service",
+        "title": "即时咨询",
+        "defaultExpanded": true,
+        "children": [
+          { "type": "route", "id": "route-service-online-cs", "title": "即时咨询", "route": "service-online-cs" },
+          { "type": "route", "id": "route-service-in-site-message", "title": "站内信", "route": "service-in-site-message" }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "folder-account",
+        "title": "个人中心",
+        "defaultExpanded": true,
+        "children": [
+          { "type": "route", "id": "route-account-personal-center", "title": "个人中心", "route": "account-personal-center" },
+          { "type": "route", "id": "route-account-member-center", "title": "会员中心", "route": "account-member-center" },
+          { "type": "route", "id": "route-account-orders", "title": "订单中心", "route": "account-orders" },
+          { "type": "route", "id": "route-account-distribution", "title": "分销中心", "route": "account-distribution" }
+        ]
+      }
+    ]
+  }
+}

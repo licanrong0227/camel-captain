@@ -104,6 +104,7 @@ function AddNewArrivalDialog(props: { onClose: () => void; onSubmit: (row: NewAr
   const [intlMode, setIntlMode] = useState<'channel' | 'fixed'>('channel');
   const [intlFixedCost, setIntlFixedCost] = useState('10.00');
   const [weightBasis, setWeightBasis] = useState<'weight' | 'packed'>('weight');
+  const [packedExtra, setPackedExtra] = useState('0.02');
   const [channelTpl, setChannelTpl] = useState('');
   const [domesticCost, setDomesticCost] = useState('4.00');
   const [domesticRateMode, setDomesticRateMode] = useState<'realtime' | 'fixed'>('fixed');
@@ -164,7 +165,7 @@ function AddNewArrivalDialog(props: { onClose: () => void; onSubmit: (row: NewAr
         <li><span>采购成本</span>{purchaseMode === 'collect' ? '变量 · 采集价' : purchaseMode === 'fixed' ? `常量 · 固定价 ${purchasePrice} ${purchaseCurrency}` : `变量 · 采集价折扣 ${purchaseDiscount}（小数）`}</li>
       ) : null}
       {on('domestic') ? <li><span>国内物流成本</span>常量 {domesticCost}</li> : null}
-      {on('intl') ? <li><span>国际物流成本</span>{intlMode === 'channel' ? `变量 · 渠道定价${channelTpl ? `（${channelTpl}）` : ''} · ${weightBasis === 'weight' ? '产品重量 * 渠道单价 + 挂号费' : '产品包装后重量 * 渠道单价 + 挂号费'}` : `常量 · 固定成本 ${intlFixedCost} RMB`}</li> : null}
+      {on('intl') ? <li><span>国际物流成本</span>{intlMode === 'channel' ? `变量 · 渠道定价${channelTpl ? `（${channelTpl}）` : ''} · ${weightBasis === 'weight' ? '产品重量 * 渠道单价 + 挂号费' : `(产品重量 + ${packedExtra}) * 渠道单价 + 挂号费`}` : `常量 · 固定成本 ${intlFixedCost} RMB`}</li> : null}
       {on('shopDiscount') ? <li><span>店铺折扣</span>{shopDiscount}</li> : null}
       {on('platformLoss') ? <li><span>平台活动折扣损耗</span>{platformLoss}</li> : null}
       {on('commission') ? <li><span>平台佣金率</span>{commission}</li> : null}
@@ -173,7 +174,7 @@ function AddNewArrivalDialog(props: { onClose: () => void; onSubmit: (row: NewAr
       {on('buyerShipping') ? <li><span>买家运费</span>{buyerShipping}</li> : null}
       <li><span>定价公式</span>上新价 = {formula || '-'}</li>
     </ul>
-  ), [name, tplType, platform, stores, intlMode, intlFixedCost, channelTpl, weightBasis, domesticCost, shopDiscount, platformLoss, commission, withdrawFee, profit, buyerShipping, formula, checked, purchaseMode, purchasePrice, purchaseCurrency, purchaseDiscount]);
+  ), [name, tplType, platform, stores, intlMode, intlFixedCost, channelTpl, weightBasis, packedExtra, domesticCost, shopDiscount, platformLoss, commission, withdrawFee, profit, buyerShipping, formula, checked, purchaseMode, purchasePrice, purchaseCurrency, purchaseDiscount]);
 
   return (
     <Modal
@@ -214,6 +215,7 @@ function AddNewArrivalDialog(props: { onClose: () => void; onSubmit: (row: NewAr
         <label><input type="checkbox" checked={on('intl')} onChange={() => toggle('intl')} /><span>国际物流成本RMB</span></label>
       </div>
       <table className="bcp-table bcp-table--inset">
+        <colgroup><col style={{ width: '16%' }} /><col style={{ width: '13%' }} /><col style={{ width: '41%' }} /><col style={{ width: '30%' }} /></colgroup>
         <thead><tr><th>成本类型</th><th>变量/常量</th><th>公式</th><th>汇率转换成USD</th></tr></thead>
         <tbody>
           {on('purchase') ? (
@@ -237,8 +239,14 @@ function AddNewArrivalDialog(props: { onClose: () => void; onSubmit: (row: NewAr
                 ) : null}
               </td>
               <td>
-                <RateRadio mode={purchaseRateMode} onMode={setPurchaseRateMode} value={purchaseRate} onChange={setPurchaseRate} />
-                <div className="bcp-cell-hint">仅在采购成本为RMB时生效</div>
+                {purchaseMode === 'fixed' && purchaseCurrency === 'USD' ? (
+                  <span className="bcp-cell-muted">-</span>
+                ) : (
+                  <>
+                    <RateRadio mode={purchaseRateMode} onMode={setPurchaseRateMode} value={purchaseRate} onChange={setPurchaseRate} />
+                    {purchaseMode === 'fixed' ? null : <div className="bcp-cell-hint">仅在采集价为RMB时生效</div>}
+                  </>
+                )}
               </td>
             </tr>
           ) : null}
@@ -265,10 +273,17 @@ function AddNewArrivalDialog(props: { onClose: () => void; onSubmit: (row: NewAr
                       <Select value={channelTpl} options={CHANNEL_TPL_OPTIONS} placeholder="请选择渠道模板" onChange={(v) => setChannelTpl(String(v))} width={220} />
                     </div>
                     <div className="bcp-formula-line">
-                      <span className="bcp-radios bcp-radios--stack">
-                        <label><input type="radio" name="intl-weight" checked={weightBasis === 'weight'} onChange={() => setWeightBasis('weight')} /><span>产品重量 * 渠道单价 + 挂号费</span></label>
-                        <label><input type="radio" name="intl-weight" checked={weightBasis === 'packed'} onChange={() => setWeightBasis('packed')} /><span>产品包装后重量 * 渠道单价 + 挂号费</span></label>
+                      <span className="bcp-radios">
+                        <label><input type="radio" name="intl-weight" checked={weightBasis === 'weight'} onChange={() => setWeightBasis('weight')} /><span>产品重量</span></label>
+                        <label><input type="radio" name="intl-weight" checked={weightBasis === 'packed'} onChange={() => setWeightBasis('packed')} /><span>产品包装后重量</span></label>
                       </span>
+                    </div>
+                    <div className="bcp-formula-line bcp-formula-expr">
+                      {weightBasis === 'weight' ? (
+                        <span className="bcp-formula-expr__line">产品重量 * 渠道单价 + 挂号费</span>
+                      ) : (
+                        <span className="bcp-formula-expr__line">(产品重量 + <Stepper value={packedExtra} onChange={setPackedExtra} step={0.01} width={68} />) * 渠道单价 + 挂号费</span>
+                      )}
                     </div>
                   </>
                 ) : (

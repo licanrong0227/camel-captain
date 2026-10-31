@@ -320,6 +320,7 @@ main.reconstruction-stage{margin:0}</style>
             <li>可选图片选择与导入（2026-10-13 第 7 轮）：图片为 1:1 方形，左上角复选框、点击图片或复选框选中，选中数量以当前空格子数为上限、达上限后未选图片置灰不可超选；网格上方「全选」按空格子数一次性选中靠前图片；侧栏底部通栏「导入已选图片」按钮，未选中时置灰，点击按顺序把已选图片填入空格子并清空选中。可选图片仍可拖拽直接落入指定格。</li>
             <li>上传替换确认弹窗（<code>CollageDialog</code> 内 <code>confirmOpen</code>，z-index 50）：点击「上传到主图」弹出「提示」，内容为「主图上传数量已达上限，是否继续上传并替换掉最后一张主图」，底部「关闭」与「上传并替换」两按钮及右上角 × 均关闭本弹窗。</li>
             <li>上传图片弹窗（<code>components/UploadImageDialog.tsx</code> + <code>upload-image.css</code>，z-index 40）：复用 <code>auto-edit-dialog</code> 的「上传图片」样式，ERP 橙色主题；含 本地/URL/引用 侧栏、单个/批量上传单选、拖拽上传区、取消/确认底栏；由拼图弹窗「可选图片」标题右侧「上传」按钮打开，取消/确认/关闭均关闭本弹窗；仅样式，选项不可切换。</li>
+            <li>AI 生成视频（2026-10-28 新增，<code>components/AiVideoDialog.tsx</code> + <code>ai-video.css</code>，z-index 40）：视频区块分割线下方、视频名称上方新增橙色「AI生成视频」按钮（视频区块内容整体下移 25px，上传虚线框高度 120→96 保持卡片总高不变），点击覆盖打开 AI 生成视频弹窗。参考图按 主图 5 / 站外推广图 1 / SKU 图 2 / 详情图 3 四组列出（<code>assets/sku-*.jpg</code>、<code>detail-*.jpg</code> 为新增素材），最多选 9 张，缩略图左上角序号即参考顺序，取消选中后序号顺延，选满后其余图片置灰、再点提示「参考图最多选择 9 张」；时长 5 / 10 / 15 秒，每个时长后的 ? 悬停提示该时长单次算力消耗（演示值 10 / 20 / 30），底栏「预计消耗」随时长同步，时长下方有浅橙高亮提示「生成过程中可随时停止，但已消耗的算力不返还」；参考图缩略图左下角显示图片分辨率；比例 自适应 / 9:16 / 16:9 / 1:1 / 4:3 / 3:4 / 21:9，「自适应」按参考图比例生成。未选参考图时「生成视频」置灰；生成过程中入口按钮禁用（浅橙、悬停提示「视频生成中，暂不可再次生成」）；生成中弹窗底部与视频位上均有「停止生成」，点击先弹 400px 确认框「停止后本次视频生成将中断，已消耗的算力无法返还」（取消 / 停止生成），确认后视频位回到「上传视频」、入口按钮恢复可点（<code>components/StopVideoDialog.tsx</code>，z-index 60）；提交后弹窗切换为 520px 的「视频生成中」页面（橙色 12 辐条 spinner + 时长·比例·参考图张数 + 提示「关闭弹窗不会影响视频生成」），关闭后视频上传位保持「AI 生成中」：橙色 12 辐条 spinner + 「AI 生成中」+ 本次参数 + 底部不定长进度条。每次重开弹窗，参考图、时长、比例重置。</li>
           </ul>
         </section>
 
@@ -353,6 +354,7 @@ main.reconstruction-stage{margin:0}</style>
             <li>中部区块菜单：« 收起、基本/详情/日志页签、15 项区块菜单（「视频」选中：橙色 + 右侧指示条）。</li>
             <li>右侧内容区：视频区块（裁切标题、视频名称/描述输入框 + 计数、上传视频虚线框）、主图区块（5/8、批量美图/下载图片、上传虚线格、5 张带分辨率角标的照片）、站外推广图区块（1/1、批量美图、1 张照片）。</li>
             <li>底部按钮：关闭 / 保存 / 保存并发布。</li>
+            <li>视频区块分割线下方「AI生成视频」按钮（2026-10-28 新增），点击打开 AI 生成视频弹窗。</li>
           </ul>
           <h3>本次不呈现</h3>
           <ul>
@@ -392,6 +394,10 @@ main.reconstruction-stage{margin:0}</style>
                 <tr><td data-label="对象/场景">画布空格</td><td data-label="前置状态">格内无图</td><td data-label="用户操作">点击上传 / 接收拖拽</td><td data-label="原型表现">文案「点击添加图片或从可选图片拖放到此处」，点击弹出「上传图片」弹窗（与右栏「上传」按钮相同，仅样式演示）；拖拽落点填入图片</td><td data-label="后续状态">变为已填格</td></tr>
                 <tr><td data-label="对象/场景">画布已填格</td><td data-label="前置状态">格内有图</td><td data-label="用户操作">滚轮 / 按住拖拽 / 悬停点右上删除</td><td data-label="原型表现">滚轮缩放 1–3 倍，放大后可拖拽平移可视区域；悬停右上角删除按钮清空该格图像</td><td data-label="后续状态">缩放平移 / 变回空格</td></tr>
                 <tr><td data-label="对象/场景">「上传到主图」</td><td data-label="前置状态">弹窗已打开</td><td data-label="用户操作">点击按钮</td><td data-label="原型表现">弹出「提示」确认框：主图上传数量已达上限，是否继续上传并替换掉最后一张主图；「关闭」/「上传并替换」/ × 均关闭</td><td data-label="后续状态">回到拼图弹窗</td></tr>
+                <tr><td data-label="对象/场景">「AI生成视频」按钮</td><td data-label="前置状态">视频区块可见</td><td data-label="用户操作">点击</td><td data-label="原型表现">灰遮罩 + 780px 居中弹窗，标题「AI生成视频」，按 主图 / 站外推广图 / SKU 图 / 详情图 四组列出参考图，右侧实时「已选 n/9」</td><td data-label="后续状态">弹窗打开，默认 5 秒 / 自适应 / 无选中</td></tr>
+                <tr><td data-label="对象/场景">参考图</td><td data-label="前置状态">弹窗打开</td><td data-label="用户操作">点击缩略图</td><td data-label="原型表现">选中：橙色描边 + 左上角橙色圆形序号；取消：序号顺延重排。达到 9 张后未选图片置灰不可点，再点底部提示「参考图最多选择 9 张」</td><td data-label="后续状态">已选张数变化</td></tr>
+                <tr><td data-label="对象/场景">时长 / 比例</td><td data-label="前置状态">弹窗打开</td><td data-label="用户操作">单选；悬停时长后的 ?</td><td data-label="原型表现">选中项橙色描边浅橙底；? 悬停显示深色提示「每生成一个视频消耗 10/20/30 算力」；底栏「预计消耗」随时长变化</td><td data-label="后续状态">参数切换</td></tr>
+                <tr><td data-label="对象/场景">「生成视频」</td><td data-label="前置状态">未选参考图时置灰</td><td data-label="用户操作">点击</td><td data-label="原型表现">弹窗切换为「视频生成中」窄弹窗（spinner + 时长 · 比例 · n 张参考图 + 「关闭弹窗不会影响视频生成」）；点「关闭 / ×」收起后，视频上传位保持「AI 生成中」占位</td><td data-label="后续状态">生成中占位常驻；可「停止生成」并二次确认后回到上传态</td></tr>
               </tbody>
             </table>
           </div>
@@ -446,6 +452,7 @@ main.reconstruction-stage{margin:0}</style>
                 <tr><td data-label="日期">2026-10-13</td><td data-label="用户决策或变更">五条批注：放大拖动不得让图片边界脱离格子；来源标注补「画布比例按照1:1」；已填格悬停左上角拖拽图标可拖到别格（有图互换、无图移入并清空原格）；侧栏底部通栏加「导入已选图片」按钮（无选中置灰、按序入空格、放完取消选中）；图片加全选复选框与每张左上角复选框，选中数量受空格子数限制不可超选、超限置灰</td><td data-label="对当前原型的影响"><code>SlotCell</code> 新增 <code>boxRef</code>+<code>clamp</code> 限制平移、左上角 <code>.cp-drag</code> 拖拽手柄与 <code>text/cp-slot</code> 拖放、<code>moveOrSwap</code> 换位；<code>CollageDialog</code> 新增 <code>selected</code> 状态与 <code>toggleSelect</code>/<code>toggleSelectAll</code>/<code>importSelected</code>，面板加 <code>.cp-selectall</code>、<code>.cp-sample .cp-check</code>、<code>.cp-panel__foot</code>/<code>.cp-import</code>；<code>collage.css</code> 补 <code>.cp-drag/.cp-check/.cp-selectall/.cp-sample--selected/--disabled/.cp-panel__foot/.cp-import</code>；标注 <code>collage-embed-source</code> 补 1:1，<code>collage-slot-interaction</code>/<code>collage-sample-interaction</code> 更新</td></tr>
                 <tr><td data-label="日期">2026-10-14</td><td data-label="用户决策或变更">三条批注：格子和画布比例都改为 1:1；「导出」左侧新增「清空」按钮，点击清空格子所有图片；左上角拖拽时图片要跟着光标移动</td><td data-label="对当前原型的影响"><code>collage.css</code> <code>.cp-canvas__grid</code> 改为 <code>repeat(3, 195px)</code> 列 / <code>195px</code> 行（1:1 正方格），<code>.cp-slot__text</code> 收窄到 160px/13px 适配小格；<code>CollageDialog</code> 底栏在「导出」前新增 <code>.cp-tool--light</code>「清空」按钮，<code>onClick</code> 调 <code>setSlots(emptySlots())</code>；<code>SlotCell</code> 已填格新增 <code>imgRef</code>，<code>.cp-drag</code> 手柄 <code>onDragStart</code> 用 <code>setDragImage(img, 宽/2, 高/2)</code> 让图片本体跟随光标拖拽</td></tr>
                 <tr><td data-label="日期">2026-10-14</td><td data-label="用户决策或变更">要求删除「从主图导入的那几张图片」（可选图片面板自动引用编辑产品主图的行为）</td><td data-label="对当前原型的影响">移除 <code>CollageDialog</code> 打开时把 <code>mainShots</code> 注入 <code>samples</code> 的 <code>useEffect</code> 与 <code>mainShots</code> 入参，<code>index.tsx</code> 不再传 <code>mainShots</code>；「可选图片」面板只保留 <code>assets/samples/sample-01..15.jpg</code> 15 张示例；<code>mainCount/mainLimit</code>（上传到主图上限确认）保留不变</td></tr>
+                <tr><td data-label="日期">2026-10-28</td><td data-label="用户决策或变更">批注：视频名称上方新增「AI生成视频」按钮，点击打开弹窗；参考图列出主图、站外推广图、SKU 图和详情图，最多 9 张；时长 5 / 10 / 15 秒，每个时长后的 ? 悬停提示算力消耗；比例 自适应 / 9:16 / 16:9 / 1:1 / 4:3 / 3:4 / 21:9</td><td data-label="对当前原型的影响">新增 <code>components/AiVideoDialog.tsx</code> + <code>ai-video.css</code>（z-index 40）；<code>index.tsx</code> 增加 <code>aiOpen</code>/<code>aiJob</code> 状态与「AI生成视频」按钮；<code>style.css</code> 增加按钮、生成中占位与 12 辐条 spinner；新增 <code>assets/sku-1/2.jpg</code>、<code>detail-1/2/3.jpg</code> 演示素材；<code>annotation-source.json</code> 新增 3 条红色标注（入口、参考图、时长与比例）</td></tr>
               </tbody>
             </table>
           </div>

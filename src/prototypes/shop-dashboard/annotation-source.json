@@ -1,0 +1,226 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "shop-dashboard",
+    "pageId": "dashboard",
+    "nodes": [
+      {
+        "id": "ssd-ad-filters",
+        "index": 1,
+        "title": "广告查询条件 · 接口与参数",
+        "pageId": "dashboard",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ssd-ad-filters\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=ssd-ad-filters",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "annotationText": "",
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793355242433,
+        "updatedAt": 1793355242433
+      },
+      {
+        "id": "ssd-ad-exclude",
+        "index": 2,
+        "title": "GMV 口径与补单剔除",
+        "pageId": "dashboard",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ssd-ad-exclude\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=ssd-ad-exclude",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "annotationText": "",
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793352819738,
+        "updatedAt": 1793352819738
+      },
+      {
+        "id": "ssd-ad-kpi",
+        "index": 3,
+        "title": "广告指标卡 · 取数与公式",
+        "pageId": "dashboard",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ssd-ad-kpi\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=ssd-ad-kpi",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "annotationText": "",
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793352819739,
+        "updatedAt": 1793352819739
+      },
+      {
+        "id": "ssd-ad-chart",
+        "index": 4,
+        "title": "广告趋势曲线 · 按天取数",
+        "pageId": "dashboard",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ssd-ad-chart\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=ssd-ad-chart",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "annotationText": "",
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793352819740,
+        "updatedAt": 1793352819740
+      },
+      {
+        "id": "ssd-table-ad",
+        "index": 5,
+        "title": "店铺对比 · 广告页签口径",
+        "pageId": "dashboard",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ssd-table-ad\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=ssd-table-ad",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "annotationText": "",
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793352819741,
+        "updatedAt": 1793352819741
+      },
+      {
+        "id": "ssd-store-ad-dialog",
+        "index": 6,
+        "title": "店铺广告数据弹窗 · 单店取数",
+        "pageId": "dashboard",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ssd-store-ad-dialog\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=ssd-store-ad-dialog",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "annotationText": "",
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793352819742,
+        "updatedAt": 1793352819742
+      },
+      {
+        "id": "ssd-item-panel",
+        "index": 7,
+        "title": "商品广告数据 · 接口与列公式",
+        "pageId": "dashboard",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ssd-item-panel\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=ssd-item-panel",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "annotationText": "",
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793352819743,
+        "updatedAt": 1793352819743
+      },
+      {
+        "id": "ssd-item-trend",
+        "index": 8,
+        "title": "商品广告趋势 · 单品取数",
+        "pageId": "dashboard",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"ssd-item-trend\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=ssd-item-trend",
+          "path": []
+        },
+        "hasMarkdown": true,
+        "annotationText": "",
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793352819744,
+        "updatedAt": 1793352819744
+      }
+    ],
+    "updatedAt": 1793355610695
+  },
+  "markdownMap": {
+    "ssd-ad-filters": "**三个条件决定所有广告数据取哪一段、哪几家店**\n\n- 店铺分组：只收敛「店铺范围」的可选店铺，本身不传给广告接口；未选分组时按店群全部店铺。\n- 店铺范围：单店传 `storeId={id}`；店群传当前分组内的 `storeIds`，按店铺分别取数后相加。\n- 时间：`from` / `to` 含首尾，预设 1/3/7/15/30 天或自定义，最长 31 天；统一以广告数据截止日为终点（演示数据到 2026-10-28）。\n- 剔除开关：`excludeSupplement`，见「GMV 口径与补单剔除」标注。\n\n**涉及的接口**\n- 店铺与分组：`GET /api/v1/report/store/dashboard-list`\n- 店铺经营（整店 GMV）：`GET /api/v1/report/store/wis-core-info?storeId={id}&periodType=DAY&site=TOTAL&countryId=TOTAL`\n- 广告商品日报：敦煌 `dh.seller.ad.prod.report.page`，字段 `nickname`、`itemcode`、`adType`、`dateline`、`usdCost`、`gmv`、`orders`\n- 订单商品行（链接产出）：`GET /api/v1/order/list`，取 `orderProducts[]`、`payDate`、`labels`\n\n报表统一截止日 `report_to = min(广告截止日, 订单截止日)`；广告是 T+1，所以实际就是广告截止日，避免出现「有 GMV、没广告消耗」。",
+    "ssd-ad-exclude": "**两种口径，默认「剔除补单」**\n\n- 剔除补单：请求带 `excludeSupplement=true`\n- 原始数据：请求带 `excludeSupplement=false`\n\n**剔除设置**（按店铺生效，改完历史区间同样重算）\n- 勾选订单标签：标签来自 `order-label/list`，订单命中任一标签即剔除\n- 指定订单号：按 `orderNo` 剔除\n- 手动扣减金额：只从整店 GMV 扣，不分摊到具体商品\n\n**公式**\n- 整店 GMV = Σ `store_daily.confirm_gmv` − 剔除订单行 GMV 之和 − 手动扣减金额\n- 广告消耗、广告 GMV 不受剔除影响，仍取广告报表\n- 广告 GMV 占比 = 广告 GMV / 整店 GMV（用剔除后的分母）\n- ROAS = 广告 GMV / 广告消耗\n\n剔除订单行来自 `GET /api/v1/order/list`：订单行 GMV = `price × quantity`，按 `payDate` 归属日期，标签取订单 `labels`。",
+    "ssd-ad-kpi": "**五个指标，区间与店铺范围同顶部查询条件**\n\n- 广告消耗 = SUM(usdCost)，取广告商品日报\n- 广告 GMV = SUM(gmv)，取广告商品日报\n- 整店 GMV = SUM(confirmGmv) − 剔除订单行 GMV − 手动扣减金额，取店铺经营数据\n- 广告 GMV 占比 = 广告 GMV / 整店 GMV\n- ROAS = 广告 GMV / 广告消耗\n\n**接口**\n- 广告：敦煌 `dh.seller.ad.prod.report.page`，参数 `nickname`、`dateline`，取 `usdCost`、`gmv`\n- 整店：`GET /api/v1/report/store/wis-core-info?storeId={id}&periodType=DAY&site=TOTAL&countryId=TOTAL`\n- 店群 = 组内各店分别汇总后相加，占比和 ROAS 用合计值重算，不对各店比率求平均\n- 分母为 0 或没有投放时显示 `-`\n\n点击任一指标卡，下方趋势图切换为该指标的单条曲线。",
+    "ssd-ad-chart": "**按天汇总，横轴是广告数据的 `dateline`（T+1）**\n\n- 广告消耗 / 广告 GMV：广告商品日报按 `dateline` 分组求和\n- 整店 GMV：店铺经营数据按 `stat_date` 分组求和，并扣除当天被剔除的订单行\n- 广告 GMV 占比、ROAS：用当天的广告 GMV、整店 GMV、广告消耗计算\n- 区间内没有数据的日期补 0；店群为组内各店当天数值相加，单店按 `storeId` 过滤\n\n接口同上一条：广告取 `dh.seller.ad.prod.report.page`，整店取 `wis-core-info`；两边按同一 `from` / `to` 对齐。",
+    "ssd-table-ad": "**广告页签的列口径与指标卡一致：同一时间区间、同一剔除开关**\n\n- 广告消耗 = SUM(usdCost)，广告商品日报按店铺汇总\n- 广告 GMV = SUM(gmv)，广告商品日报按店铺汇总\n- 整店 GMV = SUM(confirmGmv) − 剔除订单行 GMV，取店铺经营数据\n- 广告 GMV 占比 = 广告 GMV / 整店 GMV\n- ROAS = 广告 GMV / 广告消耗\n\n**接口与规则**\n- 店铺与 `wis`：`GET /api/v1/report/store/dashboard-list`\n- 广告：`dh.seller.ad.prod.report.page`，按 `nickname`、`dateline` 过滤\n- 后端建议：`GET /api/ad-board/stores?from=&to=`，返回 `rows[]` + `totals`\n- 排序字段 `adCost` / `adGmv` / `storeGmv` / `adRatio` / `roas`；点击列头升序 → 降序 → 取消\n- 没有广告数据的店铺显示 `-`，两种排序方向都排在最后\n- 「广告数据趋势图」列是最近 30 天广告消耗的缩略线，点击查看该店当前查询区间的广告数据\n- 页签栏右侧「导出」按当前页签导出表格 CSV：固定列（店铺、店铺 ID、等级、能力分）+ 当前页签的指标列",
+    "ssd-store-ad-dialog": "**只统计当前店铺，口径与广告卡片相同**\n\n- 入参：`storeId`、`from`、`to`、`excludeSupplement`\n- 广告消耗 / 广告 GMV：广告商品日报按 `nickname`（映射到 `storeId`）和 `dateline` 过滤后汇总\n- 整店 GMV：该店 `wis-core-info` 的 `confirmGmv` 区间之和，扣除剔除金额\n- 广告 GMV 占比 = 广告 GMV / 整店 GMV；ROAS = 广告 GMV / 广告消耗\n- 按天曲线：广告按 `dateline`、整店按 `stat_date` 汇总，缺数补 0\n- 5 张指标卡可点击，切换同一条曲线展示的指标",
+    "ssd-item-panel": "**一行一个商品，关联键是敦煌商品 ID：广告 `itemcode` = 订单 `orderProducts[].itemCode`**\n\n- 广告消耗 = SUM(usdCost)\n- 广告 GMV = SUM(gmv)\n- 链接产出 GMV = SUM(price × quantity)，按 `payDate` 归属并剔除补单\n- 广告 GMV 占比 = 广告 GMV / 链接产出 GMV\n- ROAS = 广告 GMV / 广告消耗\n\n**接口**\n- 广告：`dh.seller.ad.prod.report.page`，参数 `nickname`、`itemcode`、`dateline`\n- 订单：`GET /api/v1/order/list`，取 `orderProducts[]`、`payDate`、`labels`\n- 后端建议：`GET /api/ad-board/links?storeId=&from=&to=`\n\n**规则**\n- 商品全集 = 区间内有订单的商品 ∪ 有广告投放的商品；没有投放的商品广告列显示 `-`\n- 趋势缩略线：该商品在查询区间内每天的广告消耗\n- 排序字段 `adCost` / `adGmv` / `linkGmv` / `adRatio` / `roas`，默认按链接产出 GMV 降序；无广告数据的商品排在最后\n- 不设合计行，合计看店铺行\n\n原型说明：当前「链接产出 GMV」用店铺成交额按商品权重分摊演示，真实实现按订单商品行汇总。",
+    "ssd-item-trend": "**点击商品行的趋势图打开，只统计该店铺 + 该商品**\n\n- 入参：`storeId`、`itemCode`、`from`、`to`、`excludeSupplement`\n- 5 个指标：广告消耗、广告 GMV、链接产出 GMV、广告 GMV 占比、ROAS，公式与商品面板一致\n- 按天曲线：广告按 `dateline` 汇总 `usdCost` / `gmv`，链接产出按订单 `stat_date` 汇总 `price × quantity`，两个来源按同一区间合并，缺数补 0\n- 接口：广告商品日报 + `GET /api/v1/order/list`；后端建议 `GET /api/ad-board/link-detail?storeId=&itemCode=&from=&to=`，返回指标与 `trend[]`\n- 没有投放的商品，广告类指标显示 `-`，曲线按 0 展示"
+  },
+  "assetMap": {},
+  "directory": {
+    "nodes": [
+      {
+        "type": "folder",
+        "id": "dashboard-directory",
+        "title": "店铺看板",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "route",
+            "id": "route-dashboard",
+            "title": "店铺看板",
+            "route": "dashboard"
+          }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "interface-docs",
+        "title": "接口文档",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "link",
+            "id": "dhgate-ad-prod-report",
+            "title": "广告商品报表（dh.seller.ad.prod.report.page）",
+            "href": "https://open.dhgate.com/docs/api/001012",
+            "target": "blank"
+          }
+        ]
+      }
+    ]
+  },
+  "documents": {
+    "nodes": [
+      {
+        "type": "folder",
+        "id": "shop-dashboard-documents",
+        "title": "店铺看板文档",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "markdown",
+            "id": "doc-backend-data-prd",
+            "title": "数据接口与口径说明（后端）",
+            "markdownPath": "docs/backend-data-prd.md"
+          }
+        ]
+      }
+    ]
+  }
+}

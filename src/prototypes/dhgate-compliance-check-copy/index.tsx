@@ -20,7 +20,7 @@ import { DetailPage } from './pages/DetailPage';
 import { RulesPage } from './pages/RulesPage';
 import { ToastHost } from './components/ui';
 
-const PRESET_VALUES: PagePresetValue[] = ['flow', 'pass', 'multi', 'partial', 'checking'];
+const PRESET_VALUES: PagePresetValue[] = ['flow', 'pass', 'multi', 'mixed', 'partial', 'checking'];
 
 const ROUTE = defineHashPageRoute(
   [
@@ -60,7 +60,8 @@ export default function DhgateComplianceCheck() {
   const requestedTask = taskId ? getTask(taskId) : undefined;
   if (requestedTask && !isDemoRecord(requestedTask)) {
     const requestedView = computeTaskView(requestedTask, Date.now());
-    if (requestedView.status !== 'collect-failed') {
+    // 采集失败及由它重新采集的记录保留自己的详情页，不归一化到箱包演示记录
+    if (requestedView.status !== 'collect-failed' && !requestedTask.collectRetryAt) {
       const entry = demoEntryForView(requestedView);
       taskId = entry.taskId;
       if (!initialPreset) initialPreset = entry.preset;
@@ -68,22 +69,22 @@ export default function DhgateComplianceCheck() {
   }
 
   const ruleAnchor = (params.get('item') ?? undefined) as ItemCode | undefined;
-  const viewParam: 'product' | 'items' = params.get('view') === 'items' ? 'items' : 'product';
   const focusParam = (params.get('focus') ?? undefined) as ItemCode | undefined;
+  const liveParam = params.get('live') === '1';
 
   // 归一后的任务和 URL 不一致时改写 hash，避免地址栏记的是另一条记录、页面却展示箱包演示页
   const remapped = page === 'detail' && Boolean(rawTaskId || taskId) && taskId !== rawTaskId;
   useEffect(() => {
     if (!remapped || !taskId) return;
     const next = new URLSearchParams({ page: 'detail', task: taskId });
-    if (viewParam === 'items') next.set('view', 'items');
     if (focusParam) next.set('focus', focusParam);
+    if (liveParam) next.set('live', '1');
     if (initialPreset) next.set('preset', initialPreset);
     window.location.hash = next.toString();
-  }, [remapped, taskId, viewParam, focusParam, initialPreset]);
+  }, [remapped, taskId, focusParam, initialPreset, liveParam]);
 
-  const goTask = (id: string, preset?: PagePresetValue) => {
-    window.location.hash = `page=detail&task=${id}${preset ? `&preset=${preset}` : ''}`;
+  const goTask = (id: string, preset?: PagePresetValue, live?: boolean) => {
+    window.location.hash = `page=detail&task=${id}${preset ? `&preset=${preset}` : ''}${live ? '&live=1' : ''}`;
   };
 
   const options = useMemo<AnnotationViewerOptions>(() => ({
@@ -124,7 +125,7 @@ export default function DhgateComplianceCheck() {
         {page === 'launch' && <LaunchPage onOpenTask={goTask} />}
         {page === 'records' && <RecordsPage onOpenTask={goTask} />}
         {page === 'detail' && (taskId ? (
-          <DetailPage key={taskId} taskId={taskId} initialView={viewParam} initialFocus={focusParam} initialPreset={initialPreset} onBack={() => { window.location.hash = 'page=records'; }} onOpenTask={goTask} />
+          <DetailPage key={taskId} taskId={taskId} initialFocus={focusParam} initialPreset={initialPreset} initialLive={liveParam} onBack={() => { window.location.hash = 'page=records'; }} onOpenTask={goTask} />
         ) : (
           <div className="dcc-card">
             <div className="dcc-empty">

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>广告看板（链接产出）主规格</title></head>
+<body>
+<h1>广告看板 · 以商品链接为核心的整合数据底座</h1>
+<p>设计基底：<code>src/themes/camel-captain-erp/DESIGN.md</code>。系统位置：顶部导航「报表」→「广告」→「广告看板」；面包屑 报表 / 广告 / 广告看板。单页原型，页面 id <code>ad-board</code>。</p>
+
+<h2>1. 背景与目标</h2>
+<ul>
+  <li>需求评审结论：只看广告数据价值有限——平台广告后台已经能看花费与产出，卖家真正缺的是「广告投入 × 整店 / 单链接产出」的整合视角。</li>
+  <li>本期目标：把广告数据与店铺经营数据、订单数据整合到一起，支撑三层判断——店群哪家最依赖广告、单店哪些链接在花钱、单个链接每次投放到底带回了多少产出。</li>
+  <li>第一阶段只做数据底座，不做预警、调价建议、补单剔除、关键词追踪。</li>
+</ul>
+
+<h2>2. 页面结构</h2>
+<ol>
+  <li><b>筛选条（吸顶）</b>：店铺范围（全部店铺 / 单店）、时间（近 1/3/7/15/30 天 + 自定义，最长 31 天）、GMV 口径（剔除补单 / 原始数据）、剔除设置、重置、同步广告数据；下方一行显示两个数据截止日与当前剔除金额。</li>
+  <li><b>核心指标</b>：广告消耗、广告 GMV、整店 GMV、广告 GMV 占比、ROAS，均带环比。</li>
+  <li><b>趋势</b>：广告消耗 vs 整店 GMV 双线，共用金额轴，按天。</li>
+  <li><b>明细区</b>：店群模式为「店铺横向对比表」，单店模式为「主链接表」，两者在同一个卡片内切换。</li>
+  <li><b>链接详情</b>：右侧抽屉，含四个数、按天走势、多时间对比。</li>
+</ol>
+
+<h2>3. 数据来源</h2>
+<table border="1" cellpadding="6" cellspacing="0">
+  <tr><th>数据</th><th>接口</th><th>关键字段</th></tr>
+  <tr><td>店群 / 店铺汇总</td><td><code>GET /api/v1/report/store/dashboard-list</code></td><td><code>storeId / storeName / aliasName</code>、<code>wis.confirmGmv</code>、<code>list[].history</code></td></tr>
+  <tr><td>单店按天</td><td><code>GET /api/v1/report/store/wis-core-info</code></td><td>与 <code>wis</code> 同构，含 <code>statDate</code></td></tr>
+  <tr><td>订单商品行</td><td><code>GET /api/v1/order/list</code></td><td><code>order.orderProducts[].itemCode / itemName / imgUrl / categoryName / quantity / price</code>、<code>order.payDate</code></td></tr>
+  <tr><td>广告数据</td><td>敦煌 <code>dh.seller.ad.prod.report.page</code></td><td><code>nickname / itemcode / adType / dateline / usdCost / gmv / orders</code></td></tr>
+</table>
+<p>关联键：广告 <code>itemcode</code> = 订单 <code>orderProducts[].itemCode</code>，按「店铺 + 商品 ID」对齐。商品名称、主图、类目取自订单行。</p>
+
+<h2>4. 指标口径</h2>
+<table border="1" cellpadding="6" cellspacing="0">
+  <tr><th>指标</th><th>口径</th><th>展示规则</th></tr>
+  <tr><td>广告消耗</td><td>Σ <code>usdCost</code></td><td>无投放显示「-」</td></tr>
+  <tr><td>广告 GMV</td><td>Σ <code>gmv</code>（广告商品维度）</td><td>无投放显示「-」</td></tr>
+  <tr><td>整店 GMV</td><td><code>wis.confirmGmv</code>（成交金额）</td><td>—</td></tr>
+  <tr><td>广告 GMV 占比</td><td>广告 GMV ÷ 整店 GMV（店铺/店群）；广告 GMV ÷ 链接产出 GMV（链接）</td><td>链接占比 &gt; 60% 标红</td></tr>
+  <tr><td>ROAS</td><td>广告 GMV ÷ 广告消耗</td><td>&lt; 1 标红</td></tr>
+  <tr><td>链接产出 GMV</td><td>Σ(<code>price</code> × <code>quantity</code>)，按 <code>payDate</code> 归属</td><td>—</td></tr>
+  <tr><td>环比</td><td>与等长紧邻前一段比较</td><td>金额/ROAS 用百分比，占比用百分点；分母为 0 显示「-」</td></tr>
+  <tr><td>剔除补单</td><td>整店 GMV 扣除「补单标签订单的金额 + 手动扣减金额」；链接产出 GMV 扣除被剔除的订单行</td><td>剔除后占比与 ROAS 同步重算；广告消耗和广告 GMV 不变</td></tr>
+</table>
+
+<h2>4.1 补单剔除</h2>
+<p>补单会虚高整店 GMV、压低广告占比。默认口径为「剔除补单」，可在筛选条切换为「原始数据」对比。</p>
+<ul>
+  <li><b>按订单标签剔除</b>：店铺维度从系统标签里下拉多选（标签由用户自定义、数量可能很多，面板支持搜索与清空），订单命中任一已选标签即剔除；一个都不选表示不按标签剔除。</li>
+  <li><b>手动补录</b>：按订单号剔除指定订单，或直接填写一笔扣减金额（用于说不清是哪一单的情况）。</li>
+  <li><b>影响范围</b>：整店 GMV、广告 GMV 占比、ROAS、链接产出 GMV 按剔除后重算；广告消耗与广告 GMV 来自广告接口，不受影响。</li>
+  <li><b>手动金额的归属</b>：只落在整店 GMV，不拆分到具体链接。</li>
+</ul>
+
+<h2>5. 交互与状态</h2>
+<ul>
+  <li>筛选即改即生效；店铺范围切到具体店铺时自动进入单店模式，点「返回店群」或店铺表格行可来回切换。</li>
+  <li>时间切到自定义时才出现起止日期；超出 31 天或不晚于广告截止日会就地提示，数据保持上一次有效结果。</li>
+  <li>店铺表默认按广告 GMV 占比降序，数值列可排序；链接表默认按链接产出 GMV 降序，支持搜索、产出阈值、分页。</li>
+  <li>没有广告投放的链接仍然展示，广告相关列显示「-」。</li>
+  <li>点链接行打开右侧抽屉，Esc 或遮罩关闭；抽屉内多时间对比固定以广告截止日为终点。</li>
+  <li>同步按钮只负责广告数据入库，同步中按钮禁用并显示滚动图标，完成后更新「最近同步」时间。</li>
+</ul>
+
+<h2>6. 本期不做 / 待确认</h2>
+<ul>
+  <li><b>不做</b>：计划视图、成单词视图、曝光量 / 点击量 / 点击率 / 点击单价 / 转化率 / 客单价（平台广告后台已有）、导出、预警、调价建议、关键词追踪。</li>
+  <li><b>待确认</b>：链接产出 GMV 是否含运费、是否剔除退款；广告 <code>itemcode</code> 能否传空；店铺 <code>confirmGmv</code> 的时区与退款口径；广告数据 T+1 的具体产出时点。</li>
+</ul>
+</body>
+</html>

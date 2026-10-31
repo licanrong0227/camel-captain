@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@axhub/annotation':
-        specifier: 1.0.18
-        version: 1.0.18(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: 1.0.19
+        version: 1.0.19(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@axhub/commentary-react':
         specifier: ^1.0.0
         version: 1.0.0(react@18.2.0)
@@ -66,8 +66,8 @@ importers:
 
 packages:
 
-  '@axhub/annotation@1.0.18':
-    resolution: {integrity: sha512-M9dmDjR9oI72tn0Cr0uM+ejfZ4RR3l3DERkn+0XI7tV8h02PL9ThLEYuP/aPWNVllZiTNpBGCSLTChzG5w126w==}
+  '@axhub/annotation@1.0.19':
+    resolution: {integrity: sha512-fG+3RrhiIByStHaqPdAe/eOklDp8XlyNEseo8mRAU5IVSpHHJsK/yqW1JtGVgGPmC0ADY5kFYqPxsGSMkn/vSA==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -946,7 +946,7 @@ packages:
 
 snapshots:
 
-  '@axhub/annotation@1.0.18(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@axhub/annotation@1.0.19(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
