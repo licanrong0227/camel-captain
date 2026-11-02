@@ -1,0 +1,1076 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "path": "C:/Users/admin/.qoder-cn/tmp/D--projects-CAMEL-CAPTAIN/images/44036eb2-054a-4ca2-a940-4ca6fb7bc4aa/03596652-d0ef-41e0-a7dd-4d47bb78ae0a.png",
+    "sha256": "63fa208358750b5cbb9074cbb89249aaaba68cfecb28cf2d20a8e404e188b103",
+    "width": 733,
+    "height": 345,
+    "viewport": {
+      "width": 733,
+      "height": 345,
+      "deviceScaleFactor": 1
+    }
+  },
+  "elements": [
+    {
+      "id": "backdrop",
+      "name": "页面底色",
+      "kind": "container",
+      "sourceBBox": {
+        "x": 0,
+        "y": 0,
+        "width": 733,
+        "height": 345
+      },
+      "targetBBox": {
+        "x": 0,
+        "y": 0,
+        "width": 733,
+        "height": 345
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "纯色背景，CSS 表达"
+      },
+      "visualStyle": {
+        "backgroundColor": "#7f7f7f"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "backdrop",
+      "reactTarget": null
+    },
+    {
+      "id": "dialog",
+      "name": "弹窗容器",
+      "kind": "container",
+      "sourceBBox": {
+        "x": 8,
+        "y": 6,
+        "width": 720,
+        "height": 334
+      },
+      "targetBBox": {
+        "x": 8,
+        "y": 6,
+        "width": 720,
+        "height": 334
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "白色圆角容器加浅灰描边，CSS 表达"
+      },
+      "visualStyle": {
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #e1e1e2",
+        "borderRadius": "4px"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "dialog",
+      "reactTarget": null
+    },
+    {
+      "id": "title",
+      "name": "弹窗标题",
+      "kind": "text",
+      "sourceBBox": {
+        "x": 28,
+        "y": 25,
+        "width": 100,
+        "height": 24
+      },
+      "targetBBox": {
+        "x": 28,
+        "y": 25,
+        "width": 100,
+        "height": 24
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "更新发布",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.98,
+        "reason": "普通 UI 标题文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通文字，HTML 渲染"
+      },
+      "visualStyle": {
+        "color": "#303133",
+        "fontSize": 18,
+        "lineHeight": 24,
+        "fontWeight": 400
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "title",
+      "reactTarget": null
+    },
+    {
+      "id": "close",
+      "name": "关闭按钮",
+      "kind": "text",
+      "sourceBBox": {
+        "x": 692,
+        "y": 27,
+        "width": 16,
+        "height": 16
+      },
+      "targetBBox": {
+        "x": 692,
+        "y": 27,
+        "width": 16,
+        "height": 16
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "×",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.95,
+        "reason": "关闭符号按文字渲染，字形通用"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "简单符号，无需素材"
+      },
+      "visualStyle": {
+        "color": "#909399",
+        "fontSize": 14,
+        "lineHeight": 16,
+        "textAlign": "center"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "close",
+      "reactTarget": null
+    },
+    {
+      "id": "checkbox-auto-list",
+      "name": "自动刊登复选框",
+      "kind": "container",
+      "sourceBBox": {
+        "x": 28,
+        "y": 112,
+        "width": 14,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 28,
+        "y": 112,
+        "width": 14,
+        "height": 14
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "规则圆角方块，CSS 表达"
+      },
+      "visualStyle": {
+        "backgroundColor": "#1890ff",
+        "borderRadius": "2px"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "checkbox-auto-list",
+      "reactTarget": null
+    },
+    {
+      "id": "checkbox-auto-list-check",
+      "name": "自动刊登勾选符",
+      "kind": "text",
+      "sourceBBox": {
+        "x": 28,
+        "y": 112,
+        "width": 14,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 28,
+        "y": 112,
+        "width": 14,
+        "height": 14
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "✓",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.9,
+        "reason": "勾选符号按文字渲染"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "简单符号"
+      },
+      "visualStyle": {
+        "color": "#ffffff",
+        "fontSize": 12,
+        "lineHeight": 14,
+        "textAlign": "center"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "checkbox-auto-list-check",
+      "reactTarget": null
+    },
+    {
+      "id": "label-auto-list",
+      "name": "自动刊登标签",
+      "kind": "text",
+      "sourceBBox": {
+        "x": 53,
+        "y": 110,
+        "width": 64,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 53,
+        "y": 110,
+        "width": 64,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "自动刊登",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.98,
+        "reason": "普通 UI 文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通文字"
+      },
+      "visualStyle": {
+        "color": "#1890ff",
+        "fontSize": 14,
+        "lineHeight": 18
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "label-auto-list",
+      "reactTarget": null
+    },
+    {
+      "id": "radio-now",
+      "name": "立即发布单选框",
+      "kind": "container",
+      "sourceBBox": {
+        "x": 53,
+        "y": 139,
+        "width": 14,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 53,
+        "y": 139,
+        "width": 14,
+        "height": 14
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "规则圆形，CSS 表达"
+      },
+      "visualStyle": {
+        "backgroundColor": "#1890ff",
+        "borderRadius": "50%"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "radio-now",
+      "reactTarget": null
+    },
+    {
+      "id": "radio-now-dot",
+      "name": "立即发布选中点",
+      "kind": "container",
+      "sourceBBox": {
+        "x": 58,
+        "y": 144,
+        "width": 4,
+        "height": 4
+      },
+      "targetBBox": {
+        "x": 58,
+        "y": 144,
+        "width": 4,
+        "height": 4
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "规则圆点，CSS 表达"
+      },
+      "visualStyle": {
+        "backgroundColor": "#ffffff",
+        "borderRadius": "50%"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "radio-now-dot",
+      "reactTarget": null
+    },
+    {
+      "id": "label-now",
+      "name": "立即发布标签",
+      "kind": "text",
+      "sourceBBox": {
+        "x": 77,
+        "y": 137,
+        "width": 64,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 77,
+        "y": 137,
+        "width": 64,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "立即发布",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.98,
+        "reason": "普通 UI 文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通文字"
+      },
+      "visualStyle": {
+        "color": "#1890ff",
+        "fontSize": 14,
+        "lineHeight": 18
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "label-now",
+      "reactTarget": null
+    },
+    {
+      "id": "radio-scheduled",
+      "name": "定时发布单选框",
+      "kind": "container",
+      "sourceBBox": {
+        "x": 163,
+        "y": 139,
+        "width": 14,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 163,
+        "y": 139,
+        "width": 14,
+        "height": 14
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "规则圆形，CSS 表达"
+      },
+      "visualStyle": {
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #dcdfe6",
+        "borderRadius": "50%"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "radio-scheduled",
+      "reactTarget": null
+    },
+    {
+      "id": "label-scheduled",
+      "name": "定时发布标签",
+      "kind": "text",
+      "sourceBBox": {
+        "x": 187,
+        "y": 137,
+        "width": 64,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 187,
+        "y": 137,
+        "width": 64,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "定时发布",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.98,
+        "reason": "普通 UI 文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通文字"
+      },
+      "visualStyle": {
+        "color": "#606266",
+        "fontSize": 14,
+        "lineHeight": 18
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "label-scheduled",
+      "reactTarget": null
+    },
+    {
+      "id": "btn-cancel",
+      "name": "取消按钮",
+      "kind": "button",
+      "sourceBBox": {
+        "x": 137,
+        "y": 270,
+        "width": 70,
+        "height": 36
+      },
+      "targetBBox": {
+        "x": 137,
+        "y": 270,
+        "width": 70,
+        "height": 36
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "取消",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.98,
+        "reason": "按钮文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "描边按钮，CSS 表达"
+      },
+      "visualStyle": {
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #ff781f",
+        "borderRadius": "4px",
+        "color": "#ff781f",
+        "fontSize": 14,
+        "display": "flex",
+        "alignItems": "center",
+        "justifyContent": "center",
+        "paddingBottom": 2
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "btn-cancel",
+      "reactTarget": null
+    },
+    {
+      "id": "btn-confirm",
+      "name": "确定按钮",
+      "kind": "button",
+      "sourceBBox": {
+        "x": 217,
+        "y": 270,
+        "width": 71,
+        "height": 36
+      },
+      "targetBBox": {
+        "x": 217,
+        "y": 270,
+        "width": 71,
+        "height": 36
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "确定",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.95,
+        "reason": "按钮文字，白字橙底"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "实心按钮，CSS 表达"
+      },
+      "visualStyle": {
+        "backgroundColor": "#ff781f",
+        "borderRadius": "4px",
+        "color": "#ffffff",
+        "fontSize": 14,
+        "display": "flex",
+        "alignItems": "center",
+        "justifyContent": "center",
+        "paddingBottom": 2
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "btn-confirm",
+      "reactTarget": null
+    },
+    {
+      "id": "checkbox-fail-relist",
+      "name": "失败自动刊登复选框",
+      "kind": "container",
+      "sourceBBox": {
+        "x": 295,
+        "y": 281,
+        "width": 14,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 295,
+        "y": 281,
+        "width": 14,
+        "height": 14
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "未勾选复选框为描边方块，CSS 表达"
+      },
+      "visualStyle": {
+        "backgroundColor": "#ffffff",
+        "border": "1px solid #1890ff",
+        "borderRadius": "2px"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "checkbox-fail-relist",
+      "reactTarget": null
+    },
+    {
+      "id": "label-fail-relist",
+      "name": "失败自动刊登标签",
+      "kind": "text",
+      "sourceBBox": {
+        "x": 319,
+        "y": 279,
+        "width": 92,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 319,
+        "y": 279,
+        "width": 92,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "失败自动刊登",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.98,
+        "reason": "普通 UI 文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通文字"
+      },
+      "visualStyle": {
+        "color": "#606266",
+        "fontSize": 14,
+        "lineHeight": 18
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "label-fail-relist",
+      "reactTarget": null
+    },
+    {
+      "id": "label-loop-count",
+      "name": "循环次数标签",
+      "kind": "text",
+      "sourceBBox": {
+        "x": 413,
+        "y": 279,
+        "width": 64,
+        "height": 18
+      },
+      "targetBBox": {
+        "x": 413,
+        "y": 279,
+        "width": 64,
+        "height": 18
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "循环次数",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.98,
+        "reason": "普通 UI 文字"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通文字"
+      },
+      "visualStyle": {
+        "color": "#606266",
+        "fontSize": 14,
+        "lineHeight": 18
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "label-loop-count",
+      "reactTarget": null
+    },
+    {
+      "id": "input-loop",
+      "name": "循环次数输入框",
+      "kind": "container",
+      "sourceBBox": {
+        "x": 474,
+        "y": 274,
+        "width": 120,
+        "height": 28
+      },
+      "targetBBox": {
+        "x": 474,
+        "y": 274,
+        "width": 120,
+        "height": 28
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "禁用态输入框，CSS 表达"
+      },
+      "visualStyle": {
+        "backgroundColor": "#f5f7fa",
+        "border": "1px solid #dfe4ed",
+        "borderRadius": "4px"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "input-loop",
+      "reactTarget": null
+    },
+    {
+      "id": "input-loop-value",
+      "name": "循环次数数值",
+      "kind": "text",
+      "sourceBBox": {
+        "x": 474,
+        "y": 274,
+        "width": 91,
+        "height": 28
+      },
+      "targetBBox": {
+        "x": 474,
+        "y": 274,
+        "width": 91,
+        "height": 28
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "1",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.9,
+        "reason": "输入框数值，居中显示"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "普通文字"
+      },
+      "visualStyle": {
+        "color": "#c0c4cc",
+        "fontSize": 14,
+        "lineHeight": 28,
+        "textAlign": "center"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "input-loop-value",
+      "reactTarget": null
+    },
+    {
+      "id": "input-loop-divider",
+      "name": "输入框分隔线",
+      "kind": "container",
+      "sourceBBox": {
+        "x": 565,
+        "y": 274,
+        "width": 1,
+        "height": 28
+      },
+      "targetBBox": {
+        "x": 565,
+        "y": 274,
+        "width": 1,
+        "height": 28
+      },
+      "representation": "html",
+      "textReview": null,
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted",
+        "reason": "1px 直线，CSS 表达"
+      },
+      "visualStyle": {
+        "backgroundColor": "#dfe4ed"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "input-loop-divider",
+      "reactTarget": null
+    },
+    {
+      "id": "input-loop-arrow-up",
+      "name": "步进上箭头",
+      "kind": "text",
+      "sourceBBox": {
+        "x": 566,
+        "y": 274,
+        "width": 27,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 566,
+        "y": 274,
+        "width": 27,
+        "height": 14
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "∧",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.85,
+        "reason": "步进器箭头用符号近似"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted-with-warning",
+        "reason": "极小箭头符号近似，评审时复核"
+      },
+      "visualStyle": {
+        "color": "#c0c4cc",
+        "fontSize": 10,
+        "lineHeight": 14,
+        "textAlign": "center"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "input-loop-arrow-up",
+      "reactTarget": null
+    },
+    {
+      "id": "input-loop-arrow-down",
+      "name": "步进下箭头",
+      "kind": "text",
+      "sourceBBox": {
+        "x": 566,
+        "y": 288,
+        "width": 27,
+        "height": 14
+      },
+      "targetBBox": {
+        "x": 566,
+        "y": 288,
+        "width": 27,
+        "height": 14
+      },
+      "representation": "html",
+      "textReview": {
+        "content": "∨",
+        "textRole": "ui-text",
+        "renderMode": "html-text",
+        "ocrUsage": "render",
+        "decisionSource": "vision-ai",
+        "confidence": 0.85,
+        "reason": "步进器箭头用符号近似"
+      },
+      "assetReview": {
+        "assetAction": "none",
+        "decisionSource": "vision-ai",
+        "status": "accepted-with-warning",
+        "reason": "极小箭头符号近似，评审时复核"
+      },
+      "visualStyle": {
+        "color": "#c0c4cc",
+        "fontSize": 10,
+        "lineHeight": 14,
+        "textAlign": "center"
+      },
+      "candidates": [
+        {
+          "id": "html-main",
+          "route": "html",
+          "audit": {
+            "status": "passed"
+          },
+          "selected": true
+        }
+      ],
+      "selectedCandidateId": "html-main",
+      "specElementId": "input-loop-arrow-down",
+      "reactTarget": null
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-31T04:27:59.962Z",
+  "updatedAt": "2026-11-02T11:31:30.952Z",
   "prototypes": [
     {
       "id": "item:prototypes:camel-captain-erp-console",
@@ -243,6 +243,12 @@
               "kind": "item",
               "title": "认领异常弹窗",
               "itemKey": "prototypes/claim-exception-dialog"
+            },
+            {
+              "id": "item:prototypes:update-publish-dialog-copy",
+              "kind": "item",
+              "title": "更新发布弹窗-发布记录",
+              "itemKey": "prototypes/update-publish-dialog-copy"
             }
           ]
         },
