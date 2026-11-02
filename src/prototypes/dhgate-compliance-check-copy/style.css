@@ -486,6 +486,22 @@
 }
 .dcc-item-title { font-size: 16px; line-height: 24px; font-weight: 500; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--ink); }
 .dcc-item-head-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.dcc-item-head-actions .dcc-miss-btn,
+.dcc-pass-row .dcc-miss-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  height: 24px; padding: 0 10px;
+  border: 1px solid var(--border); border-radius: var(--radius-pill);
+  background: var(--surface); font-size: 12px; line-height: 22px; color: var(--ink-2);
+  white-space: nowrap;
+}
+.dcc-item-head-actions .dcc-miss-btn:hover,
+.dcc-pass-row .dcc-miss-btn:hover { border-color: var(--brand); color: var(--brand); }
+.dcc-item-head-actions .dcc-miss-btn.is-active,
+.dcc-pass-row .dcc-miss-btn.is-active { border-color: var(--brand); background: var(--brand-soft); color: var(--brand-deep); }
+.dcc-item-head-actions .dcc-miss-btn:focus-visible,
+.dcc-pass-row .dcc-miss-btn:focus-visible { outline: none; border-color: var(--brand); box-shadow: 0 0 0 2px var(--brand-soft); }
+.dcc-item-head-actions .dcc-miss-btn svg,
+.dcc-pass-row .dcc-miss-btn svg { flex: none; }
 .dcc-item-title-wrap { min-width: 0; }
 .dcc-item-count { font-size: 12px; line-height: 20px; color: var(--ink-2); }
 .dcc-item-count--violation { color: var(--danger-text); }
@@ -509,7 +525,7 @@
 /* 同一检测项的多次检测记录切换 */
 .dcc-attempt-bar { display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
 .dcc-attempt-trigger { display: inline-flex; align-items: center; gap: 4px; height: 24px; max-width: 240px; padding: 0 6px 0 8px; border: 1px solid transparent; border-radius: 6px; background: transparent; font-size: 11px; line-height: 18px; color: var(--ink-2); text-align: left; }
-.dcc-attempt-bar .dcc-attempt-trigger { font-size: 11px; }
+.dcc-attempt-bar .dcc-attempt-trigger { margin-left: -1px; padding-left: 0; font-size: 11px; }
 .dcc-attempt-trigger-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dcc-attempt-trigger:hover,
 .dcc-attempt-trigger.is-open { border-color: var(--border); background: var(--surface); color: var(--ink); }
@@ -532,6 +548,7 @@
 .dcc-item-toggle.is-open svg { transform: rotate(0deg); }
 .dcc-item-toggle:hover,
 .dcc-item-head.is-toggleable:hover .dcc-item-toggle { border-color: var(--brand); background: var(--brand-soft); color: var(--brand); }
+.dcc-item-head.is-toggleable:has(.dcc-miss-btn:hover) .dcc-item-toggle { border-color: var(--border); background: var(--surface); color: var(--ink-2); }
 .dcc-item-toggle:focus-visible { outline: none; border-color: var(--brand); box-shadow: 0 0 0 2px var(--brand-soft); color: var(--brand); }
 .dcc-attempt-switch { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .dcc-attempt-btn {
@@ -700,6 +717,8 @@
 .dcc-modal-body { padding: 12px 24px 24px; overflow: auto; }
 .dcc-modal-foot { display: flex; justify-content: flex-end; gap: 12px; padding: 0 24px 24px; }
 .dcc-modal-foot .dcc-btn { height: 32px; padding: 0 20px; }
+.dcc-modal-foot .dcc-feedback-reset { margin-right: auto; padding: 0; border: none; background: none; font-size: 13px; line-height: 32px; color: var(--ink-2); }
+.dcc-modal-foot .dcc-feedback-reset:hover { color: var(--danger-text); }
 .dcc-dialog-text { margin: 4px 0 8px; font-size: 14px; line-height: 22px; color: var(--ink); }
 .dcc-dialog-sub { margin: 8px 0 0; color: var(--ink-2); font-size: 12px; line-height: 20px; }
 .dcc-reason-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
@@ -940,8 +959,7 @@
 .dcc-side-head-row .dcc-side-collapse { margin-left: auto; }
 .dcc-side-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .dcc-side-head .dcc-side-chip { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75); }
-.dcc-side-chip { height: 24px; padding: 0 10px; border: none; border-radius: var(--radius-pill); font-size: 12px; line-height: 24px; background: var(--canvas); color: var(--ink-2); }
-.dcc-side-chip:hover { filter: brightness(0.97); }
+.dcc-side-chip { display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border: none; border-radius: var(--radius-pill); font-size: 12px; line-height: 24px; background: var(--canvas); color: var(--ink-2); }
 .dcc-side-chip--violation { background: var(--danger-soft); color: var(--danger-text); }
 .dcc-side-chip--suspect { background: var(--warning-soft); color: var(--warning-text); }
 .dcc-side-chip--notice { background: var(--brand-soft); color: var(--brand-deep); }
@@ -987,17 +1005,13 @@
 .dcc-issue-assoc:hover .dcc-assoc-dot { transform: scale(1.25); }
 .dcc-issue-assoc:hover .dcc-sev-tag { filter: brightness(0.97); }
 .dcc-issue-feedback { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 10px; }
-.dcc-feedback-pill { height: 24px; padding: 0 10px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface); font-size: 12px; line-height: 22px; color: var(--ink-2); }
+.dcc-feedback-pill { display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 24px; padding: 0 10px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface); font-size: 12px; line-height: 1; color: var(--ink-2); }
+.dcc-feedback-pill svg { flex: none; }
 .dcc-feedback-pill:hover { border-color: var(--brand); color: var(--brand); }
-.dcc-feedback-body { display: flex; align-items: flex-start; gap: 10px; width: 100%; }
-.dcc-feedback-inline { flex: 1; min-width: 0; font-size: 12px; line-height: 18px; color: var(--ink-2); }
-.dcc-feedback-cancel { flex: none; border: none; background: none; padding: 0; font-size: 12px; line-height: 18px; color: var(--brand); }
-.dcc-feedback-cancel:hover { color: var(--brand-deep); }
-.dcc-feedback-link { border: none; background: none; padding: 0; font-size: 12px; line-height: 20px; color: var(--ink-2); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
-.dcc-feedback-link:hover { color: var(--brand); }
-.dcc-link-action { border: none; background: none; padding: 0 0 0 8px; font-size: 12px; line-height: 20px; color: var(--brand); }
-.dcc-link-action:hover { color: var(--brand-deep); }
+.dcc-feedback-pill.is-active { border-color: var(--brand); background: var(--brand-soft); color: var(--brand-deep); }
 .dcc-issue-reason { margin: 8px 0 0; font-size: 13px; line-height: 21px; color: var(--ink); }
+.dcc-issue-reason-block { margin-top: 8px; }
+.dcc-issue-reason-block .dcc-issue-reason { margin-top: 0; }
 .dcc-issue-entry .dcc-suggestion { margin-top: 10px; padding: 10px 12px; }
 .dcc-issue-entry .dcc-suggestion .dcc-btn { padding-left: 0; }
 .dcc-fail-entry .dcc-sev-tag--fail { background: var(--surface); box-shadow: inset 0 0 0 1px var(--border); }
@@ -1019,8 +1033,8 @@
 .dcc-pass-row:last-child { border-bottom: none; }
 .dcc-pass-name { flex: 0 1 auto; min-width: 0; font-weight: 500; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dcc-pass-row .dcc-tag { flex: none; align-self: center; }
-.dcc-pass-feedback { margin-left: auto; font-size: 12px; color: var(--ink-2); white-space: nowrap; }
-.dcc-pass-row .dcc-feedback-link { flex: none; margin-left: auto; }
+.dcc-pass-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; align-self: center; }
+.dcc-pass-row .dcc-miss-btn { flex: none; }
 
 .dcc-media-zoom { position: absolute; bottom: 8px; left: 8px; z-index: 3; width: 24px; height: 24px; border: none; border-radius: 6px; background: rgba(17, 24, 39, 0.55); color: #fff; font-size: 13px; line-height: 24px; }
 .dcc-media-zoom:hover { background: rgba(17, 24, 39, 0.75); }

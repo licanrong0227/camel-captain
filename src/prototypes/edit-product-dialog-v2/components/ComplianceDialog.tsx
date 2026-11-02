@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Check, ChevronDown, HelpCircle, X } from 'lucide-react';
+import { Check, ChevronDown, HelpCircle, RefreshCw, ThumbsDown, X } from 'lucide-react';
 import {
   ComplianceFeedback,
   ComplianceImageKey,
@@ -132,7 +132,7 @@ export default function ComplianceDialog({
                 feedbackMap={item.feedback}
                 onRetry={() => onRetry(def.code)}
                 onOpenFeedback={(index) => setFeedbackTarget({ code: def.code, name: def.name, index })}
-                onCancelFeedback={(index) => onFeedback(def.code, index, null)}
+                onOpenMiss={() => setFeedbackTarget({ code: def.code, name: def.name, index: -1 })}
               />
             );
           })}
@@ -147,7 +147,17 @@ export default function ComplianceDialog({
         {feedbackTarget && (
           <FeedbackDialog
             initial={targetFeedback}
+            variant={feedbackTarget.index === -1 ? 'miss' : 'hit'}
+            context={feedbackTarget.name}
             onCancel={() => setFeedbackTarget(null)}
+            onCancelFeedback={
+              targetFeedback
+                ? () => {
+                    onFeedback(feedbackTarget.code, feedbackTarget.index, null);
+                    setFeedbackTarget(null);
+                  }
+                : undefined
+            }
             onSubmit={(feedback) => {
               onFeedback(feedbackTarget.code, feedbackTarget.index, feedback);
               setFeedbackTarget(null);
@@ -179,7 +189,7 @@ interface ItemCardProps {
   feedbackMap: Record<string, ComplianceFeedback>;
   onRetry: () => void;
   onOpenFeedback: (hitIndex: number) => void;
-  onCancelFeedback: (hitIndex: number) => void;
+  onOpenMiss: () => void;
 }
 
 function ItemCard({
@@ -190,7 +200,7 @@ function ItemCard({
   feedbackMap,
   onRetry,
   onOpenFeedback,
-  onCancelFeedback,
+  onOpenMiss,
 }: ItemCardProps) {
   const [pickedRound, setPickedRound] = useState<number | null>(null);
   const [manualToggle, setManualToggle] = useState<boolean | null>(null);
@@ -215,6 +225,7 @@ function ItemCard({
   const hits = outcome.hits ?? [];
   const violationCount = hits.filter((hit) => hit.severity === 'violation').length;
   const suspectCount = hits.length - violationCount;
+  const missFeedback = feedbackMap[`${def.code}:-1`];
 
   const prevStatus = useRef(status);
   useEffect(() => {
@@ -266,6 +277,33 @@ function ItemCard({
 
   const historyRounds = history.map((round, index) => ({ index, at: round.at })).reverse();
 
+  const retryAction = canRetry ? (
+    <button type="button" className="ep-c-btn-mini ep-c-records__retry" onClick={onRetry}>
+      <RefreshCw size={12} />
+      重新检测
+      <span
+        className="ep-c-help"
+        role="img"
+        aria-label="单项算力说明"
+        ref={helpRef}
+        onMouseEnter={showCostTip}
+        onMouseLeave={() => setCostTip(null)}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <HelpCircle size={12} />
+        {costTip && (
+          <span
+            className="ep-c-tip ep-c-tip--fixed"
+            role="tooltip"
+            style={{ right: costTip.right, bottom: costTip.bottom }}
+          >
+            单项检测消耗xx算力
+          </span>
+        )}
+      </span>
+    </button>
+  ) : null;
+
   return (
     <section
       className={`ep-c-item ep-c-item--${status}${retrying ? ' is-running' : ''}`}
@@ -286,29 +324,15 @@ function ItemCard({
           className="ep-c-item__actions"
           data-annotation-id={def.code === 'ipr' ? 'compliance-item-actions' : undefined}
         >
-          {canRetry && (
-            <button type="button" className="ep-c-btn-mini" onClick={onRetry}>
-              重新检测
-              <span
-                className="ep-c-help"
-                role="img"
-                aria-label="单项算力说明"
-                ref={helpRef}
-                onMouseEnter={showCostTip}
-                onMouseLeave={() => setCostTip(null)}
-                onClick={(event) => event.stopPropagation()}
-              >
-                <HelpCircle size={12} />
-                {costTip && (
-                  <span
-                    className="ep-c-tip ep-c-tip--fixed"
-                    role="tooltip"
-                    style={{ right: costTip.right, bottom: costTip.bottom }}
-                  >
-                    单项检测消耗xx算力
-                  </span>
-                )}
-              </span>
+          {interactive && status !== 'fail' && (
+            <button
+              type="button"
+              className={`ep-c-miss-btn${missFeedback ? ' is-active' : ''}`}
+              title={missFeedback ? '已反馈漏报，点击修改' : '反馈漏报'}
+              onClick={onOpenMiss}
+            >
+              <ThumbsDown size={12} />
+              漏报
             </button>
           )}
           <button type="button" className="ep-c-link ep-c-toggle" onClick={() => setManualToggle(!expanded)}>
@@ -332,6 +356,7 @@ function ItemCard({
             <ChevronDown size={12} />
           </button>
           {viewingHistory && <span className="ep-c-records__note">历史记录，仅查看</span>}
+          {retryAction}
 
           {recordsOpen && (
             <div
@@ -359,6 +384,13 @@ function ItemCard({
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {history.length === 0 && expanded && retryAction && (
+        <div className="ep-c-records">
+          <span className="ep-c-records__label">当前为最新检测结果</span>
+          {retryAction}
         </div>
       )}
 
@@ -449,27 +481,12 @@ function ItemCard({
                       <div className="ep-c-hit__foot">
                         <button
                           type="button"
-                          className="ep-c-hit__report"
+                          className={`ep-c-hit__report${hitFeedback ? ' is-active' : ''}`}
                           onClick={() => onOpenFeedback(index)}
                         >
-                          检测不准？
+                          <ThumbsDown size={12} />
+                          结果不准
                         </button>
-                        {hitFeedback && (
-                          <>
-                            <span className="ep-c-hit__fbnote">
-                              已反馈
-                              {hitFeedback.reasons.length ? `：${hitFeedback.reasons.join('、')}` : ''}
-                              {hitFeedback.text ? `（${hitFeedback.text}）` : ''}
-                            </span>
-                            <button
-                              type="button"
-                              className="ep-c-hit__unreport"
-                              onClick={() => onCancelFeedback(index)}
-                            >
-                              取消反馈
-                            </button>
-                          </>
-                        )}
                       </div>
                     )}
                   </div>
@@ -493,16 +510,23 @@ function ItemCard({
 
 function FeedbackDialog({
   initial,
+  variant = 'hit',
+  context,
   onCancel,
+  onCancelFeedback,
   onSubmit,
 }: {
   initial?: ComplianceFeedback;
+  variant?: 'hit' | 'miss';
+  context: string;
   onCancel: () => void;
+  onCancelFeedback?: () => void;
   onSubmit: (feedback: ComplianceFeedback) => void;
 }) {
   const [reasons, setReasons] = useState<string[]>(initial?.reasons ?? []);
   const [text, setText] = useState(initial?.text ?? '');
-  const canSubmit = reasons.length > 0 || text.trim().length > 0;
+  const isMiss = variant === 'miss';
+  const canSubmit = isMiss ? text.trim().length > 0 : reasons.length > 0 || text.trim().length > 0;
 
   const toggleReason = (reason: string) => {
     setReasons((prev) => (prev.includes(reason) ? prev.filter((item) => item !== reason) : prev.concat(reason)));
@@ -514,35 +538,47 @@ function FeedbackDialog({
         className="ep-c-fb-dialog"
         role="dialog"
         aria-modal="true"
-        aria-label="反馈检测结果"
+        aria-label={isMiss ? '反馈漏报' : '反馈检测结果'}
         onClick={(event) => event.stopPropagation()}
       >
         <div className="ep-c-fb-dialog__head">
-          <h4>反馈检测结果</h4>
+          <h4>{isMiss ? '反馈漏报' : '反馈检测结果'}</h4>
           <button type="button" aria-label="关闭" onClick={onCancel}>
             <X size={14} />
           </button>
         </div>
-        <p className="ep-c-fb-dialog__desc">您认为该检测结果不准确，请选择原因（可多选）：</p>
-        <div className="ep-c-chips">
-          {DISLIKE_REASONS.map((reason) => (
-            <button
-              key={reason}
-              type="button"
-              className={`ep-c-chip${reasons.includes(reason) ? ' is-active' : ''}`}
-              onClick={() => toggleReason(reason)}
-            >
-              {reason}
-            </button>
-          ))}
-        </div>
+        <p className="ep-c-fb-dialog__desc">
+          {isMiss
+            ? `您认为「${context}」有漏报的违规内容，请填写漏报内容：`
+            : `您认为「${context}」的检测结果不准确，请选择原因（可多选）：`}
+        </p>
+        {!isMiss && (
+          <div className="ep-c-chips">
+            {DISLIKE_REASONS.map((reason) => (
+              <button
+                key={reason}
+                type="button"
+                className={`ep-c-chip${reasons.includes(reason) ? ' is-active' : ''}`}
+                onClick={() => toggleReason(reason)}
+              >
+                {reason}
+              </button>
+            ))}
+          </div>
+        )}
         <textarea
           value={text}
           maxLength={300}
-          placeholder="补充说明（选填）"
+          placeholder={isMiss ? '请描述漏报的违规内容，例如：主图还有未识别的品牌图案' : '补充说明（选填）'}
           onChange={(event) => setText(event.target.value)}
         />
+        <p className="ep-c-fb-dialog__note">反馈将用于评估对应检测功能的检测质量，不会改变本次检测结果。</p>
         <div className="ep-c-fb-dialog__foot">
+          {onCancelFeedback && (
+            <button type="button" className="ep-c-fb-reset" onClick={onCancelFeedback}>
+              取消反馈
+            </button>
+          )}
           <button type="button" className="ep-btn ep-btn--default" onClick={onCancel}>
             取消
           </button>
@@ -550,7 +586,7 @@ function FeedbackDialog({
             type="button"
             className="ep-btn ep-btn--primary"
             disabled={!canSubmit}
-            onClick={() => onSubmit({ reasons, text: text.trim() })}
+            onClick={() => onSubmit({ reasons: isMiss ? ['漏报'] : reasons, text: text.trim() })}
           >
             提交
           </button>

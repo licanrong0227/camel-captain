@@ -21,7 +21,7 @@ export function ItemCard({
   onLocate,
   onHover,
   onFeedback,
-  onCancelFeedback,
+  onMissReport,
   onRetry,
   onHistoryViewChange,
   linkedIssueKeys = [],
@@ -40,7 +40,7 @@ export function ItemCard({
   onLocate: (anchorKey: string, issueKey?: string, source?: 'anchor' | 'issue') => void;
   onHover: (anchorKey: string | null) => void;
   onFeedback: FeedbackHandler;
-  onCancelFeedback: (resultKey: string) => void;
+  onMissReport: (resultKey: string, context: string, initialText?: string) => void;
   onRetry: () => void;
   onHistoryViewChange?: (viewingHistory: boolean) => void;
   linkedIssueKeys?: string[];
@@ -56,6 +56,8 @@ export function ItemCard({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const viewingHistory = pickedRound !== null && pickedRound < history.length;
+  const missKey = viewingHistory ? `h${pickedRound as number}:${view.code}:miss` : `${view.code}:miss`;
+  const missFeedback = feedbackMap[missKey];
   const status = viewingHistory ? history[pickedRound as number].status : view.status;
   const outcome = viewingHistory ? history[pickedRound as number].outcome : view.outcome;
   const roundIssues = viewingHistory && outcome
@@ -169,6 +171,21 @@ export function ItemCard({
           </div>
         </div>
         <div className="dcc-item-head-actions" data-annotation-id={`dcc-item-actions-${view.code}`}>
+          {!running && !isPass && !isFail && interactive && (
+            <button
+              type="button"
+              className={`dcc-miss-btn${missFeedback ? ' is-active' : ''}`}
+              title={missFeedback ? '已反馈漏报，点击修改' : '反馈漏报'}
+              aria-label="反馈漏报"
+              onClick={() => onMissReport(missKey, view.name, missFeedback?.text)}
+            >
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M17 14V2" />
+                <path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z" />
+              </svg>
+              漏报
+            </button>
+          )}
           {!running && (
             <button
               type="button"
@@ -346,7 +363,6 @@ export function ItemCard({
                     onLocate={onLocate}
                     onHover={onHover}
                     onFeedback={onFeedback}
-                    onCancelFeedback={onCancelFeedback}
                   />
                 );
               })}
@@ -371,7 +387,6 @@ function IssueEntry({
   onLocate,
   onHover,
   onFeedback,
-  onCancelFeedback,
 }: {
   issue: Issue;
   selected: boolean;
@@ -385,13 +400,11 @@ function IssueEntry({
   onLocate: (anchorKey: string, issueKey?: string, source?: 'anchor' | 'issue') => void;
   onHover: (anchorKey: string | null) => void;
   onFeedback: FeedbackHandler;
-  onCancelFeedback: (resultKey: string) => void;
 }) {
   const severity = issue.severity;
   const label = issue.severityLabel ?? SEVERITY_LABEL[severity];
   const highlightWord = issue.evidence?.kind === 'text' ? issue.evidence.word : undefined;
   const context = `${issue.itemName} · ${anchorLabel(issue.anchor)}`;
-  const feedbackReasons = feedback?.reasons ?? [];
   const tag = (
     <span className={`dcc-sev-tag dcc-sev-tag--${severity}`}>
       <span
@@ -408,7 +421,7 @@ function IssueEntry({
       id={`issue-${issue.key}`}
       className={`dcc-issue-entry dcc-issue-entry--${severity}${selected ? ' is-selected' : ''}${activeAnchor === issue.anchorKey ? ' is-located' : ''}${hoverAnchor === issue.anchorKey ? ' is-hovered' : ''}${canLocate ? '' : ' is-readonly'}${linked ? ' is-linked' : ''}${anchorShadow ? ' is-anchor-linked' : ''}`}
       onClick={(event) => {
-        // 卡片正文也可定位；标签、检测不准、复制建议值等按钮仍走各自逻辑
+        // 卡片正文也可定位；标签、不准、复制建议值等按钮仍走各自逻辑
         if (!canLocate) return;
         if ((event.target as HTMLElement).closest('button, a')) return;
         onLocate(issue.anchorKey, issue.key, 'issue');
@@ -435,9 +448,12 @@ function IssueEntry({
         )}
       </header>
 
-      <p className="dcc-issue-reason">
-        {renderHighlight(issue.reason, highlightWord)}
-      </p>
+      <div className="dcc-issue-reason-block">
+        <div className="dcc-row-label">原因</div>
+        <p className="dcc-issue-reason">
+          {renderHighlight(issue.reason, highlightWord)}
+        </p>
+      </div>
 
       {issue.suggestion && (
         <div className="dcc-suggestion">
@@ -449,24 +465,22 @@ function IssueEntry({
         </div>
       )}
 
-      <div className="dcc-issue-feedback">
-        <button
-          type="button"
-          className="dcc-feedback-pill"
-          onClick={() => onFeedback(resultKey, context)}
-        >
-          检测不准？
-        </button>
-        {feedback && (
-          <div className="dcc-feedback-body">
-            <span className="dcc-feedback-inline">
-              已反馈{feedbackReasons.length ? `：${feedbackReasons.join('、')}` : ''}
-              {feedback.text ? `（${feedback.text}）` : ''}
-            </span>
-            <button type="button" className="dcc-feedback-cancel" onClick={() => onCancelFeedback(resultKey)}>取消反馈</button>
-          </div>
-        )}
-      </div>
+      {canLocate && (
+        <div className="dcc-issue-feedback">
+          <button
+            type="button"
+            className={`dcc-feedback-pill${feedback ? ' is-active' : ''}`}
+            title={feedback ? '已反馈，点击修改或取消' : '反馈结果不准'}
+            onClick={() => onFeedback(resultKey, context)}
+          >
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M17 14V2" />
+              <path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z" />
+            </svg>
+            结果不准
+          </button>
+        </div>
+      )}
     </article>
   );
 }
@@ -475,33 +489,40 @@ function IssueEntry({
 export function PassItemRow({
   view,
   feedback,
-  onFeedback,
-  onCancelFeedback,
+  onMissReport,
+  onRetry,
 }: {
   view: ItemView;
   feedback?: ResultFeedback;
-  onFeedback: FeedbackHandler;
-  onCancelFeedback: (resultKey: string) => void;
+  onMissReport: (resultKey: string, context: string, initialText?: string) => void;
+  onRetry: () => void;
 }) {
   const resultKey = `${view.code}:0`;
   return (
     <section id={`item-${view.code}`} className="dcc-pass-row" data-annotation-id={`dcc-item-${view.code}`}>
       <span className="dcc-pass-name">{view.name}</span>
       <ItemStatusTag status="pass" />
-      {feedback ? (
-        <span className="dcc-pass-feedback">
-          已反馈{(feedback.reasons?.length ?? 0) > 0 ? `：${(feedback.reasons ?? []).join('、')}` : ''}
-          <button type="button" className="dcc-link-action" onClick={() => onCancelFeedback(resultKey)}>取消反馈</button>
-        </span>
-      ) : (
+      <div className="dcc-pass-actions">
         <button
           type="button"
-          className="dcc-feedback-link"
-          onClick={() => onFeedback(resultKey, `${view.name}（未发现问题）`, ['漏报'])}
+          className={`dcc-miss-btn${feedback ? ' is-active' : ''}`}
+          title={feedback ? '已反馈漏报，点击修改或取消' : '反馈漏报'}
+          onClick={() => onMissReport(resultKey, view.name, feedback?.text)}
         >
-          检测结果有问题？
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M17 14V2" />
+            <path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z" />
+          </svg>
+          漏报
         </button>
-      )}
+        <button type="button" className="dcc-retry-btn" onClick={onRetry}>
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M20 11a8 8 0 1 0-2.34 5.66" />
+            <path d="M20 4v7h-7" />
+          </svg>
+          重新检测
+        </button>
+      </div>
     </section>
   );
 }

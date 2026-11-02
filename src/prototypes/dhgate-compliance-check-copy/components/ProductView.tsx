@@ -208,7 +208,8 @@ export function ProductView({
         id="anchor-product"
         data-annotation-id="dcc-pv-product"
         className={`dcc-pv-section dcc-pv-overall${issueClass('product')}`}
-        {...clickProps('product')}
+        onMouseEnter={() => onHover('product')}
+        onMouseLeave={() => onHover(null)}
       >
         <SectionHead
           title="商品整体"

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal } from './ui';
 
-export const DISLIKE_REASONS = ['误报', '漏报', '原因不准', '建议不准', '其他'];
+export const DISLIKE_REASONS = ['误报', '原因不准', '建议不准', '其他'];
 
 export type RecheckMode = 'in-place' | 'recollect';
 
@@ -51,45 +51,62 @@ export function RecheckDialog({ onCancel, onConfirm }: { onCancel: () => void; o
 export function FeedbackDialog({
   context,
   initialReasons,
+  initialText,
+  variant = 'general',
   onCancel,
+  onCancelFeedback,
   onSubmit,
 }: {
   context: string;
   initialReasons?: string[];
+  initialText?: string;
+  variant?: 'general' | 'miss';
   onCancel: () => void;
+  onCancelFeedback?: () => void;
   onSubmit: (reasons: string[], text: string) => void;
 }) {
-  const [reasons, setReasons] = useState<string[]>(initialReasons ?? []);
-  const [text, setText] = useState('');
+  const isMiss = variant === 'miss';
+  const [reasons, setReasons] = useState<string[]>((initialReasons ?? []).filter((reason) => DISLIKE_REASONS.includes(reason)));
+  const [text, setText] = useState(initialText ?? '');
   const toggle = (reason: string) =>
     setReasons((prev) => (prev.includes(reason) ? prev.filter((item) => item !== reason) : [...prev, reason]));
+  const canSubmit = isMiss ? text.trim().length > 0 : reasons.length > 0 || text.trim().length > 0;
   return (
     <Modal
-      title="反馈检测结果"
+      title={isMiss ? '反馈漏报' : '反馈检测结果'}
       onClose={onCancel}
       footer={
         <>
+          {onCancelFeedback && (
+            <button type="button" className="dcc-feedback-reset" onClick={onCancelFeedback}>取消反馈</button>
+          )}
           <button type="button" className="dcc-btn" onClick={onCancel}>取消</button>
-          <button type="button" className="dcc-btn dcc-btn--primary" disabled={reasons.length === 0 && !text.trim()} onClick={() => onSubmit(reasons, text.trim())}>提交</button>
+          <button type="button" className="dcc-btn dcc-btn--primary" disabled={!canSubmit} onClick={() => onSubmit(isMiss ? ['漏报'] : reasons, text.trim())}>提交</button>
         </>
       }
     >
-      <p className="dcc-dialog-text">您认为「{context}」的检测结果不准确，请选择原因（可多选）：</p>
-      <div className="dcc-reason-chips">
-        {DISLIKE_REASONS.map((reason) => (
-          <button
-            key={reason}
-            type="button"
-            className={`dcc-reason-chip${reasons.includes(reason) ? ' is-selected' : ''}`}
-            onClick={() => toggle(reason)}
-          >
-            {reason}
-          </button>
-        ))}
-      </div>
+      <p className="dcc-dialog-text">
+        {isMiss
+          ? `您认为「${context}」有漏报的违规内容，请填写漏报内容：`
+          : `您认为「${context}」的检测结果不准确，请选择原因（可多选）：`}
+      </p>
+      {!isMiss && (
+        <div className="dcc-reason-chips">
+          {DISLIKE_REASONS.map((reason) => (
+            <button
+              key={reason}
+              type="button"
+              className={`dcc-reason-chip${reasons.includes(reason) ? ' is-selected' : ''}`}
+              onClick={() => toggle(reason)}
+            >
+              {reason}
+            </button>
+          ))}
+        </div>
+      )}
       <textarea
         className="dcc-textarea"
-        placeholder="补充说明（选填）"
+        placeholder={isMiss ? '请描述漏报的违规内容，例如：主图还有未识别的品牌图案' : '补充说明（选填）'}
         rows={3}
         value={text}
         maxLength={300}

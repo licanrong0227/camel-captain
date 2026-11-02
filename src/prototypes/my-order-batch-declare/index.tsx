@@ -2,30 +2,45 @@
  * @name 我的订单 - 批处理申报信息
  */
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './style.css';
 import { AnnotationViewer, type AnnotationSourceDocument } from '@axhub/annotation';
 import annotationSourceDocument from './annotation-source.json';
+import { buildXlsx, downloadBlob, readTableFile } from './xlsx';
 
 type DeclareRow = {
   seq: number;
   orderNo: string;
+  skuId: string;
   productName: string;
   spec: string;
   nameEn: string;
   nameCn: string;
   qty: string;
   unitValue: string;
+  nspid: string;
+  spid: string;
+  mpid: string;
   unitWeight: string;
   length: string;
   width: string;
   height: string;
 };
 
+const PID_TEMPLATE_HEADERS = [
+  '商品标题',
+  'SKU',
+  'sku_id（请勿修改）',
+  '制造商产品识别码（nsPid）',
+  '国际标准商品编码（sPid）',
+  '商家产品识别码（mPid）',
+];
+
 const ROWS: DeclareRow[] = [
   {
     seq: 1,
     orderNo: '323171910636',
+    skuId: '100235821',
     productName:
       "2026 Top Designer Bag New Classic Croc-Embossed Handbag Lightweight Luxury Simple Shoulder and Crossbody Bag Fashionable Women's Chain Small Square Bag 10A",
     spec: '4#,China,20*11*5cm',
@@ -33,6 +48,9 @@ const ROWS: DeclareRow[] = [
     nameCn: '单肩包',
     qty: '1',
     unitValue: '40.00',
+    nspid: 'NS20261001',
+    spid: '',
+    mpid: 'MP20261001',
     unitWeight: '1.00',
     length: '0',
     width: '0',
@@ -41,6 +59,7 @@ const ROWS: DeclareRow[] = [
   {
     seq: 2,
     orderNo: '323174336292',
+    skuId: '100235822',
     productName:
       'Designer Mens Tracksuits tech fleece Men Hoodies pant sports Pants Jogger suits zipper Thick sportswear sportsuit mens coats winter coat techfleece Man Joggers',
     spec: 'Khaki,L',
@@ -48,6 +67,9 @@ const ROWS: DeclareRow[] = [
     nameCn: '男士卫衣(有帽, 无帽)',
     qty: '1',
     unitValue: '55.91',
+    nspid: '',
+    spid: '6901234567892',
+    mpid: '',
     unitWeight: '1.00',
     length: '0',
     width: '0',
@@ -56,12 +78,16 @@ const ROWS: DeclareRow[] = [
   {
     seq: 3,
     orderNo: '323180909559',
+    skuId: '100235823',
     productName: 'Mens Black Patent Leather Loafers With Triangle Logo Durable And Chunky Sole',
     spec: 'Men-US 7 - EU 40- Foot Length 9.8",China,1black',
     nameEn: 'Dress Shoes',
     nameCn: '正装鞋',
     qty: '1',
     unitValue: '48.16',
+    nspid: '',
+    spid: '',
+    mpid: 'MP20261003',
     unitWeight: '1.00',
     length: '0',
     width: '0',
@@ -70,6 +96,7 @@ const ROWS: DeclareRow[] = [
   {
     seq: 4,
     orderNo: '323188000622',
+    skuId: '100235821',
     productName:
       "2026 Top Designer Bag New Classic Croc-Embossed Handbag Lightweight Luxury Simple Shoulder and Crossbody Bag Fashionable Women's Chain Small Square Bag 10A",
     spec: '4#,China,20*11*5cm',
@@ -77,6 +104,9 @@ const ROWS: DeclareRow[] = [
     nameCn: '单肩包',
     qty: '1',
     unitValue: '40.00',
+    nspid: '',
+    spid: '',
+    mpid: '',
     unitWeight: '1.00',
     length: '0',
     width: '0',
@@ -85,6 +115,7 @@ const ROWS: DeclareRow[] = [
   {
     seq: 5,
     orderNo: '323196982374',
+    skuId: '100235825',
     productName:
       "Men's Print Clogs Slip-on Footbed Mules popular couple's winter closed-toe cork-soled slippers women's Korean-style fashionable outdoor half-slippers",
     spec: '1Brown,Eur45',
@@ -92,6 +123,9 @@ const ROWS: DeclareRow[] = [
     nameCn: '木屐',
     qty: '1',
     unitValue: '35.10',
+    nspid: 'NS20261005',
+    spid: '',
+    mpid: '',
     unitWeight: '1.00',
     length: '0',
     width: '0',
@@ -100,6 +134,7 @@ const ROWS: DeclareRow[] = [
   {
     seq: 6,
     orderNo: '323204879082',
+    skuId: '100235826',
     productName:
       'Womens Black Leather Penny Loafers Gold Metal Buckle Slip On For Office Casual Daily Wear',
     spec: '1Black,Women-US 10 - EU 40- Foot Length 9.8"',
@@ -107,6 +142,9 @@ const ROWS: DeclareRow[] = [
     nameCn: '乐福鞋',
     qty: '1',
     unitValue: '39.72',
+    nspid: '',
+    spid: '',
+    mpid: '',
     unitWeight: '1.00',
     length: '0',
     width: '0',
@@ -115,6 +153,7 @@ const ROWS: DeclareRow[] = [
   {
     seq: 7,
     orderNo: '323214218162',
+    skuId: '100235827',
     productName:
       'CUUS DUUS White Patent Leather Platform Combat Boots Detachable Triangle Metal Logo Pocket Side Zip Lace Up Lug Sole Women Fashion Ankle Boots',
     spec: 'EUR42,Black matte finish',
@@ -122,6 +161,9 @@ const ROWS: DeclareRow[] = [
     nameCn: '靴子',
     qty: '1',
     unitValue: '36.50',
+    nspid: '',
+    spid: '',
+    mpid: '',
     unitWeight: '1.00',
     length: '0',
     width: '0',
@@ -130,6 +172,7 @@ const ROWS: DeclareRow[] = [
   {
     seq: 8,
     orderNo: '323217591484',
+    skuId: '100235828',
     productName:
       '2025 Vintage Pink Mini Bag for Women: Retro Shoulder Bag, Small Crossbody Handbag, Cute Underarm Purse, Elegant Evening Clutch',
     spec: '#4,China',
@@ -137,6 +180,9 @@ const ROWS: DeclareRow[] = [
     nameCn: '单肩包',
     qty: '1',
     unitValue: '53.34',
+    nspid: '',
+    spid: '',
+    mpid: '',
     unitWeight: '1.00',
     length: '0',
     width: '0',
@@ -145,6 +191,7 @@ const ROWS: DeclareRow[] = [
   {
     seq: 9,
     orderNo: '323218453719',
+    skuId: '100235829',
     productName:
       '5A Mens Jeans 2025 - Black Straight Fit Denim Pants - Retro Casual Streetwear Joggers',
     spec: 'A11,28',
@@ -152,6 +199,9 @@ const ROWS: DeclareRow[] = [
     nameCn: '牛仔裤',
     qty: '1',
     unitValue: '58.39',
+    nspid: '',
+    spid: '',
+    mpid: '',
     unitWeight: '1.00',
     length: '0',
     width: '0',
@@ -160,6 +210,7 @@ const ROWS: DeclareRow[] = [
   {
     seq: 10,
     orderNo: '323226396029',
+    skuId: '100235830',
     productName:
       '2026 Designer Leather Crossbody Bags for Women - Oversized Gold Logo Chain Strap, Multi-Color Rectangular Style for Daily, Leisure, and Date Use',
     spec: 'White,Size: 11 * 19 * 5cm',
@@ -167,6 +218,9 @@ const ROWS: DeclareRow[] = [
     nameCn: '斜挎包',
     qty: '1',
     unitValue: '118.00',
+    nspid: '',
+    spid: '',
+    mpid: '',
     unitWeight: '1.00',
     length: '0',
     width: '0',
@@ -233,12 +287,27 @@ function IconEdit() {
   );
 }
 
+function IconUpload() {
+  return (
+    <svg className="mobd-upload__icon" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
+      <path
+        d="M16 5v15m0-15 5.5 5.5M16 5l-5.5 5.5M6 21v4.5A1.5 1.5 0 0 0 7.5 27h17a1.5 1.5 0 0 0 1.5-1.5V21"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function Checkbox() {
   return <span className="mobd-checkbox" aria-hidden="true" />;
 }
 
 function TextCell({ value }: { value: string }) {
-  return <input className="mobd-input" type="text" defaultValue={value} readOnly tabIndex={-1} />;
+  return <input className="mobd-input" type="text" value={value} readOnly tabIndex={-1} />;
 }
 
 function NumberCell({ value }: { value: string }) {
@@ -311,17 +380,25 @@ function DeclareRowCells({ row }: { row: DeclareRow }) {
       </td>
       <td className="mobd-td">
         <div className="mobd-cell">
-          <input className="mobd-input" type="text" placeholder="请输入" readOnly tabIndex={-1} />
+          <TextCell value={row.nspid} />
         </div>
       </td>
       <td className="mobd-td">
         <div className="mobd-cell">
-          <input className="mobd-input" type="text" placeholder="请输入" readOnly tabIndex={-1} />
+          <TextCell value={row.spid} />
         </div>
       </td>
       <td className="mobd-td">
         <div className="mobd-cell">
-          <input className="mobd-input" type="text" placeholder="请输入" readOnly tabIndex={-1} />
+          <input
+            className="mobd-input"
+            type="text"
+            value={row.mpid}
+            placeholder="请输入"
+            readOnly
+            tabIndex={-1}
+            data-annotation-id={row.seq === 1 ? 'declare-mpid-disabled' : undefined}
+          />
         </div>
       </td>
       <td className="mobd-td">
@@ -378,7 +455,7 @@ function DeclareRowCells({ row }: { row: DeclareRow }) {
   );
 }
 
-function DeclareTable() {
+function DeclareTable({ rows }: { rows: DeclareRow[] }) {
   return (
     <div className="mobd-table-frame">
       <div className="mobd-table-scroll">
@@ -498,7 +575,7 @@ function DeclareTable() {
             </tr>
           </thead>
           <tbody>
-            {ROWS.map((row) => (
+            {rows.map((row) => (
               <tr key={row.seq} className="mobd-tr">
                 <DeclareRowCells row={row} />
               </tr>
@@ -510,7 +587,223 @@ function DeclareTable() {
   );
 }
 
+function ImportPidDialog({
+  open,
+  onClose,
+  onDownloadTemplate,
+  onImport,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onDownloadTemplate: () => void;
+  onImport: (file: File) => Promise<number>;
+}) {
+  const [file, setFile] = useState<File | null>(null);
+  const [error, setError] = useState('');
+  const [dragging, setDragging] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    setFile(null);
+    setError('');
+    setDragging(false);
+    setBusy(false);
+  }, [open]);
+
+  if (!open) return null;
+
+  const pick = (next: File | null) => {
+    setError('');
+    if (!next) {
+      setFile(null);
+      return;
+    }
+    if (!/\.(xlsx|csv)$/i.test(next.name)) {
+      setError('仅支持 xlsx / csv 格式的文件');
+      return;
+    }
+    if (next.size > 10 * 1024 * 1024) {
+      setError('文件大小不能超过 10MB');
+      return;
+    }
+    setFile(next);
+  };
+
+  const confirm = async () => {
+    if (!file) {
+      setError('请先选择要导入的文件');
+      return;
+    }
+    setBusy(true);
+    try {
+      const updated = await onImport(file);
+      if (updated > 0) {
+        onClose();
+        return;
+      }
+      setError('没有匹配到可导入的 Pid 码，请检查 sku_id 是否与当前商品一致');
+    } catch {
+      setError('文件解析失败，请使用下载的模板填写后上传');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div
+      className="mobd-import-mask"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <section className="mobd-import" role="dialog" aria-modal="true" aria-label="导入Pid码">
+        <header className="mobd-import__header">
+          <h3 className="mobd-import__title">导入Pid码</h3>
+          <button type="button" className="mobd-dialog__close" aria-label="关闭" onClick={onClose}>
+            <IconClose />
+          </button>
+        </header>
+        <div className="mobd-import__body">
+          <p className="mobd-import__hint">
+            模板会自动导出当前已填写 Pid 码的商品信息，按模板填写后上传即可导入。
+          </p>
+          <div className="mobd-import__template">
+            <button
+              type="button"
+              className="mobd-btn mobd-btn--outline mobd-btn--small"
+              data-annotation-id="declare-template-skuid"
+              onClick={onDownloadTemplate}
+            >
+              下载模板
+            </button>
+            <span className="mobd-import__note">支持 xlsx / csv，单文件不超过 10MB</span>
+          </div>
+          <div
+            className={`mobd-upload${dragging ? ' is-dragging' : ''}`}
+            role="button"
+            tabIndex={0}
+            onClick={() => inputRef.current?.click()}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                inputRef.current?.click();
+              }
+            }}
+            onDragOver={(event) => {
+              event.preventDefault();
+              setDragging(true);
+            }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={(event) => {
+              event.preventDefault();
+              setDragging(false);
+              pick(event.dataTransfer.files[0] || null);
+            }}
+          >
+            <IconUpload />
+            <span className="mobd-upload__text">点击或拖拽文件到此区域上传</span>
+            <input
+              ref={inputRef}
+              type="file"
+              accept=".xlsx,.csv"
+              hidden
+              onChange={(event) => {
+                pick(event.target.files?.[0] || null);
+                event.target.value = '';
+              }}
+            />
+          </div>
+          {file ? (
+            <div className="mobd-upload__file">
+              <span className="mobd-upload__name" title={file.name}>
+                {file.name}
+              </span>
+              <span className="mobd-upload__size">{(file.size / 1024).toFixed(1)} KB</span>
+              <button type="button" className="mobd-upload__remove" onClick={() => setFile(null)}>
+                移除
+              </button>
+            </div>
+          ) : null}
+          {error ? <p className="mobd-import__error">{error}</p> : null}
+        </div>
+        <footer className="mobd-import__footer">
+          <button type="button" className="mobd-btn mobd-btn--medium mobd-btn--default" onClick={onClose}>
+            取消
+          </button>
+          <button type="button" className="mobd-btn mobd-btn--medium mobd-btn--primary" onClick={confirm} disabled={busy}>
+            {busy ? '导入中…' : '确定'}
+          </button>
+        </footer>
+      </section>
+    </div>
+  );
+}
+
+function applyPidTable(rows: DeclareRow[], table: string[][]) {
+  const headerIndex = table.findIndex((row) => row.some((cell) => /商品标题|标题|sku|nspid|spid|mpid/i.test(cell)));
+  if (headerIndex < 0) return { rows, updated: 0 };
+
+  const header = table[headerIndex].map((cell) => cell.trim());
+  const titleCol = header.findIndex((cell) => /标题/.test(cell));
+  const skuIdCol = header.findIndex((cell) => /sku[_\s-]?id/i.test(cell));
+  const skuCol = header.findIndex((cell) => !/sku[_\s-]?id/i.test(cell) && /sku|规格/i.test(cell));
+  const nspidCol = header.findIndex((cell) => /nspid/i.test(cell));
+  const spidCol = header.findIndex((cell) => !/nspid/i.test(cell) && /spid/i.test(cell));
+  const mpidCol = header.findIndex((cell) => /mpid/i.test(cell));
+
+  const keyOf = (title: string, sku: string) => `${title.trim()}\u0000${sku.trim()}`;
+  const useSkuId = skuIdCol >= 0;
+  const incoming = new Map<string, { nspid: string; spid: string; mpid: string }>();
+  table.slice(headerIndex + 1).forEach((row) => {
+    const title = titleCol >= 0 ? row[titleCol] || '' : '';
+    const sku = skuCol >= 0 ? row[skuCol] || '' : '';
+    const skuId = useSkuId ? (row[skuIdCol] || '').trim() : '';
+    if (useSkuId ? !skuId : !title.trim()) return;
+    incoming.set(useSkuId ? `id:${skuId}` : keyOf(title, sku), {
+      nspid: nspidCol >= 0 ? (row[nspidCol] || '').trim() : '',
+      spid: spidCol >= 0 ? (row[spidCol] || '').trim() : '',
+      mpid: mpidCol >= 0 ? (row[mpidCol] || '').trim() : '',
+    });
+  });
+
+  let updated = 0;
+  const next = rows.map((row) => {
+    const hit = incoming.get(useSkuId ? `id:${row.skuId.trim()}` : keyOf(row.productName, row.spec));
+    if (!hit) return row;
+    const merged = {
+      ...row,
+      nspid: hit.nspid || row.nspid,
+      spid: hit.spid || row.spid,
+      mpid: hit.mpid || row.mpid,
+    };
+    if (merged.nspid !== row.nspid || merged.spid !== row.spid || merged.mpid !== row.mpid) updated += 1;
+    return merged;
+  });
+
+  return { rows: next, updated };
+}
 export default function MyOrderBatchDeclare() {
+  const [rows, setRows] = useState<DeclareRow[]>(ROWS);
+  const [importOpen, setImportOpen] = useState(false);
+
+  const downloadTemplate = () => {
+    const filled = rows.filter((row) => row.nspid.trim() || row.spid.trim() || row.mpid.trim());
+    const table = [
+      PID_TEMPLATE_HEADERS,
+      ...filled.map((row) => [row.productName, row.spec, row.skuId, row.nspid, row.spid, row.mpid]),
+    ];
+    downloadBlob('Pid码导入模板.xlsx', buildXlsx(table, 'Pid码'));
+  };
+
+  const importFile = async (file: File) => {
+    const table = await readTableFile(file);
+    const result = applyPidTable(rows, table);
+    if (result.updated > 0) setRows(result.rows);
+    return result.updated;
+  };
+
   return (
     <>
       <div className="mobd-root">
@@ -536,8 +829,16 @@ export default function MyOrderBatchDeclare() {
                 <button type="button" className="mobd-btn mobd-btn--outline">
                   查看重复订单
                 </button>
+                <button
+                  type="button"
+                  className="mobd-btn mobd-btn--outline"
+                  data-annotation-id="declare-import-mpid"
+                  onClick={() => setImportOpen(true)}
+                >
+                  导入Pid码
+                </button>
               </div>
-              <DeclareTable />
+              <DeclareTable rows={rows} />
             </div>
             <footer className="mobd-dialog__footer">
               <button type="button" className="mobd-btn mobd-btn--medium mobd-btn--default">
@@ -549,6 +850,12 @@ export default function MyOrderBatchDeclare() {
             </footer>
           </section>
         </div>
+        <ImportPidDialog
+          open={importOpen}
+          onClose={() => setImportOpen(false)}
+          onDownloadTemplate={downloadTemplate}
+          onImport={importFile}
+        />
       </div>
       <AnnotationViewer
         source={annotationSourceDocument as unknown as AnnotationSourceDocument}

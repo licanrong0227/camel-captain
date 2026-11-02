@@ -86,6 +86,63 @@
         "images": [],
         "createdAt": 1792405124890,
         "updatedAt": 1792407075191
+      },
+      {
+        "id": "declare-import-mpid",
+        "index": 6,
+        "title": "导入Pid码与模板下载",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"declare-import-mpid\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=declare-import-mpid",
+          "path": []
+        },
+        "aiPrompt": "根据该标注说明导入 Pid 码弹窗的文件上传、模板下载范围与模板表头。",
+        "annotationText": "增加一个导入Pid码按钮，点击弹窗，可以上传excel文件，并且支持下载模板，下载模板自动需要将当前的信息导出来，表头为：\n商品标题、SKU、制造商产品识别码（nsPid）、国际标准商品编码（sPid）、商家产品识别码（mPid）\npid码有值的会自动导出来",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793635200000,
+        "updatedAt": 1793635200000
+      },
+      {
+        "id": "declare-mpid-disabled",
+        "index": 7,
+        "title": "mPid 输入框取消禁用",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"declare-mpid-disabled\"]"
+          ],
+          "fingerprint": "input|data-annotation-id=declare-mpid-disabled",
+          "path": []
+        },
+        "aiPrompt": "根据该标注说明 mPid 输入框取消禁用，恢复为普通选填输入框。",
+        "annotationText": "取消禁用",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793635200000,
+        "updatedAt": 1793635200000
+      },
+      {
+        "id": "declare-template-skuid",
+        "index": 8,
+        "title": "模板新增 sku_id 列",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"declare-template-skuid\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=declare-template-skuid",
+          "path": []
+        },
+        "aiPrompt": "根据该标注说明下载模板在 SKU 后新增 sku_id（请勿修改）列，自动导出 SKU id，并在导入时作为唯一匹配标识。",
+        "annotationText": "下载模板的sku后面新增一列：「sku_id（请勿修改）」，自动导出SKUid，在导入时作为唯一标识",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793635200000,
+        "updatedAt": 1793635200000
       }
     ],
     "updatedAt": 1792406753120

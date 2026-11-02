@@ -328,4 +328,4 @@ export function fmtTime(at: number): string {
   return `${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
-export const DISLIKE_REASONS = ['误报', '漏报', '原因不准', '建议不准', '其他'];
+export const DISLIKE_REASONS = ['误报', '原因不准', '建议不准', '其他'];

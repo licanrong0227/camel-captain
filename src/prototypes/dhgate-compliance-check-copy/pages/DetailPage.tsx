@@ -33,7 +33,7 @@ import { FeedbackDialog, RecheckDialog, RecheckMode } from '../components/Dialog
 import { ProductView } from '../components/ProductView';
 
 type DialogState =
-  | { type: 'feedback'; code: ItemCode; resultKey: string; context: string; presetReasons?: string[] }
+  | { type: 'feedback'; code: ItemCode; resultKey: string; context: string; presetReasons?: string[]; variant?: 'general' | 'miss'; initialText?: string }
   | { type: 'recheck' };
 
 const issueDiffKey = (issue: { code: ItemCode; anchorKey: string }) => `${issue.code}|${issue.anchorKey}`;
@@ -81,6 +81,7 @@ export function DetailPage({
   const [diff, setDiff] = useState<{ fixed: number; remain: number; added: number } | null>(null);
   const protoState = useProtoDevState<Record<string, unknown>>();
   const sideRef = useRef<HTMLDivElement>(null);
+  const retryOrderRef = useRef<{ taskId: string; codes: ItemCode[] }>({ taskId, codes: [] });
   const userToggled = useRef(false);
   const autoExpanded = useRef(false);
   const passToggled = useRef(false);
@@ -117,11 +118,16 @@ export function DetailPage({
   }, [running]);
 
   useEffect(() => {
-    const onScroll = () => setShowBackTop(window.scrollY > 400);
+    const side = sideRef.current;
+    const onScroll = () => setShowBackTop(window.scrollY > 400 || Boolean(side && side.scrollTop > 24));
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [taskId]);
+    side?.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      side?.removeEventListener('scroll', onScroll);
+    };
+  }, [taskId, view?.status]);
 
   // 点击页面留白隐藏连线并取消选中/定位；条目、商品信息问题位置、按钮等交互区域忽略
   useEffect(() => {
@@ -214,9 +220,20 @@ export function DetailPage({
     total: ITEM_DEFS.length,
   };
 
-  const activeItems = itemsShown
-    .filter((item) => item.status !== 'pass')
-    .sort((a, b) => (settled ? STATUS_ORDER[a.status] - STATUS_ORDER[b.status] : 0));
+  let activeItems = itemsShown.filter((item) => item.status !== 'pass');
+  const frozenOrder = retryOrderRef.current.taskId === taskId ? retryOrderRef.current.codes : [];
+  if (frozenOrder.length > 0) {
+    activeItems = [...activeItems].sort((a, b) => {
+      const ia = frozenOrder.indexOf(a.code);
+      const ib = frozenOrder.indexOf(b.code);
+      if (ia === -1 && ib === -1) return 0;
+      if (ia === -1) return 1;
+      if (ib === -1) return -1;
+      return ia - ib;
+    });
+  } else if (settled) {
+    activeItems = [...activeItems].sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]);
+  }
   const passItems = itemsShown.filter((item) => item.status === 'pass');
 
   /* ---- 默认展开第一个问题项；用户手动操作后不再自动改 ---- */
@@ -287,18 +304,6 @@ export function DetailPage({
     return () => window.clearTimeout(timer);
   }, [initialFocus, taskId]);
 
-  const jumpTo = (status: ItemStatus) => {
-    if (status === 'pass') {
-      setPassOpen(true);
-      window.setTimeout(() => scrollSideTo(document.getElementById('dcc-pass-group')), 120);
-      return;
-    }
-    const item = activeItems.find((entry) => entry.status === status);
-    if (!item) return;
-    setExpandedCodes([item.code]);
-    window.setTimeout(() => scrollSideTo(document.getElementById(`item-${item.code}`)), 120);
-  };
-
   const clearFocus = () => {
     setLinkedKeys([]);
     setActiveAnchor(null);
@@ -331,7 +336,10 @@ export function DetailPage({
   const anyOpen = openCount > 0 || (passOpen && passItems.length > 0);
   const allCollapsed = !anyOpen;
 
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    sideRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const issueSignature = issues.map(issueDiffKey).join(',');
   const connectorLinks = useMemo(
@@ -374,15 +382,41 @@ export function DetailPage({
     setVersion((prev) => prev + 1);
   };
 
+  const retryOneItem = (item: ItemView) => {
+    retryOrderRef.current = { taskId, codes: activeItems.map((entry) => entry.code) };
+    mutate(() => {
+      retryItem(task.id, item.code, {
+        at: itemFinishedAt(task, item.code),
+        status: item.status,
+        outcome: item.outcome,
+      });
+      showToast('success', `已重试「${item.name}」，仅该项重新检测`);
+    });
+  };
+
+  const retryPassItem = (item: ItemView) => {
+    setExpandedCodes([item.code]);
+    userToggled.current = true;
+    passToggled.current = true;
+    setPassOpen(true);
+    retryOneItem(item);
+    window.setTimeout(() => scrollSideTo(document.getElementById(`item-${item.code}`)), 200);
+  };
+
   const feedbackMap: Record<string, ResultFeedback | undefined> = {};
   itemsShown.forEach((item) => {
     Object.entries(item.override?.resultFeedback ?? {}).forEach(([key, feedback]) => {
       feedbackMap[key] = feedback;
     });
   });
+  const dialogFeedback = dialog?.type === 'feedback' ? feedbackMap[dialog.resultKey] : undefined;
 
   const openFeedback = (code: ItemCode, resultKey: string, context: string, presetReasons?: string[]) => {
     setDialog({ type: 'feedback', code, resultKey, context, presetReasons });
+  };
+
+  const openMissReport = (code: ItemCode, resultKey: string, context: string, initialText?: string) => {
+    setDialog({ type: 'feedback', code, resultKey, context, variant: 'miss', initialText });
   };
 
   const cancelFeedback = (code: ItemCode, resultKey: string) => {
@@ -416,6 +450,7 @@ export function DetailPage({
 
   const onRecheckConfirm = (mode: RecheckMode) => {
     const before = issues.map(issueDiffKey);
+    retryOrderRef.current = { taskId, codes: [] };
     setDialog(null);
     if (mode === 'in-place') {
       mutate(() => {
@@ -573,21 +608,21 @@ export function DetailPage({
                     {allCollapsed ? '全部展开' : '全部收起'}
                   </button>
                 </div>
-                <div className="dcc-side-chips" role="group" aria-label="按结果筛选检测项">
+                <div className="dcc-side-chips">
                   {issueCounts.violation > 0 && (
-                    <button type="button" className="dcc-side-chip dcc-side-chip--violation" onClick={() => jumpTo('violation')}>违规 {issueCounts.violation}</button>
+                    <span className="dcc-side-chip dcc-side-chip--violation">违规 {issueCounts.violation}</span>
                   )}
                   {issueCounts.suspect > 0 && (
-                    <button type="button" className="dcc-side-chip dcc-side-chip--suspect" onClick={() => jumpTo('suspect')}>疑似 {issueCounts.suspect}</button>
+                    <span className="dcc-side-chip dcc-side-chip--suspect">疑似 {issueCounts.suspect}</span>
                   )}
                   {issueCounts.notice > 0 && (
-                    <button type="button" className="dcc-side-chip dcc-side-chip--notice" onClick={() => jumpTo('manual')}>建议自查 {issueCounts.notice}</button>
+                    <span className="dcc-side-chip dcc-side-chip--notice">建议自查 {issueCounts.notice}</span>
                   )}
                   {issueCounts.fail > 0 && (
-                    <button type="button" className="dcc-side-chip dcc-side-chip--fail" onClick={() => jumpTo('fail')}>检测失败 {issueCounts.fail}</button>
+                    <span className="dcc-side-chip dcc-side-chip--fail">检测失败 {issueCounts.fail}</span>
                   )}
                   {passItems.length > 0 && (
-                    <button type="button" className="dcc-side-chip dcc-side-chip--pass" onClick={() => jumpTo('pass')}>通过 {passItems.length}</button>
+                    <span className="dcc-side-chip dcc-side-chip--pass">通过 {passItems.length}</span>
                   )}
                 </div>
               </header>
@@ -607,17 +642,8 @@ export function DetailPage({
                     onLocate={locate}
                     onHover={setHoverAnchor}
                     onFeedback={(resultKey, context, presetReasons) => openFeedback(item.code, resultKey, context, presetReasons)}
-                    onCancelFeedback={(resultKey) => cancelFeedback(item.code, resultKey)}
-                    onRetry={() =>
-                      mutate(() => {
-                        retryItem(task.id, item.code, {
-                          at: itemFinishedAt(task, item.code),
-                          status: item.status,
-                          outcome: item.outcome,
-                        });
-                        showToast('success', `已重试「${item.name}」，仅该项重新检测`);
-                      })
-                    }
+                    onMissReport={(resultKey, context, initialText) => openMissReport(item.code, resultKey, context, initialText)}
+                    onRetry={() => retryOneItem(item)}
                     linkedIssueKeys={linkedKeys}
                     anchorLinkMode={linkMode === 'anchor'}
                     historyResetToken={historyResetToken}
@@ -655,8 +681,8 @@ export function DetailPage({
                             key={item.code}
                             view={item}
                             feedback={feedbackMap[`${item.code}:0`]}
-                            onFeedback={(resultKey, context, presetReasons) => openFeedback(item.code, resultKey, context, presetReasons)}
-                            onCancelFeedback={(resultKey) => cancelFeedback(item.code, resultKey)}
+                            onMissReport={(resultKey, context, initialText) => openMissReport(item.code, resultKey, context, initialText)}
+                            onRetry={() => retryPassItem(item)}
                           />
                         ))}
                       </div>
@@ -686,13 +712,19 @@ export function DetailPage({
       {dialog?.type === 'feedback' && (
         <FeedbackDialog
           context={dialog.context}
-          initialReasons={dialog.presetReasons}
+          initialReasons={dialog.presetReasons ?? dialogFeedback?.reasons}
+          initialText={dialog.initialText ?? dialogFeedback?.text}
+          variant={dialog.variant}
           onCancel={() => setDialog(null)}
+          onCancelFeedback={dialogFeedback ? () => {
+            cancelFeedback(dialog.code, dialog.resultKey);
+            setDialog(null);
+          } : undefined}
           onSubmit={(reasons, text) =>
             mutate(() => {
               setFeedback(task.id, dialog.code, dialog.resultKey, { reasons, text, at: Date.now() });
               setDialog(null);
-              showToast('success', '已提交反馈，感谢');
+              showToast('success', dialog.variant === 'miss' ? '已提交漏报反馈，感谢' : '已提交反馈，感谢');
             })
           }
         />

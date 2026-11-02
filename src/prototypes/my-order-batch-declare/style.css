@@ -147,11 +147,11 @@
 }
 
 .mobd-table-scroll {
-  min-width: 2715px;
+  min-width: 2785px;
 }
 
 .mobd-table {
-  width: 2715px;
+  width: 2785px;
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
@@ -201,6 +201,169 @@
   font-size: 12px;
   font-weight: 600;
   color: var(--info-4);
+}
+
+/* ---------- import dialog ---------- */
+
+.mobd-import-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.mobd-import {
+  display: flex;
+  flex-direction: column;
+  width: 560px;
+  max-width: 100%;
+  max-height: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(29, 33, 41, 0.2);
+}
+
+.mobd-import__header {
+  position: relative;
+  flex: none;
+  padding: 20px 20px 12px;
+}
+
+.mobd-import__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--neutral-8);
+}
+
+.mobd-import__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 20px 4px;
+}
+
+.mobd-import__hint {
+  margin: 0 0 12px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--neutral-6);
+}
+
+.mobd-import__template {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.mobd-import__note {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--neutral-6);
+}
+
+.mobd-btn--small {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.mobd-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 140px;
+  padding: 0 16px;
+  border: 1px dashed var(--neutral-5);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--neutral-6);
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+}
+
+.mobd-upload:hover,
+.mobd-upload.is-dragging {
+  border-color: var(--brand-4);
+  background: var(--brand-1);
+  color: var(--brand-4);
+}
+
+.mobd-upload__icon {
+  color: var(--neutral-5);
+}
+
+.mobd-upload:hover .mobd-upload__icon,
+.mobd-upload.is-dragging .mobd-upload__icon {
+  color: var(--brand-4);
+}
+
+.mobd-upload__file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: var(--neutral-1);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.mobd-upload__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--neutral-8);
+}
+
+.mobd-upload__size {
+  flex: none;
+  color: var(--neutral-6);
+  font-variant-numeric: tabular-nums;
+}
+
+.mobd-upload__remove {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--info-4);
+  font: inherit;
+  cursor: pointer;
+}
+
+.mobd-import__error {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--danger-4);
+}
+
+.mobd-import__footer {
+  flex: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 20px 20px;
+}
+
+.mobd-btn--primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 
