@@ -3,6 +3,7 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AnnotationViewer, type AnnotationSourceDocument } from '@axhub/annotation';
 import annotationSourceDocument from './annotation-source.json';
 import mainSample1 from './assets/main-image-sample-1.png';
@@ -17,9 +18,20 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
 type SegmentState = { pre: string; start: string; suf: string };
 type UploadedImage = { id: string; url: string; name: string; width: number; height: number };
 
-type ProductCurrentStatus = '已上架' | '待审核' | '审核未通过' | '发布失败';
-type ProductLoopState = '循环中' | '循环结束';
-type ProductLoopEndState = '已上架' | '待审核' | '审核未通过' | '发布失败' | '手动开启新循环，旧循环中断';
+type ProductCurrentStatus =
+  | '待发布'
+  | '发布中'
+  | '循环刊登'
+  | '发布失败'
+  | '已上架'
+  | '已下架'
+  | '待审核'
+  | '审核未通过'
+  | '内容违规'
+  | '侵权违规'
+  | '品牌商投诉';
+type ProductLoopState = '循环中' | '循环结束' | '开启新循环';
+type PublishResult = '待发布' | '发布中' | '待审核' | '审核不通过' | '循环刊登' | '发布失败';
 
 type ProductKey =
   | 'dress'
@@ -43,7 +55,7 @@ type PublishProduct = {
   image: string;
   loopState?: ProductLoopState;
   attempts?: number;
-  loopEnd?: ProductLoopEndState;
+  publishResult?: PublishResult;
   current: ProductCurrentStatus;
 };
 
@@ -79,83 +91,96 @@ const product = (key: ProductKey, extra: Omit<PublishProduct, 'id' | 'title' | '
 
 const PUBLISH_RECORDS: PublishRecord[] = [
   {
-    id: 'r-1', time: '2026-11-02 10:30', isLoop: true, loopLimit: 5,
+    id: 'r-1', time: '2026-11-02 10:30:24', isLoop: true, loopLimit: 5,
     products: [
-      product('dress', { loopState: '循环中', attempts: 3, current: '待审核' }),
-      product('kidsCanvas', { loopState: '循环结束', attempts: 3, loopEnd: '手动开启新循环，旧循环中断', current: '已上架' }),
-      product('blackBackpack', { loopState: '循环结束', attempts: 2, loopEnd: '已上架', current: '已上架' }),
-      product('jacket', { loopState: '循环结束', attempts: 5, loopEnd: '审核未通过', current: '审核未通过' }),
-      product('shoulderBag', { loopState: '循环结束', attempts: 4, loopEnd: '待审核', current: '已上架' }),
-      product('kidsSneaker', { loopState: '循环中', attempts: 1, current: '待审核' }),
+      product('dress', { loopState: '循环中', attempts: 3, publishResult: '待审核', current: '待审核' }),
+      product('kidsCanvas', { loopState: '开启新循环', attempts: 3, publishResult: '循环刊登', current: '已上架' }),
+      product('blackBackpack', { loopState: '循环结束', attempts: 2, publishResult: '循环刊登', current: '已上架' }),
+      product('jacket', { loopState: '循环结束', attempts: 5, publishResult: '审核不通过', current: '审核未通过' }),
+      product('shoulderBag', { loopState: '循环结束', attempts: 5, publishResult: '待审核', current: '已上架' }),
+      product('kidsSneaker', { loopState: '循环中', attempts: 1, publishResult: '待审核', current: '待审核' }),
     ],
   },
   {
-    id: 'r-2', time: '2026-11-01 18:12', isLoop: false,
+    id: 'r-2', time: '2026-11-01 18:12:07', isLoop: false,
     products: [
       product('travelBackpack', { current: '已上架' }),
-      product('tote', { current: '待审核' }),
-      product('runningShoes', { current: '发布失败' }),
+      product('tote', { publishResult: '待审核', current: '待审核' }),
+      product('runningShoes', { publishResult: '发布失败', current: '发布失败' }),
     ],
   },
   {
-    id: 'r-3', time: '2026-11-01 09:45', isLoop: true, loopLimit: 10,
+    id: 'r-3', time: '2026-11-01 09:45:51', isLoop: true, loopLimit: 10,
     products: [
-      product('briefcase', { loopState: '循环结束', attempts: 10, loopEnd: '审核未通过', current: '审核未通过' }),
-      product('chainBag', { loopState: '循环结束', attempts: 6, loopEnd: '已上架', current: '已上架' }),
-      product('schoolBag', { loopState: '循环中', attempts: 4, current: '待审核' }),
-      product('canvasSneaker', { loopState: '循环结束', attempts: 10, loopEnd: '审核未通过', current: '审核未通过' }),
-      product('leatherHandbag', { loopState: '循环结束', attempts: 7, loopEnd: '已上架', current: '已上架' }),
+      product('briefcase', { loopState: '循环结束', attempts: 10, publishResult: '发布失败', current: '内容违规' }),
+      product('chainBag', { loopState: '循环结束', attempts: 6, publishResult: '循环刊登', current: '已上架' }),
+      product('schoolBag', { loopState: '循环中', attempts: 4, publishResult: '待审核', current: '循环刊登' }),
+      product('canvasSneaker', { loopState: '循环结束', attempts: 10, publishResult: '发布失败', current: '侵权违规' }),
+      product('leatherHandbag', { loopState: '循环结束', attempts: 7, publishResult: '循环刊登', current: '已上架' }),
     ],
   },
   {
-    id: 'r-4', time: '2026-10-31 20:05', isLoop: false,
+    id: 'r-4', time: '2026-10-31 20:05:13', isLoop: false,
     products: [
       product('shoulderBag', { current: '已上架' }),
       product('kidsSneaker', { current: '已上架' }),
     ],
   },
   {
-    id: 'r-5', time: '2026-10-30 14:20', isLoop: true, loopLimit: 5,
+    id: 'r-5', time: '2026-10-30 14:20:38', isLoop: true, loopLimit: 5,
     products: [
-      product('blackBackpack', { loopState: '循环结束', attempts: 5, loopEnd: '手动开启新循环，旧循环中断', current: '已上架' }),
-      product('jacket', { loopState: '循环结束', attempts: 5, loopEnd: '审核未通过', current: '审核未通过' }),
-      product('kidsCanvas', { loopState: '循环结束', attempts: 3, loopEnd: '已上架', current: '已上架' }),
-      product('chainBag', { loopState: '循环中', attempts: 2, current: '待审核' }),
+      product('blackBackpack', { loopState: '开启新循环', attempts: 5, publishResult: '循环刊登', current: '已上架' }),
+      product('jacket', { loopState: '循环结束', attempts: 5, publishResult: '审核不通过', current: '审核未通过' }),
+      product('kidsCanvas', { loopState: '循环结束', attempts: 3, publishResult: '循环刊登', current: '已上架' }),
+      product('chainBag', { loopState: '循环中', attempts: 2, publishResult: '待审核', current: '发布中' }),
     ],
   },
   {
-    id: 'r-6', time: '2026-10-29 11:08', isLoop: false,
+    id: 'r-6', time: '2026-10-29 11:08:02', isLoop: false,
     products: [
       product('runningShoes', { current: '已上架' }),
-      product('schoolBag', { current: '待审核' }),
+      product('schoolBag', { publishResult: '待审核', current: '待审核' }),
       product('tote', { current: '已上架' }),
     ],
   },
   {
-    id: 'r-7', time: '2026-10-28 16:40', isLoop: false,
+    id: 'r-7', time: '2026-10-28 16:40:19', isLoop: false,
     products: [
-      product('leatherHandbag', { current: '发布失败' }),
+      product('leatherHandbag', { publishResult: '发布失败', current: '已下架' }),
     ],
   },
   {
-    id: 'r-8', time: '2026-10-27 09:15', isLoop: true, loopLimit: 3,
+    id: 'r-8', time: '2026-10-27 09:15:44', isLoop: true, loopLimit: 3,
     products: [
-      product('travelBackpack', { loopState: '循环结束', attempts: 3, loopEnd: '已上架', current: '已上架' }),
-      product('canvasSneaker', { loopState: '循环结束', attempts: 3, loopEnd: '审核未通过', current: '审核未通过' }),
-      product('briefcase', { loopState: '循环结束', attempts: 2, loopEnd: '待审核', current: '已上架' }),
-      product('shoulderBag', { loopState: '循环结束', attempts: 3, loopEnd: '审核未通过', current: '审核未通过' }),
+      product('travelBackpack', { loopState: '循环结束', attempts: 3, publishResult: '循环刊登', current: '已上架' }),
+      product('canvasSneaker', { loopState: '循环结束', attempts: 3, publishResult: '发布失败', current: '品牌商投诉' }),
+      product('briefcase', { loopState: '循环结束', attempts: 3, publishResult: '待审核', current: '已上架' }),
+      product('shoulderBag', { loopState: '循环结束', attempts: 3, publishResult: '审核不通过', current: '审核未通过' }),
     ],
   },
 ];
 
-const currentTagClass = (status: ProductCurrentStatus) =>
-  status === '已上架'
-    ? 'is-online'
-    : status === '待审核'
-      ? 'is-pending'
-      : status === '审核未通过'
-        ? 'is-rejected'
-        : 'is-failed';
+const currentTagClass = (status: ProductCurrentStatus) => {
+  if (status === '已上架') return 'is-online';
+  if (status === '待审核') return 'is-pending';
+  if (status === '审核未通过') return 'is-rejected';
+  if (status === '内容违规') return 'is-content';
+  if (status === '侵权违规') return 'is-infringe';
+  if (status === '品牌商投诉') return 'is-complaint';
+  if (status === '发布中') return 'is-processing';
+  if (status === '循环刊登') return 'is-looping';
+  if (status === '发布失败') return 'is-failed';
+  return 'is-offline';
+};
+
+type RecordStatus = '发布中' | '发布完成';
+
+const activeCurrentStatuses: ProductCurrentStatus[] = ['待发布', '发布中', '循环刊登', '待审核'];
+
+const recordStatus = (record: PublishRecord): RecordStatus =>
+  record.products.some((product) => product.loopState === '循环中' || activeCurrentStatuses.includes(product.current))
+    ? '发布中'
+    : '发布完成';
 
 const Switch = ({ checked, disabled = false, onChange, ariaLabel }: {
   checked: boolean;
@@ -195,6 +220,99 @@ const Radio = ({ checked, label, disabled = false, onChange }: {
   </label>
 );
 
+const FilterSelect = <T extends string,>({ value, options, onChange, ariaLabel }: {
+  value: T;
+  options: readonly T[];
+  onChange: (value: T) => void;
+  ariaLabel: string;
+}) => {
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (event: MouseEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(event.target as Node)) setOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDoc);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  return (
+    <div className="up-filter-select" ref={wrapRef}>
+      <button
+        type="button"
+        className={`up-filter-select__trigger${open ? ' is-open' : ''}`}
+        aria-label={ariaLabel}
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span>{value}</span>
+        <span className="up-filter-select__arrow" aria-hidden="true">▾</span>
+      </button>
+      {open ? (
+        <div className="up-filter-select__menu" role="listbox" aria-label={ariaLabel}>
+          {options.map((option) => (
+            <button
+              type="button"
+              key={option}
+              role="option"
+              aria-selected={option === value}
+              className={`up-filter-select__option${option === value ? ' is-active' : ''}`}
+              onClick={() => { onChange(option); setOpen(false); }}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+const HelpTooltip = ({ label, children }: { label: string; children: React.ReactNode }) => {
+  const [rect, setRect] = useState<DOMRect | null>(null);
+  const show = (el: HTMLElement) => setRect(el.getBoundingClientRect());
+
+  return (
+    <span
+      className="up-help"
+      onMouseEnter={(event) => show(event.currentTarget)}
+      onMouseLeave={() => setRect(null)}
+    >
+      <button
+        type="button"
+        className="up-help__icon"
+        aria-label={label}
+        onFocus={(event) => show(event.currentTarget)}
+        onBlur={() => setRect(null)}
+      >
+        ?
+      </button>
+      {rect ? createPortal(
+        <span
+          className="up-help__tip"
+          style={{
+            left: Math.min(Math.max(rect.left + rect.width / 2, 140), window.innerWidth - 140),
+            top: rect.top - 8,
+          }}
+        >
+          {children}
+          <span className="up-help__arrow" />
+        </span>,
+        document.body,
+      ) : null}
+    </span>
+  );
+};
+
 const CalendarIcon = () => (
   <svg className="up-picker__icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
     <rect x="1.5" y="2.5" width="11" height="10" rx="1" stroke="currentColor" strokeWidth="1.2" />
@@ -218,7 +336,12 @@ const PictureIcon = () => (
   </svg>
 );
 
-const DateTimePicker = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => {
+const DateTimePicker = ({ value, onChange, dateOnly = false, placeholder = '选择定时发布时间' }: {
+  value: string;
+  onChange: (v: string) => void;
+  dateOnly?: boolean;
+  placeholder?: string;
+}) => {
   const today = new Date();
   const [open, setOpen] = useState(false);
   const [view, setView] = useState({ y: today.getFullYear(), m: today.getMonth() });
@@ -226,6 +349,23 @@ const DateTimePicker = ({ value, onChange }: { value: string; onChange: (v: stri
     value ? (() => { const [ymd] = value.split(' '); const [y, m, d] = ymd.split('-').map(Number); return { y, m: m - 1, d }; })() : null,
   );
   const [time, setTime] = useState(value.includes(' ') ? value.split(' ')[1] : '10:00:00');
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (event: MouseEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(event.target as Node)) setOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDoc);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
 
   const firstDay = new Date(view.y, view.m, 1).getDay();
   const daysInMonth = new Date(view.y, view.m + 1, 0).getDate();
@@ -244,19 +384,20 @@ const DateTimePicker = ({ value, onChange }: { value: string; onChange: (v: stri
 
   const commit = () => {
     if (picked) {
-      onChange(`${picked.y}-${pad2(picked.m + 1)}-${pad2(picked.d)} ${time || '10:00:00'}`);
+      const date = `${picked.y}-${pad2(picked.m + 1)}-${pad2(picked.d)}`;
+      onChange(dateOnly ? date : `${date} ${time || '10:00:00'}`);
     }
     setOpen(false);
   };
 
   return (
-    <div className="up-picker">
+    <div className={`up-picker${dateOnly ? ' up-picker--date' : ''}`} ref={wrapRef}>
       <div
         className={`up-picker__input${open ? ' is-focused' : ''}`}
         onClick={() => setOpen((v) => !v)}
       >
         <CalendarIcon />
-        <span className={`up-picker__text${value ? ' is-filled' : ''}`}>{value || '选择定时发布时间'}</span>
+        <span className={`up-picker__text${value ? ' is-filled' : ''}`}>{value || placeholder}</span>
       </div>
       {open ? (
         <div className="up-picker__panel">
@@ -283,9 +424,11 @@ const DateTimePicker = ({ value, onChange }: { value: string; onChange: (v: stri
                 </button>
               ))}
             </div>
-            <div className="up-dt__time-panel">
-              <TimeColumns value={time} onChange={setTime} />
-            </div>
+            {dateOnly ? null : (
+              <div className="up-dt__time-panel">
+                <TimeColumns value={time} onChange={setTime} />
+              </div>
+            )}
             <div className="up-dt__footer">
               <button type="button" className="up-dt__link" onClick={() => { setPicked(null); onChange(''); setOpen(false); }}>清除</button>
               <button type="button" className="up-dt__confirm" disabled={!picked} onClick={commit}>确定</button>
@@ -541,6 +684,88 @@ const UpdatePublishDialog = () => {
   const [activeTab, setActiveTab] = useState<'update' | 'records'>('update');
   const [activeRecordId, setActiveRecordId] = useState<string | null>(null);
   const activeRecord = PUBLISH_RECORDS.find((record) => record.id === activeRecordId) ?? null;
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [loopFilter, setLoopFilter] = useState<'全部' | '是' | '否'>('全部');
+  const [statusFilter, setStatusFilter] = useState<'全部' | RecordStatus>('全部');
+  const [page, setPage] = useState(1);
+  const [detailLoopFilter, setDetailLoopFilter] = useState<'全部' | ProductLoopState>('全部');
+  const [detailResultFilter, setDetailResultFilter] = useState<'全部' | PublishResult>('全部');
+  const [detailStatusFilter, setDetailStatusFilter] = useState<'全部' | ProductCurrentStatus>('全部');
+  const [detailPage, setDetailPage] = useState(1);
+  const [copyFeedback, setCopyFeedback] = useState<{ count: number; failed: boolean } | null>(null);
+
+  const pageSize = 5;
+  const filteredRecords = PUBLISH_RECORDS.filter((record) => {
+    const date = record.time.slice(0, 10);
+    if (startDate && date < startDate) return false;
+    if (endDate && date > endDate) return false;
+    if (loopFilter !== '全部' && record.isLoop !== (loopFilter === '是')) return false;
+    if (statusFilter !== '全部' && recordStatus(record) !== statusFilter) return false;
+    return true;
+  });
+  const totalPages = Math.max(1, Math.ceil(filteredRecords.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  const pagedRecords = filteredRecords.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  useEffect(() => { setPage(1); }, [startDate, endDate, loopFilter, statusFilter]);
+
+  const resetFilters = () => {
+    setStartDate('');
+    setEndDate('');
+    setLoopFilter('全部');
+    setStatusFilter('全部');
+    setPage(1);
+  };
+
+  const detailPageSize = 5;
+  const detailProducts = activeRecord
+    ? activeRecord.products.filter((product) => {
+        if (activeRecord.isLoop && detailLoopFilter !== '全部' && product.loopState !== detailLoopFilter) return false;
+        if (detailResultFilter !== '全部' && product.publishResult !== detailResultFilter) return false;
+        if (detailStatusFilter !== '全部' && product.current !== detailStatusFilter) return false;
+        return true;
+      })
+    : [];
+  const detailTotalPages = Math.max(1, Math.ceil(detailProducts.length / detailPageSize));
+  const detailCurrentPage = Math.min(detailPage, detailTotalPages);
+  const pagedDetailProducts = detailProducts.slice((detailCurrentPage - 1) * detailPageSize, detailCurrentPage * detailPageSize);
+
+  useEffect(() => { setDetailPage(1); }, [detailLoopFilter, detailResultFilter, detailStatusFilter]);
+  useEffect(() => {
+    setDetailLoopFilter('全部');
+    setDetailResultFilter('全部');
+    setDetailStatusFilter('全部');
+    setDetailPage(1);
+  }, [activeRecordId]);
+
+  const resetDetailFilters = () => {
+    setDetailLoopFilter('全部');
+    setDetailResultFilter('全部');
+    setDetailStatusFilter('全部');
+    setDetailPage(1);
+  };
+
+  const copyProductIds = async () => {
+    const text = detailProducts.map((product) => product.id).join('\n');
+    if (!text) return;
+    let copied = false;
+    try {
+      await navigator.clipboard.writeText(text);
+      copied = true;
+    } catch {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      copied = document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
+    setCopyFeedback({ count: detailProducts.length, failed: !copied });
+    window.setTimeout(() => setCopyFeedback(null), 2000);
+  };
 
   // 标注运行时默认落在弹窗遮罩下面，这里把标注层提到最上层，保证标注点可见
   useEffect(() => {
@@ -660,6 +885,7 @@ const UpdatePublishDialog = () => {
                   role="tab"
                   aria-selected={activeTab === 'records'}
                   className={`up-tab${activeTab === 'records' ? ' is-active' : ''}`}
+                  data-annotation-id="publish-records-tab"
                   onClick={() => setActiveTab('records')}
                 >
                   发布记录
@@ -871,16 +1097,67 @@ const UpdatePublishDialog = () => {
                     <span className="up-record-detail__time">{activeRecord.time}</span>
                     <span>{activeRecord.products.length} 个商品</span>
                     {activeRecord.isLoop ? <span className="up-records__tag is-loop">循环刊登</span> : null}
+                    <button
+                      type="button"
+                      className="up-record-detail__copy"
+                      disabled={detailProducts.length === 0}
+                      onClick={copyProductIds}
+                    >
+                      {copyFeedback
+                        ? (copyFeedback.failed ? '复制失败' : `已复制 ${copyFeedback.count} 个`)
+                        : '批量复制商品编号'}
+                    </button>
+                  </div>
+                  <div className="up-record-query up-record-query--detail">
+                    {activeRecord.isLoop ? (
+                      <div className="up-record-query__field">
+                        <span className="up-record-query__label">循环状态</span>
+                        <FilterSelect
+                          value={detailLoopFilter}
+                          options={['全部', '循环中', '循环结束', '开启新循环'] as const}
+                          onChange={setDetailLoopFilter}
+                          ariaLabel="循环状态"
+                        />
+                      </div>
+                    ) : null}
+                    <div className="up-record-query__field">
+                      <span className="up-record-query__label">发布结果</span>
+                      <FilterSelect
+                        value={detailResultFilter}
+                        options={['全部', '待发布', '发布中', '待审核', '审核不通过', '循环刊登', '发布失败'] as const}
+                        onChange={setDetailResultFilter}
+                        ariaLabel="发布结果"
+                      />
+                    </div>
+                    <div className="up-record-query__field">
+                      <span className="up-record-query__label">最新状态</span>
+                      <FilterSelect
+                        value={detailStatusFilter}
+                        options={['全部', '待发布', '发布中', '循环刊登', '发布失败', '已上架', '已下架', '待审核', '审核未通过', '内容违规', '侵权违规', '品牌商投诉'] as const}
+                        onChange={setDetailStatusFilter}
+                        ariaLabel="最新状态"
+                      />
+                    </div>
+                    <button type="button" className="up-record-query__reset" onClick={resetDetailFilters}>重置</button>
                   </div>
                   <div className="up-records up-records--detail">
                     <div className="up-records__row up-records__row--head up-records__row--products" data-annotation-id="record-detail-fields">
                       <span>商品信息</span>
-                      <span>循环状态</span>
+                      <span className="up-records__th--help">
+                        循环状态
+                        <HelpTooltip label="循环状态说明">
+                          <span className="up-help__line"><b>循环中</b>：还有剩余次数，会继续重试</span>
+                          <span className="up-help__line"><b>循环结束</b>：次数用完或已发布成功</span>
+                          <span className="up-help__line"><b>开启新循环</b>：旧循环被新循环接管</span>
+                        </HelpTooltip>
+                      </span>
                       <span>循环次数</span>
                       <span>发布结果</span>
-                      <span>当前状态</span>
+                      <span>最新状态</span>
                     </div>
-                    {activeRecord.products.map((product) => (
+                    {pagedDetailProducts.length === 0 ? (
+                      <div className="up-records__empty">暂无数据</div>
+                    ) : pagedDetailProducts.map((product) => (
                       <div className="up-records__row up-records__row--products" key={`${activeRecord.id}-${product.id}`}>
                         <span className="up-product-cell">
                           <img className="up-product-cell__img" src={product.image} alt={product.title} />
@@ -891,51 +1168,161 @@ const UpdatePublishDialog = () => {
                         </span>
                         <span>{activeRecord.isLoop ? product.loopState ?? '-' : '-'}</span>
                         <span>{activeRecord.isLoop && product.attempts != null ? `${product.attempts}/${activeRecord.loopLimit}` : '-'}</span>
-                        <span className={(activeRecord.isLoop ? product.loopEnd : product.current) === '手动开启新循环，旧循环中断' ? 'up-record-detail__interrupted' : ''}>
-                          {activeRecord.isLoop ? product.loopEnd ?? '-' : product.current}
-                        </span>
+                        <span>{product.publishResult ?? '-'}</span>
                         <span>
                           <span className={`up-records__tag ${currentTagClass(product.current)}`}>{product.current}</span>
                         </span>
                       </div>
                     ))}
                   </div>
+                  <div className="up-record-pager">
+                    <span className="up-record-pager__total">共 {detailProducts.length} 条</span>
+                    <div className="up-record-pager__pages">
+                      <button
+                        type="button"
+                        className="up-record-pager__btn"
+                        disabled={detailCurrentPage === 1}
+                        aria-label="上一页"
+                        onClick={() => setDetailPage(detailCurrentPage - 1)}
+                      >
+                        ‹
+                      </button>
+                      {Array.from({ length: detailTotalPages }, (_, index) => index + 1).map((pageNumber) => (
+                        <button
+                          type="button"
+                          key={pageNumber}
+                          className={`up-record-pager__btn${pageNumber === detailCurrentPage ? ' is-active' : ''}`}
+                          onClick={() => setDetailPage(pageNumber)}
+                        >
+                          {pageNumber}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        className="up-record-pager__btn"
+                        disabled={detailCurrentPage === detailTotalPages}
+                        aria-label="下一页"
+                        onClick={() => setDetailPage(detailCurrentPage + 1)}
+                      >
+                        ›
+                      </button>
+                    </div>
+                  </div>
                 </div>
               ) : (
-                <div className="up-records">
-                  <div className="up-records__row up-records__row--head">
-                    <span>发起时间</span>
-                    <span>商品数</span>
-                    <span>是否循环刊登</span>
-                    <span>循环次数</span>
-                    <span />
-                  </div>
-                  {PUBLISH_RECORDS.map((record) => (
-                    <div
-                      className="up-records__row up-records__row--clickable"
-                      key={record.id}
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setActiveRecordId(record.id)}
-                      onKeyDown={(event) => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                          event.preventDefault();
-                          setActiveRecordId(record.id);
-                        }
-                      }}
-                    >
-                      <span className="up-records__time">{record.time}</span>
-                      <span>{record.products.length} 个</span>
-                      <span>
-                        <span className={`up-records__tag ${record.isLoop ? 'is-loop' : 'is-single'}`}>
-                          {record.isLoop ? '是' : '否'}
-                        </span>
-                      </span>
-                      <span>{record.isLoop && record.loopLimit ? `${record.loopLimit} 次` : '-'}</span>
-                      <span className="up-records__arrow">›</span>
+                <>
+                  <div className="up-record-query">
+                    <div className="up-record-query__field">
+                      <span className="up-record-query__label">时间</span>
+                      <DateTimePicker value={startDate} onChange={setStartDate} dateOnly placeholder="开始日期" />
+                      <span className="up-record-query__sep">至</span>
+                      <DateTimePicker value={endDate} onChange={setEndDate} dateOnly placeholder="结束日期" />
                     </div>
-                  ))}
-                </div>
+                    <div className="up-record-query__field">
+                      <span className="up-record-query__label">是否循环刊登</span>
+                      <FilterSelect
+                        value={loopFilter}
+                        options={['全部', '是', '否'] as const}
+                        onChange={setLoopFilter}
+                        ariaLabel="是否循环刊登"
+                      />
+                    </div>
+                    <div className="up-record-query__field">
+                      <span className="up-record-query__label">状态</span>
+                      <FilterSelect
+                        value={statusFilter}
+                        options={['全部', '发布中', '发布完成'] as const}
+                        onChange={setStatusFilter}
+                        ariaLabel="状态"
+                      />
+                    </div>
+                    <button type="button" className="up-record-query__reset" onClick={resetFilters}>重置</button>
+                  </div>
+                  <div className="up-records">
+                    <div className="up-records__row up-records__row--head">
+                      <span>发起时间</span>
+                      <span>商品数</span>
+                      <span>是否循环刊登</span>
+                      <span>循环次数</span>
+                      <span className="up-records__th--help">
+                        状态
+                        <HelpTooltip label="发布完成说明">
+                          <span className="up-help__line">「发布完成」只表示这批发布任务已经执行结束，不代表所有商品都发布成功。</span>
+                          <span className="up-help__line">每个商品的结果请点进对应记录查看商品发布明细。</span>
+                        </HelpTooltip>
+                      </span>
+                      <span />
+                    </div>
+                    {pagedRecords.length === 0 ? (
+                      <div className="up-records__empty">暂无数据</div>
+                    ) : pagedRecords.map((record) => {
+                      const status = recordStatus(record);
+                      return (
+                        <div
+                          className="up-records__row up-records__row--clickable"
+                          key={record.id}
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => setActiveRecordId(record.id)}
+                          onKeyDown={(event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                              event.preventDefault();
+                              setActiveRecordId(record.id);
+                            }
+                          }}
+                        >
+                          <span className="up-records__time">{record.time}</span>
+                          <span>{record.products.length} 个</span>
+                          <span>
+                            <span className={`up-records__tag ${record.isLoop ? 'is-loop' : 'is-single'}`}>
+                              {record.isLoop ? '是' : '否'}
+                            </span>
+                          </span>
+                          <span>{record.isLoop && record.loopLimit ? `${record.loopLimit} 次` : '-'}</span>
+                          <span>
+                            <span className={`up-records__tag ${status === '发布中' ? 'is-publishing' : 'is-completed'}`}>
+                              {status}
+                            </span>
+                          </span>
+                          <span className="up-records__arrow">›</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="up-record-pager">
+                    <span className="up-record-pager__total">共 {filteredRecords.length} 条</span>
+                    <div className="up-record-pager__pages">
+                      <button
+                        type="button"
+                        className="up-record-pager__btn"
+                        disabled={currentPage === 1}
+                        aria-label="上一页"
+                        onClick={() => setPage(currentPage - 1)}
+                      >
+                        ‹
+                      </button>
+                      {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+                        <button
+                          type="button"
+                          key={pageNumber}
+                          className={`up-record-pager__btn${pageNumber === currentPage ? ' is-active' : ''}`}
+                          onClick={() => setPage(pageNumber)}
+                        >
+                          {pageNumber}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        className="up-record-pager__btn"
+                        disabled={currentPage === totalPages}
+                        aria-label="下一页"
+                        onClick={() => setPage(currentPage + 1)}
+                      >
+                        ›
+                      </button>
+                    </div>
+                  </div>
+                </>
               )}
             </div>
 
