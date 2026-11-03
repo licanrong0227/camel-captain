@@ -1,24 +1,12 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-03T10:09:48.373Z",
+  "updatedAt": "2026-11-03T11:02:03.962Z",
   "prototypes": [
     {
       "id": "item-prototypes-home-dashboard",
       "kind": "item",
       "title": "home dashboard",
       "itemKey": "prototypes/home-dashboard"
-    },
-    {
-      "id": "item:prototypes:camel-captain-erp-console",
-      "kind": "item",
-      "title": "骆驼队长 ERP · 全站原型",
-      "itemKey": "prototypes/camel-captain-erp-console"
-    },
-    {
-      "id": "item:prototypes:commodity-my-products",
-      "kind": "item",
-      "title": "骆驼队长 ERP · 我的商品",
-      "itemKey": "prototypes/commodity-my-products"
     },
     {
       "id": "item:prototypes:shop-dashboard",
