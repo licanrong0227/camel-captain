@@ -1380,7 +1380,7 @@ export default function EditProductDialogV2() {
                                   <Pencil size={12} />
                                 </span>
                                 <span className="ep-sku-head__edit" data-annotation-id="purchase-price">
-                                  采购价
+                                  采集价/采购价
                                   <Pencil size={12} />
                                 </span>
                               </div>

@@ -136,6 +136,86 @@
   color: #fff;
 }
 
+/* ---------- refresh pid ---------- */
+
+.mobd-toolbar__item {
+  position: relative;
+  display: inline-flex;
+}
+
+.mobd-refresh {
+  gap: 6px;
+  min-width: 122px;
+}
+
+.mobd-refresh__label {
+  white-space: nowrap;
+}
+
+.mobd-refresh__help {
+  display: inline-flex;
+  align-items: center;
+  color: var(--brand-4);
+  opacity: 0.75;
+}
+
+.mobd-tooltip {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  z-index: 30;
+  width: max-content;
+  max-width: 300px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: var(--neutral-8);
+  box-shadow: 0 4px 12px rgba(29, 33, 41, 0.24);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  white-space: normal;
+  text-align: left;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease;
+}
+
+.mobd-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 95px;
+  bottom: -4px;
+  width: 9px;
+  height: 9px;
+  background: var(--neutral-8);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.mobd-toolbar__item:hover .mobd-tooltip,
+.mobd-toolbar__item:focus-within .mobd-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobd-spinner {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, currentColor 0deg 12deg, transparent 12deg 30deg);
+  -webkit-mask: radial-gradient(circle at center, transparent 2.5px, #000 3px);
+  mask: radial-gradient(circle at center, transparent 2.5px, #000 3px);
+  animation: mobd-spinner-spin 0.9s steps(12, end) infinite;
+}
+
+@keyframes mobd-spinner-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* ---------- table ---------- */
 
 .mobd-table-frame {

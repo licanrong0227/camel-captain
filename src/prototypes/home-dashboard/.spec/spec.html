@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>首页（智慧运营中台）高保真还原 · 主规格</title>
+  <style>
+    :root {
+      font-family:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --brand: #008f5d;
+      --brand-ink: #007a50;
+      --brand-soft: #e6f5ef;
+      --brand-surface: #f2faf7;
+      --brand-border: #b7ddcf;
+      --text: #222832;
+      --text-secondary: #4b5565;
+      --text-muted: #6f7888;
+      --text-placeholder: #8b94a3;
+      color: var(--text);
+      background: #f5f7fb;
+      scrollbar-gutter: stable;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px 20px 64px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 32px;
+      padding: 18px 14px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .sidebar-title {
+      margin: 0 8px 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .page-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .page-nav button {
+      width: 100%;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .page-nav button:hover,
+    .page-nav button[aria-current="page"] {
+      color: var(--brand-ink);
+      background: var(--brand-soft);
+    }
+
+    .page-nav button[aria-current="page"] { font-weight: 600; }
+
+    main {
+      min-width: 0;
+      padding: 40px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 16px rgb(30 45 75 / 6%);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.3;
+    }
+
+    h2 {
+      margin: 44px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e7eaf0;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    h3 {
+      margin: 28px 0 12px;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    p,
+    li {
+      font-size: 15px;
+      line-height: 2;
+    }
+
+    p { margin: 20px 0; }
+
+    td,
+    th {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .definition {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-left: 3px solid var(--brand);
+      color: var(--text-secondary);
+      background: var(--brand-surface);
+    }
+
+    .hint { color: var(--text-muted); }
+
+    ul {
+      margin: 10px 0 20px;
+      padding-left: 22px;
+    }
+
+    .placeholder-list { padding-left: 0; }
+
+    .placeholder-list li {
+      list-style: none;
+      color: var(--text-placeholder);
+    }
+
+    .placeholder-list li::before {
+      margin-right: 8px;
+      color: #b2bac6;
+      content: "—";
+    }
+
+    table {
+      width: 100%;
+      margin-top: 14px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 1px solid #dfe4ee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f6f8fb; }
+
+    td:empty::after {
+      content: "待补充";
+      color: var(--text-placeholder);
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #eef1f6;
+    }
+
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--brand-border);
+      border-radius: 8px;
+      background: var(--brand-surface);
+    }
+
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .spec-page[hidden] { display: none; }
+
+    @media (max-width: 720px) {
+      body { padding: 0 8px 40px; }
+      .shell { display: block; }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        margin: 0 -8px 12px;
+        padding: 10px 8px;
+        border-width: 0 0 1px;
+        border-radius: 0;
+      }
+
+      .sidebar-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .page-nav {
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .page-nav::-webkit-scrollbar { display: none; }
+
+      .page-nav button {
+        width: auto;
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 24px 18px;
+        border-radius: 8px;
+      }
+
+      .table-wrap { overflow: visible; }
+
+      table,
+      tbody,
+      tr,
+      td {
+        display: block;
+        width: 100%;
+      }
+
+      thead { display: none; }
+
+      tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      tr {
+        overflow: hidden;
+        border: 1px solid #dfe4ee;
+        border-radius: 6px;
+        background: #fff;
+      }
+
+      td {
+        display: grid;
+        grid-template-columns: minmax(96px, 36%) minmax(0, 1fr);
+        gap: 12px;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 0;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      td:last-child { border-bottom: 0; }
+
+      td::before {
+        content: attr(data-label);
+        color: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <p class="sidebar-title">目录</p>
+      <nav class="page-nav" aria-label="规格文档页面">
+        <button type="button" data-page-target="overview" aria-current="page">当前方案</button>
+      </nav>
+    </aside>
+
+    
+    <main>
+      <article class="spec-page" data-spec-page="overview">
+        <h1>首页（智慧运营中台）高保真还原</h1>
+        <p class="definition">本文档记录当前原型的目标、范围、内容来源、交互口径和设计依据，作为本次首页还原的确认载体。当前版本按线上首页做 1:1 视觉还原，并补齐可本地操作的交互。</p>
+
+        <section id="current-plan">
+          <h2>当前方案</h2>
+          <ul>
+            <li>原型意图：把线上「骆驼队长 BI」首页还原为可直接打开、可点击的桌面端原型，用于评审、对比与后续扩展。</li>
+            <li>使用场景：桌面端浏览器，标准宽度 1440；同时兼容 Make 预览的窄窗口。</li>
+            <li>当前表达：暖橙渐变工作台背景、白色毛玻璃卡片、橙色数据强调；首屏聚焦当日经营指标与异常订单，向下查看销售趋势、公告和三类排行榜。</li>
+          </ul>
+        </section>
+
+        <section id="facts-inputs">
+          <h2>事实与输入</h2>
+          <h3>用户确认事实</h3>
+          <ul>
+            <li>用户要求对内置浏览器中打开的骆驼队长首页做高保真还原。</li>
+            <li>参考页面：<code>https://test.kuachengjing.com/dashboard</code>，页面标题「首页 - 骆驼队长BI」。</li>
+          </ul>
+          <h3>参考资料</h3>
+          <ul>
+            <li>线上页面 1440×900、1440×1500 截图与逐节点计算样式（2026-11-03 采集）。</li>
+            <li>线上接口返回：经营概览、异常订单、销售趋势、店铺销量/流量排行、商品销售排行、公告列表。</li>
+            <li>线上 OSS 素材：品牌 Logo、头像、首页背景装饰、指标图标、异常卡片图标、奖牌、轮播图、企业微信二维码。</li>
+            <li>线上 DOM/CSS：<code>bi-dashboard</code> 卡片、周期切换、图表、排行榜、公告弹窗与筛选弹窗样式。</li>
+          </ul>
+          <h3>当前假设</h3>
+          <ul>
+            <li>轮播默认停在第二张（跨境 AI 智能体），并按约 6.5 秒自动轮换；箭头与圆点可手动切换。</li>
+            <li>顶部导航下拉、主题切换、消息、头像菜单、联系我们为本地交互；除首页外不实现其他业务页面跳转。</li>
+            <li>图表用 SVG 按线上坐标、配色和面积渐变重建，未引入 ECharts 依赖。</li>
+          </ul>
+        </section>
+
+        <section id="prototype-scope">
+          <h2>原型范围</h2>
+          <h3>本次呈现</h3>
+          <ul>
+            <li>顶部导航：Logo / 智慧运营中台 / 首页及 8 个一级菜单 / 亮色工具区 / VIP3 / 头像。</li>
+            <li>首页首屏：标题与副标题、5 张经营指标卡、4 张异常订单卡。</li>
+            <li>销售趋势：近 1 月 / 近 3 月 / 近 6 月切换，双轴折线、面积渐变、图例、坐标轴与悬停提示。</li>
+            <li>公告栏：最新 10 条公告，查看全部打开公告弹窗，支持公告 / 历史公告与分页。</li>
+            <li>推广轮播：3 张线上推广图，自动轮换、圆点与左右箭头。</li>
+            <li>排行榜：店铺销量、店铺流量、商品销售三张卡片，各自支持周期切换；商品排行支持按规格展开。</li>
+            <li>联系我们：右侧浮动入口，展开企业微信二维码。</li>
+          </ul>
+          <h3>本次不呈现</h3>
+          <ul>
+            <li>首页以外的商品、交易、采购、物流、报表、系统、工具箱、即时咨询业务页。</li>
+            <li>真实接口请求、登录鉴权、权限差异、消息已读写入、筛选状态持久化。</li>
+            <li>公告详情正文、公告超过 37 条后的新增数据、排行榜空状态与错误状态。</li>
+          </ul>
+        </section>
+
+        <section id="pages-content">
+          <h2>页面与内容方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>页面/视图</th><th>页面作用</th><th>主要模块与内容</th><th>示例数据或素材</th><th>与其他页面的关系</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td data-label="页面/视图">首页</td>
+                  <td data-label="页面作用">经营概览与异常提醒的第一入口</td>
+                  <td data-label="主要模块与内容">顶部导航；智慧运营中台标题；5 张指标卡；4 张异常卡；销售趋势；公告栏；推广轮播；3 张排行榜；联系我们</td>
+                  <td data-label="示例数据或素材">线上接口同日数据：销售额 264.54、订单 5、销量 5、退款 0；异常 2222 / 4 / 22 / 6；店铺与商品排行；37 条公告</td>
+                  <td data-label="与其他页面的关系">菜单与卡片入口指向其他业务页，本次仅还原首页</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="interaction-states">
+          <h2>交互与状态方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr></thead>
+              <tbody>
+                <tr><td data-label="对象/场景">销售趋势</td><td data-label="前置状态">默认近 1 月</td><td data-label="用户操作">点击近 3 月 / 近 6 月</td><td data-label="原型表现">切换为对应周期数据，双轴范围与刻度自动重算，悬停显示日期、销售额、销量</td><td data-label="后续状态">保持所选周期</td></tr>
+                <tr><td data-label="对象/场景">三张排行榜</td><td data-label="前置状态">默认各自首个周期</td><td data-label="用户操作">点击周期按钮</td><td data-label="原型表现">列表数值与排名立即切换；前三名奖牌、4 名以后灰色序号</td><td data-label="后续状态">保持所选周期</td></tr>
+                <tr><td data-label="对象/场景">商品销售排行</td><td data-label="前置状态">列表收起</td><td data-label="用户操作">点击商品行</td><td data-label="原型表现">展开规格明细：规格组合、销量、占比进度条与百分比；再次点击收起</td><td data-label="后续状态">同一时间仅展开一行</td></tr>
+                <tr><td data-label="对象/场景">公告栏</td><td data-label="前置状态">侧栏显示最新 10 条</td><td data-label="用户操作">点击查看全部 / 任意公告</td><td data-label="原型表现">打开公告弹窗，默认历史公告页签，10 条/页，共 4 页；可切换公告页签</td><td data-label="后续状态">关闭后回到首页</td></tr>
+                <tr><td data-label="对象/场景">异常卡片设置</td><td data-label="前置状态">默认勾选 4 个订单状态</td><td data-label="用户操作">点击设置</td><td data-label="原型表现">打开「筛选状态设置」弹窗，支持全选与逐项勾选，取消 / 保存关闭</td><td data-label="后续状态">本次不持久化</td></tr>
+                <tr><td data-label="对象/场景">推广轮播</td><td data-label="前置状态">第二张</td><td data-label="用户操作">自动播放 / 圆点 / 左右箭头</td><td data-label="原型表现">横向滑动切换三张线上推广图</td><td data-label="后续状态">持续循环</td></tr>
+                <tr><td data-label="对象/场景">顶部导航</td><td data-label="前置状态">首页激活</td><td data-label="用户操作">悬停一级菜单</td><td data-label="原型表现">菜单项变为橙色实底，展开白色下拉，按线上分组展示二级菜单</td><td data-label="后续状态">移出关闭</td></tr>
+                <tr><td data-label="对象/场景">联系我们</td><td data-label="前置状态">右侧浮动入口</td><td data-label="用户操作">点击入口</td><td data-label="原型表现">展开企业微信二维码面板，再次点击收起</td><td data-label="后续状态">保持展开或关闭</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="hint">页面不包含空状态与权限差异；筛选弹窗保存仅关闭弹窗，不写入真实接口。</p>
+        </section>
+
+        <section id="design-basis">
+          <h2>设计基底与原型特有调整</h2>
+          <ul>
+            <li>采用的 <code>DESIGN.md</code>：不使用项目 ERP 主题；以线上首页的实际视觉为唯一设计依据（pixel source）。</li>
+            <li>继承方式：按线上 DOM/CSS 还原颜色、字号、间距、圆角、阴影和栅格比例。</li>
+            <li>核心视觉参数：主橙 <code>#ff781f</code>，图表橙 <code>#ff8a3d</code>，图表蓝 <code>#5b8ff9</code>，主文字 <code>#1f2329</code>，辅助文字 <code>#86909c</code>；卡片圆角 14px，控件圆角 8px。</li>
+            <li>本原型特有调整：窄于 1400px 时按线上断点把主区、指标、异常和排行榜改为纵向排列，并允许页面滚动，保证 Make 窄窗口可用。</li>
+          </ul>
+        </section>
+
+        <section id="open-questions">
+          <h2>当前待确认事项</h2>
+          <ul>
+            <li>无。当前交付按「首页高保真还原」理解；如需从导航进入其他业务页，或接入真实接口，请继续补充范围。</li>
+          </ul>
+        </section>
+
+        <section id="decision-history">
+          <h2>用户重要决策与变更</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr></thead>
+              <tbody>
+                <tr><td data-label="日期">2026-11-03</td><td data-label="用户决策或变更">要求高保真还原内置浏览器中的骆驼队长首页</td><td data-label="对当前原型的影响">新增独立首页原型，按线上页面与接口数据还原，不修改既有全站原型的首页</td></tr>
+                <tr><td data-label="日期">2026-11-03</td><td data-label="用户决策或变更">验收比对修正：指标卡零涨幅要带正号、异常订单状态弹窗勾选项文字要变蓝</td><td data-label="对当前原型的影响">较昨日为 0 或正数时显示 +0.0% 并用上涨色；筛选状态设置弹窗中已勾选的状态项文字与勾选框同为蓝色，全选行不受影响</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const navItems = [...document.querySelectorAll('[data-page-target]')];
+    const pages = [...document.querySelectorAll('[data-spec-page]')];
+
+    const showPage = (pageId) => {
+      for (const navItem of navItems) {
+        const isCurrent = navItem.dataset.pageTarget === pageId;
+        if (isCurrent) {
+          navItem.setAttribute('aria-current', 'page');
+        } else {
+          navItem.removeAttribute('aria-current');
+        }
+      }
+
+      for (const page of pages) {
+        page.hidden = page.dataset.specPage !== pageId;
+      }
+    };
+
+    for (const navItem of navItems) {
+      navItem.addEventListener('click', () => showPage(navItem.dataset.pageTarget));
+    }
+  </script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#e6f5ef',
+        primaryTextColor: '#222832',
+        primaryBorderColor: '#008f5d',
+        lineColor: '#008f5d',
+        secondaryColor: '#f2faf7',
+        tertiaryColor: '#ffffff',
+        edgeLabelBackground: '#ffffff',
+        fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      },
+    });
+  </script>
+</body>
+</html>

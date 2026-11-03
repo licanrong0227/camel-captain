@@ -1,0 +1,518 @@
+/* ============ 渠道设置弹窗（设计基底：camel-captain-erp） ============ */
+
+:root {
+  --csd-brand: #ff781f;
+  --csd-brand-hover: #ff9148;
+  --csd-blue: #409eff;
+  --csd-radio: #1890ff;
+  --csd-title: #303133;
+  --csd-text: #606266;
+  --csd-placeholder: #c0c4cc;
+  --csd-border: #dcdfe6;
+  --csd-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", Helvetica, Arial, sans-serif;
+}
+
+.csd-page {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  font-family: var(--csd-font);
+  color: var(--csd-text);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.csd-page *,
+.csd-page *::before,
+.csd-page *::after {
+  box-sizing: border-box;
+}
+
+.csd-mask {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* ===== 弹窗容器 ===== */
+.csd-dialog {
+  display: flex;
+  flex-direction: column;
+  width: 900px;
+  max-width: 100%;
+  max-height: calc(100vh - 48px);
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.csd-head {
+  position: relative;
+  flex: none;
+  padding: 20px 20px 10px;
+}
+
+.csd-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--csd-title);
+}
+
+.csd-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #909399;
+  cursor: pointer;
+}
+
+.csd-close:hover {
+  color: var(--csd-brand);
+}
+
+.csd-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ===== 内容 ===== */
+.csd-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 30px 20px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 16.1px;
+}
+
+.csd-section {
+  margin-bottom: 20px;
+}
+
+.csd-h4 {
+  margin: 18.62px 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16.1px;
+  color: var(--csd-text);
+}
+
+.csd-h5 {
+  margin: 19.4px 0;
+  font-size: 11.62px;
+  font-weight: 700;
+  line-height: 13.36px;
+  color: var(--csd-blue);
+}
+
+/* ===== 表单 ===== */
+.csd-form-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 22px;
+}
+
+.csd-label {
+  flex: none;
+  width: 100px;
+  padding-right: 12px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 36px;
+  color: var(--csd-text);
+}
+
+.csd-form-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.csd-form-item--wide .csd-label {
+  width: 200px;
+  white-space: nowrap;
+}
+
+.csd-form-content--radios {
+  display: flex;
+  height: 36px;
+  align-items: center;
+}
+
+.csd-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 15px;
+  border: 1px solid var(--csd-border);
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 34px;
+  color: var(--csd-text);
+  outline: none;
+}
+
+.csd-input::placeholder {
+  color: var(--csd-placeholder);
+}
+
+.csd-input:hover {
+  border-color: #c0c4cc;
+}
+
+.csd-input:focus {
+  border-color: var(--csd-blue);
+}
+
+/* ===== 下拉 ===== */
+.csd-select {
+  position: relative;
+  max-width: 100%;
+}
+
+.csd-select-trigger {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 36px;
+  padding: 0 30px 0 15px;
+  border: 1px solid var(--csd-border);
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 34px;
+  text-align: left;
+  color: var(--csd-text);
+  outline: none;
+  cursor: pointer;
+}
+
+.csd-select-trigger:hover {
+  border-color: #c0c4cc;
+}
+
+.csd-select-trigger.is-active {
+  border-color: var(--csd-blue);
+}
+
+.csd-select-trigger.is-placeholder {
+  color: var(--csd-placeholder);
+}
+
+.csd-select-text {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.csd-caret {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 14px;
+  height: 14px;
+  color: var(--csd-placeholder);
+  transform: translateY(-50%);
+  transition: transform 0.2s;
+}
+
+.csd-caret.is-open {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.csd-select-menu {
+  position: fixed;
+  z-index: 3000;
+  max-height: 240px;
+  padding: 6px 0;
+  border: 1px solid #e4e7ed;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.csd-select-option {
+  height: 34px;
+  padding: 0 20px;
+  font-size: 14px;
+  line-height: 34px;
+  color: var(--csd-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.csd-select-option:hover {
+  background: #f5f7fa;
+}
+
+.csd-select-option.is-selected {
+  color: var(--csd-brand);
+  font-weight: 700;
+}
+
+/* ===== 单选配置 ===== */
+.csd-config-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  font-size: 14px;
+  line-height: 17.6px;
+}
+
+.csd-config-label {
+  flex: none;
+  width: 88px;
+  margin-right: 12px;
+  color: var(--csd-text);
+}
+
+.csd-radio-group {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 10px;
+}
+
+.csd-radio {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 30px;
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--csd-text);
+  cursor: pointer;
+  user-select: none;
+}
+
+.csd-radio:last-child {
+  margin-right: 0;
+}
+
+.csd-radio-dot {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  margin-right: 10px;
+  border: 1px solid var(--csd-border);
+  border-radius: 50%;
+  background: #fff;
+  flex: none;
+}
+
+.csd-radio-dot::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+}
+
+.csd-radio.is-checked {
+  color: var(--csd-radio);
+}
+
+.csd-radio.is-checked .csd-radio-dot {
+  border-color: var(--csd-radio);
+  background: var(--csd-radio);
+}
+
+.csd-radio.is-checked .csd-radio-dot::after {
+  opacity: 1;
+}
+
+/* ===== 地址 ===== */
+.csd-address-row {
+  display: flex;
+  gap: 8px;
+}
+
+.csd-address-row .csd-select {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.csd-add-btn {
+  flex: none;
+  width: 117px;
+}
+
+/* ===== 按钮 ===== */
+.csd-btn {
+  display: inline-flex;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 70px;
+  padding: 0 20px;
+  border: 1px solid var(--csd-brand);
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--csd-brand);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.csd-btn:hover {
+  background: #fff7f1;
+}
+
+.csd-btn--primary {
+  border-color: var(--csd-brand);
+  background: var(--csd-brand);
+  color: #fff;
+}
+
+.csd-btn--primary:hover {
+  border-color: var(--csd-brand-hover);
+  background: var(--csd-brand-hover);
+}
+
+.csd-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.csd-foot {
+  flex: none;
+  display: flex;
+  height: 66px;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 20px 20px;
+}
+
+/* ===== 新增地址子弹窗 ===== */
+.csd-sub-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 3100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.csd-sub-dialog {
+  display: flex;
+  width: 520px;
+  max-width: 100%;
+  max-height: calc(100vh - 48px);
+  flex-direction: column;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* ===== 关闭态 ===== */
+.csd-closed {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f8fa;
+}
+
+.csd-closed-card {
+  display: flex;
+  width: 340px;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 32px 24px;
+  border: 1px solid #e5e6eb;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+.csd-closed-card h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #1d2129;
+}
+
+.csd-closed-card p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #86909c;
+}
+
+/* ===== 提示 ===== */
+.csd-toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  z-index: 4000;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid #e1f3d8;
+  border-radius: 4px;
+  background: #f0f9eb;
+  font-size: 14px;
+  color: #529b2e;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.csd-toast-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #67c23a;
+}
+
+@media (max-width: 720px) {
+  .csd-mask {
+    padding: 12px;
+  }
+
+  .csd-dialog {
+    max-height: calc(100vh - 24px);
+  }
+
+  .csd-config-label {
+    width: 100px;
+  }
+}

@@ -133,7 +133,7 @@ function AddNewArrivalDialog(props: { onClose: () => void; onSubmit: (row: NewAr
   };
   const [purchaseMode, setPurchaseMode] = useState<'collect' | 'fixed' | 'discount'>('collect');
   const [purchasePrice, setPurchasePrice] = useState('0.00');
-  const [purchaseCurrency, setPurchaseCurrency] = useState<'USD' | 'RMB'>('USD');
+  const [purchaseCurrency, setPurchaseCurrency] = useState<'USD' | 'RMB'>('RMB');
   const [purchaseDiscount, setPurchaseDiscount] = useState('0.9000');
   const [purchaseRateMode, setPurchaseRateMode] = useState<'realtime' | 'fixed'>('fixed');
   const [purchaseRate, setPurchaseRate] = useState('7.0000');

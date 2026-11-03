@@ -1,0 +1,335 @@
+[
+  {
+    "title": "商品",
+    "path": "",
+    "icon": "",
+    "children": [
+      {
+        "title": "商品管理",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "商品采集",
+            "path": "",
+            "icon": "upload",
+            "children": []
+          },
+          {
+            "title": "认领中心",
+            "path": "",
+            "icon": "network",
+            "children": []
+          },
+          {
+            "title": "我的商品",
+            "path": "",
+            "icon": "archived",
+            "children": []
+          }
+        ]
+      },
+      {
+        "title": "基础配置",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "上新价模板配置",
+            "path": "",
+            "icon": "base-info",
+            "children": []
+          },
+          {
+            "title": "渠道定价配置",
+            "path": "",
+            "icon": "job",
+            "children": []
+          },
+          {
+            "title": "店铺模板配置",
+            "path": "",
+            "icon": "api-gateway",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "交易",
+    "path": "",
+    "icon": "",
+    "children": [
+      {
+        "title": "订单管理",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "我的订单",
+            "path": "",
+            "icon": "base-info",
+            "children": []
+          },
+          {
+            "title": "自动打标配置",
+            "path": "",
+            "icon": "edit",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "采购",
+    "path": "",
+    "icon": "",
+    "children": [
+      {
+        "title": "采购管理",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "采购单跟踪",
+            "path": "",
+            "icon": "email",
+            "children": []
+          },
+          {
+            "title": "出入库管理",
+            "path": "",
+            "icon": "archived",
+            "children": []
+          },
+          {
+            "title": "出库异常",
+            "path": "",
+            "icon": "404",
+            "children": []
+          },
+          {
+            "title": "供应商管理",
+            "path": "",
+            "icon": "peoples",
+            "children": []
+          },
+          {
+            "title": "收货地址管理",
+            "path": "",
+            "icon": "example",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "物流",
+    "path": "",
+    "icon": "",
+    "children": [
+      {
+        "title": "物流管理",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "物流商管理",
+            "path": "",
+            "icon": "api-test",
+            "children": []
+          },
+          {
+            "title": "国际物流轨迹跟踪",
+            "path": "",
+            "icon": "app-group-fill",
+            "children": []
+          },
+          {
+            "title": "常用地址管理",
+            "path": "",
+            "icon": "base-info",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "报表",
+    "path": "",
+    "icon": "",
+    "children": [
+      {
+        "title": "订单",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "订单明细报表",
+            "path": "",
+            "icon": "documentation",
+            "children": []
+          }
+        ]
+      },
+      {
+        "title": "店铺",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "店铺看板",
+            "path": "",
+            "icon": "calendar",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "系统",
+    "path": "",
+    "icon": "",
+    "children": [
+      {
+        "title": "账号/权限",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "部门管理",
+            "path": "",
+            "icon": "tree",
+            "children": []
+          },
+          {
+            "title": "角色管理",
+            "path": "",
+            "icon": "people",
+            "children": []
+          },
+          {
+            "title": "子账号管理",
+            "path": "",
+            "icon": "logininfor",
+            "children": []
+          }
+        ]
+      },
+      {
+        "title": "店铺",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "店铺授权",
+            "path": "",
+            "icon": "shopping",
+            "children": []
+          },
+          {
+            "title": "采购账号授权",
+            "path": "",
+            "icon": "peoples",
+            "children": []
+          }
+        ]
+      },
+      {
+        "title": "审批",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "审批流",
+            "path": "",
+            "icon": "edit",
+            "children": []
+          }
+        ]
+      },
+      {
+        "title": "监控",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "操作日志",
+            "path": "",
+            "icon": "skill",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "工具箱",
+    "path": "",
+    "icon": "",
+    "children": [
+      {
+        "title": "增值服务",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "尾程签收凭证查询",
+            "path": "",
+            "icon": "search",
+            "children": []
+          },
+          {
+            "title": "地址邮编校验",
+            "path": "",
+            "icon": "safety",
+            "children": []
+          },
+          {
+            "title": "汇率",
+            "path": "",
+            "icon": "api-monitor",
+            "children": []
+          },
+          {
+            "title": "商品信息质量检测",
+            "path": "",
+            "icon": "checkbox",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "即时咨询",
+    "path": "",
+    "icon": "",
+    "children": [
+      {
+        "title": "帮助",
+        "path": "",
+        "icon": "",
+        "children": [
+          {
+            "title": "即时咨询",
+            "path": "",
+            "icon": "people",
+            "children": []
+          },
+          {
+            "title": "站内信",
+            "path": "",
+            "icon": "base-info",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]

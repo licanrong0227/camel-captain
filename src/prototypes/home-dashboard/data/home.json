@@ -1,0 +1,2750 @@
+{
+  "orderStatistics": {
+    "orderCount": {
+      "today": 5,
+      "yesterday": 9,
+      "rate": -44.44
+    },
+    "sales": {
+      "today": 264.54,
+      "yesterday": 475.05,
+      "rate": -44.31
+    },
+    "goodsNum": {
+      "today": 5,
+      "yesterday": 9,
+      "rate": -44.44
+    },
+    "refund": {
+      "today": 0,
+      "yesterday": 0,
+      "rate": 0
+    },
+    "refundCount": {
+      "today": 0,
+      "yesterday": 0,
+      "rate": 0
+    }
+  },
+  "abnormal": {
+    "abnormalOrderCount": 2222,
+    "abnormalDeliveryCount": 4,
+    "abnormalOnNetCount": 22,
+    "abnormalLogisticsCount": 6
+  },
+  "trends": {
+    "m1": [
+      {
+        "date": "2026-10-05",
+        "sales": 350.57,
+        "goodsCount": 8
+      },
+      {
+        "date": "2026-10-06",
+        "sales": 252.17,
+        "goodsCount": 5
+      },
+      {
+        "date": "2026-10-07",
+        "sales": 149,
+        "goodsCount": 3
+      },
+      {
+        "date": "2026-10-08",
+        "sales": 542.76,
+        "goodsCount": 10
+      },
+      {
+        "date": "2026-10-09",
+        "sales": 227.38,
+        "goodsCount": 5
+      },
+      {
+        "date": "2026-10-10",
+        "sales": 216.36,
+        "goodsCount": 4
+      },
+      {
+        "date": "2026-10-11",
+        "sales": 401.53,
+        "goodsCount": 8
+      },
+      {
+        "date": "2026-10-12",
+        "sales": 378.63,
+        "goodsCount": 10
+      },
+      {
+        "date": "2026-10-13",
+        "sales": 264.94,
+        "goodsCount": 11
+      },
+      {
+        "date": "2026-10-14",
+        "sales": 387.83,
+        "goodsCount": 10
+      },
+      {
+        "date": "2026-10-15",
+        "sales": 271.38,
+        "goodsCount": 6
+      },
+      {
+        "date": "2026-10-16",
+        "sales": 478.16,
+        "goodsCount": 10
+      },
+      {
+        "date": "2026-10-17",
+        "sales": 482.91,
+        "goodsCount": 9
+      },
+      {
+        "date": "2026-10-18",
+        "sales": 0,
+        "goodsCount": 0
+      },
+      {
+        "date": "2026-10-19",
+        "sales": 273.01,
+        "goodsCount": 4
+      },
+      {
+        "date": "2026-10-20",
+        "sales": 288.24,
+        "goodsCount": 5
+      },
+      {
+        "date": "2026-10-21",
+        "sales": 420.82,
+        "goodsCount": 7
+      },
+      {
+        "date": "2026-10-22",
+        "sales": 399.15,
+        "goodsCount": 6
+      },
+      {
+        "date": "2026-10-23",
+        "sales": 408.25,
+        "goodsCount": 7
+      },
+      {
+        "date": "2026-10-24",
+        "sales": 232.25,
+        "goodsCount": 3
+      },
+      {
+        "date": "2026-10-25",
+        "sales": 229.29,
+        "goodsCount": 4
+      },
+      {
+        "date": "2026-10-26",
+        "sales": 382.3,
+        "goodsCount": 7
+      },
+      {
+        "date": "2026-10-27",
+        "sales": 190.55,
+        "goodsCount": 4
+      },
+      {
+        "date": "2026-10-28",
+        "sales": 286.57,
+        "goodsCount": 4
+      },
+      {
+        "date": "2026-10-29",
+        "sales": 134.68,
+        "goodsCount": 2
+      },
+      {
+        "date": "2026-10-30",
+        "sales": 495.04,
+        "goodsCount": 9
+      },
+      {
+        "date": "2026-10-31",
+        "sales": 232.2,
+        "goodsCount": 4
+      },
+      {
+        "date": "2026-11-01",
+        "sales": 127.57,
+        "goodsCount": 2
+      },
+      {
+        "date": "2026-11-02",
+        "sales": 475.05,
+        "goodsCount": 9
+      },
+      {
+        "date": "2026-11-03",
+        "sales": 264.54,
+        "goodsCount": 5
+      }
+    ],
+    "m3": [
+      {
+        "date": "2026-08-17",
+        "sales": 2456.65,
+        "goodsCount": 45
+      },
+      {
+        "date": "2026-08-24",
+        "sales": 2511.84,
+        "goodsCount": 41
+      },
+      {
+        "date": "2026-08-31",
+        "sales": 2857.35,
+        "goodsCount": 45
+      },
+      {
+        "date": "2026-09-07",
+        "sales": 1999.51,
+        "goodsCount": 41
+      },
+      {
+        "date": "2026-09-14",
+        "sales": 2346.8,
+        "goodsCount": 43
+      },
+      {
+        "date": "2026-09-21",
+        "sales": 2892.46,
+        "goodsCount": 51
+      },
+      {
+        "date": "2026-09-28",
+        "sales": 1473.74,
+        "goodsCount": 26
+      },
+      {
+        "date": "2026-10-05",
+        "sales": 2139.77,
+        "goodsCount": 43
+      },
+      {
+        "date": "2026-10-12",
+        "sales": 2263.85,
+        "goodsCount": 56
+      },
+      {
+        "date": "2026-10-19",
+        "sales": 2251.01,
+        "goodsCount": 36
+      },
+      {
+        "date": "2026-10-26",
+        "sales": 1848.91,
+        "goodsCount": 32
+      },
+      {
+        "date": "2026-11-02",
+        "sales": 739.59,
+        "goodsCount": 14
+      }
+    ],
+    "m6": [
+      {
+        "date": "2026-06",
+        "sales": 12716.04,
+        "goodsCount": 323
+      },
+      {
+        "date": "2026-07",
+        "sales": 12692.61,
+        "goodsCount": 245
+      },
+      {
+        "date": "2026-08",
+        "sales": 11101.15,
+        "goodsCount": 190
+      },
+      {
+        "date": "2026-09",
+        "sales": 10288.29,
+        "goodsCount": 182
+      },
+      {
+        "date": "2026-10",
+        "sales": 9202.5,
+        "goodsCount": 181
+      },
+      {
+        "date": "2026-11",
+        "sales": 867.16,
+        "goodsCount": 16
+      }
+    ]
+  },
+  "storeSales": {
+    "week": [
+      {
+        "rank": 1,
+        "storeName": "包包",
+        "sales": 779.47,
+        "goodsCount": 12
+      },
+      {
+        "rank": 2,
+        "storeName": "鞋子",
+        "sales": 513.37,
+        "goodsCount": 7
+      },
+      {
+        "rank": 3,
+        "storeName": "sneakerhub8",
+        "sales": 486.77,
+        "goodsCount": 12
+      },
+      {
+        "rank": 4,
+        "storeName": "clothes",
+        "sales": 236.04,
+        "goodsCount": 4
+      },
+      {
+        "rank": 5,
+        "storeName": "echvolt",
+        "sales": 0,
+        "goodsCount": 0
+      }
+    ],
+    "month": [
+      {
+        "rank": 1,
+        "storeName": "包包",
+        "sales": 3134.31,
+        "goodsCount": 64
+      },
+      {
+        "rank": 2,
+        "storeName": "sneakerhub8",
+        "sales": 2552.67,
+        "goodsCount": 63
+      },
+      {
+        "rank": 3,
+        "storeName": "鞋子",
+        "sales": 2493.93,
+        "goodsCount": 36
+      },
+      {
+        "rank": 4,
+        "storeName": "clothes",
+        "sales": 1062.22,
+        "goodsCount": 18
+      },
+      {
+        "rank": 5,
+        "storeName": "echvolt",
+        "sales": 0,
+        "goodsCount": 0
+      }
+    ],
+    "months3": [
+      {
+        "rank": 1,
+        "storeName": "鞋子",
+        "sales": 11307.3,
+        "goodsCount": 162
+      },
+      {
+        "rank": 2,
+        "storeName": "包包",
+        "sales": 9708.33,
+        "goodsCount": 165
+      },
+      {
+        "rank": 3,
+        "storeName": "sneakerhub8",
+        "sales": 5595.15,
+        "goodsCount": 153
+      },
+      {
+        "rank": 4,
+        "storeName": "clothes",
+        "sales": 4309.88,
+        "goodsCount": 80
+      },
+      {
+        "rank": 5,
+        "storeName": "echvolt",
+        "sales": 0,
+        "goodsCount": 0
+      }
+    ]
+  },
+  "storeTraffic": {
+    "day": [
+      {
+        "rank": 1,
+        "storeName": "sneakerhub8",
+        "pdPv": 1110
+      },
+      {
+        "rank": 2,
+        "storeName": "鞋子",
+        "pdPv": 497
+      },
+      {
+        "rank": 3,
+        "storeName": "包包",
+        "pdPv": 335
+      },
+      {
+        "rank": 4,
+        "storeName": "clothes",
+        "pdPv": 36
+      },
+      {
+        "rank": 5,
+        "storeName": "echvolt",
+        "pdPv": 0
+      }
+    ],
+    "week": [
+      {
+        "rank": 1,
+        "storeName": "sneakerhub8",
+        "pdPv": 5785
+      },
+      {
+        "rank": 2,
+        "storeName": "鞋子",
+        "pdPv": 3443
+      },
+      {
+        "rank": 3,
+        "storeName": "包包",
+        "pdPv": 2888
+      },
+      {
+        "rank": 4,
+        "storeName": "clothes",
+        "pdPv": 248
+      },
+      {
+        "rank": 5,
+        "storeName": "echvolt",
+        "pdPv": 1
+      }
+    ],
+    "month": [
+      {
+        "rank": 1,
+        "storeName": "sneakerhub8",
+        "pdPv": 21065
+      },
+      {
+        "rank": 2,
+        "storeName": "鞋子",
+        "pdPv": 16752
+      },
+      {
+        "rank": 3,
+        "storeName": "包包",
+        "pdPv": 13234
+      },
+      {
+        "rank": 4,
+        "storeName": "clothes",
+        "pdPv": 1717
+      },
+      {
+        "rank": 5,
+        "storeName": "echvolt",
+        "pdPv": 17
+      }
+    ]
+  },
+  "products": {
+    "week": [
+      {
+        "rank": 1,
+        "goodsCount": 8,
+        "itemCode": "1106527389",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR 38"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.25
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR 37"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.25
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "EUR 39"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "Black"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.25
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "EUR 40"
+              },
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.125
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Green"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR 38"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.125
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-12.jpeg"
+      },
+      {
+        "rank": 2,
+        "goodsCount": 3,
+        "itemCode": "1116957858",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "US 7 - EU 39"
+              },
+              {
+                "label": "颜色",
+                "value": "9918 Black BLACK"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.3333
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "US 7.5 - EU 40"
+              },
+              {
+                "label": "颜色",
+                "value": "9918 Black BLACK"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.3333
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "US 7.5 - EU 40"
+              },
+              {
+                "label": "颜色",
+                "value": "9918 Gray GREY"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.3333
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-15.jpg"
+      },
+      {
+        "rank": 3,
+        "goodsCount": 3,
+        "itemCode": "1117178498",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "1Black"
+              },
+              {
+                "label": "尺码",
+                "value": "Women-US 9 - EU 39- Foot Length 9.6\""
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.6667
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "1Black"
+              },
+              {
+                "label": "尺码",
+                "value": "Women-US 10 - EU 40- Foot Length 9.8\""
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.3333
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-16.jpg"
+      },
+      {
+        "rank": 4,
+        "goodsCount": 2,
+        "itemCode": "1067571613",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "腰围",
+                "value": "30"
+              },
+              {
+                "label": "颜色",
+                "value": "A25"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.5
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Brown"
+              },
+              {
+                "label": "腰围",
+                "value": "28"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.5
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-3.jpg"
+      },
+      {
+        "rank": 5,
+        "goodsCount": 2,
+        "itemCode": "1067662115",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "38"
+              },
+              {
+                "label": "颜色",
+                "value": "A26"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.5
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Champagne"
+              },
+              {
+                "label": "腰围",
+                "value": "36"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.5
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-4.jpg"
+      },
+      {
+        "rank": 6,
+        "goodsCount": 2,
+        "itemCode": "1092045529",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "#2"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 1
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-7.jpg"
+      },
+      {
+        "rank": 7,
+        "goodsCount": 2,
+        "itemCode": "1100488449",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "Options",
+                "value": "Size 27CM"
+              },
+              {
+                "label": "颜色",
+                "value": "7#"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.5
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "Size 20CM"
+              },
+              {
+                "label": "颜色",
+                "value": "7#"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.5
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-11.jpeg"
+      },
+      {
+        "rank": 8,
+        "goodsCount": 1,
+        "itemCode": "1087041854",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "43*33*13cm"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "1#"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 1
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-5.jpg"
+      },
+      {
+        "rank": 9,
+        "goodsCount": 1,
+        "itemCode": "1087318057",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "2#"
+              },
+              {
+                "label": "Options",
+                "value": "30×17×6cm"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 1
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-6.jpg"
+      },
+      {
+        "rank": 10,
+        "goodsCount": 1,
+        "itemCode": "1092780618",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "尺寸",
+                "value": "21*7*14"
+              },
+              {
+                "label": "颜色",
+                "value": "Silver Small"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 1
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-9.jpg"
+      }
+    ],
+    "month": [
+      {
+        "rank": 1,
+        "goodsCount": 18,
+        "itemCode": "1106527389",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR 38"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 4,
+            "ratio": 0.2222
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "EUR 39"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "Black"
+              }
+            ],
+            "goodsCount": 3,
+            "ratio": 0.1667
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "EUR 40"
+              },
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 3,
+            "ratio": 0.1667
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR 36"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.1111
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR 37"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.1111
+          },
+          {
+            "specValue": [
+              {
+                "label": "其他",
+                "value": "其他"
+              }
+            ],
+            "goodsCount": 4,
+            "ratio": 0.2222
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-12.jpeg"
+      },
+      {
+        "rank": 2,
+        "goodsCount": 10,
+        "itemCode": "1098945523",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "Options",
+                "value": "size：25*6*13cm"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 4,
+            "ratio": 0.4
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Pink"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "Options",
+                "value": "size：25*6*13cm"
+              }
+            ],
+            "goodsCount": 3,
+            "ratio": 0.3
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "Red"
+              },
+              {
+                "label": "Options",
+                "value": "size：25*6*13cm"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.2
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "Brown"
+              },
+              {
+                "label": "Options",
+                "value": "size：25*6*13cm"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.1
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-10.jpg"
+      },
+      {
+        "rank": 3,
+        "goodsCount": 9,
+        "itemCode": "1100488449",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "Options",
+                "value": "Size 27CM"
+              },
+              {
+                "label": "颜色",
+                "value": "7#"
+              }
+            ],
+            "goodsCount": 3,
+            "ratio": 0.3333
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "Size 20CM"
+              },
+              {
+                "label": "颜色",
+                "value": "7#"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 3,
+            "ratio": 0.3333
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "Size 20CM"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "3#"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.2222
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "Size 20CM"
+              },
+              {
+                "label": "颜色",
+                "value": "1#"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.1111
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-11.jpeg"
+      },
+      {
+        "rank": 4,
+        "goodsCount": 8,
+        "itemCode": "1116807901",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "尺码",
+                "value": "Men-US 11 - EU 44- Foot Length 10.6\""
+              },
+              {
+                "label": "颜色",
+                "value": "1black"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.25
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "Men-US 7 - EU 40- Foot Length 9.8\""
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "1black"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.25
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "1black"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "尺码",
+                "value": "Men-US 6 - EU 39- Foot Length 9.6\""
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.125
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "1black"
+              },
+              {
+                "label": "尺码",
+                "value": "Men-US 10 - EU 43- Foot Length 10.4\""
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.125
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "尺码",
+                "value": "Men-US 8 - EU 41- Foot Length 10.0\""
+              },
+              {
+                "label": "颜色",
+                "value": "1black"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.125
+          },
+          {
+            "specValue": [
+              {
+                "label": "其他",
+                "value": "其他"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.125
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-14.jpg"
+      },
+      {
+        "rank": 5,
+        "goodsCount": 8,
+        "itemCode": "1117178498",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "1Black"
+              },
+              {
+                "label": "尺码",
+                "value": "Women-US 9 - EU 39- Foot Length 9.6\""
+              }
+            ],
+            "goodsCount": 5,
+            "ratio": 0.625
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "1Black"
+              },
+              {
+                "label": "尺码",
+                "value": "Women-US 10 - EU 40- Foot Length 9.8\""
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.125
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "1Black"
+              },
+              {
+                "label": "尺码",
+                "value": "Women-US 7 - EU 37- Foot Length 9.3\""
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.125
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "Women-US 8 - EU 38- Foot Length 9.4\""
+              },
+              {
+                "label": "颜色",
+                "value": "1Black"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.125
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-16.jpg"
+      },
+      {
+        "rank": 6,
+        "goodsCount": 7,
+        "itemCode": "1067662115",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "腰围",
+                "value": "31"
+              },
+              {
+                "label": "颜色",
+                "value": "Camouflage"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.1429
+          },
+          {
+            "specValue": [
+              {
+                "label": "腰围",
+                "value": "38"
+              },
+              {
+                "label": "颜色",
+                "value": "A26"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.1429
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "A4"
+              },
+              {
+                "label": "尺码",
+                "value": "33"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.1429
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Camouflage"
+              },
+              {
+                "label": "尺码",
+                "value": "33"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.1429
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Champagne"
+              },
+              {
+                "label": "尺码",
+                "value": "36"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.1429
+          },
+          {
+            "specValue": [
+              {
+                "label": "其他",
+                "value": "其他"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.2857
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-4.jpg"
+      },
+      {
+        "rank": 7,
+        "goodsCount": 5,
+        "itemCode": "1067571613",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "29"
+              },
+              {
+                "label": "颜色",
+                "value": "A11"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.2
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "30"
+              },
+              {
+                "label": "颜色",
+                "value": "A25"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.2
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "38"
+              },
+              {
+                "label": "颜色",
+                "value": "A44"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.2
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "A25"
+              },
+              {
+                "label": "腰围",
+                "value": "32"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.2
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Brown"
+              },
+              {
+                "label": "尺码",
+                "value": "28"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.2
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-3.jpg"
+      },
+      {
+        "rank": 8,
+        "goodsCount": 4,
+        "itemCode": "1061855044",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Khaki"
+              },
+              {
+                "label": "尺码",
+                "value": "L"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.5
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "L"
+              },
+              {
+                "label": "颜色",
+                "value": "Army Green"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.25
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "L"
+              },
+              {
+                "label": "颜色",
+                "value": "Watermelon"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.25
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-2.JPG"
+      },
+      {
+        "rank": 9,
+        "goodsCount": 4,
+        "itemCode": "1092336240",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "#4"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 3,
+            "ratio": 0.75
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "#2"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.25
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-8.jpg"
+      },
+      {
+        "rank": 10,
+        "goodsCount": 4,
+        "itemCode": "1092780618",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "尺寸",
+                "value": "21*7*14"
+              },
+              {
+                "label": "颜色",
+                "value": "Silver Small"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.5
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black Small"
+              },
+              {
+                "label": "尺寸",
+                "value": "21*7*14"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.25
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "White Small"
+              },
+              {
+                "label": "尺寸",
+                "value": "21*7*14"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.25
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-9.jpg"
+      }
+    ],
+    "months3": [
+      {
+        "rank": 1,
+        "goodsCount": 48,
+        "itemCode": "1106527389",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR 38"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 9,
+            "ratio": 0.1875
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR 39"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 9,
+            "ratio": 0.1875
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "EUR 40"
+              },
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 8,
+            "ratio": 0.1667
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR 37"
+              }
+            ],
+            "goodsCount": 5,
+            "ratio": 0.1042
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR 36"
+              }
+            ],
+            "goodsCount": 4,
+            "ratio": 0.0833
+          },
+          {
+            "specValue": [
+              {
+                "label": "其他",
+                "value": "其他"
+              }
+            ],
+            "goodsCount": 13,
+            "ratio": 0.2708
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-12.jpeg"
+      },
+      {
+        "rank": 2,
+        "goodsCount": 43,
+        "itemCode": "1092336240",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "#2"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 13,
+            "ratio": 0.3023
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "#3"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 12,
+            "ratio": 0.2791
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "#4"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 12,
+            "ratio": 0.2791
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "#1"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 6,
+            "ratio": 0.1395
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-8.jpg"
+      },
+      {
+        "rank": 3,
+        "goodsCount": 23,
+        "itemCode": "1061855044",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "L"
+              },
+              {
+                "label": "颜色",
+                "value": "Watermelon"
+              }
+            ],
+            "goodsCount": 3,
+            "ratio": 0.1304
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Beige"
+              },
+              {
+                "label": "尺码",
+                "value": "M"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.087
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Gradient"
+              },
+              {
+                "label": "尺码",
+                "value": "M"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.087
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Khaki"
+              },
+              {
+                "label": "尺码",
+                "value": "L"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.087
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "2XL"
+              },
+              {
+                "label": "颜色",
+                "value": "Watermelon"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0435
+          },
+          {
+            "specValue": [
+              {
+                "label": "其他",
+                "value": "其他"
+              }
+            ],
+            "goodsCount": 13,
+            "ratio": 0.5652
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-2.JPG"
+      },
+      {
+        "rank": 4,
+        "goodsCount": 23,
+        "itemCode": "1098945523",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black"
+              },
+              {
+                "label": "Options",
+                "value": "size：25*6*13cm"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 6,
+            "ratio": 0.2609
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "Red"
+              },
+              {
+                "label": "Options",
+                "value": "size：25*6*13cm"
+              }
+            ],
+            "goodsCount": 4,
+            "ratio": 0.1739
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Pink"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "Options",
+                "value": "size：25*6*13cm"
+              }
+            ],
+            "goodsCount": 4,
+            "ratio": 0.1739
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "size：25*6*13cm"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "Blue"
+              }
+            ],
+            "goodsCount": 4,
+            "ratio": 0.1739
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "White"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "Options",
+                "value": "size：25*6*13cm"
+              }
+            ],
+            "goodsCount": 3,
+            "ratio": 0.1304
+          },
+          {
+            "specValue": [
+              {
+                "label": "其他",
+                "value": "其他"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.087
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-10.jpg"
+      },
+      {
+        "rank": 5,
+        "goodsCount": 23,
+        "itemCode": "1100488449",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "Size 20CM"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "3#"
+              }
+            ],
+            "goodsCount": 7,
+            "ratio": 0.3043
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "Size 20CM"
+              },
+              {
+                "label": "颜色",
+                "value": "7#"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              }
+            ],
+            "goodsCount": 5,
+            "ratio": 0.2174
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "Options",
+                "value": "Size 27CM"
+              },
+              {
+                "label": "颜色",
+                "value": "7#"
+              }
+            ],
+            "goodsCount": 4,
+            "ratio": 0.1739
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "5#"
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "Options",
+                "value": "Size 27CM"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.087
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "3#"
+              },
+              {
+                "label": "Options",
+                "value": "Size 27CM"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0435
+          },
+          {
+            "specValue": [
+              {
+                "label": "其他",
+                "value": "其他"
+              }
+            ],
+            "goodsCount": 4,
+            "ratio": 0.1739
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-11.jpeg"
+      },
+      {
+        "rank": 6,
+        "goodsCount": 19,
+        "itemCode": "1116807901",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "1black"
+              },
+              {
+                "label": "尺码",
+                "value": "Men-US 10 - EU 43- Foot Length 10.4\""
+              }
+            ],
+            "goodsCount": 5,
+            "ratio": 0.2632
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "尺码",
+                "value": "Men-US 11 - EU 44- Foot Length 10.6\""
+              },
+              {
+                "label": "颜色",
+                "value": "1black"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.1053
+          },
+          {
+            "specValue": [
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "尺码",
+                "value": "Men-US 8 - EU 41- Foot Length 10.0\""
+              },
+              {
+                "label": "颜色",
+                "value": "1black"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.1053
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "Men-US 11 - EU 44- Foot Length 10.6\""
+              },
+              {
+                "label": "颜色",
+                "value": "1black"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.1053
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "Men-US 7 - EU 40- Foot Length 9.8\""
+              },
+              {
+                "label": "Options",
+                "value": "China"
+              },
+              {
+                "label": "颜色",
+                "value": "1black"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.1053
+          },
+          {
+            "specValue": [
+              {
+                "label": "其他",
+                "value": "其他"
+              }
+            ],
+            "goodsCount": 6,
+            "ratio": 0.3158
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-14.jpg"
+      },
+      {
+        "rank": 7,
+        "goodsCount": 18,
+        "itemCode": "1067571613",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "28"
+              },
+              {
+                "label": "颜色",
+                "value": "A16"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0556
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "28"
+              },
+              {
+                "label": "颜色",
+                "value": "A21"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0556
+          },
+          {
+            "specValue": [
+              {
+                "label": "腰围",
+                "value": "28"
+              },
+              {
+                "label": "颜色",
+                "value": "A25"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0556
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "29"
+              },
+              {
+                "label": "颜色",
+                "value": "A10"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0556
+          },
+          {
+            "specValue": [
+              {
+                "label": "腰围",
+                "value": "29"
+              },
+              {
+                "label": "颜色",
+                "value": "A11"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0556
+          },
+          {
+            "specValue": [
+              {
+                "label": "其他",
+                "value": "其他"
+              }
+            ],
+            "goodsCount": 13,
+            "ratio": 0.7222
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-3.jpg"
+      },
+      {
+        "rank": 8,
+        "goodsCount": 16,
+        "itemCode": "1067662115",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "腰围",
+                "value": "31"
+              },
+              {
+                "label": "颜色",
+                "value": "Camouflage"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.125
+          },
+          {
+            "specValue": [
+              {
+                "label": "腰围",
+                "value": "38"
+              },
+              {
+                "label": "颜色",
+                "value": "A26"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0625
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "40"
+              },
+              {
+                "label": "颜色",
+                "value": "LightGrey"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0625
+          },
+          {
+            "specValue": [
+              {
+                "label": "腰围",
+                "value": "40"
+              },
+              {
+                "label": "颜色",
+                "value": "LightYellow"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0625
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "A19"
+              },
+              {
+                "label": "尺码",
+                "value": "33"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0625
+          },
+          {
+            "specValue": [
+              {
+                "label": "其他",
+                "value": "其他"
+              }
+            ],
+            "goodsCount": 10,
+            "ratio": 0.625
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-4.jpg"
+      },
+      {
+        "rank": 9,
+        "goodsCount": 14,
+        "itemCode": "1116418851",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black matte finish"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR38"
+              }
+            ],
+            "goodsCount": 3,
+            "ratio": 0.2143
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black matte finish"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR41"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.1429
+          },
+          {
+            "specValue": [
+              {
+                "label": "尺码",
+                "value": "EUR38"
+              },
+              {
+                "label": "颜色",
+                "value": "Black Glossy"
+              }
+            ],
+            "goodsCount": 2,
+            "ratio": 0.1429
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black matte finish"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR39"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0714
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "Black matte finish"
+              },
+              {
+                "label": "尺码",
+                "value": "EUR42"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0714
+          },
+          {
+            "specValue": [
+              {
+                "label": "其他",
+                "value": "其他"
+              }
+            ],
+            "goodsCount": 5,
+            "ratio": 0.3571
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-13.jpg"
+      },
+      {
+        "rank": 10,
+        "goodsCount": 11,
+        "itemCode": "1059792066",
+        "specSalesRank": [
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "A17"
+              },
+              {
+                "label": "尺码",
+                "value": "L"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0909
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "A26"
+              },
+              {
+                "label": "尺码",
+                "value": "M"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0909
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "A27"
+              },
+              {
+                "label": "尺码",
+                "value": "XL"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0909
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "A29"
+              },
+              {
+                "label": "尺码",
+                "value": "S"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0909
+          },
+          {
+            "specValue": [
+              {
+                "label": "颜色",
+                "value": "A3"
+              },
+              {
+                "label": "尺码",
+                "value": "L"
+              }
+            ],
+            "goodsCount": 1,
+            "ratio": 0.0909
+          },
+          {
+            "specValue": [
+              {
+                "label": "其他",
+                "value": "其他"
+              }
+            ],
+            "goodsCount": 6,
+            "ratio": 0.5455
+          }
+        ],
+        "img": "src/prototypes/home-dashboard/assets/goods-1.jpg"
+      }
+    ]
+  },
+  "announcements": [
+    {
+      "id": 73,
+      "title": "2222",
+      "categoryName": "公告",
+      "date": "10-09"
+    },
+    {
+      "id": 70,
+      "title": "权益到期通知",
+      "categoryName": "弹窗公告",
+      "date": "10-09"
+    },
+    {
+      "id": 44,
+      "title": "测试代理商用户查看公告",
+      "categoryName": "公告",
+      "date": "09-28"
+    },
+    {
+      "id": 35,
+      "title": "测试视频加文字的公告显示",
+      "categoryName": "公告",
+      "date": "09-28"
+    },
+    {
+      "id": 79,
+      "title": "222",
+      "categoryName": "公告",
+      "date": "11-02"
+    },
+    {
+      "id": 78,
+      "title": "1111",
+      "categoryName": "公告",
+      "date": "11-02"
+    },
+    {
+      "id": 77,
+      "title": "dfasd",
+      "categoryName": "公告",
+      "date": "11-02"
+    },
+    {
+      "id": 76,
+      "title": "测试不受曝光次数限制",
+      "categoryName": "公告",
+      "date": "10-15"
+    },
+    {
+      "id": 75,
+      "title": "333",
+      "categoryName": "公告",
+      "date": "10-14"
+    },
+    {
+      "id": 74,
+      "title": "测试弹窗公告是否在公告栏展示",
+      "categoryName": "公告",
+      "date": "10-09"
+    },
+    {
+      "id": 67,
+      "title": "代理商",
+      "categoryName": "公告",
+      "date": "10-08"
+    },
+    {
+      "id": 64,
+      "title": "测试权限",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 63,
+      "title": "77",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 62,
+      "title": "666",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 61,
+      "title": "555",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 59,
+      "title": "测试定时发布未审核的公告是否自动发布",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 57,
+      "title": "代理商用户才可以看到的公告22",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 56,
+      "title": "444",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 55,
+      "title": "333",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 53,
+      "title": "222",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 52,
+      "title": "所有可填写的类型",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 51,
+      "title": "测试仅对历史用户可见",
+      "categoryName": "营销",
+      "date": "09-29"
+    },
+    {
+      "id": 50,
+      "title": "的发射点",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 49,
+      "title": "测试三次审核",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 48,
+      "title": "代理商用户才可以看见的公告",
+      "categoryName": "公告",
+      "date": "09-29"
+    },
+    {
+      "id": 47,
+      "title": "测试普通公告",
+      "categoryName": "公告",
+      "date": "09-28"
+    },
+    {
+      "id": 46,
+      "title": "333",
+      "categoryName": "公告",
+      "date": "09-28"
+    },
+    {
+      "id": 45,
+      "title": "弹窗公告如何显示",
+      "categoryName": "弹窗公告",
+      "date": "09-28"
+    },
+    {
+      "id": 40,
+      "title": "定时发布",
+      "categoryName": "弹窗公告",
+      "date": "09-28"
+    },
+    {
+      "id": 42,
+      "title": "111",
+      "categoryName": "公告",
+      "date": "09-28"
+    },
+    {
+      "id": 41,
+      "title": "系统公测发布",
+      "categoryName": "公告",
+      "date": "09-28"
+    },
+    {
+      "id": 39,
+      "title": "如果当时",
+      "categoryName": "公告",
+      "date": "09-28"
+    },
+    {
+      "id": 37,
+      "title": "测试定时发布公告",
+      "categoryName": "公告",
+      "date": "09-28"
+    },
+    {
+      "id": 36,
+      "title": "测试不弹窗的公告如何查看",
+      "categoryName": "公告",
+      "date": "09-28"
+    },
+    {
+      "id": 54,
+      "title": "测试-2",
+      "categoryName": "公告",
+      "date": "09-24"
+    },
+    {
+      "id": 58,
+      "title": "测试-2",
+      "categoryName": "公告",
+      "date": "09-24"
+    },
+    {
+      "id": 60,
+      "title": "测试-3",
+      "categoryName": "公告",
+      "date": "09-24"
+    }
+  ]
+}

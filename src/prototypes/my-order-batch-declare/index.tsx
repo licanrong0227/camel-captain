@@ -36,6 +36,9 @@ const PID_TEMPLATE_HEADERS = [
   '商家产品识别码（mPid）',
 ];
 
+const REFRESH_PID_TIP =
+  '保存申报信息后，如果您修改了商品信息或渠道配置中的Pid码，请刷新Pid码并重新保存';
+
 const ROWS: DeclareRow[] = [
   {
     seq: 1,
@@ -283,6 +286,16 @@ function IconEdit() {
         strokeWidth="1.3"
         strokeLinejoin="round"
       />
+    </svg>
+  );
+}
+
+function IconInfo() {
+  return (
+    <svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true">
+      <circle cx="7" cy="7" r="5.6" fill="none" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M7 6.4v3.2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <circle cx="7" cy="4.3" r="0.85" fill="currentColor" />
     </svg>
   );
 }
@@ -787,6 +800,15 @@ function applyPidTable(rows: DeclareRow[], table: string[][]) {
 export default function MyOrderBatchDeclare() {
   const [rows, setRows] = useState<DeclareRow[]>(ROWS);
   const [importOpen, setImportOpen] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const refreshTimer = useRef<number | null>(null);
+
+  useEffect(
+    () => () => {
+      if (refreshTimer.current !== null) window.clearTimeout(refreshTimer.current);
+    },
+    [],
+  );
 
   const downloadTemplate = () => {
     const filled = rows.filter((row) => row.nspid.trim() || row.spid.trim() || row.mpid.trim());
@@ -802,6 +824,22 @@ export default function MyOrderBatchDeclare() {
     const result = applyPidTable(rows, table);
     if (result.updated > 0) setRows(result.rows);
     return result.updated;
+  };
+
+  const refreshPid = () => {
+    if (refreshing) return;
+    setRefreshing(true);
+    refreshTimer.current = window.setTimeout(() => {
+      setRows((current) =>
+        current.map((row) => {
+          const source = ROWS.find((item) => item.skuId === row.skuId);
+          if (!source) return row;
+          return { ...row, nspid: source.nspid, spid: source.spid, mpid: source.mpid };
+        }),
+      );
+      setRefreshing(false);
+      refreshTimer.current = null;
+    }, 700);
   };
 
   return (
@@ -837,6 +875,25 @@ export default function MyOrderBatchDeclare() {
                 >
                   导入Pid码
                 </button>
+                <span className="mobd-toolbar__item">
+                  <button
+                    type="button"
+                    className="mobd-btn mobd-btn--outline mobd-refresh"
+                    data-annotation-id="declare-refresh-pid"
+                    onClick={refreshPid}
+                  >
+                    {refreshing ? <span className="mobd-spinner" aria-hidden="true" /> : null}
+                    <span className="mobd-refresh__label">
+                      {refreshing ? '刷新中' : '刷新Pid码'}
+                    </span>
+                    <span className="mobd-refresh__help">
+                      <IconInfo />
+                    </span>
+                  </button>
+                  <span className="mobd-tooltip" role="tooltip">
+                    {REFRESH_PID_TIP}
+                  </span>
+                </span>
               </div>
               <DeclareTable rows={rows} />
             </div>

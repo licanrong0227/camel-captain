@@ -1,12 +1,24 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-02T11:31:30.952Z",
+  "updatedAt": "2026-11-03T10:09:48.373Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-home-dashboard",
+      "kind": "item",
+      "title": "home dashboard",
+      "itemKey": "prototypes/home-dashboard"
+    },
     {
       "id": "item:prototypes:camel-captain-erp-console",
       "kind": "item",
       "title": "骆驼队长 ERP · 全站原型",
       "itemKey": "prototypes/camel-captain-erp-console"
+    },
+    {
+      "id": "item:prototypes:commodity-my-products",
+      "kind": "item",
+      "title": "骆驼队长 ERP · 我的商品",
+      "itemKey": "prototypes/commodity-my-products"
     },
     {
       "id": "item:prototypes:shop-dashboard",
@@ -249,6 +261,12 @@
               "kind": "item",
               "title": "更新发布弹窗-发布记录",
               "itemKey": "prototypes/update-publish-dialog-copy"
+            },
+            {
+              "id": "item:prototypes:channel-settings-dialog",
+              "kind": "item",
+              "title": "渠道设置弹窗",
+              "itemKey": "prototypes/channel-settings-dialog"
             }
           ]
         },

@@ -143,9 +143,28 @@
         "images": [],
         "createdAt": 1793635200000,
         "updatedAt": 1793635200000
+      },
+      {
+        "id": "declare-refresh-pid",
+        "index": 9,
+        "title": "新增刷新Pid码按钮",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"declare-refresh-pid\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=declare-refresh-pid",
+          "path": []
+        },
+        "aiPrompt": "根据该标注说明工具栏新增刷新 Pid 码按钮，以及按钮上的提示文案。",
+        "annotationText": "新增按钮：刷新Pid码\n按钮要有提示文案：保存申报信息后，如果您修改了商品信息或渠道配置中的Pid码，请刷新Pid码并重新保存",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1793698941685,
+        "updatedAt": 1793699250263
       }
     ],
-    "updatedAt": 1792406753120
+    "updatedAt": 1793699250263
   },
   "markdownMap": {},
   "assetMap": {},
