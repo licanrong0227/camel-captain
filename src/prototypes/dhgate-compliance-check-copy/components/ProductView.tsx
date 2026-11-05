@@ -278,7 +278,7 @@ export function ProductView({
           </div>
           <div className="dcc-pv-field">
             <span className="dcc-pv-label">链接</span>
-            <span className="dcc-pv-value">
+            <span className="dcc-pv-value dcc-pv-value--link">
               <a className="dcc-link-clip" href={snapshot.link} target="_blank" rel="noreferrer" title={snapshot.link}>{snapshot.link}</a>
               <button type="button" className="dcc-btn dcc-btn--text" onClick={(event) => { event.stopPropagation(); copyText(snapshot.link, '商品链接已复制'); }}>复制</button>
             </span>

@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-03T11:02:03.962Z",
+  "updatedAt": "2026-11-05T08:20:00.350Z",
   "prototypes": [
     {
-      "id": "item-prototypes-home-dashboard",
+      "id": "item:prototypes:home-dashboard",
       "kind": "item",
-      "title": "home dashboard",
+      "title": "首页",
       "itemKey": "prototypes/home-dashboard"
     },
     {
@@ -245,6 +245,12 @@
               "itemKey": "prototypes/claim-exception-dialog"
             },
             {
+              "id": "item:prototypes:claim-product-dialog",
+              "kind": "item",
+              "title": "认领商品弹窗",
+              "itemKey": "prototypes/claim-product-dialog"
+            },
+            {
               "id": "item:prototypes:update-publish-dialog-copy",
               "kind": "item",
               "title": "更新发布弹窗-发布记录",
@@ -255,6 +261,12 @@
               "kind": "item",
               "title": "渠道设置弹窗",
               "itemKey": "prototypes/channel-settings-dialog"
+            },
+            {
+              "id": "item:prototypes:order-config-dialog",
+              "kind": "item",
+              "title": "订单配置项弹窗",
+              "itemKey": "prototypes/order-config-dialog"
             }
           ]
         },
@@ -274,6 +286,12 @@
               "kind": "item",
               "title": "敏感词管理",
               "itemKey": "prototypes/help-center-admin-copy-copy"
+            },
+            {
+              "id": "item:prototypes:ops-report-center",
+              "kind": "item",
+              "title": "运营后台 · 会员报表",
+              "itemKey": "prototypes/ops-report-center"
             }
           ]
         }

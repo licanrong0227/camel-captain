@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { ItemView, ResultFeedback } from '../lib/store';
+import { ItemStatus, ItemView, ResultFeedback } from '../lib/store';
 import { Issue, anchorLabel, countBySeverity, describeCounts, flattenIssues, highestSeverity } from '../lib/issues';
 import { SEVERITY_LABEL, renderHighlight } from './Anchors';
 import { ItemStatusTag, copyText, fmtStamp } from './ui';
@@ -27,6 +27,8 @@ export function ItemCard({
   linkedIssueKeys = [],
   anchorLinkMode = false,
   historyResetToken = 0,
+  suggestionsOnly = false,
+  severityFilter,
   currentAt,
 }: {
   view: ItemView;
@@ -46,6 +48,8 @@ export function ItemCard({
   linkedIssueKeys?: string[];
   anchorLinkMode?: boolean;
   historyResetToken?: number;
+  suggestionsOnly?: boolean;
+  severityFilter?: 'violation' | 'suspect' | 'notice' | 'fail';
   currentAt?: number;
 }) {
   const history = view.override?.attempts ?? [];
@@ -59,10 +63,13 @@ export function ItemCard({
   const missKey = viewingHistory ? `h${pickedRound as number}:${view.code}:miss` : `${view.code}:miss`;
   const missFeedback = feedbackMap[missKey];
   const status = viewingHistory ? history[pickedRound as number].status : view.status;
+  const tagStatus: ItemStatus = ['running', 'queued', 'pass', 'fail'].includes(status)
+    ? status
+    : severityFilter === 'notice' ? 'manual' : (severityFilter ?? status);
   const outcome = viewingHistory ? history[pickedRound as number].outcome : view.outcome;
-  const roundIssues = viewingHistory && outcome
+  const roundIssues = (viewingHistory && outcome
     ? flattenIssues([{ ...view, status, outcome }])
-    : issues;
+    : issues).filter((issue) => (!suggestionsOnly || Boolean(issue.suggestion)) && (!severityFilter || issue.severity === severityFilter));
   const counts = countBySeverity(roundIssues);
   const totalIssues = counts.violation + counts.suspect + counts.notice + counts.fail;
   const severity = highestSeverity(roundIssues);
@@ -167,7 +174,7 @@ export function ItemCard({
         <div className="dcc-item-title-wrap">
           <div className="dcc-item-title">
             {view.name}
-            <ItemStatusTag status={status} />
+            <ItemStatusTag status={tagStatus} />
           </div>
         </div>
         <div className="dcc-item-head-actions" data-annotation-id={`dcc-item-actions-${view.code}`}>
@@ -357,6 +364,7 @@ export function ItemCard({
                     activeAnchor={activeAnchor}
                     hoverAnchor={hoverAnchor}
                     feedback={feedbackMap[feedbackKey]}
+                    suggestionsOnly={suggestionsOnly}
                     canLocate={interactive}
                     linked={linkedIssueKeys.includes(issue.key)}
                     anchorShadow={anchorLinkMode && linkedIssueKeys.includes(issue.key)}
@@ -380,6 +388,7 @@ function IssueEntry({
   activeAnchor,
   hoverAnchor,
   feedback,
+  suggestionsOnly,
   resultKey,
   canLocate,
   linked,
@@ -393,6 +402,7 @@ function IssueEntry({
   activeAnchor: string | null;
   hoverAnchor: string | null;
   feedback?: ResultFeedback;
+  suggestionsOnly: boolean;
   resultKey: string;
   canLocate: boolean;
   linked: boolean;
@@ -448,12 +458,14 @@ function IssueEntry({
         )}
       </header>
 
-      <div className="dcc-issue-reason-block">
-        <div className="dcc-row-label">原因</div>
-        <p className="dcc-issue-reason">
-          {renderHighlight(issue.reason, highlightWord)}
-        </p>
-      </div>
+      {!suggestionsOnly && (
+        <div className="dcc-issue-reason-block">
+          <div className="dcc-row-label">原因</div>
+          <p className="dcc-issue-reason">
+            {renderHighlight(issue.reason, highlightWord)}
+          </p>
+        </div>
+      )}
 
       {issue.suggestion && (
         <div className="dcc-suggestion">

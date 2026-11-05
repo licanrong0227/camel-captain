@@ -38,6 +38,8 @@ type DialogState =
 
 const issueDiffKey = (issue: { code: ItemCode; anchorKey: string }) => `${issue.code}|${issue.anchorKey}`;
 
+type ResultFilter = 'violation' | 'suspect' | 'manual' | 'fail' | 'pass';
+
 const STATUS_ORDER: Record<ItemStatus, number> = {
   violation: 0,
   suspect: 1,
@@ -77,6 +79,8 @@ export function DetailPage({
   const [expandedCodes, setExpandedCodes] = useState<ItemCode[]>([]);
   const [passOpen, setPassOpen] = useState(false);
   const [showBackTop, setShowBackTop] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<ResultFilter | null>(null);
+  const [suggestionsOnly, setSuggestionsOnly] = useState(false);
   const [diffBase, setDiffBase] = useState<string[] | null>(null);
   const [diff, setDiff] = useState<{ fixed: number; remain: number; added: number } | null>(null);
   const protoState = useProtoDevState<Record<string, unknown>>();
@@ -236,13 +240,47 @@ export function DetailPage({
   }
   const passItems = itemsShown.filter((item) => item.status === 'pass');
 
+  const isCheckingItem = (item: ItemView) => item.status === 'running' || item.status === 'queued';
+  const hasSuggestion = (item: ItemView) =>
+    issues.some((issue) => issue.code === item.code && Boolean(issue.suggestion));
+  const matchesIssueFilter = (item: ItemView, filter: ResultFilter) => {
+    if (filter === 'fail') return item.status === 'fail';
+    const severity = filter === 'manual' ? 'notice' : filter;
+    return issues.some((issue) => issue.code === item.code && issue.severity === severity && (!suggestionsOnly || Boolean(issue.suggestion)));
+  };
+
+  let visibleActiveItems = activeItems;
+  let visiblePassItems = passItems;
+  if (statusFilter === 'pass') {
+    visibleActiveItems = activeItems.filter(isCheckingItem);
+    visiblePassItems = suggestionsOnly ? [] : passItems;
+  } else if (statusFilter) {
+    visiblePassItems = [];
+    visibleActiveItems = statusFilter === 'fail'
+      ? (suggestionsOnly ? [] : activeItems.filter((item) => isCheckingItem(item) || item.status === 'fail'))
+      : activeItems.filter((item) => isCheckingItem(item) || matchesIssueFilter(item, statusFilter));
+  } else if (suggestionsOnly) {
+    visiblePassItems = [];
+    visibleActiveItems = activeItems.filter((item) => isCheckingItem(item) || hasSuggestion(item));
+  }
+
+  const cardIssues = (item: ItemView) => {
+    let list = issues.filter((issue) => issue.code === item.code);
+    if (suggestionsOnly) list = list.filter((issue) => Boolean(issue.suggestion));
+    if (statusFilter && statusFilter !== 'fail' && statusFilter !== 'pass') {
+      const severity = statusFilter === 'manual' ? 'notice' : statusFilter;
+      list = list.filter((issue) => issue.severity === severity);
+    }
+    return list;
+  };
+
   /* ---- 默认展开第一个问题项；用户手动操作后不再自动改 ---- */
   const firstProblemCode = itemsShown.find((item) => ['violation', 'suspect', 'manual'].includes(item.status))?.code;
   useEffect(() => {
-    if (collectLoading || userToggled.current || autoExpanded.current || !firstProblemCode) return;
+    if (collectLoading || statusFilter || suggestionsOnly || userToggled.current || autoExpanded.current || !firstProblemCode) return;
     autoExpanded.current = true;
     setExpandedCodes([firstProblemCode]);
-  }, [firstProblemCode, collectLoading]);
+  }, [firstProblemCode, collectLoading, statusFilter, suggestionsOnly]);
 
   // 全部通过时没有展开项可看，直接把通过分组展开；出现问题时再收起
   useEffect(() => {
@@ -252,6 +290,19 @@ export function DetailPage({
   useEffect(() => {
     if (!passToggled.current && activeItems.length > 0) setPassOpen(false);
   }, [activeItems.length]);
+
+  // 结果筛选或只看建议方案时，自动展开第一个可见项
+  useEffect(() => {
+    if (!statusFilter && !suggestionsOnly) return;
+    if (statusFilter === 'pass') {
+      passToggled.current = true;
+      setPassOpen(true);
+      setExpandedCodes([]);
+      return;
+    }
+    setPassOpen(false);
+    setExpandedCodes(visibleActiveItems.map((item) => item.code));
+  }, [statusFilter, suggestionsOnly]);
 
   /* ---- 右栏滚动：只滚侧栏，不带动左侧商品信息 ---- */
   const scrollSideTo = (element: HTMLElement | null) => {
@@ -296,6 +347,15 @@ export function DetailPage({
     }
   };
 
+  const locateFromProduct = (anchorKey: string, issueKey?: string, source: 'anchor' | 'issue' = 'anchor') => {
+    // 从商品信息定位时，先撤掉右栏筛选，避免目标条目被筛掉导致没有连线落点
+    if (statusFilter || suggestionsOnly) {
+      setStatusFilter(null);
+      setSuggestionsOnly(false);
+    }
+    locate(anchorKey, issueKey, source);
+  };
+
   useEffect(() => {
     if (!initialFocus) return undefined;
     autoExpanded.current = true;
@@ -328,13 +388,27 @@ export function DetailPage({
     userToggled.current = true;
     passToggled.current = true;
     clearFocus();
-    setExpandedCodes(activeItems.map((item) => item.code));
-    setPassOpen(passItems.length > 0);
+    setExpandedCodes(visibleActiveItems.map((item) => item.code));
+    setPassOpen(visiblePassItems.length > 0);
   };
 
-  const openCount = activeItems.filter((item) => expandedCodes.includes(item.code)).length;
-  const anyOpen = openCount > 0 || (passOpen && passItems.length > 0);
+  const openCount = visibleActiveItems.filter((item) => expandedCodes.includes(item.code)).length;
+  const anyOpen = openCount > 0 || (passOpen && visiblePassItems.length > 0);
   const allCollapsed = !anyOpen;
+
+  const toggleStatusFilter = (next: ResultFilter) => {
+    clearFocus();
+    setStatusFilter((prev) => (prev === next ? null : next));
+  };
+  const toggleSuggestionsOnly = () => {
+    clearFocus();
+    setSuggestionsOnly((prev) => !prev);
+  };
+  const clearResultFilters = () => {
+    clearFocus();
+    setStatusFilter(null);
+    setSuggestionsOnly(false);
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -591,7 +665,7 @@ export function DetailPage({
                 activeAnchor={activeAnchor}
                 activeIssueKey={activeIssueKey}
                 hoverAnchor={hoverAnchor}
-                onLocate={locate}
+                onLocate={locateFromProduct}
                 onHover={setHoverAnchor}
               />
             </div>
@@ -610,29 +684,47 @@ export function DetailPage({
                 </div>
                 <div className="dcc-side-chips">
                   {issueCounts.violation > 0 && (
-                    <span className="dcc-side-chip dcc-side-chip--violation">违规 {issueCounts.violation}</span>
+                    <button type="button" aria-pressed={statusFilter === 'violation'} className={`dcc-side-chip dcc-side-chip--violation${statusFilter === 'violation' ? ' is-active' : ''}`} onClick={() => toggleStatusFilter('violation')}>违规 {issueCounts.violation}</button>
                   )}
                   {issueCounts.suspect > 0 && (
-                    <span className="dcc-side-chip dcc-side-chip--suspect">疑似 {issueCounts.suspect}</span>
+                    <button type="button" aria-pressed={statusFilter === 'suspect'} className={`dcc-side-chip dcc-side-chip--suspect${statusFilter === 'suspect' ? ' is-active' : ''}`} onClick={() => toggleStatusFilter('suspect')}>疑似 {issueCounts.suspect}</button>
                   )}
                   {issueCounts.notice > 0 && (
-                    <span className="dcc-side-chip dcc-side-chip--notice">建议自查 {issueCounts.notice}</span>
+                    <button type="button" aria-pressed={statusFilter === 'manual'} className={`dcc-side-chip dcc-side-chip--notice${statusFilter === 'manual' ? ' is-active' : ''}`} onClick={() => toggleStatusFilter('manual')}>建议自查 {issueCounts.notice}</button>
                   )}
                   {issueCounts.fail > 0 && (
-                    <span className="dcc-side-chip dcc-side-chip--fail">检测失败 {issueCounts.fail}</span>
+                    <button type="button" aria-pressed={statusFilter === 'fail'} className={`dcc-side-chip dcc-side-chip--fail${statusFilter === 'fail' ? ' is-active' : ''}`} onClick={() => toggleStatusFilter('fail')}>检测失败 {issueCounts.fail}</button>
                   )}
                   {passItems.length > 0 && (
-                    <span className="dcc-side-chip dcc-side-chip--pass">通过 {passItems.length}</span>
+                    <button type="button" aria-pressed={statusFilter === 'pass'} className={`dcc-side-chip dcc-side-chip--pass${statusFilter === 'pass' ? ' is-active' : ''}`} onClick={() => toggleStatusFilter('pass')}>通过 {passItems.length}</button>
+                  )}
+                </div>
+                <div className="dcc-side-filter-row">
+                  <button type="button" aria-pressed={suggestionsOnly} className={`dcc-side-suggest-toggle${suggestionsOnly ? ' is-active' : ''}`} onClick={toggleSuggestionsOnly}>
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M9 6h11" />
+                      <path d="M9 12h11" />
+                      <path d="M9 18h11" />
+                      <path d="M4 6h.01" />
+                      <path d="M4 12h.01" />
+                      <path d="M4 18h.01" />
+                    </svg>
+                    只看建议方案
+                  </button>
+                  {statusFilter && (
+                    <button type="button" className="dcc-side-filter-clear" onClick={clearResultFilters}>清除筛选</button>
                   )}
                 </div>
               </header>
 
               <div className={`dcc-side-list${linkedKeys.length > 0 ? ' is-linking' : ''}`}>
-                {activeItems.map((item) => (
+                {visibleActiveItems.map((item) => (
                   <ItemCard
                     key={item.code}
                     view={item}
-                    issues={issues.filter((issue) => issue.code === item.code)}
+                    issues={cardIssues(item)}
+                    suggestionsOnly={suggestionsOnly}
+                    severityFilter={statusFilter && statusFilter !== 'fail' && statusFilter !== 'pass' ? (statusFilter === 'manual' ? 'notice' : statusFilter) : undefined}
                     expanded={expandedCodes.includes(item.code)}
                     onToggle={() => toggleItem(item.code)}
                     selectedIssueKey={activeIssueKey}
@@ -658,7 +750,7 @@ export function DetailPage({
                   />
                 ))}
 
-                {passItems.length > 0 && (
+                {visiblePassItems.length > 0 && (
                   <section id="dcc-pass-group" className="dcc-side-pass">
                     <button
                       type="button"
@@ -667,7 +759,7 @@ export function DetailPage({
                       aria-label={passOpen ? '收起通过项' : '展开通过项'}
                       onClick={() => { passToggled.current = true; clearFocus(); setPassOpen((prev) => !prev); }}
                     >
-                      <span className="dcc-side-pass-title">检测通过 {passItems.length} 项</span>
+                      <span className="dcc-side-pass-title">检测通过 {visiblePassItems.length} 项</span>
                       <span className={`dcc-side-pass-toggle${passOpen ? ' is-open' : ''}`} aria-hidden="true">
                         <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="m6 15 6-6 6 6" />
@@ -676,7 +768,7 @@ export function DetailPage({
                     </button>
                     {passOpen && (
                       <div className="dcc-pass-list">
-                        {passItems.map((item) => (
+                        {visiblePassItems.map((item) => (
                           <PassItemRow
                             key={item.code}
                             view={item}
@@ -688,6 +780,13 @@ export function DetailPage({
                       </div>
                     )}
                   </section>
+                )}
+
+                {(statusFilter || suggestionsOnly) && visibleActiveItems.length === 0 && visiblePassItems.length === 0 && (
+                  <div className="dcc-side-empty">
+                    当前筛选下没有匹配的检测结果
+                    <button type="button" className="dcc-btn dcc-btn--text" onClick={clearResultFilters}>清除筛选</button>
+                  </div>
                 )}
               </div>
             </aside>

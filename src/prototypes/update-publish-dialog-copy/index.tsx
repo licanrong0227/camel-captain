@@ -1,5 +1,5 @@
 /**
- * @name 更新发布弹窗
+ * @name 发布记录弹窗
  */
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -181,6 +181,41 @@ const recordStatus = (record: PublishRecord): RecordStatus =>
   record.products.some((product) => product.loopState === '循环中' || activeCurrentStatuses.includes(product.current))
     ? '发布中'
     : '发布完成';
+
+const productOutcome = (product: PublishProduct): 'done' | 'failed' | 'pending' => {
+  if (product.publishResult === '发布失败' || product.publishResult === '审核不通过') return 'failed';
+  if (['审核未通过', '内容违规', '侵权违规', '品牌商投诉'].includes(product.current)) return 'failed';
+  if (product.publishResult === '循环刊登' || product.current === '已上架') return 'done';
+  return 'pending';
+};
+
+const recordStats = (record: PublishRecord) => {
+  const done = record.products.filter((product) => productOutcome(product) === 'done').length;
+  const failed = record.products.filter((product) => productOutcome(product) === 'failed').length;
+  const percent = record.products.length
+    ? Math.round(((done + failed) / record.products.length) * 100)
+    : 0;
+  return { done, failed, percent };
+};
+
+/** 12 辐条「菊花」loading 图标，沿用 ERP 按钮 loading 样式 */
+const Spinner = ({ size = 12 }: { size?: number }) => (
+  <svg className="up-flower" width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+    {Array.from({ length: 12 }).map((_, i) => (
+      <rect
+        key={i}
+        x="10.6"
+        y="1.5"
+        width="2.8"
+        height="7"
+        rx="1.4"
+        fill="currentColor"
+        transform={`rotate(${i * 30} 12 12)`}
+        opacity={1 - i / 12}
+      />
+    ))}
+  </svg>
+);
 
 const Switch = ({ checked, disabled = false, onChange, ariaLabel }: {
   checked: boolean;
@@ -681,7 +716,6 @@ const IncrementGroup = ({ value, onChange, annotationId }: { value: IncrementVal
 
 const UpdatePublishDialog = () => {
   const [visible, setVisible] = useState(true);
-  const [activeTab, setActiveTab] = useState<'update' | 'records'>('update');
   const [activeRecordId, setActiveRecordId] = useState<string | null>(null);
   const activeRecord = PUBLISH_RECORDS.find((record) => record.id === activeRecordId) ?? null;
   const [startDate, setStartDate] = useState('');
@@ -694,6 +728,11 @@ const UpdatePublishDialog = () => {
   const [detailStatusFilter, setDetailStatusFilter] = useState<'全部' | ProductCurrentStatus>('全部');
   const [detailPage, setDetailPage] = useState(1);
   const [copyFeedback, setCopyFeedback] = useState<{ count: number; failed: boolean } | null>(null);
+  const bodyRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (bodyRef.current) bodyRef.current.scrollTop = 0;
+  }, [activeRecordId]);
 
   const pageSize = 5;
   const filteredRecords = PUBLISH_RECORDS.filter((record) => {
@@ -848,247 +887,18 @@ const UpdatePublishDialog = () => {
     });
   };
 
-  const handleConfirm = () => {
-    if (loopOn && !titleOn && !imageOn) {
-      setStrategyError('请至少启用一项自动刊登策略（标题策略 / 主图策略）');
-      return;
-    }
-    const needIncrementCheck = loopOn && titleOn
-      && (titleMode === 'increment' || (titleMode === 'backup' && backupTitleStrategy === 'increment'));
-    if (needIncrementCheck
-      && ((titleMode === 'increment' && incrementHasEmptyStart(titleIncrement))
-        || (titleMode === 'backup' && backupTitleStrategy === 'increment' && incrementHasEmptyStart(backupIncrement)))) {
-      setStrategyError('增量起始值不能为空');
-      return;
-    }
-    setVisible(false);
-  };
-
   return (
     <>
       {visible ? (
         <div className="up-overlay">
-          <div className={`up-dialog${activeTab === 'records' ? ' up-dialog--records' : ''}`} role="dialog" aria-modal="true" aria-label="更新发布">
+          <div className="up-dialog up-dialog--records" role="dialog" aria-modal="true" aria-label="发布记录">
             <div className="up-dialog__header">
-              <div className="up-tabs" role="tablist">
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={activeTab === 'update'}
-                  className={`up-tab${activeTab === 'update' ? ' is-active' : ''}`}
-                  onClick={() => { setActiveTab('update'); setActiveRecordId(null); }}
-                >
-                  更新发布
-                </button>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={activeTab === 'records'}
-                  className={`up-tab${activeTab === 'records' ? ' is-active' : ''}`}
-                  data-annotation-id="publish-records-tab"
-                  onClick={() => setActiveTab('records')}
-                >
-                  发布记录
-                </button>
-              </div>
+              <span className="up-dialog__title" data-annotation-id="publish-records-tab">发布记录</span>
               <button type="button" className="up-dialog__close" aria-label="关闭" onClick={() => setVisible(false)}>×</button>
             </div>
 
-            <div className={`up-dialog__body${activeTab === 'records' ? ' up-dialog__body--records' : ''}`}>
-              {activeTab === 'update' ? (
-              <>
-              <div className="up-form-row" data-annotation-id="publish-time-row">
-                <span className="up-form-label">发布时间</span>
-                <div className="up-form-value">
-                  <div className="up-radio-group">
-                    <Radio checked={publishMode === 'now'} label="立即发布" onChange={() => setPublishMode('now')} />
-                    <Radio checked={publishMode === 'scheduled'} label="定时发布" onChange={() => setPublishMode('scheduled')} />
-                  </div>
-                  {publishMode === 'scheduled' ? (
-                    <div className="up-picker-row">
-                      <DateTimePicker value={scheduledTime} onChange={setScheduledTime} />
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-
-              <div className="up-form-row" data-annotation-id="loop-row">
-                <span className="up-form-label">循环刊登</span>
-                <div className="up-form-value up-switch-line">
-                  <Switch
-                    checked={loopOn}
-                    onChange={() => setLoopOn((v) => { const nv = !v; if (!nv) setStrategyError(''); return nv; })}
-                    ariaLabel="循环刊登开关"
-                  />
-                  {loopOn ? (
-                    <span className="up-inline-field">
-                      <span className="up-inline-field__label">循环次数限制</span>
-                      <NumberField value={loopLimit} onChange={setLoopLimit} ariaLabel="循环次数限制" />
-                    </span>
-                  ) : null}
-                </div>
-              </div>
-
-              {loopOn ? (
-                <>
-              <div className="up-section" data-annotation-id="strategy-section">
-                <h3 className="up-section__title">
-                  <span className="up-required">*</span>自动刊登策略
-                </h3>
-                {strategyError ? <p className="up-section__error">{strategyError}</p> : null}
-
-                <div className="up-strategy-block" data-annotation-id="title-strategy-block">
-                  <div className="up-strategy-block__head">
-                    <span className="up-strategy-block__title">标题策略</span>
-                    <Switch checked={titleOn} onChange={() => { setTitleOn((v) => { const nv = !v; if (nv) setStrategyError(''); return nv; }); }} ariaLabel="标题策略开关" />
-                  </div>
-                  {titleOn ? (
-                    <>
-                      <div className="up-option-list">
-                        <Radio checked={titleMode === 'shuffle'} label="随机打乱" onChange={() => setTitleMode('shuffle')} />
-                        <Radio checked={titleMode === 'increment'} label="插入增量前、后缀" onChange={() => setTitleMode('increment')} />
-                        <Radio checked={titleMode === 'ai'} label="AI 重新生成" onChange={() => setTitleMode('ai')} />
-                        <Radio checked={titleMode === 'backup'} label="备选标题" onChange={() => setTitleMode('backup')} />
-                      </div>
-                      {titleMode === 'increment' ? (
-                        <IncrementGroup value={titleIncrement} onChange={setTitleIncrement} annotationId="title-increment" />
-                      ) : null}
-                      {titleMode === 'ai' ? (
-                        <AiKeywordField value={titleAiKeywords} onChange={setTitleAiKeywords} annotationId="title-ai-keywords" />
-                      ) : null}
-                      {titleMode === 'backup' ? (
-                        <div className="up-backup" data-annotation-id="backup-titles">
-                          <div className="up-backup__list">
-                            {backupTitles.map((title, i) => (
-                              <div className="up-backup__row" key={i}>
-                                <input
-                                  type="text"
-                                  className="up-input up-backup__input"
-                                  value={title}
-                                  placeholder={`备选标题 ${i + 1}`}
-                                  onChange={(e) => setBackupTitle(i, e.target.value)}
-                                />
-                                {backupTitles.length > 1 ? (
-                                  <button type="button" className="up-backup__remove" aria-label="删除该备选标题" onClick={() => removeBackupTitle(i)}>×</button>
-                                ) : null}
-                              </div>
-                            ))}
-                          </div>
-                          <button type="button" className="up-backup__add" onClick={addBackupTitle}>+ 添加备选标题</button>
-                          <p className="up-hint">循环刊登时，如果某个标题未通过审核，将自动更换另一个备选标题重试。</p>
-
-                          <div className="up-sub-strategy">
-                            <div className="up-sub-strategy__head">
-                              <span className="up-sub-strategy__title">备选标题策略</span>
-                              <span className="up-sub-strategy__desc">当备选标题已用完但循环刊登未结束时启用</span>
-                            </div>
-                            <div className="up-option-list up-option-list--inline">
-                              <Radio checked={backupTitleStrategy === 'shuffle'} label="随机打乱" onChange={() => setBackupTitleStrategy('shuffle')} />
-                              <Radio checked={backupTitleStrategy === 'increment'} label="插入增量前、后缀" onChange={() => setBackupTitleStrategy('increment')} />
-                              <Radio checked={backupTitleStrategy === 'ai'} label="AI 重新生成" onChange={() => setBackupTitleStrategy('ai')} />
-                            </div>
-                            {backupTitleStrategy === 'increment' ? (
-                              <IncrementGroup value={backupIncrement} onChange={setBackupIncrement} annotationId="backup-title-increment" />
-                            ) : null}
-                            {backupTitleStrategy === 'ai' ? (
-                              <AiKeywordField value={backupAiKeywords} onChange={setBackupAiKeywords} annotationId="backup-title-ai-keywords" />
-                            ) : null}
-                          </div>
-                        </div>
-                      ) : null}
-                    </>
-                  ) : null}
-                </div>
-
-                <div className="up-strategy-block" data-annotation-id="image-strategy-block">
-                  <div className="up-strategy-block__head">
-                    <span className="up-strategy-block__title">主图策略</span>
-                    <Switch checked={imageOn} onChange={() => { setImageOn((v) => { const nv = !v; if (nv) setStrategyError(''); return nv; }); }} ariaLabel="主图策略开关" />
-                  </div>
-                  {imageOn ? (
-                    <>
-                      <div className="up-option-list">
-                        <Radio checked={imageMode === 'shuffle'} label="随机打乱" onChange={() => setImageMode('shuffle')} />
-                        <Radio checked={imageMode === 'sku'} label="取SKU图替换首图" onChange={() => setImageMode('sku')} />
-                        <Radio checked={imageMode === 'backup'} label="备选首图" onChange={() => setImageMode('backup')} />
-                      </div>
-                      {imageMode !== 'shuffle' ? (
-                        <>
-                        {imageMode === 'backup' ? (
-                        <div className="up-upload-wrap" data-annotation-id="backup-images">
-                          <div className="up-upload">
-                            <button type="button" className="up-upload__add" onClick={() => setUploadDialogOpen(true)}>
-                              <span className="up-upload__add-plus">+</span>
-                              <span className="up-upload__add-text">
-                                <span className="up-upload__add-line">点击</span>
-                                <span className="up-upload__add-line">Ctrl+V粘贴</span>
-                              </span>
-                            </button>
-                            {backupImages.map((img) => (
-                              <div className="up-upload__item" key={img.id}>
-                                <img src={img.url} alt={img.name} />
-                                <span className="up-upload__res">{img.width}*{img.height}</span>
-                                <button
-                                  type="button"
-                                  className="up-upload__remove"
-                                  aria-label="删除该备选首图"
-                                  onClick={() => setBackupImages((list) => list.filter((it) => it.id !== img.id))}
-                                >
-                                  ×
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                          <input
-                            ref={uploadFileInputRef}
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            hidden
-                            onChange={(e) => { handleFiles(e.target.files); setUploadDialogOpen(false); e.target.value = ''; }}
-                          />
-                        </div>
-                        ) : null}
-                        <p className="up-hint">{imageMode === 'sku'
-                          ? '循环刊登时，如果某张首图未通过审核，将自动更换下一张SKU图作为首图尝试。'
-                          : '循环刊登时，如果某张首图未通过审核，将自动更换另一张备选首图重试。'}</p>
-
-                        <div className="up-sub-strategy">
-                          <div className="up-sub-strategy__head">
-                            <span className="up-sub-strategy__title">备选首图策略</span>
-                            <span className="up-sub-strategy__desc">{imageMode === 'sku'
-                              ? '当SKU图已用完但循环刊登未结束时启用'
-                              : '当备选首图已用完但循环刊登未结束时启用'}</span>
-                          </div>
-                          <div className="up-option-list up-option-list--inline">
-                            <Radio checked={backupImageStrategy === 'shuffle'} label="随机打乱" onChange={() => setBackupImageStrategy('shuffle')} />
-                          </div>
-                        </div>
-                        </>
-                      ) : null}
-                    </>
-                  ) : null}
-                </div>
-              </div>
-
-              <div className="up-form-row up-form-row--limit" data-annotation-id="daily-limit-row">
-                <span className="up-form-label up-form-label--limit">刊登数量达到当日上限时：</span>
-                <div className="up-form-value">
-                  <div className="up-radio-group">
-                    <Radio checked={dailyLimitMode === 'stop'} label="直接终止刊登" onChange={() => setDailyLimitMode('stop')} />
-                    <Radio checked={dailyLimitMode === 'nextDay'} label="次日继续刊登" onChange={() => setDailyLimitMode('nextDay')} />
-                  </div>
-                  {dailyLimitMode === 'nextDay' ? (
-                    <div className="up-picker-row">
-                      <TimePicker value={nextDayTime} onChange={setNextDayTime} />
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-              </>
-              ) : null}
-              </>
-              ) : activeRecord ? (
+            <div ref={bodyRef} className="up-dialog__body up-dialog__body--records">
+              {activeRecord ? (
                 <div className="up-record-detail">
                   <button type="button" className="up-record-detail__back" onClick={() => setActiveRecordId(null)}>
                     ← 返回发布记录
@@ -1251,12 +1061,16 @@ const UpdatePublishDialog = () => {
                           <span className="up-help__line">每个商品的结果请点进对应记录查看商品发布明细。</span>
                         </HelpTooltip>
                       </span>
+                      <span className="up-records__cell--num">发布进度</span>
+                      <span className="up-records__cell--num">发布完成数量</span>
+                      <span className="up-records__cell--num">发布失败数量</span>
                       <span />
                     </div>
                     {pagedRecords.length === 0 ? (
                       <div className="up-records__empty">暂无数据</div>
                     ) : pagedRecords.map((record) => {
                       const status = recordStatus(record);
+                      const stats = recordStats(record);
                       return (
                         <div
                           className="up-records__row up-records__row--clickable"
@@ -1280,10 +1094,14 @@ const UpdatePublishDialog = () => {
                           </span>
                           <span>{record.isLoop && record.loopLimit ? `${record.loopLimit} 次` : '-'}</span>
                           <span>
-                            <span className={`up-records__tag ${status === '发布中' ? 'is-publishing' : 'is-completed'}`}>
+                            <span className={`up-records__tag ${status === '发布中' ? 'is-publishing is-loading' : 'is-completed'}`}>
+                              {status === '发布中' ? <Spinner size={12} /> : null}
                               {status}
                             </span>
                           </span>
+                          <span className="up-records__cell--num">{stats.percent}%</span>
+                          <span className="up-records__cell--num">{stats.done}</span>
+                          <span className="up-records__cell--num">{stats.failed}</span>
                           <span className="up-records__arrow">›</span>
                         </div>
                       );
@@ -1326,12 +1144,7 @@ const UpdatePublishDialog = () => {
               )}
             </div>
 
-            {activeTab === 'update' ? (
-            <div className="up-dialog__footer" data-annotation-id="dialog-footer">
-              <button type="button" className="up-btn up-btn--plain" onClick={() => setVisible(false)}>取消</button>
-              <button type="button" className="up-btn up-btn--primary" onClick={handleConfirm}>确定</button>
-            </div>
-            ) : null}
+
           </div>
 
           {uploadDialogOpen ? (
@@ -1370,7 +1183,7 @@ const UpdatePublishDialog = () => {
           ) : null}
         </div>
       ) : (
-        <button type="button" className="up-reopen" onClick={() => setVisible(true)}>打开更新发布弹窗</button>
+        <button type="button" className="up-reopen" onClick={() => setVisible(true)}>打开发布记录弹窗</button>
       )}
 
       <AnnotationViewer

@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>规格文档 HTML 模板</title>
+  <style>
+    :root {
+      font-family:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --brand: #008f5d;
+      --brand-ink: #007a50;
+      --brand-soft: #e6f5ef;
+      --brand-surface: #f2faf7;
+      --brand-border: #b7ddcf;
+      --text: #222832;
+      --text-secondary: #4b5565;
+      --text-muted: #6f7888;
+      --text-placeholder: #8b94a3;
+      color: var(--text);
+      background: #f5f7fb;
+      scrollbar-gutter: stable;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px 20px 64px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 32px;
+      padding: 18px 14px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .sidebar-title {
+      margin: 0 8px 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .page-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .page-nav button {
+      width: 100%;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .page-nav button:hover,
+    .page-nav button[aria-current="page"] {
+      color: var(--brand-ink);
+      background: var(--brand-soft);
+    }
+
+    .page-nav button[aria-current="page"] { font-weight: 600; }
+
+    main {
+      min-width: 0;
+      padding: 40px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 16px rgb(30 45 75 / 6%);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.3;
+    }
+
+    h2 {
+      margin: 44px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e7eaf0;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    h3 {
+      margin: 28px 0 12px;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    p,
+    li {
+      font-size: 15px;
+      line-height: 2;
+    }
+
+    p { margin: 20px 0; }
+
+    td,
+    th {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .definition {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-left: 3px solid var(--brand);
+      color: var(--text-secondary);
+      background: var(--brand-surface);
+    }
+
+    .hint { color: var(--text-muted); }
+
+    ul {
+      margin: 10px 0 20px;
+      padding-left: 22px;
+    }
+
+    .placeholder-list { padding-left: 0; }
+
+    .placeholder-list li {
+      list-style: none;
+      color: var(--text-placeholder);
+    }
+
+    .placeholder-list li::before {
+      margin-right: 8px;
+      color: #b2bac6;
+      content: "—";
+    }
+
+    table {
+      width: 100%;
+      margin-top: 14px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 1px solid #dfe4ee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f6f8fb; }
+
+    td:empty::after {
+      content: "待补充";
+      color: var(--text-placeholder);
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #eef1f6;
+    }
+
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--brand-border);
+      border-radius: 8px;
+      background: var(--brand-surface);
+    }
+
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .spec-page[hidden] { display: none; }
+
+    @media (max-width: 720px) {
+      body { padding: 0 8px 40px; }
+      .shell { display: block; }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        margin: 0 -8px 12px;
+        padding: 10px 8px;
+        border-width: 0 0 1px;
+        border-radius: 0;
+      }
+
+      .sidebar-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .page-nav {
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .page-nav::-webkit-scrollbar { display: none; }
+
+      .page-nav button {
+        width: auto;
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 24px 18px;
+        border-radius: 8px;
+      }
+
+      .table-wrap { overflow: visible; }
+
+      table,
+      tbody,
+      tr,
+      td {
+        display: block;
+        width: 100%;
+      }
+
+      thead { display: none; }
+
+      tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      tr {
+        overflow: hidden;
+        border: 1px solid #dfe4ee;
+        border-radius: 6px;
+        background: #fff;
+      }
+
+      td {
+        display: grid;
+        grid-template-columns: minmax(96px, 36%) minmax(0, 1fr);
+        gap: 12px;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 0;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      td:last-child { border-bottom: 0; }
+
+      td::before {
+        content: attr(data-label);
+        color: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <p class="sidebar-title">目录</p>
+      <nav class="page-nav" aria-label="规格文档页面">
+        <button type="button" data-page-target="overview" aria-current="page">当前方案</button>
+      </nav>
+    </aside>
+
+    <main>
+      <article class="spec-page" data-spec-page="overview">
+        <h1>认领商品弹窗</h1>
+        <p class="definition">本文档是用户与 Agent 围绕当前原型进行方案沟通和持续生成的事实依据。当前版本按线上「认领中心 → 认领商品」弹窗做 1:1 还原。</p>
+
+        <section id="current-plan">
+          <h2>当前方案</h2>
+          <ul>
+            <li>原型意图：还原认领中心批量认领时弹出的「认领商品」弹窗，用于选择认领平台、目标店铺和认领方式（仅认领 / 认领并发布），认领并发布时可设置发布时间与循环刊登，并选择直接认领或自动编辑。</li>
+            <li>使用场景：在认领中心勾选商品后点击「认领」，弹出本弹窗。</li>
+            <li>当前表达：页面只保留弹窗本身，挂在灰遮罩上视口居中；左侧为待认领商品卡片，右侧为认领平台与店铺选择，下方为认领方式（含循环刊登配置），底部为状态、提示与两个操作按钮。</li>
+            <li>认领方式：默认「仅认领」；选择「认领并发布」后出现「发布时间」（立即发布 / 定时发布）与「循环刊登」开关，打开循环刊登后内联展示从「更新发布弹窗」移植的循环刊登配置。</li>
+          </ul>
+        </section>
+
+        <section id="facts-inputs">
+          <h2>事实与输入</h2>
+          <h3>用户确认事实</h3>
+          <ul>
+            <li>原型名称：认领商品弹窗。</li>
+            <li>还原对象：线上认领中心当前打开的「认领商品」弹窗（已在浏览器中打开）。</li>
+            <li>设计基底：<code>camel-captain-erp</code>。</li>
+            <li>只呈现认领商品弹窗：认领中心列表等弹窗以外的背景内容不还原。</li>
+            <li>新增「认领方式」：仅认领（认领到商品列表）与认领并发布（认领完成后同时发布）。选择认领并发布时显示循环刊登选项，打开后可配置循环刊登信息。</li>
+            <li>选择认领并发布会显示发布时间与循环刊登选项；发布时间支持立即发布/定时发布，定时发布使用日期时间选择器。</li>
+            <li>循环刊登配置项从 <code>src/prototypes/update-publish-dialog</code> 移植，包含循环次数限制、自动刊登策略（标题策略/主图策略及子策略）和刊登数量达到当日上限时的处理。</li>
+          </ul>
+          <h3>参考资料</h3>
+          <ul>
+            <li>线上页面：<code>https://test.kuachengjing.com/commodity/claim</code> 的认领商品弹窗。</li>
+            <li><code>src/prototypes/claim-exception-dialog</code>：同业务下的认领异常弹窗，沿用其「独立弹窗 + 灰遮罩」的承载方式。</li>
+          </ul>
+          <h3>当前假设</h3>
+          <ul>
+            <li>弹窗宽度 700px，内容区最小高度 360px，店铺列表最多约 5 行，超出部分在列表内滚动。</li>
+            <li>待认领商品为 1 个；平台仅「敦煌网」一个可选，默认选中。</li>
+            <li>店铺列表示例沿用线上演示店铺：echvolt、运营测试-张诗淇专用、服装测试、shoes、bag。</li>
+            <li>「直接认领」「自动编辑」的后续流程不在本原型展开，提交后仅给出轻提示。</li>
+          </ul>
+        </section>
+
+        <section id="prototype-scope">
+          <h2>原型范围</h2>
+          <h3>本次呈现</h3>
+          <ul>
+            <li>商品卡片：商品图、标题（两行截断）、共 N 个商品。</li>
+            <li>选择认领平台：平台卡片，选中态为橙色描边 + 右下角橙色勾选徽标。</li>
+            <li>选择店铺：已选数量、全选、5 个店铺多选卡片，选中态为蓝色边框 + 浅蓝底 + 蓝色勾选框。</li>
+            <li>底部：平台与已选店铺数、状态提示、直接认领、自动编辑。</li>
+            <li>认领方式：仅认领（默认）/ 认领并发布；选择认领并发布时显示发布时间与循环刊登开关。</li>
+            <li>发布时间：立即发布（默认）/ 定时发布；定时发布展示日期时间选择器（月历 + 时/分/秒），确定后回填日期时间。</li>
+            <li>循环刊登配置：循环次数限制（默认 1）、自动刊登策略（标题策略、主图策略及子策略）、刊登数量达到当日上限时的处理。</li>
+            <li>提交校验：定时发布未选时间、循环刊登开启但未启用策略、增量起始值为空时阻止提交并提示。</li>
+            <li>灰遮罩背景，弹窗视口居中。</li>
+          </ul>
+          <h3>本次不呈现</h3>
+          <ul>
+            <li>认领中心列表、筛选、分页等背景内容。</li>
+            <li>直接认领与自动编辑的真实任务提交、进度和结果页。</li>
+            <li>循环刊登配置的真实保存、下发和发布结果。</li>
+            <li>多平台切换、店铺搜索/分组、跨页选择等线上扩展能力。</li>
+            <li>真实接口数据、加载与失败重试。</li>
+          </ul>
+        </section>
+
+        <section id="pages-content">
+          <h2>页面与内容方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>页面/视图</th><th>页面作用</th><th>主要模块与内容</th><th>示例数据或素材</th><th>与其他页面的关系</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td data-label="页面/视图">认领商品弹窗（唯一视图）</td>
+                  <td data-label="页面作用">选择认领平台、店铺与认领方式，发起认领或自动编辑</td>
+                  <td data-label="主要模块与内容">标题「认领商品」+ 关闭；商品卡片；选择认领平台；选择店铺 + 全选；认领方式、发布时间与循环刊登配置；底部状态与「直接认领」「自动编辑」</td>
+                  <td data-label="示例数据或素材">1 个女式板鞋商品，5 个演示店铺，1 个敦煌网平台图标</td>
+                  <td data-label="与其他页面的关系">独立弹窗页，无上层页面</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>弹窗结构</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>区域</th><th>内容</th><th>展示规则</th></tr></thead>
+              <tbody>
+                <tr><td data-label="区域">头部</td><td data-label="内容">认领商品、关闭</td><td data-label="展示规则">标题 18px，18px 常规字重；底部 1px 分隔线；关闭按钮右上角</td></tr>
+                <tr><td data-label="区域">商品卡片</td><td data-label="内容">商品图、标题、共 N 个商品</td><td data-label="展示规则">220px 宽，浅灰底 + 1px 边框 + 8px 圆角；图片 44×44；标题 12px 两行截断</td></tr>
+                <tr><td data-label="区域">认领平台</td><td data-label="内容">平台卡片</td><td data-label="展示规则">72×72，图标 28px + 名称 12px；选中时橙色边框、外发光和右下角 18px 勾选徽标</td></tr>
+                <tr><td data-label="区域">店铺选择</td><td data-label="内容">标题、已选数量、全选、店铺卡片</td><td data-label="展示规则">店铺卡片整行可点；选中为蓝色边框 + 浅蓝底；全选框 14px 橙色描边</td></tr>
+                <tr><td data-label="区域">认领方式</td><td data-label="内容">仅认领 / 认领并发布</td><td data-label="展示规则">单选，仅认领默认；选项后附灰色说明；切换为仅认领时隐藏发布时间与循环刊登</td></tr>
+                <tr><td data-label="区域">发布时间</td><td data-label="内容">立即发布 / 定时发布、日期时间选择器</td><td data-label="展示规则">仅认领并发布时显示；定时发布展开日期时间选择器（月历 + 时/分/秒），选定后回填 yyyy-MM-dd HH:mm:ss；选择器向上展开避免被底部遮挡</td></tr>
+                <tr><td data-label="区域">循环刊登</td><td data-label="内容">开关、循环次数限制</td><td data-label="展示规则">仅认领并发布时显示；打开开关后展开配置，循环次数限制默认 1，正整数步进</td></tr>
+                <tr><td data-label="区域">循环刊登配置</td><td data-label="内容">自动刊登策略、当日上限处理</td><td data-label="展示规则">标题策略含随机打乱/插入增量前、后缀/AI 重新生成/备选标题；主图策略含随机打乱/取SKU图替换首图/备选首图；当日上限可选直接终止或次日继续并选择时间</td></tr>
+                <tr><td data-label="区域">底部</td><td data-label="内容">状态、提示、按钮</td><td data-label="展示规则">上边框分隔；未选店铺时提示橙色「请至少选择 1 个店铺」，选中后变为灰色「请选择操作方式」</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="interaction-states">
+          <h2>交互与状态方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr></thead>
+              <tbody>
+                <tr><td data-label="对象/场景">弹窗</td><td data-label="前置状态">进入原型</td><td data-label="用户操作">打开页面</td><td data-label="原型表现">默认打开，灰遮罩上视口居中，未选择任何店铺</td><td data-label="后续状态">保持打开</td></tr>
+                <tr><td data-label="对象/场景">关闭</td><td data-label="前置状态">弹窗打开</td><td data-label="用户操作">点击右上角 ×</td><td data-label="原型表现">关闭弹窗，展示「重新打开认领商品弹窗」占位入口</td><td data-label="后续状态">可重新打开，选择状态保留</td></tr>
+                <tr><td data-label="对象/场景">认领平台</td><td data-label="前置状态">仅敦煌网</td><td data-label="用户操作">点击平台卡片</td><td data-label="原型表现">保持选中态（单选）</td><td data-label="后续状态">不变</td></tr>
+                <tr><td data-label="对象/场景">店铺</td><td data-label="前置状态">未选择</td><td data-label="用户操作">点击店铺卡片</td><td data-label="原型表现">切换选中态；已选数量与底部状态同步更新</td><td data-label="后续状态">可继续多选</td></tr>
+                <tr><td data-label="对象/场景">全选</td><td data-label="前置状态">部分或全部选中</td><td data-label="用户操作">点击全选</td><td data-label="原型表现">未全选时选中全部，已全选时取消全部；盒子同步填充橙色</td><td data-label="后续状态">数量同步</td></tr>
+                <tr><td data-label="对象/场景">直接认领 / 自动编辑</td><td data-label="前置状态">0 个店铺</td><td data-label="用户操作">查看按钮</td><td data-label="原型表现">两个按钮均禁用；直接认领灰字灰边，自动编辑浅橙底白字</td><td data-label="后续状态">不可点击</td></tr>
+                <tr><td data-label="对象/场景">直接认领 / 自动编辑</td><td data-label="前置状态">至少 1 个店铺</td><td data-label="用户操作">点击按钮</td><td data-label="原型表现">按钮恢复可用；点击后顶部轻提示提交结果，认领并发布时带发布/循环刊登信息</td><td data-label="后续状态">弹窗保持打开</td></tr>
+                <tr><td data-label="对象/场景">认领方式</td><td data-label="前置状态">弹窗打开</td><td data-label="用户操作">切换仅认领 / 认领并发布</td><td data-label="原型表现">仅认领隐藏发布时间与循环刊登；认领并发布显示发布时间与循环刊登开关</td><td data-label="后续状态">发布时间与循环刊登配置状态保留</td></tr>
+                <tr><td data-label="对象/场景">发布时间</td><td data-label="前置状态">认领并发布</td><td data-label="用户操作">切换立即发布 / 定时发布</td><td data-label="原型表现">定时发布展开日期时间选择器并向上弹出；立即发布隐藏选择器</td><td data-label="后续状态">已选时间保留</td></tr>
+                <tr><td data-label="对象/场景">定时发布时间</td><td data-label="前置状态">定时发布但未选时间</td><td data-label="用户操作">点击直接认领 / 自动编辑</td><td data-label="原型表现">提示「请选择定时发布时间」，阻止提交</td><td data-label="后续状态">选定时间后可提交</td></tr>
+                <tr><td data-label="对象/场景">循环刊登</td><td data-label="前置状态">认领并发布</td><td data-label="用户操作">打开开关</td><td data-label="原型表现">内联展开循环刊登配置，循环次数限制默认 1；可继续配置标题策略、主图策略与当日上限</td><td data-label="后续状态">关闭开关时隐藏配置并清除校验提示</td></tr>
+                <tr><td data-label="对象/场景">循环刊登提交</td><td data-label="前置状态">循环刊登开启但未启用任何策略</td><td data-label="用户操作">点击直接认领 / 自动编辑</td><td data-label="原型表现">自动刊登策略区显示「请至少启用一项自动刊登策略（标题策略 / 主图策略）」，阻止提交</td><td data-label="后续状态">启用任一策略后可提交</td></tr>
+                <tr><td data-label="对象/场景">增量起始值</td><td data-label="前置状态">标题策略为插入增量前、后缀</td><td data-label="用户操作">清空起始值后提交</td><td data-label="原型表现">显示「增量起始值不能为空」，阻止提交</td><td data-label="后续状态">补全起始值后可提交</td></tr>
+                <tr><td data-label="对象/场景">备选首图</td><td data-label="前置状态">主图策略为备选首图</td><td data-label="用户操作">点击上传 / 删除图片</td><td data-label="原型表现">支持选择本地图片，展示分辨率角标；可逐张删除</td><td data-label="后续状态">图片列表即时更新</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <pre id="prototype-review-flow" class="mermaid">flowchart LR
+  A[认领中心勾选商品] --> B[认领商品弹窗]
+  B --> C[选择认领平台]
+  C --> D[选择店铺]
+  D --> E[直接认领]
+  D --> F[自动编辑]</pre>
+        </section>
+
+        <section id="design-basis">
+          <h2>设计基底与原型特有调整</h2>
+          <ul>
+            <li>采用的 <code>DESIGN.md</code>：<code>src/themes/camel-captain-erp/DESIGN.md</code></li>
+            <li>继承方式：默认严格遵循（品牌色、功能色、中性色、字号行高、按钮规范、遮罩量级、阴影两档）。</li>
+            <li>本原型特有调整：平台选中态使用品牌橙，店铺选中态沿用线上弹窗的蓝色多选表达；底部提示与按钮文案按线上现状保留。</li>
+            <li>循环刊登配置沿用「更新发布弹窗」的控件与交互：开关/单选使用蓝色选中态，策略区浅底，子策略左侧蓝色强调条。</li>
+          </ul>
+        </section>
+
+        <section id="open-questions">
+          <h2>当前待确认事项</h2>
+          <ul>
+            <li>「自动编辑」在真实流程中会打开自动编辑弹窗，本原型暂以轻提示代替，后续可按需接入。</li>
+            <li>「认领并发布」及循环刊登配置的真实保存、任务下发与发布结果页未接入；循环次数限制的业务上限待确认。</li>
+            <li>定时发布时间的真实接口校验、时区与可预约时间范围待联调确认。</li>
+            <li>备选首图上传当前直接调起本地文件选择，未复用「更新发布弹窗」中的上传图片子弹窗（本地/URL/引用）。</li>
+            <li>平台多于一个时的排列与切换规则（本轮线上仅敦煌网）。</li>
+          </ul>
+        </section>
+
+        <section id="decision-history">
+          <h2>用户重要决策与变更</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr></thead>
+              <tbody>
+                <tr><td data-label="日期">2026-11-05</td><td data-label="用户决策或变更">新建原型「认领商品弹窗」，按线上已打开的弹窗还原</td><td data-label="对当前原型的影响">建立独立弹窗页与交互</td></tr>
+                <tr><td data-label="日期">2026-11-05</td><td data-label="用户决策或变更">增加认领方式：仅认领 / 认领并发布；认领并发布时显示循环刊登选项，打开后可配置循环刊登信息；配置项从更新发布弹窗移植</td><td data-label="对当前原型的影响">弹窗底部新增认领方式区块；认领并发布下新增循环刊登开关与循环次数、自动刊登策略、当日上限处理配置</td></tr>
+                <tr><td data-label="日期">2026-11-05</td><td data-label="用户决策或变更">发布时间的功能也一并移植</td><td data-label="对当前原型的影响">认领并发布下新增发布时间（立即发布/定时发布）；定时发布接入日期时间选择器，并增加未选时间的提交拦截</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const navItems = [...document.querySelectorAll('[data-page-target]')];
+    const pages = [...document.querySelectorAll('[data-spec-page]')];
+
+    const showPage = (pageId) => {
+      for (const navItem of navItems) {
+        const isCurrent = navItem.dataset.pageTarget === pageId;
+        if (isCurrent) {
+          navItem.setAttribute('aria-current', 'page');
+        } else {
+          navItem.removeAttribute('aria-current');
+        }
+      }
+
+      for (const page of pages) {
+        page.hidden = page.dataset.specPage !== pageId;
+      }
+    };
+
+    for (const navItem of navItems) {
+      navItem.addEventListener('click', () => showPage(navItem.dataset.pageTarget));
+    }
+  </script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#e6f5ef',
+        primaryTextColor: '#222832',
+        primaryBorderColor: '#008f5d',
+        lineColor: '#008f5d',
+        secondaryColor: '#f2faf7',
+        tertiaryColor: '#ffffff',
+        edgeLabelBackground: '#ffffff',
+        fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      },
+    });
+  </script>
+</body>
+</html>

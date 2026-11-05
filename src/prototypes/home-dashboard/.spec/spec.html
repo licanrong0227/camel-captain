@@ -3,289 +3,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>首页（智慧运营中台）高保真还原 · 主规格</title>
+  <title>首页驾驶舱（店铺 + 广告）· 主规格</title>
   <style>
     :root {
-      font-family:
-        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      --brand: #008f5d;
-      --brand-ink: #007a50;
-      --brand-soft: #e6f5ef;
-      --brand-surface: #f2faf7;
-      --brand-border: #b7ddcf;
-      --text: #222832;
-      --text-secondary: #4b5565;
-      --text-muted: #6f7888;
-      --text-placeholder: #8b94a3;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --brand: #ff781f;
+      --brand-ink: #e5660b;
+      --brand-soft: #fff3e9;
+      --brand-surface: #fff9f4;
+      --text: #1f2329;
+      --text-secondary: #4e5969;
+      --text-muted: #86909c;
+      --line: #e9ecf0;
       color: var(--text);
-      background: #f5f7fb;
-      scrollbar-gutter: stable;
+      background: #f5f6f8;
     }
-
     * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      padding: 32px 20px 64px;
-    }
-
-    .shell {
-      display: grid;
-      grid-template-columns: 220px minmax(0, 1fr);
-      gap: 24px;
-      width: min(1200px, 100%);
-      margin: 0 auto;
-      align-items: start;
-    }
-
-    .sidebar {
-      position: sticky;
-      top: 32px;
-      padding: 18px 14px;
-      border: 1px solid #dfe4ee;
-      border-radius: 8px;
-      background: #fff;
-    }
-
-    .sidebar-title {
-      margin: 0 8px 10px;
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .page-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .page-nav button {
-      width: 100%;
-      padding: 8px 10px;
-      border: 0;
-      border-radius: 8px;
-      color: var(--text-secondary);
-      background: transparent;
-      font: inherit;
-      font-size: 13px;
-      line-height: 1.45;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    .page-nav button:hover,
-    .page-nav button[aria-current="page"] {
-      color: var(--brand-ink);
-      background: var(--brand-soft);
-    }
-
+    body { margin: 0; padding: 32px 20px 64px; }
+    .shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; width: min(1240px, 100%); margin: 0 auto; align-items: start; }
+    .sidebar { position: sticky; top: 32px; padding: 18px 14px; border: 1px solid #e2e6ec; border-radius: 10px; background: #fff; }
+    .sidebar-title { margin: 0 8px 10px; color: var(--text-muted); font-size: 12px; font-weight: 600; }
+    .page-nav { display: flex; flex-direction: column; gap: 4px; }
+    .page-nav button { width: 100%; padding: 8px 10px; border: 0; border-radius: 8px; color: var(--text-secondary); background: transparent; font: inherit; font-size: 13px; text-align: left; cursor: pointer; }
+    .page-nav button:hover, .page-nav button[aria-current="page"] { color: var(--brand-ink); background: var(--brand-soft); }
     .page-nav button[aria-current="page"] { font-weight: 600; }
-
-    main {
-      min-width: 0;
-      padding: 40px;
-      border: 1px solid #dfe4ee;
-      border-radius: 8px;
-      background: #fff;
-      box-shadow: 0 4px 16px rgb(30 45 75 / 6%);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 32px;
-      line-height: 1.3;
-    }
-
-    h2 {
-      margin: 44px 0 20px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #e7eaf0;
-      font-size: 21px;
-      line-height: 1.55;
-    }
-
-    h3 {
-      margin: 28px 0 12px;
-      font-size: 17px;
-      line-height: 1.5;
-    }
-
-    p,
-    li {
-      font-size: 15px;
-      line-height: 2;
-    }
-
-    p { margin: 20px 0; }
-
-    td,
-    th {
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    .definition {
-      margin: 16px 0 0;
-      padding: 14px 16px;
-      border-left: 3px solid var(--brand);
-      color: var(--text-secondary);
-      background: var(--brand-surface);
-    }
-
-    .hint { color: var(--text-muted); }
-
-    ul {
-      margin: 10px 0 20px;
-      padding-left: 22px;
-    }
-
-    .placeholder-list { padding-left: 0; }
-
-    .placeholder-list li {
-      list-style: none;
-      color: var(--text-placeholder);
-    }
-
-    .placeholder-list li::before {
-      margin-right: 8px;
-      color: #b2bac6;
-      content: "—";
-    }
-
-    table {
-      width: 100%;
-      margin-top: 14px;
-      border-collapse: collapse;
-    }
-
-    th,
-    td {
-      min-width: 120px;
-      padding: 10px 12px;
-      border: 1px solid #dfe4ee;
-      text-align: left;
-      vertical-align: top;
-    }
-
-    th { background: #f6f8fb; }
-
-    td:empty::after {
-      content: "待补充";
-      color: var(--text-placeholder);
-    }
-
-    code {
-      padding: 2px 5px;
-      border-radius: 5px;
-      background: #eef1f6;
-    }
-
-    .mermaid {
-      display: flex;
-      justify-content: center;
-      margin: 12px 0 0;
-      padding: 16px;
-      overflow-x: auto;
-      border: 1px solid var(--brand-border);
-      border-radius: 8px;
-      background: var(--brand-surface);
-    }
-
-    .mermaid svg {
-      max-width: 100%;
-      height: auto;
-    }
-
-    .spec-page[hidden] { display: none; }
-
-    @media (max-width: 720px) {
-      body { padding: 0 8px 40px; }
-      .shell { display: block; }
-
-      .sidebar {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        margin: 0 -8px 12px;
-        padding: 10px 8px;
-        border-width: 0 0 1px;
-        border-radius: 0;
-      }
-
-      .sidebar-title {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-      }
-
-      .page-nav {
-        flex-direction: row;
-        gap: 6px;
-        overflow-x: auto;
-        scrollbar-width: none;
-      }
-
-      .page-nav::-webkit-scrollbar { display: none; }
-
-      .page-nav button {
-        width: auto;
-        flex: 0 0 auto;
-        white-space: nowrap;
-      }
-
-      main {
-        padding: 24px 18px;
-        border-radius: 8px;
-      }
-
-      .table-wrap { overflow: visible; }
-
-      table,
-      tbody,
-      tr,
-      td {
-        display: block;
-        width: 100%;
-      }
-
-      thead { display: none; }
-
-      tbody {
-        display: grid;
-        gap: 12px;
-      }
-
-      tr {
-        overflow: hidden;
-        border: 1px solid #dfe4ee;
-        border-radius: 6px;
-        background: #fff;
-      }
-
-      td {
-        display: grid;
-        grid-template-columns: minmax(96px, 36%) minmax(0, 1fr);
-        gap: 12px;
-        min-width: 0;
-        padding: 10px 12px;
-        border: 0;
-        border-bottom: 1px solid #e7eaf0;
-      }
-
-      td:last-child { border-bottom: 0; }
-
-      td::before {
-        content: attr(data-label);
-        color: var(--text-secondary);
-        font-size: 12px;
-        font-weight: 600;
-        line-height: 1.5;
-      }
+    main { min-width: 0; padding: 40px; border: 1px solid #e2e6ec; border-radius: 10px; background: #fff; box-shadow: 0 4px 16px rgb(30 45 75 / 6%); }
+    h1 { margin: 0; font-size: 30px; line-height: 1.3; }
+    h2 { margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line); font-size: 20px; line-height: 1.5; }
+    h3 { margin: 26px 0 10px; font-size: 16px; line-height: 1.5; }
+    p, li { font-size: 14px; line-height: 1.9; }
+    p { margin: 14px 0; }
+    td, th { font-size: 13px; line-height: 1.65; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 18px; }
+    th, td { padding: 9px 10px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { background: #fafbfc; color: var(--text-secondary); font-weight: 600; }
+    code { padding: 1px 5px; border-radius: 4px; background: #f2f3f5; font-size: 12px; }
+    .definition { margin: 16px 0 0; padding: 14px 16px; border-left: 3px solid var(--brand); color: var(--text-secondary); background: var(--brand-surface); }
+    .hint { color: var(--text-muted); font-size: 13px; }
+    section[hidden], article[hidden] { display: none; }
+    @media (max-width: 900px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      main { padding: 22px; }
     }
   </style>
 </head>
@@ -295,133 +54,205 @@
       <p class="sidebar-title">目录</p>
       <nav class="page-nav" aria-label="规格文档页面">
         <button type="button" data-page-target="overview" aria-current="page">当前方案</button>
+        <button type="button" data-page-target="sources">需求出处</button>
+        <button type="button" data-page-target="pages">页面与模块</button>
+        <button type="button" data-page-target="metrics">指标与口径</button>
+        <button type="button" data-page-target="interactions">交互与状态</button>
+        <button type="button" data-page-target="data">数据与范围</button>
+        <button type="button" data-page-target="acceptance">验收对账</button>
+        <button type="button" data-page-target="decisions">决策记录</button>
       </nav>
     </aside>
 
-    
     <main>
       <article class="spec-page" data-spec-page="overview">
-        <h1>首页（智慧运营中台）高保真还原</h1>
-        <p class="definition">本文档记录当前原型的目标、范围、内容来源、交互口径和设计依据，作为本次首页还原的确认载体。当前版本按线上首页做 1:1 视觉还原，并补齐可本地操作的交互。</p>
+        <h1>首页驾驶舱（店铺 + 广告）</h1>
+        <p class="definition">
+          首页作为一级驾驶舱，只保留核心指标；店铺经营与广告的详细指标下沉到两个二级页面（广告明细、店铺报表）；
+          底部两张排行榜卡（店铺榜 / 商品榜）首屏各 5 条，完整榜单通过弹窗查看。数据为本地确定性 mock，不接真实接口。
+        </p>
 
         <section id="current-plan">
           <h2>当前方案</h2>
           <ul>
-            <li>原型意图：把线上「骆驼队长 BI」首页还原为可直接打开、可点击的桌面端原型，用于评审、对比与后续扩展。</li>
-            <li>使用场景：桌面端浏览器，标准宽度 1440；同时兼容 Make 预览的窄窗口。</li>
-            <li>当前表达：暖橙渐变工作台背景、白色毛玻璃卡片、橙色数据强调；首屏聚焦当日经营指标与异常订单，向下查看销售趋势、公告和三类排行榜。</li>
+            <li>原型意图：把店铺经营数据与广告数据融合进首页，替代单独的数据看板页面，用于评审新驾驶舱方案。</li>
+            <li>页面路由：<code>#page=home</code>（首页）、<code>#page=ad-detail</code>（广告明细）、<code>#page=store-detail</code>（店铺报表）。</li>
+            <li>标准视口：桌面端 1440×1000；首页首屏完整呈现，二级页允许上下滚动。</li>
+            <li>视觉基线：沿用首页暖橙渐变、白色毛玻璃卡片、14px 圆角与 <code>--hd-*</code> 变量；二级页沿用同一套 token。</li>
+            <li>数据截止：2026-10-31；金额均为 USD。</li>
           </ul>
         </section>
+      </article>
 
-        <section id="facts-inputs">
-          <h2>事实与输入</h2>
-          <h3>用户确认事实</h3>
-          <ul>
-            <li>用户要求对内置浏览器中打开的骆驼队长首页做高保真还原。</li>
-            <li>参考页面：<code>https://test.kuachengjing.com/dashboard</code>，页面标题「首页 - 骆驼队长BI」。</li>
-          </ul>
-          <h3>参考资料</h3>
-          <ul>
-            <li>线上页面 1440×900、1440×1500 截图与逐节点计算样式（2026-11-03 采集）。</li>
-            <li>线上接口返回：经营概览、异常订单、销售趋势、店铺销量/流量排行、商品销售排行、公告列表。</li>
-            <li>线上 OSS 素材：品牌 Logo、头像、首页背景装饰、指标图标、异常卡片图标、奖牌、轮播图、企业微信二维码。</li>
-            <li>线上 DOM/CSS：<code>bi-dashboard</code> 卡片、周期切换、图表、排行榜、公告弹窗与筛选弹窗样式。</li>
-          </ul>
-          <h3>当前假设</h3>
-          <ul>
-            <li>轮播默认停在第二张（跨境 AI 智能体），并按约 6.5 秒自动轮换；箭头与圆点可手动切换。</li>
-            <li>顶部导航下拉、主题切换、消息、头像菜单、联系我们为本地交互；除首页外不实现其他业务页面跳转。</li>
-            <li>图表用 SVG 按线上坐标、配色和面积渐变重建，未引入 ECharts 依赖。</li>
-          </ul>
-        </section>
+      <article class="spec-page" data-spec-page="sources" hidden>
+        <h2>需求出处</h2>
+        <table>
+          <thead><tr><th>设计点</th><th>出处</th></tr></thead>
+          <tbody>
+            <tr><td>首页作为驾驶舱、明细通过二级页 / 弹窗查看</td><td>店铺看板需求沟通会「首页整合方案（驾驶舱）」</td></tr>
+            <tr><td>首排替换退款两卡为广告消耗、广告投产比</td><td>会议「卡片调整」+ 用户确认「广告余额换成广告投产比」</td></tr>
+            <tr><td>店铺与广告并入趋势卡，按统计维度分组</td><td>会议「指标看板与数据模块结合」+ 用户确认</td></tr>
+            <tr><td>60 / 90 天维度与新店历史不足提示</td><td>会议「时间维度拓展」</td></tr>
+            <tr><td>排行榜完整展示、商品前 100、首屏 5 条</td><td>会议「大客户需求」「首页整合方案」+ 用户确认</td></tr>
+            <tr><td>商品按颜色 / 尺码 / 图案 / 组合查看销量（后续确认规格因品而异，已取消）</td><td>会议「商品按款式 / 颜色归总」+ 用户 2026-11-04 确认取消</td></tr>
+            <tr><td>广告核心 5 指标</td><td>会议「新版店铺看板调整说明」+ 店铺看板广告模块</td></tr>
+            <tr><td>曝光 / 点击 / CTR / CPC / CVR / CPA / 客单价、三视图、商品下钻</td><td>广告看板第一版（<code>dhgate-ad-report-copy</code>）</td></tr>
+            <tr><td>广告明细店铺视图（店铺横向对比）</td><td>广告看板（链接产出）<code>ad-link-board</code> 的店铺视角报表</td></tr>
+            <tr><td>店铺经营 18 指标、国家维度</td><td>店铺看板 <code>DATA_TABS</code> / <code>COUNTRIES</code></td></tr>
+            <tr><td>店铺分组 + 单店勾选整合</td><td>会议「看板交互优化」→ 落在二级页筛选</td></tr>
+            <tr><td>剔除补单（标签 / 订单号 / 扣减金额）</td><td>会议「GMV 剔除口径」+ 店铺看板剔除弹窗</td></tr>
+            <tr><td>店铺报表不展示处罚、等级与能力分（等级榜单独呈现）</td><td>会议「精简冗余数据」+ 本次范围排除</td></tr>
+            <tr><td>店铺等级排行榜：店铺等级 + 能力分，同等级按能力分排</td><td>用户 2026-11-04 新增 + 会议「商户能力等级排行」</td></tr>
+          </tbody>
+        </table>
+      </article>
 
-        <section id="prototype-scope">
-          <h2>原型范围</h2>
-          <h3>本次呈现</h3>
-          <ul>
-            <li>顶部导航：Logo / 智慧运营中台 / 首页及 8 个一级菜单 / 亮色工具区 / VIP3 / 头像。</li>
-            <li>首页首屏：标题与副标题、5 张经营指标卡、4 张异常订单卡。</li>
-            <li>销售趋势：近 1 月 / 近 3 月 / 近 6 月切换，双轴折线、面积渐变、图例、坐标轴与悬停提示。</li>
-            <li>公告栏：最新 10 条公告，查看全部打开公告弹窗，支持公告 / 历史公告与分页。</li>
-            <li>推广轮播：3 张线上推广图，自动轮换、圆点与左右箭头。</li>
-            <li>排行榜：店铺销量、店铺流量、商品销售三张卡片，各自支持周期切换；商品排行支持按规格展开。</li>
-            <li>联系我们：右侧浮动入口，展开企业微信二维码。</li>
-          </ul>
-          <h3>本次不呈现</h3>
-          <ul>
-            <li>首页以外的商品、交易、采购、物流、报表、系统、工具箱、即时咨询业务页。</li>
-            <li>真实接口请求、登录鉴权、权限差异、消息已读写入、筛选状态持久化。</li>
-            <li>公告详情正文、公告超过 37 条后的新增数据、排行榜空状态与错误状态。</li>
-          </ul>
-        </section>
+      <article class="spec-page" data-spec-page="pages" hidden>
+        <h2>页面与模块</h2>
+        <h3>首页（一级）</h3>
+        <ul>
+          <li>首排 5 张指标卡：当日销售额、当日订单量、商品销量、广告消耗、广告投产比；均与昨日对比。</li>
+          <li>4 张异常卡、公告栏、推广轮播、联系我们保持原行为。</li>
+          <li>经营趋势：两个统计维度「店铺销售」（销售额左轴 + 销量右轴）与「广告投放」（广告消耗 + 广告 GMV 共用美元左轴，广告投产比用右轴 x 刻度）；周期「近1月 / 近2月 / 近3月 / 近6月」；GMV 口径开关与剔除设置。筛选条件与标题同一行，图例位于图表上方居中且可点击显隐对应曲线；卡片不设广告明细 / 店铺报表跳转链接。</li>
+          <li>底部两张排行榜卡：①「店铺 TOP5 排行榜」按销量 / 流量 / 等级三个维度页签切换，每个维度首屏 5 条，右上切周期（等级无周期）并提供「查看完整榜单」，弹窗内同样可切换 3 个维度；②「商品销售 TOP5 排行榜」支持销量 / 销售额 / 订单数维度切换，首屏 5 条，「查看Top100榜单」弹窗固定前 100 条、不设分页，并在商品与店铺之间展示「出单 SKU 数量」，点击打开 SKU 明细弹窗。两个弹窗的维度页签行右侧放周期筛选，标题行只保留标题、条数与关闭按钮。</li>
+        </ul>
+        <h3>广告明细（二级）</h3>
+        <ul>
+          <li>标题行只放「广告明细」，不显示副标题；GMV 口径（剔除补单 / 原始数据）与剔除设置放在广告趋势卡右上角，与趋势指标页签同一行。</li>
+          <li>筛选：店铺（Element UI 风格级联多选，先选分组再勾选店铺；未选时统计全部广告店铺）、广告类型、时间（近1/3/7/15/30天 + 自定义，≤31天）、重置。</li>
+          <li>6 张主指标卡：广告消耗、广告 GMV、整店 GMV、广告 GMV 占比、投产比、广告订单数。</li>
+          <li>6 张辅指标卡：曝光量、点击量、点击率、平均点击单价、转化率、客单价。</li>
+          <li>趋势：花费 / GMV / 订单数 / 点击量 / ROAS。</li>
+          <li>四视图：店铺视图、商品视图、计划视图、成单词视图。店铺视图列：店铺 / 广告消耗 / 广告 GMV / 整店 GMV / 广告 GMV 占比 / 投产比 / 广告消耗环比，默认按占比降序，带合计行；行内「查看商品」下钻为该店商品视图。</li>
+          <li>商品 / 计划 / 成单词视图：支持排序、分页（默认 10 条/页）、合计行、零转化与 ROAS&lt;1 标记；商品行下钻抽屉（按天走势、按计划拆分、带单成单词）。</li>
+        </ul>
+        <h3>店铺报表（二级）</h3>
+        <ul>
+          <li>筛选：店铺（Element UI 风格级联多选，先选分组再勾选店铺；未选时统计全部店铺）、国家、时间（近1/7/30/60/90天 + 自定义，≤180天）、重置。</li>
+          <li>经营类页签使用平台原始经营数据，不提供 GMV 剔除；广告页签保留剔除补单能力（与首页趋势、广告明细一致）。</li>
+          <li>5 个页签：成交 7 / 下单 4 / 流量 4 / 潜在 3 / 广告 7。</li>
+          <li>广告页签：沿用页面店铺与时间筛选（广告类型固定全部，广告无国家维度）；切到广告页签时，页签行右侧显示「剔除补单 / 原始数据」与「剔除设置」，切换口径只影响整店 GMV 与广告 GMV 占比；上方展示广告消耗 / 广告 GMV / 整店 GMV / 广告 GMV 占比 / 投产比 / 广告订单数 / 点击量 7 张卡（不带环比，宽度与其他页签指标卡一致，点击切换下方趋势，趋势指标不单设页签）；广告页签不显示「广告趋势」标题，趋势图紧接指标卡；下方复用广告明细四视图：店铺 / 商品 / 计划 / 成单词，店铺视图的店铺列与经营页签一致（名称 + 别名 + 数据不足标记），并在其后显示该店广告趋势缩略图（跟随当前选中指标，点击打开店铺广告趋势弹窗查看大图）；店铺列固定 280px、趋势列固定 120px，切换页签不跳动；支持排序、分页、合计行与商品下钻抽屉。</li>
+          <li>当前页签指标卡 + 趋势图；指标卡标题用小号浅色文字，并带 ? 悬停说明指标口径（页面卡片与店铺趋势弹窗一致）。店铺对比表（30 家、全列排序、分页、合计行、数据不足标记）；店铺名称后新增「趋势」缩略图列，按当前选中指标绘制该店走势，点击缩略图打开店铺趋势弹窗。</li>
+          <li>不展示处罚、等级、能力分。</li>
+        </ul>
+        <h3>弹窗与抽屉</h3>
+        <ul>
+          <li>榜单弹窗：店铺 30 行；商品按商品维度展示前 100 条。</li>
+          <li>剔除补单弹窗：按店铺配置订单标签、手动订单号、手动扣减金额；保存后重算。</li>
+          <li>商品广告抽屉：4 个 KPI + 双线下钻走势 + 计划拆分 + Top 6 成单词。</li>
+          <li>店铺广告趋势弹窗：单店 7 张广告指标卡（广告消耗 / 广告 GMV / 整店 GMV / 广告 GMV 占比 / 投产比 / 广告订单数 / 点击量），点卡切换下方趋势图，口径与列表上方「全部店铺」趋势一致。</li>
+        </ul>
+      </article>
 
-        <section id="pages-content">
-          <h2>页面与内容方案</h2>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>页面/视图</th><th>页面作用</th><th>主要模块与内容</th><th>示例数据或素材</th><th>与其他页面的关系</th></tr></thead>
-              <tbody>
-                <tr>
-                  <td data-label="页面/视图">首页</td>
-                  <td data-label="页面作用">经营概览与异常提醒的第一入口</td>
-                  <td data-label="主要模块与内容">顶部导航；智慧运营中台标题；5 张指标卡；4 张异常卡；销售趋势；公告栏；推广轮播；3 张排行榜；联系我们</td>
-                  <td data-label="示例数据或素材">线上接口同日数据：销售额 264.54、订单 5、销量 5、退款 0；异常 2222 / 4 / 22 / 6；店铺与商品排行；37 条公告</td>
-                  <td data-label="与其他页面的关系">菜单与卡片入口指向其他业务页，本次仅还原首页</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+      <article class="spec-page" data-spec-page="metrics" hidden>
+        <h2>指标与口径</h2>
+        <table>
+          <thead><tr><th>指标</th><th>口径</th></tr></thead>
+          <tbody>
+            <tr><td>当日销售额 / 整店 GMV</td><td>店铺成交金额之和；开启剔除补单后扣除命中订单金额与手动扣减金额。</td></tr>
+            <tr><td>当日订单量 / 商品销量</td><td>成交订单数 / 成交件数；不因剔除补单变化。</td></tr>
+            <tr><td>广告消耗</td><td>区间内广告花费之和；USD。</td></tr>
+            <tr><td>广告 GMV</td><td>广告商品维度成交额之和。</td></tr>
+            <tr><td>广告投产比（ROAS）</td><td>广告 GMV / 广告消耗；分母为 0 显示「-」。</td></tr>
+            <tr><td>广告 GMV 占比</td><td>广告 GMV / 整店 GMV（剔除补单后）；多店按合计重算，不做平均。</td></tr>
+            <tr><td>曝光 / 点击 / 点击率 / 点击单价</td><td>点击率 = 点击量 / 曝光量；点击单价 = 广告消耗 / 点击量。</td></tr>
+            <tr><td>转化率 / 单均花费 / 客单价</td><td>转化率 = 订单数 / 点击量；单均花费 = 广告消耗 / 订单数；客单价 = 广告 GMV / 订单数。</td></tr>
+            <tr><td>店铺经营 18 项</td><td>成交转化率 = 成交买家数 / 访客数；客单价 = 成交金额 / 成交买家数；UV 价值 = 成交金额 / 访客数；成交买家占比按买家数加权汇总。</td></tr>
+            <tr><td>商品销量 / 商品销售额 / 商品订单数</td><td>按商品 itemCode 汇总；支持按销量、销售额或订单数排序取前 100；商品排行本身不做规格维度。</td></tr>
+            <tr><td>出单 SKU 数量 / SKU 明细</td><td>商品区间销量按 SKU 权重拆分后，出单 SKU 数量 = 有销量的 SKU 数；SKU 弹窗默认按销量降序，同时展示销量、销售额、订单数三列，点表头切换排序（不设独立排序筛选）；默认「组合」维度，可单选颜色 / 尺码 / 图案维度按该规格聚合并忽略其他规格。</td></tr>
+          </tbody>
+        </table>
+        <p class="hint">比率一律先合计再相除；分母为 0 显示「-」；广告与订单报表互补，成单词合计与另两视图不一致属预期。</p>
+      </article>
 
-        <section id="interaction-states">
-          <h2>交互与状态方案</h2>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>对象/场景</th><th>前置状态</th><th>用户操作</th><th>原型表现</th><th>后续状态</th></tr></thead>
-              <tbody>
-                <tr><td data-label="对象/场景">销售趋势</td><td data-label="前置状态">默认近 1 月</td><td data-label="用户操作">点击近 3 月 / 近 6 月</td><td data-label="原型表现">切换为对应周期数据，双轴范围与刻度自动重算，悬停显示日期、销售额、销量</td><td data-label="后续状态">保持所选周期</td></tr>
-                <tr><td data-label="对象/场景">三张排行榜</td><td data-label="前置状态">默认各自首个周期</td><td data-label="用户操作">点击周期按钮</td><td data-label="原型表现">列表数值与排名立即切换；前三名奖牌、4 名以后灰色序号</td><td data-label="后续状态">保持所选周期</td></tr>
-                <tr><td data-label="对象/场景">商品销售排行</td><td data-label="前置状态">列表收起</td><td data-label="用户操作">点击商品行</td><td data-label="原型表现">展开规格明细：规格组合、销量、占比进度条与百分比；再次点击收起</td><td data-label="后续状态">同一时间仅展开一行</td></tr>
-                <tr><td data-label="对象/场景">公告栏</td><td data-label="前置状态">侧栏显示最新 10 条</td><td data-label="用户操作">点击查看全部 / 任意公告</td><td data-label="原型表现">打开公告弹窗，默认历史公告页签，10 条/页，共 4 页；可切换公告页签</td><td data-label="后续状态">关闭后回到首页</td></tr>
-                <tr><td data-label="对象/场景">异常卡片设置</td><td data-label="前置状态">默认勾选 4 个订单状态</td><td data-label="用户操作">点击设置</td><td data-label="原型表现">打开「筛选状态设置」弹窗，支持全选与逐项勾选，取消 / 保存关闭</td><td data-label="后续状态">本次不持久化</td></tr>
-                <tr><td data-label="对象/场景">推广轮播</td><td data-label="前置状态">第二张</td><td data-label="用户操作">自动播放 / 圆点 / 左右箭头</td><td data-label="原型表现">横向滑动切换三张线上推广图</td><td data-label="后续状态">持续循环</td></tr>
-                <tr><td data-label="对象/场景">顶部导航</td><td data-label="前置状态">首页激活</td><td data-label="用户操作">悬停一级菜单</td><td data-label="原型表现">菜单项变为橙色实底，展开白色下拉，按线上分组展示二级菜单</td><td data-label="后续状态">移出关闭</td></tr>
-                <tr><td data-label="对象/场景">联系我们</td><td data-label="前置状态">右侧浮动入口</td><td data-label="用户操作">点击入口</td><td data-label="原型表现">展开企业微信二维码面板，再次点击收起</td><td data-label="后续状态">保持展开或关闭</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="hint">页面不包含空状态与权限差异；筛选弹窗保存仅关闭弹窗，不写入真实接口。</p>
-        </section>
+      <article class="spec-page" data-spec-page="interactions" hidden>
+        <h2>交互与状态</h2>
+        <table>
+          <thead><tr><th>对象</th><th>交互</th><th>结果</th></tr></thead>
+          <tbody>
+            <tr><td>首页指标卡</td><td>点击店铺类卡片 / 广告类卡片</td><td>统一进入店铺报表；店铺类卡片落在「成交」页签，广告消耗/投产比落在「广告」页签。</td></tr>
+            <tr><td>经营趋势</td><td>切店铺销售 / 广告投放、切周期、切 GMV 口径、剔除设置</td><td>同一维度下多条指标曲线联动展示；广告视图含消耗、GMV 与右轴投产比；新店历史不足时按已有天数展示。</td></tr>
+            <tr><td>排行榜</td><td>切维度、切周期、查看榜单、点出单 SKU 数量</td><td>店铺榜在销量 / 流量 / 等级间切换；商品榜在销量 / 销售额 / 订单数间切换，卡片与 Top100 弹窗同步；出单 SKU 数量打开 SKU 弹窗，可按销量、销售额或订单数排序，并可单选组合 / 颜色 / 尺码 / 图案维度查看。</td></tr>
+            <tr><td>广告明细</td><td>改筛选、切视图、排序、分页、点商品行</td><td>全部真实本地计算；商品行打开抽屉。</td></tr>
+            <tr><td>店铺报表</td><td>改筛选、切页签、点指标卡、排序、分页、查看趋势</td><td>趋势与对比表联动；数据不足店铺显示缺口天数。</td></tr>
+          </tbody>
+        </table>
+      </article>
 
-        <section id="design-basis">
-          <h2>设计基底与原型特有调整</h2>
-          <ul>
-            <li>采用的 <code>DESIGN.md</code>：不使用项目 ERP 主题；以线上首页的实际视觉为唯一设计依据（pixel source）。</li>
-            <li>继承方式：按线上 DOM/CSS 还原颜色、字号、间距、圆角、阴影和栅格比例。</li>
-            <li>核心视觉参数：主橙 <code>#ff781f</code>，图表橙 <code>#ff8a3d</code>，图表蓝 <code>#5b8ff9</code>，主文字 <code>#1f2329</code>，辅助文字 <code>#86909c</code>；卡片圆角 14px，控件圆角 8px。</li>
-            <li>本原型特有调整：窄于 1400px 时按线上断点把主区、指标、异常和排行榜改为纵向排列，并允许页面滚动，保证 Make 窄窗口可用。</li>
-          </ul>
-        </section>
+      <article class="spec-page" data-spec-page="data" hidden>
+        <h2>数据与范围</h2>
+        <ul>
+          <li>30 家店铺（5 家广告店），5 个分组 + 未分组；120 个广告商品，另有非广告店铺商品参与商品榜。</li>
+          <li>店铺经营：180 天 × 店铺 × 日期 × 6 个国家，可加指标汇总、比率重算；新店 1960 自 2026-09-20 起有数据。</li>
+          <li>广告：最近 90 天有商品 / 计划 / 广告组明细，更早历史用于首页近3月 / 近6月趋势。</li>
+          <li>订单：广告订单行（含成单词）+ 补单 / 刷单等标签订单，用于成单词与剔除补单。</li>
+          <li>确定性锚点：零转化商品、ROAS&lt;1 商品、补单订单、新店历史不足、一笔多商品订单。</li>
+          <li>当前不呈现：真实接口、登录鉴权、权限差异、发布记录、合规检测、商户能力诊断明细、手机端适配。</li>
+        </ul>
+      </article>
 
-        <section id="open-questions">
-          <h2>当前待确认事项</h2>
-          <ul>
-            <li>无。当前交付按「首页高保真还原」理解；如需从导航进入其他业务页，或接入真实接口，请继续补充范围。</li>
-          </ul>
-        </section>
+      <article class="spec-page" data-spec-page="acceptance" hidden>
+        <h2>验收对账</h2>
+        <ul>
+          <li>当日销售额 = 趋势「销售额」最后一点 = 店铺经营「近1天 · 成交金额」合计（剔除口径一致时）。</li>
+          <li>广告消耗卡 = 趋势「广告消耗」最后一点 = 广告明细「全部广告店 · 近1天」广告消耗。</li>
+          <li>广告明细商品视图合计 = KPI；计划视图合计 = 商品视图合计；成单词 GMV 合计 = 广告 GMV。</li>
+          <li>店铺销量榜前 5 = 完整榜单前 5；商品榜前 5 = Top100 前 5（同周期、同销量/销售额/订单数维度）。</li>
+          <li>商品榜按商品 itemCode 汇总，支持销量 / 销售额 / 订单数排序；商品排行本身不做规格维度，规格维度只用于「出单 SKU」弹窗。</li>
+          <li>出单 SKU 数量 = SKU 弹窗「组合」维度的行数；颜色 / 尺码维度各行的销量、销售额、订单数之和 = 该商品总销量、总销售额、总订单数。</li>
+          <li>切换剔除补单：GMV 类数值变化，广告消耗、广告 GMV、投产比不变。</li>
+          <li>店铺报表近 60/90 天，新店显示「数据不足 N 天」；经营类页签使用原始经营数据，广告页签按当前剔除口径统计。</li>
+        </ul>
+      </article>
 
-        <section id="decision-history">
-          <h2>用户重要决策与变更</h2>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr></thead>
-              <tbody>
-                <tr><td data-label="日期">2026-11-03</td><td data-label="用户决策或变更">要求高保真还原内置浏览器中的骆驼队长首页</td><td data-label="对当前原型的影响">新增独立首页原型，按线上页面与接口数据还原，不修改既有全站原型的首页</td></tr>
-                <tr><td data-label="日期">2026-11-03</td><td data-label="用户决策或变更">验收比对修正：指标卡零涨幅要带正号、异常订单状态弹窗勾选项文字要变蓝</td><td data-label="对当前原型的影响">较昨日为 0 或正数时显示 +0.0% 并用上涨色；筛选状态设置弹窗中已勾选的状态项文字与勾选框同为蓝色，全选行不受影响</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+      <article class="spec-page" data-spec-page="decisions" hidden>
+        <h2>决策记录</h2>
+        <table>
+          <thead><tr><th>日期</th><th>决策</th><th>影响</th></tr></thead>
+          <tbody>
+            <tr><td>2026-11-03</td><td>会议确定把店铺看板融入首页，首页作为驾驶舱</td><td>首页新增广告数据、下钻与完整榜单</td></tr>
+            <tr><td>2026-11-04</td><td>广告余额改为广告投产比；不加全局筛选；明细用二级页 + 榜单弹窗</td><td>首排 5 卡与三页结构确定</td></tr>
+            <tr><td>2026-11-04</td><td>首屏排行榜 5 条；商品在完整榜单按 SKU 维度查看</td><td>商品首屏移除规格展开，新增维度切换</td></tr>
+            <tr><td>2026-11-04</td><td>剔除只影响 GMV 金额类指标</td><td>广告消耗 / 广告 GMV / 投产比不变</td></tr>
+            <tr><td>2026-11-04</td><td>趋势图自适应卡片高度；周期改为近1月/近2月/近3月/近6月；广告指标也按当日统计、统一「较昨日」，不写 T+1 备注</td><td>去掉近60天/近90天与卡片脚注；趋势图随容器高度收缩</td></tr>
+            <tr><td>2026-11-04</td><td>趋势按统计维度合并：销售额 + 销量一组，广告消耗 + 广告 GMV 一组</td><td>趋势卡改为「店铺销售 / 广告投放」两个维度，销售额与销量使用双轴</td></tr>
+            <tr><td>2026-11-04</td><td>新增店铺等级排行榜：展示等级与能力分，同等级按能力分排序</td><td>首页排行榜由三张变为四张，等级榜支持完整榜单弹窗</td></tr>
+            <tr><td>2026-11-04</td><td>商品榜入口改为「查看Top100榜单」，弹窗固定数据不设分页</td><td>商品榜弹窗一次性展示前 100 条并滚动查看</td></tr>
+            <tr><td>2026-11-04</td><td>底部四张排行榜合并为一张卡，卡内 4 个榜页签</td><td>排行榜区域由约 325px 压缩到约 230px，腾出的高度给经营趋势图</td></tr>
+            <tr><td>2026-11-04</td><td>再拆为两张卡：店铺排行榜（销量/流量/等级）与商品销售排行榜；未选择店铺时统计全部店铺</td><td>店铺榜卡与商品榜卡左右并排，店铺榜弹窗内可切换 3 个维度；店铺筛选空选等同全选</td></tr>
+            <tr><td>2026-11-04</td><td>店铺榜维度页签固定在标题后</td><td>切到「等级」（无周期按钮）时页签位置不跳动，周期与查看入口固定在右侧</td></tr>
+            <tr><td>2026-11-04</td><td>两个排行榜弹窗的周期筛选移到维度页签行右侧</td><td>标题行只留标题、条数与关闭按钮；周期与维度页签同一行，靠右对齐</td></tr>
+            <tr><td>2026-11-04</td><td>店铺分组与店铺范围合并为「店铺」级联多选；下拉改为浮层避免被遮挡</td><td>二级页筛选由两个控件缩为一个，Element UI 风格级联面板支持按分组全选、单店勾选和搜索</td></tr>
+            <tr><td>2026-11-04</td><td>商品榜去掉颜色 / 尺码 / 图案 / 组合维度</td><td>不同商品规格不统一，商品榜只按商品 itemCode 汇总 Top100，不再提供规格维度切换</td></tr>
+            <tr><td>2026-11-04</td><td>商品榜增加销量 / 销售额维度切换</td><td>商品卡片与 Top100 弹窗按所选维度排序并显示对应数值</td></tr>
+            <tr><td>2026-11-04</td><td>商品榜增加订单数维度</td><td>商品卡片与 Top100 弹窗的维度增加「订单数」，按商品订单数排序并显示订单数</td></tr>
+            <tr><td>2026-11-04</td><td>商品榜在商品与店铺之间增加「出单 SKU 数量」，点击打开 SKU 明细</td><td>SKU 弹窗三列（销量/销售额/订单数）点表头排序，不设独立排序切换；默认组合维度，可单选颜色/尺码/图案聚合</td></tr>
+            <tr><td>2026-11-04</td><td>演示 SKU 扩展为多颜色、多尺码</td><td>每个商品演示 3–4 个颜色 × 4–5 个尺码（服饰/其他 S–XXL、鞋靴 35–40），颜色值用英文；组合规格展示为「颜色:White 尺码:M」，单维度聚合展示为「颜色:White」/「尺码:M」</td></tr>
+            <tr><td>2026-11-04</td><td>经营趋势去掉两个明细入口；筛选上移到标题行；图例放到图表上方居中</td><td>标题与维度/周期/GMV 口径同排，图例在图表上方居中，避免放在下方不易注意</td></tr>
+            <tr><td>2026-11-04</td><td>店铺报表指标卡补充 ? 指标说明</td><td>页面 KPI 卡与店铺趋势弹窗均带 ? 悬停说明，标题统一为 11px 浅色</td></tr>
+            <tr><td>2026-11-04</td><td>趋势图悬停提示只展示当前绘制的指标</td><td>单指标图只列当前指标，多指标图只列已绘制的曲线；不再附带未绘制的指标</td></tr>
+            <tr><td>2026-11-04</td><td>广告投放视图加入广告投产比右轴</td><td>左轴为消耗/GMV 美元值，右轴为投产比 x 刻度；图例与悬停同步增加投产比</td></tr>
+            <tr><td>2026-11-04</td><td>经营趋势图例支持点击显隐曲线</td><td>点击图例项隐藏对应曲线、右轴与悬停行，图例仅减淡不划线；再次点击恢复，切换统计维度时重置为全部显示</td></tr>
+            <tr><td>2026-11-04</td><td>广告明细去掉标题副标题，GMV 口径移到广告趋势卡右上角</td><td>标题行更紧凑；趋势指标页签与 GMV 口径/剔除设置同排显示</td></tr>
+            <tr><td>2026-11-04</td><td>店铺报表去掉标题副标题与经营类页签的 GMV 剔除</td><td>标题行只保留标题；成交/下单/流量/潜在页签使用平台原始经营数据，不显示剔除补单/原始数据与剔除设置</td></tr>
+            <tr><td>2026-11-04</td><td>广告明细三视图表头去掉口径提示文字</td><td>页面上不常驻口径说明，口径保留在规格文档中</td></tr>
+            <tr><td>2026-11-04</td><td>广告明细补充店铺视图（参考 ad-link-board）</td><td>新增店铺横向对比表：消耗/GMV/整店GMV/占比/投产比/消耗环比；默认按占比排序，支持行内下钻该店商品视图</td></tr>
+            <tr><td>2026-11-04</td><td>店铺报表融合广告：新增广告页签</td><td>广告页签复用店铺/时间筛选，展示 6 张广告 KPI、广告趋势与四视图表格；广告明细数据扩至 90 天</td></tr>
+            <tr><td>2026-11-04</td><td>首页广告 KPI 卡改为跳转店铺报表</td><td>广告消耗/投产比直接落在「广告」页签，店铺类指标卡落在「成交」页签</td></tr>
+            <tr><td>2026-11-04</td><td>店铺报表广告页签：指标卡去掉环比，趋势指标页签紧跟标题，恢复剔除补单</td><td>6 张广告 KPI 只展示数值；「广告趋势」后依次为趋势指标页签、剔除补单/原始数据、剔除设置；剔除口径影响整店 GMV 与广告 GMV 占比</td></tr>
+            <tr><td>2026-11-05</td><td>广告页签指标卡支持点击切换趋势</td><td>与其他页签一致：点击任一指标卡高亮并展示对应趋势，趋势指标页签同步切换；新增「整店 GMV」「广告 GMV 占比」两条曲线</td></tr>
+            <tr><td>2026-11-05</td><td>广告页签补齐第 7 张指标卡「点击量」，卡片宽度对齐其他页签</td><td>广告页签改用与其他页签相同的 7 列指标卡网格，新增点击量卡并支持点击查看点击量趋势</td></tr>
+            <tr><td>2026-11-05</td><td>广告页签去掉趋势指标页签</td><td>趋势完全由上方 7 张指标卡驱动；「广告趋势」行只保留剔除补单 / 原始数据与剔除设置</td></tr>
+            <tr><td>2026-11-05</td><td>广告页签的剔除补单 / 原始数据与剔除设置上移到页面筛选条</td><td>切到广告页签时筛选条右侧出现「GMV 口径」与剔除设置，仅在广告页签显示；广告趋势卡只保留标题与图表</td></tr>
+            <tr><td>2026-11-05</td><td>去掉广告页签「广告趋势」标题</td><td>趋势图直接接在 7 张指标卡下方，卡片区块更紧凑</td></tr>
+            <tr><td>2026-11-05</td><td>剔除补单 / 原始数据与剔除设置改为与页签行同一行右侧对齐</td><td>筛选条恢复只放店铺/国家/时间；广告页签的 GMV 口径控件与上方页签垂直居中对齐</td></tr>
+            <tr><td>2026-11-05</td><td>店铺对比表的「查看趋势」改为行内趋势缩略图</td><td>店铺名称后新增趋势列，按当前选中指标绘制该店走势；点击缩略图打开原趋势弹窗，移除表格右端文字入口</td></tr>
+            <tr><td>2026-11-05</td><td>广告店铺视图增加店铺广告趋势缩略图列</td><td>店铺名后新增趋势列，跟随上方选中的广告指标绘制该店走势；指标列保持不变</td></tr>
+            <tr><td>2026-11-05</td><td>统一店铺报表各页签的店铺列内容与列宽</td><td>广告店铺视图的店铺列改为「名称 + 别名 + 数据不足标记」，与成交/下单/流量/潜在一致；店铺列固定 280px、趋势列固定 120px，切页签时首两列不动</td></tr>
+            <tr><td>2026-11-05</td><td>广告店铺视图的趋势缩略图支持点击查看大图</td><td>点击缩略图打开「店铺广告趋势」弹窗，展示该店当前选中广告指标的每日走势，支持 Esc / 点击遮罩关闭</td></tr>
+            <tr><td>2026-11-05</td><td>店铺广告趋势弹窗增加单店指标卡</td><td>弹窗内展示该店 7 张广告指标卡（与列表上方「全部店铺」一致），点卡切换下方趋势图</td></tr>
+          </tbody>
+        </table>
       </article>
     </main>
   </div>
@@ -429,43 +260,18 @@
   <script>
     const navItems = [...document.querySelectorAll('[data-page-target]')];
     const pages = [...document.querySelectorAll('[data-spec-page]')];
-
-    const showPage = (pageId) => {
-      for (const navItem of navItems) {
-        const isCurrent = navItem.dataset.pageTarget === pageId;
-        if (isCurrent) {
-          navItem.setAttribute('aria-current', 'page');
-        } else {
-          navItem.removeAttribute('aria-current');
-        }
-      }
-
-      for (const page of pages) {
-        page.hidden = page.dataset.specPage !== pageId;
-      }
-    };
-
     for (const navItem of navItems) {
-      navItem.addEventListener('click', () => showPage(navItem.dataset.pageTarget));
+      navItem.addEventListener('click', () => {
+        navItems.forEach((item) => {
+          if (item === navItem) item.setAttribute('aria-current', 'page');
+          else item.removeAttribute('aria-current');
+        });
+        pages.forEach((page) => {
+          page.hidden = page.dataset.specPage !== navItem.dataset.pageTarget;
+        });
+        window.scrollTo({ top: 0 });
+      });
     }
-  </script>
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: 'base',
-      themeVariables: {
-        primaryColor: '#e6f5ef',
-        primaryTextColor: '#222832',
-        primaryBorderColor: '#008f5d',
-        lineColor: '#008f5d',
-        secondaryColor: '#f2faf7',
-        tertiaryColor: '#ffffff',
-        edgeLabelBackground: '#ffffff',
-        fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-      },
-    });
   </script>
 </body>
 </html>
