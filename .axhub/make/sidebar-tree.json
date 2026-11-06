@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-05T08:20:00.350Z",
+  "updatedAt": "2026-11-06T08:53:29.566Z",
   "prototypes": [
     {
       "id": "item:prototypes:home-dashboard",
@@ -189,6 +189,12 @@
               "kind": "item",
               "title": "我的商品 - 批量关联产品模板",
               "itemKey": "prototypes/my-products-batch-related-template"
+            },
+            {
+              "id": "item:prototypes:my-products-sync-online-dialog",
+              "kind": "item",
+              "title": "我的商品 - 同步线上弹窗",
+              "itemKey": "prototypes/my-products-sync-online-dialog"
             },
             {
               "id": "item:prototypes:help-center-full-text-search",
