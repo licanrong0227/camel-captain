@@ -39,6 +39,8 @@ import './compliance.css';
 import AiVideoDialog, { type AiVideoParams } from './components/AiVideoDialog';
 import ComplianceEntry from './components/ComplianceEntry';
 import ComplianceDialog from './components/ComplianceDialog';
+import SkuBatchEditDialog, { type SkuBatchField, type SkuRow } from './components/SkuBatchEditDialog';
+import SkuImageUpdateDialog from './components/SkuImageUpdateDialog';
 import { AnnotationViewer, setProtoDevState, useProtoDevState, type AnnotationSourceDocument } from '@axhub/annotation';
 import { ITEM_DEFS, type ComplianceItemCode, type ComplianceScenario, type ItemPreview } from './lib/compliance';
 import { useCompliance } from './lib/useCompliance';
@@ -276,6 +278,36 @@ const SKU_ROWS = COLOR_VALUES.flatMap((color, colorIndex) =>
   })),
 );
 
+const INITIAL_SKU_ROWS: SkuRow[] = SKU_ROWS.map((item) => ({
+  row: item.row,
+  color: item.color,
+  img: item.img,
+  option: item.option,
+  skuCode: item.sku,
+  saleStatus: 1,
+  inventory: '999',
+  packageWeight: '0.050',
+  retailPrice: '103.27',
+  purchasePrice: '',
+}));
+
+type SpecKey = 'color' | 'option';
+
+type SpecTag = {
+  id: string;
+  name: string;
+  values: string[];
+};
+
+const EMPTY_SPEC_TAGS: Record<SpecKey, SpecTag[]> = { color: [], option: [] };
+
+type SpecImages = Record<SpecKey, Record<string, string | null>>;
+
+const INITIAL_SPEC_IMAGES: SpecImages = {
+  color: Object.fromEntries(COLOR_VALUES.map((item) => [item.name, item.img])),
+  option: Object.fromEntries(OPTION_VALUES.map((item) => [item.name, item.img])),
+};
+
 function Req() {
   return <span className="ep-req">*</span>;
 }
@@ -371,14 +403,38 @@ function SelectBox({
   );
 }
 
-function Stepper({ value = '', unit }: { value?: string; unit?: string }) {
+function Stepper({
+  value = '',
+  unit,
+  onChange,
+  step = 1,
+  precision,
+}: {
+  value?: string;
+  unit?: string;
+  onChange?: (next: string) => void;
+  step?: number;
+  precision?: number;
+}) {
+  const bump = (direction: number) => {
+    if (!onChange) return;
+    const current = Number(value);
+    const base = Number.isFinite(current) ? current : 0;
+    const next = Math.max(0, base + direction * step);
+    onChange(precision === undefined ? String(next) : next.toFixed(precision));
+  };
+
   return (
     <span className="ep-stepper">
-      <button type="button" className="ep-stepper__btn" aria-label="减少">
+      <button type="button" className="ep-stepper__btn" aria-label="减少" onClick={() => bump(-1)}>
         −
       </button>
-      <input className="ep-stepper__input" defaultValue={value} />
-      <button type="button" className="ep-stepper__btn" aria-label="增加">
+      {onChange ? (
+        <input className="ep-stepper__input" value={value} onChange={(event) => onChange(event.target.value)} />
+      ) : (
+        <input className="ep-stepper__input" defaultValue={value} />
+      )}
+      <button type="button" className="ep-stepper__btn" aria-label="增加" onClick={() => bump(1)}>
         +
       </button>
       {unit && <span className="ep-stepper__unit">{unit}</span>}
@@ -433,6 +489,15 @@ export default function EditProductDialogV2() {
   const [navCollapsed, setNavCollapsed] = useState(false);
   const [shortTexts, setShortTexts] = useState(SHORT_TEXTS);
   const [toast, setToast] = useState<string | null>(null);
+  const [skuRows, setSkuRows] = useState<SkuRow[]>(INITIAL_SKU_ROWS);
+  const [batchField, setBatchField] = useState<SkuBatchField | null>(null);
+  const [productTags, setProductTags] = useState<Record<number, Record<SpecKey, SpecTag[]>>>({});
+  const [specPicked, setSpecPicked] = useState<Record<SpecKey, string[]>>({ color: [], option: [] });
+  const [specImages, setSpecImages] = useState<SpecImages>(INITIAL_SPEC_IMAGES);
+  const [imageDialogKey, setImageDialogKey] = useState<SpecKey | null>(null);
+  const [addMenuKey, setAddMenuKey] = useState<SpecKey | null>(null);
+  const [tagEditor, setTagEditor] = useState<{ key: SpecKey; name: string } | null>(null);
+  const specTags = productTags[selectedId] ?? EMPTY_SPEC_TAGS;
   const [complianceOpen, setComplianceOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
   const [aiJob, setAiJob] = useState<(AiVideoParams & { status: 'generating' | 'failed' }) | null>(null);
@@ -461,6 +526,231 @@ export default function EditProductDialogV2() {
     setToast(message);
     toastTimer.current = window.setTimeout(() => setToast(null), 1800);
   };
+
+  const updateSku = (row: number, patch: Partial<SkuRow>) => {
+    setSkuRows((list) => list.map((item) => (item.row === row ? { ...item, ...patch } : item)));
+  };
+
+  const skuSpecs = useMemo(
+    () => [
+      {
+        key: 'color' as const,
+        name: '颜色（Color）',
+        values: COLOR_VALUES.map((item) => item.name),
+        tags: specTags.color,
+      },
+      {
+        key: 'option' as const,
+        name: 'Options',
+        values: OPTION_VALUES.map((item) => item.name),
+        tags: specTags.option,
+      },
+    ],
+    [specTags],
+  );
+
+  const updateProductTags = (
+    updater: (current: Record<SpecKey, SpecTag[]>) => Record<SpecKey, SpecTag[]>,
+  ) => {
+    setProductTags((list) => ({ ...list, [selectedId]: updater(list[selectedId] ?? EMPTY_SPEC_TAGS) }));
+  };
+
+  const toggleSpecPick = (key: SpecKey, name: string) => {
+    setSpecPicked((list) => ({
+      ...list,
+      [key]: list[key].includes(name) ? list[key].filter((item) => item !== name) : [...list[key], name],
+    }));
+  };
+
+  const openTagEditor = (key: SpecKey) => {
+    if (tagEditor?.key === key) {
+      setTagEditor(null);
+      return;
+    }
+    if (specPicked[key].length === 0) {
+      showToast('请先选择规格值');
+      return;
+    }
+    setTagEditor({ key, name: '' });
+  };
+
+  const saveTag = () => {
+    if (!tagEditor) return;
+    const name = tagEditor.name.trim();
+    if (!name) {
+      showToast('请输入标签名称');
+      return;
+    }
+    if (specTags[tagEditor.key].some((tag) => tag.name === name)) {
+      showToast('标签名称已存在');
+      return;
+    }
+    const values = specPicked[tagEditor.key];
+    updateProductTags((current) => ({
+      ...current,
+      [tagEditor.key]: [
+        ...current[tagEditor.key],
+        { id: `${tagEditor.key}-${Date.now()}`, name, values },
+      ],
+    }));
+    setSpecPicked((list) => ({ ...list, [tagEditor.key]: [] }));
+    setTagEditor(null);
+    showToast(`已添加标签「${name}」`);
+  };
+
+  const removeTag = (key: SpecKey, id: string) => {
+    updateProductTags((current) => ({
+      ...current,
+      [key]: current[key].filter((tag) => tag.id !== id),
+    }));
+  };
+
+  const specValueList = (key: SpecKey) => (key === 'color' ? COLOR_VALUES : OPTION_VALUES);
+
+  const specHasImages = (key: SpecKey) =>
+    specValueList(key).some((item) => Boolean(specImages[key][item.name]));
+
+  const clearSpecImages = (key: SpecKey) => {
+    if (!specHasImages(key)) return;
+    const values = specValueList(key);
+    const remaining = values.filter((item) => Boolean(specImages[key][item.name])).length;
+    setSpecImages((list) => ({
+      ...list,
+      [key]: Object.fromEntries(values.map((item) => [item.name, null])),
+    }));
+    showToast(`已清空「${key === 'color' ? '颜色（Color）' : 'Options'}」${remaining} 个规格值图片`);
+  };
+
+  const openImageDialog = (key: SpecKey) => {
+    setAddMenuKey(null);
+    setImageDialogKey(key);
+  };
+
+  const applySkuImages = (key: SpecKey, next: { name: string; image: string | null }[]) => {
+    setSpecImages((list) => ({
+      ...list,
+      [key]: next.reduce<Record<string, string | null>>((acc, item) => {
+        acc[item.name] = item.image;
+        return acc;
+      }, {}),
+    }));
+    setImageDialogKey(null);
+    showToast('规格图片已更新');
+  };
+
+  const renderSpecTags = (key: SpecKey) => {
+    const tags = specTags[key];
+    const picked = specPicked[key];
+    const editing = tagEditor?.key === key;
+    return (
+      <div className="ep-spec-label-row">
+        <span className="ep-field__label">规格值</span>
+        {tags.length > 0 && (
+          <span className="ep-spec-tags">
+            <span className="ep-spec-tags__label">标签</span>
+            {tags.map((tag) => (
+              <span className="ep-spec-tag" key={tag.id} title={`包含 ${tag.values.length} 个规格值`}>
+                {tag.name}
+                <button
+                  type="button"
+                  className="ep-spec-tag__del"
+                  aria-label={`删除标签 ${tag.name}`}
+                  onClick={() => removeTag(key, tag.id)}
+                >
+                  <X size={10} />
+                </button>
+              </span>
+            ))}
+          </span>
+        )}
+        <span className="ep-spec-tag-actions">
+          {picked.length > 0 && <span className="ep-spec-picked">已选 {picked.length} 个</span>}
+          <button
+            type="button"
+            className="ep-spec-img-clear"
+            disabled={!specHasImages(key)}
+            onClick={() => clearSpecImages(key)}
+          >
+            <Trash2 size={12} />
+            清空图片
+          </button>
+          <button type="button" className="ep-spec-tag-add" onClick={() => openTagEditor(key)}>
+            <Tag size={12} />
+            加标签
+          </button>
+          {editing && (
+            <>
+              <span className="ep-spec-tag-catcher" onClick={() => setTagEditor(null)} />
+              <span className="ep-spec-tag-pop">
+                <input
+                  className="ep-input ep-spec-tag-input"
+                  placeholder="输入标签名称"
+                  value={tagEditor?.name ?? ''}
+                  autoFocus
+                  onChange={(event) => setTagEditor({ key, name: event.target.value })}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') saveTag();
+                    if (event.key === 'Escape') setTagEditor(null);
+                  }}
+                />
+                <span className="ep-spec-tag-pop__foot">
+                  <button type="button" className="ep-btn ep-btn--default" onClick={() => setTagEditor(null)}>
+                    取消
+                  </button>
+                  <button type="button" className="ep-btn ep-btn--primary" onClick={saveTag}>
+                    确定
+                  </button>
+                </span>
+              </span>
+            </>
+          )}
+        </span>
+      </div>
+    );
+  };
+
+  const renderAddCard = (key: SpecKey) => (
+    <div className="ep-add-card-wrap">
+      <button
+        type="button"
+        className="ep-add-card"
+        onClick={() => setAddMenuKey((prev) => (prev === key ? null : key))}
+      >
+        <Plus size={24} />
+        <span>添加规格值</span>
+      </button>
+      {addMenuKey === key && (
+        <>
+          <span className="ep-add-menu-catcher" onClick={() => setAddMenuKey(null)} />
+          <div className="ep-add-menu" role="menu">
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setAddMenuKey(null);
+                showToast('「选择规格属性」暂未还原');
+              }}
+            >
+              选择规格属性
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setAddMenuKey(null);
+                showToast('「批量添加规格属性」暂未还原');
+              }}
+            >
+              批量添加规格属性
+            </button>
+            <button type="button" role="menuitem" onClick={() => openImageDialog(key)}>
+              批量更新SKU图片
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
 
   const closeAiLayers = () => {
     setAiPanelOpen(false);
@@ -634,12 +924,24 @@ export default function EditProductDialogV2() {
     }
   };
 
+  const selectProduct = (id: number) => {
+    setSelectedId(id);
+    setSpecPicked({ color: [], option: [] });
+    setTagEditor(null);
+  };
+
   const toggleEdited = (id: number) =>
     setProducts((prev) => prev.map((item) => (item.id === id ? { ...item, edited: !item.edited } : item)));
 
   const removeProduct = (id: number) => {
     setProducts((prev) => prev.filter((item) => item.id !== id));
-    if (selectedId === id) setSelectedId(products.find((item) => item.id !== id)?.id ?? 1);
+    setProductTags((list) => {
+      if (!(id in list)) return list;
+      const next = { ...list };
+      delete next[id];
+      return next;
+    });
+    if (selectedId === id) selectProduct(products.find((item) => item.id !== id)?.id ?? 1);
   };
 
   if (!visible) {
@@ -680,7 +982,7 @@ export default function EditProductDialogV2() {
                         className={active ? 'ep-nav-item is-active' : 'ep-nav-item'}
                         role="button"
                         tabIndex={0}
-                        onClick={() => page === 1 && setSelectedId(item.id)}
+                        onClick={() => page === 1 && selectProduct(item.id)}
                       >
                         <img className="ep-nav-item__thumb" src={item.thumb} alt="" />
                         <div className="ep-nav-item__main">
@@ -1281,30 +1583,44 @@ export default function EditProductDialogV2() {
                                 调整顺序
                               </button>
                             </div>
-                            <div className="ep-spec-label-row">
-                              <span className="ep-field__label">规格值</span>
-                            </div>
+                            {renderSpecTags('color')}
                             <div className="ep-spec-cards">
-                              <button type="button" className="ep-add-card">
-                                <Plus size={24} />
-                                <span>添加规格值</span>
-                              </button>
-                              {COLOR_VALUES.map((color) => (
-                                <div className="ep-spec-card" key={color.name}>
-                                  <div className="ep-spec-card__top">
-                                    <input className="ep-spec-input" defaultValue={color.name} disabled />
-                                    <Pencil size={12} className="ep-spec-icon" />
-                                    <GripVertical size={13} className="ep-spec-icon" />
+                              {renderAddCard('color')}
+                              {COLOR_VALUES.map((color) => {
+                                const picked = specPicked.color.includes(color.name);
+                                const image = specImages.color[color.name];
+                                return (
+                                  <div className={picked ? 'ep-spec-card is-picked' : 'ep-spec-card'} key={color.name}>
+                                    <div className="ep-spec-card__top">
+                                      <label className="ep-spec-pick">
+                                        <input
+                                          type="checkbox"
+                                          checked={picked}
+                                          onChange={() => toggleSpecPick('color', color.name)}
+                                          aria-label={`选择规格值 ${color.name}`}
+                                        />
+                                        <span className="ep-spec-pick__box" />
+                                      </label>
+                                      <input className="ep-spec-input" defaultValue={color.name} disabled />
+                                      <Pencil size={12} className="ep-spec-icon" />
+                                      <GripVertical size={13} className="ep-spec-icon" />
+                                    </div>
+                                    <div className="ep-spec-card__body">
+                                      {image ? (
+                                        <img src={image} alt="" />
+                                      ) : (
+                                        <span className="ep-spec-card__img-empty" aria-label="无规格值图片">
+                                          <ImageIcon size={18} />
+                                        </span>
+                                      )}
+                                      <button type="button" className="ep-upload-btn">
+                                        <Upload size={14} />
+                                      </button>
+                                    </div>
+                                    <div className="ep-spec-card__size">尺寸: {image ? '1600*1600' : '-'}</div>
                                   </div>
-                                  <div className="ep-spec-card__body">
-                                    <img src={color.img} alt="" />
-                                    <button type="button" className="ep-upload-btn">
-                                      <Upload size={14} />
-                                    </button>
-                                  </div>
-                                  <div className="ep-spec-card__size">尺寸: 1600*1600</div>
-                                </div>
-                              ))}
+                                );
+                              })}
                             </div>
                           </div>
 
@@ -1324,30 +1640,44 @@ export default function EditProductDialogV2() {
                                 调整顺序
                               </button>
                             </div>
-                            <div className="ep-spec-label-row">
-                              <span className="ep-field__label">规格值</span>
-                            </div>
+                            {renderSpecTags('option')}
                             <div className="ep-spec-cards">
-                              <button type="button" className="ep-add-card" onClick={() => showToast('已添加规格值')}>
-                                <Plus size={24} />
-                                <span>添加规格值</span>
-                              </button>
-                              {OPTION_VALUES.map((option) => (
-                                <div className="ep-spec-card" key={option.name}>
-                                  <div className="ep-spec-card__top">
-                                    <input className="ep-spec-input" defaultValue={option.name} />
-                                    <span className="ep-spec-count">9/40</span>
-                                    <GripVertical size={13} className="ep-spec-icon" />
+                              {renderAddCard('option')}
+                              {OPTION_VALUES.map((option) => {
+                                const picked = specPicked.option.includes(option.name);
+                                const image = specImages.option[option.name];
+                                return (
+                                  <div className={picked ? 'ep-spec-card is-picked' : 'ep-spec-card'} key={option.name}>
+                                    <div className="ep-spec-card__top">
+                                      <label className="ep-spec-pick">
+                                        <input
+                                          type="checkbox"
+                                          checked={picked}
+                                          onChange={() => toggleSpecPick('option', option.name)}
+                                          aria-label={`选择规格值 ${option.name}`}
+                                        />
+                                        <span className="ep-spec-pick__box" />
+                                      </label>
+                                      <input className="ep-spec-input" defaultValue={option.name} />
+                                      <span className="ep-spec-count">9/40</span>
+                                      <GripVertical size={13} className="ep-spec-icon" />
+                                    </div>
+                                    <div className="ep-spec-card__body">
+                                      {image ? (
+                                        <img src={image} alt="" />
+                                      ) : (
+                                        <span className="ep-spec-card__img-empty" aria-label="无规格值图片">
+                                          <ImageIcon size={18} />
+                                        </span>
+                                      )}
+                                      <button type="button" className="ep-upload-btn">
+                                        <Upload size={14} />
+                                      </button>
+                                    </div>
+                                    <div className="ep-spec-card__size">尺寸: {image ? '524*283' : '-'}</div>
                                   </div>
-                                  <div className="ep-spec-card__body">
-                                    <img src={option.img} alt="" />
-                                    <button type="button" className="ep-upload-btn">
-                                      <Upload size={14} />
-                                    </button>
-                                  </div>
-                                  <div className="ep-spec-card__size">尺寸: 524*283</div>
-                                </div>
-                              ))}
+                                );
+                              })}
                             </div>
                           </div>
                         </Section>
@@ -1359,32 +1689,57 @@ export default function EditProductDialogV2() {
                                 <span>图片</span>
                                 <span>颜色（Color）</span>
                                 <span>Options</span>
-                                <span className="ep-sku-head__edit">
+                                <button
+                                  type="button"
+                                  className="ep-sku-head__edit"
+                                  onClick={() => setBatchField('skuCode')}
+                                >
                                   SKU编码
                                   <Pencil size={12} />
-                                </span>
-                                <span className="ep-sku-head__edit">
+                                </button>
+                                <button
+                                  type="button"
+                                  className="ep-sku-head__edit"
+                                  onClick={() => setBatchField('saleStatus')}
+                                >
                                   是否可售
                                   <Pencil size={12} />
-                                </span>
-                                <span className="ep-sku-head__edit">
+                                </button>
+                                <button
+                                  type="button"
+                                  className="ep-sku-head__edit"
+                                  onClick={() => setBatchField('inventory')}
+                                >
                                   库存
                                   <Pencil size={12} />
-                                </span>
-                                <span className="ep-sku-head__edit">
+                                </button>
+                                <button
+                                  type="button"
+                                  className="ep-sku-head__edit"
+                                  onClick={() => setBatchField('packageWeight')}
+                                >
                                   重量
                                   <Pencil size={12} />
-                                </span>
-                                <span className="ep-sku-head__edit">
+                                </button>
+                                <button
+                                  type="button"
+                                  className="ep-sku-head__edit"
+                                  onClick={() => setBatchField('retailPrice')}
+                                >
                                   实际收入
                                   <Pencil size={12} />
-                                </span>
-                                <span className="ep-sku-head__edit" data-annotation-id="purchase-price">
+                                </button>
+                                <button
+                                  type="button"
+                                  className="ep-sku-head__edit"
+                                  data-annotation-id="purchase-price"
+                                  onClick={() => setBatchField('purchasePrice')}
+                                >
                                   采集价/采购价
                                   <Pencil size={12} />
-                                </span>
+                                </button>
                               </div>
-                              {SKU_ROWS.map((row) => (
+                              {skuRows.map((row) => (
                                 <div className="ep-sku-row" key={row.row}>
                                   <span className="ep-sku-img">
                                     <img src={row.img} alt="" />
@@ -1392,22 +1747,49 @@ export default function EditProductDialogV2() {
                                   <span className="ep-sku-text">{row.color}</span>
                                   <span className="ep-sku-text">{row.option}</span>
                                   <span className="ep-sku-cell">
-                                    <input className="ep-sku-input" defaultValue={row.sku} />
+                                    <input
+                                      className="ep-sku-input"
+                                      value={row.skuCode}
+                                      onChange={(event) => updateSku(row.row, { skuCode: event.target.value })}
+                                    />
                                   </span>
                                   <span className="ep-sku-cell">
-                                    <SelectBox value="可销售" className="ep-sku-select" />
+                                    <SelectBox
+                                      value={row.saleStatus === 1 ? '可销售' : '不可销售'}
+                                      className="ep-sku-select"
+                                    />
                                   </span>
                                   <span className="ep-sku-cell">
-                                    <Stepper value="999" />
+                                    <Stepper
+                                      value={row.inventory}
+                                      step={1}
+                                      precision={0}
+                                      onChange={(next) => updateSku(row.row, { inventory: next })}
+                                    />
                                   </span>
                                   <span className="ep-sku-cell">
-                                    <Stepper value="0.050" />
+                                    <Stepper
+                                      value={row.packageWeight}
+                                      step={0.001}
+                                      precision={3}
+                                      onChange={(next) => updateSku(row.row, { packageWeight: next })}
+                                    />
                                   </span>
                                   <span className="ep-sku-cell">
-                                    <Stepper value="103.27" />
+                                    <Stepper
+                                      value={row.retailPrice}
+                                      step={0.01}
+                                      precision={2}
+                                      onChange={(next) => updateSku(row.row, { retailPrice: next })}
+                                    />
                                   </span>
                                   <span className="ep-sku-cell">
-                                    <Stepper />
+                                    <Stepper
+                                      value={row.purchasePrice}
+                                      step={0.01}
+                                      precision={2}
+                                      onChange={(next) => updateSku(row.row, { purchasePrice: next })}
+                                    />
                                   </span>
                                 </div>
                               ))}
@@ -1697,6 +2079,27 @@ export default function EditProductDialogV2() {
           </div>
         </div>
       </div>
+      {imageDialogKey && (
+        <SkuImageUpdateDialog
+          values={specValueList(imageDialogKey).map((item) => ({
+            name: item.name,
+            image: specImages[imageDialogKey][item.name],
+          }))}
+          onClose={() => setImageDialogKey(null)}
+          onConfirm={(next) => applySkuImages(imageDialogKey, next)}
+          onToast={showToast}
+        />
+      )}
+      {batchField && (
+        <SkuBatchEditDialog
+          field={batchField}
+          rows={skuRows}
+          specs={skuSpecs}
+          onClose={() => setBatchField(null)}
+          onApply={setSkuRows}
+          onToast={showToast}
+        />
+      )}
       <AiVideoDialog
         open={aiOpen}
         onClose={() => setAiOpen(false)}

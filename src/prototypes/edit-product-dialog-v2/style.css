@@ -993,7 +993,190 @@
 }
 
 .ep-spec-label-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
   margin: 10px 0 8px;
+}
+
+.ep-spec-tags {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ep-spec-tags__label {
+  font-size: 12px;
+  color: #909399;
+}
+
+.ep-spec-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 22px;
+  padding: 0 4px 0 8px;
+  border: 1px solid #ffd8b3;
+  border-radius: 4px;
+  background: #fff7f0;
+  color: #ff781f;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.ep-spec-tag__del {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: #ff9a4d;
+  cursor: pointer;
+}
+
+.ep-spec-tag__del:hover {
+  background: #ffe7d1;
+  color: #ff781f;
+}
+
+.ep-spec-tag-actions {
+  position: relative;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ep-spec-picked {
+  font-size: 12px;
+  color: #909399;
+}
+
+.ep-spec-tag-add {
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border: 1px solid #ffb366;
+  border-radius: 4px;
+  background: #fff7f0;
+  color: #ff781f;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ep-spec-tag-add:hover {
+  background: #ffe7d1;
+}
+
+.ep-spec-img-clear {
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  background: #fff;
+  color: #606266;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ep-spec-img-clear:hover:not(:disabled) {
+  border-color: #ffb366;
+  color: #ff781f;
+}
+
+.ep-spec-img-clear:disabled {
+  border-color: #ebeef5;
+  background: #fafafa;
+  color: #c0c4cc;
+  cursor: not-allowed;
+}
+
+.ep-spec-card__img-empty {
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #dcdfe6;
+  border-radius: 2px;
+  background: #fafafa;
+  color: #c0c4cc;
+}
+
+.ep-spec-tag-catcher {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+}
+
+.ep-spec-tag-pop {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 6;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #e4e7ed;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+.ep-spec-tag-input {
+  width: 100%;
+  height: 30px;
+}
+
+.ep-spec-tag-pop__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.ep-spec-pick {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.ep-spec-pick input {
+  display: none;
+}
+
+.ep-spec-pick__box {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #dcdfe6;
+  border-radius: 2px;
+  background: #fff;
+}
+
+.ep-spec-pick input:checked + .ep-spec-pick__box {
+  background: #ff781f;
+  border-color: #ff781f;
+  box-shadow: inset 0 0 0 2px #fff;
+}
+
+.ep-spec-card.is-picked {
+  border-color: #ffb366;
+  background: #fffaf5;
 }
 
 .ep-switch-wrap {
@@ -1068,6 +1251,50 @@
 
 .ep-add-card:hover {
   border-color: #ffb366;
+  color: #ff781f;
+}
+
+.ep-add-card-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.ep-add-menu-catcher {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+}
+
+.ep-add-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 6;
+  min-width: 178px;
+  padding: 6px 0;
+  background: #fff;
+  border: 1px solid #e4e7ed;
+  border-radius: 4px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.ep-add-menu button {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 0 20px;
+  border: 0;
+  background: transparent;
+  color: #606266;
+  font-size: 13px;
+  font-family: inherit;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ep-add-menu button:hover {
+  background: #f5f7fa;
   color: #ff781f;
 }
 
@@ -1203,7 +1430,18 @@
   color: #ff781f;
   display: inline-flex;
   align-items: center;
+  justify-self: start;
   gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ep-sku-head__edit:hover {
+  color: #ff9a4d;
 }
 
 .ep-sku-row {
