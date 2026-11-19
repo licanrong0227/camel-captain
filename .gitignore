@@ -157,3 +157,6 @@ temp/
 .axhub/*.png
 carriers-list.txt
 shopify-tracking-carriers.json
+.verify/
+/tmp-*.cjs
+/tmp-*.png

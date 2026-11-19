@@ -253,7 +253,7 @@ const ROWS: ProductRow[] = [
   },
 ];
 
-const BATCH_ACTIONS = ['批量编辑', '批量更新价格', '批量更新发布', '批量标签', '批量删除', '批量AI克隆', '批量下架', '批量关联产品模板'];
+const BATCH_ACTIONS = ['批量编辑', '批量更新价格', '批量更新发布', '批量标签', '批量删除', '批量AI克隆', '批量下架', '设置关联模板商品'];
 
 const ROW_ACTIONS = ['编辑', '更新价格', '更新发布', '标签', '删除', 'AI一键克隆'];
 
@@ -985,8 +985,8 @@ function ProductTable({ onOpenTplDialog }: { onOpenTplDialog: () => void }) {
               key={action}
               type="button"
               className="mpb-btn mpb-btn-mini"
-              data-annotation-id={action === '批量关联产品模板' ? 'batch-rel-tpl-btn' : undefined}
-              onClick={() => action === '批量关联产品模板' && onOpenTplDialog()}
+              data-annotation-id={action === '设置关联模板商品' ? 'batch-rel-tpl-btn' : undefined}
+              onClick={() => action === '设置关联模板商品' && onOpenTplDialog()}
             >
               {action}
               {action === '批量更新价格' && <PriceUpdateTip />}
@@ -1103,11 +1103,11 @@ export default function MyProductsBatchRelatedTemplate() {
             className="mpb-dialog"
             role="dialog"
             aria-modal="true"
-            aria-label="批量关联产品模板"
+            aria-label="设置关联模板商品"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mpb-dialog-head">
-              <span className="mpb-dialog-title">批量关联产品模板</span>
+              <span className="mpb-dialog-title">设置关联模板商品</span>
               <button type="button" className="mpb-dialog-close" aria-label="关闭" onClick={() => setTplDialogOpen(false)}>
                 ×
               </button>

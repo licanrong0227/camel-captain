@@ -177,6 +177,7 @@ export default function OrderConfigDialog() {
   const [pidEnabled, setPidEnabled] = useState(false);
   const [pidPriority, setPidPriority] = useState<PidSourceKey[]>(['product', 'channel', 'system']);
   const [pidScope, setPidScope] = useState('order');
+  const [pidEuOnly, setPidEuOnly] = useState(true);
   const [pidConfig, setPidConfig] = useState<PidConfig | null>(null);
   const [pidDialogOpen, setPidDialogOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
@@ -242,6 +243,7 @@ export default function OrderConfigDialog() {
     setPidEnabled(false);
     setPidPriority(['product', 'channel', 'system']);
     setPidScope('order');
+    setPidEuOnly(true);
     setPidConfig(null);
     setPidDialogOpen(false);
     setOpen(true);
@@ -414,6 +416,14 @@ export default function OrderConfigDialog() {
                                   value={pidScope}
                                   options={PID_SCOPE_OPTIONS}
                                   onChange={setPidScope}
+                                />
+                              </div>
+                              <div className="ocd-pid-eu">
+                                <span className="ocd-pid-eu__label">仅对欧盟订单生效</span>
+                                <Switch
+                                  checked={pidEuOnly}
+                                  label="仅对欧盟订单生效"
+                                  onChange={() => setPidEuOnly((value) => !value)}
                                 />
                               </div>
                             </div>

@@ -6,6 +6,141 @@
     "targetPath": "prototypes/shopify-integration",
     "filePath": ".axhub/make/comments/281cbfd08998bc530cecef9e70da93db83728fd84bb67bfec298ab6171bbc154.json"
   },
-  "comments": [],
+  "comments": [
+    {
+      "elementKey": "div_8",
+      "label": "div[aria-label=\"认领商品\"]",
+      "locator": {
+        "selectors": [
+          "[aria-label=\"认领商品\"]",
+          ".capd-dialog",
+          "body > div > div > main > div:nth-of-type(5) > div",
+          "[data-testid=\"axhub-annotation-4ivb8c\"] div:nth-of-type(5) > div"
+        ],
+        "fingerprint": "div|class=capd-dialog|text=认领商品新款海蓝宝水滴项链女小众设计轻奢锁骨链高级感蓝色吊坠气质",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          2,
+          4,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 701,
+        "clientY": 253,
+        "documentX": 701,
+        "documentY": 253,
+        "xPercent": 45.937090432503275,
+        "y": 253,
+        "isFixed": true,
+        "offsetX": 288,
+        "offsetY": 198,
+        "dirtySince": 1794540744056
+      },
+      "id": "dacaa9d2-234c-44a5-a75c-634649423bae",
+      "state": "idle",
+      "comment": "[认领商品弹窗](src/prototypes/claim-product-dialog)新增了店铺搜索功能，以及选择“认领并发布”的交互调整，请参照后调整当前弹窗",
+      "pageScope": "prototypes/shopify-integration::page::claim-center",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    },
+    {
+      "elementKey": "svg_1",
+      "label": "svg",
+      "locator": {
+        "selectors": [
+          ".sip-tab-shape",
+          "body > div > div > main > div:nth-of-type(1) > div > svg",
+          "[data-testid=\"axhub-annotation-1e131at\"] svg"
+        ],
+        "fingerprint": "svg|class=sip-tab-shape",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          2,
+          0,
+          2,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 420,
+        "clientY": 113,
+        "documentX": 420,
+        "documentY": 113,
+        "xPercent": 21.96652719665272,
+        "y": 113,
+        "isFixed": false,
+        "dirtySince": 1794366262729
+      },
+      "id": "21672f6e-933b-4029-bbea-b58ad55e66eb",
+      "state": "idle",
+      "comment": "这个地方切换平台看起来有点隐晦，但是我目前对接的平台不多，我又不想弄一个平台切换的选项占用太多空间，请给我一些合适的建议",
+      "pageScope": "prototypes/shopify-integration::page::my-products",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null,
+      "author": null,
+      "readOnly": false
+    },
+    {
+      "elementKey": "div_13",
+      "label": "div[data-testid=\"axhub-annotation-1eqt1cf\"]",
+      "locator": {
+        "selectors": [
+          "[data-testid=\"axhub-annotation-1eqt1cf\"]",
+          "body > div > div > main > div:nth-of-type(3) > div > div:nth-of-type(5)",
+          "[data-testid=\"axhub-annotation-4ivb8c\"] div:nth-of-type(3) > div > div:nth-of-type(5)"
+        ],
+        "fingerprint": "div|class=sip-tr|text=Identification Bracelets For Wom",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          2,
+          2,
+          1,
+          4
+        ]
+      },
+      "marker": {
+        "clientX": 1231,
+        "clientY": 549,
+        "documentX": 1231,
+        "documentY": 616,
+        "xPercent": 64.38284518828452,
+        "y": 616,
+        "isFixed": false,
+        "offsetX": 958,
+        "offsetY": 17,
+        "dirtySince": 1794827019848
+      },
+      "id": "9118e867-edda-4048-aa82-be8b3f73751c",
+      "state": "editing",
+      "comment": "金额不要出现人民币，全部都是美金，0元应该表达为0.00",
+      "pageScope": "prototypes/shopify-integration::page::my-products",
+      "provider": "qoder",
+      "requestId": "annotation-mwj5o022-loqfu0",
+      "sessionId": "annotation-mwj5o022-loqfu0",
+      "updatedAt": 1794827020370,
+      "message": "AI 编辑中",
+      "code": null,
+      "author": null,
+      "readOnly": false
+    }
+  ],
   "images": []
 }

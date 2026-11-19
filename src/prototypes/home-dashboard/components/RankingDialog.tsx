@@ -9,21 +9,21 @@ import { Segmented } from './Segmented';
 
 const PERIODS: Record<'sales' | 'traffic' | 'product' | 'level', Array<{ key: StorePeriodKey; label: string }>> = {
   sales: [{ key: 'week', label: '近1周' }, { key: 'month', label: '近1月' }, { key: 'months3', label: '近3月' }],
-  traffic: [{ key: 'day', label: '近1天' }, { key: 'week', label: '近7天' }, { key: 'month', label: '近30天' }],
+  traffic: [{ key: 'week', label: '近1周' }, { key: 'month', label: '近1月' }, { key: 'months3', label: '近3月' }],
   product: [{ key: 'week', label: '近1周' }, { key: 'month', label: '近1月' }, { key: 'months3', label: '近3月' }],
   level: [],
 };
 
 const STORE_DIMS: Array<{ key: 'sales' | 'traffic' | 'level'; label: string }> = [
-  { key: 'sales', label: '销量' },
-  { key: 'traffic', label: '流量' },
+  { key: 'sales', label: '销售额' },
+  { key: 'traffic', label: '浏览量' },
   { key: 'level', label: '等级' },
 ];
 
 const PRODUCT_METRICS: Array<{ key: ProductRankMetric; label: string }> = [
   { key: 'qty', label: '销量' },
   { key: 'gmv', label: '销售额' },
-  { key: 'orders', label: '订单数' },
+  { key: 'orders', label: '订单量' },
 ];
 
 function ProductCell({ row }: { row: RankRow }) {
@@ -118,7 +118,7 @@ export function RankingDialog({
         {kind !== 'product' ? (
           <div className="hd-rank-dialog-tabs">
             <Segmented value={kind} options={STORE_DIMS} onChange={onKindChange} />
-            <span className="hd-rank-dialog-hint">销量 / 流量按所选周期，等级按等级与能力分排序</span>
+            <span className="hd-rank-dialog-hint">销售额 / 浏览量按所选周期，等级按等级与能力分排序</span>
             {kind !== 'level' ? (
               <div className="hd-rank-dialog-period">
                 <Segmented value={period} options={PERIODS[kind]} onChange={onPeriodChange} />
@@ -128,7 +128,7 @@ export function RankingDialog({
         ) : (
           <div className="hd-rank-dialog-tabs">
             <Segmented value={productMetric} options={PRODUCT_METRICS} onChange={onProductMetricChange} />
-            <span className="hd-rank-dialog-hint">按销量、销售额或订单数取前 100</span>
+            <span className="hd-rank-dialog-hint">按销量、销售额或订单量取前 100</span>
             <div className="hd-rank-dialog-period">
               <Segmented value={period} options={PERIODS.product} onChange={onPeriodChange} />
             </div>
@@ -141,19 +141,32 @@ export function RankingDialog({
             {kind === 'product' ? (
               <>
                 <span className="hd-rank-col-main">商品</span>
-                <span className="hd-rank-col-sku">出单 SKU 数量</span>
                 <span className="hd-rank-col-store">店铺</span>
-                <span className="hd-rank-col-value">{productMetric === 'gmv' ? '销售额' : productMetric === 'orders' ? '订单数' : '销量'}</span>
+                <span className="hd-rank-col-sku">出单 SKU 数量</span>
+                <span className="hd-rank-col-value">{productMetric === 'gmv' ? '销售额' : productMetric === 'orders' ? '订单量' : '销量'}</span>
               </>
             ) : kind === 'level' ? (
               <>
                 <span className="hd-rank-col-main">店铺</span>
+                <span className="hd-rank-col-cate">经营类目</span>
                 <span className="hd-rank-col-level">等级</span>
                 <span className="hd-rank-col-value">能力分</span>
               </>
             ) : (
               <>
                 <span className="hd-rank-col-main">店铺</span>
+                {kind === 'sales' ? (
+                  <>
+                    <span className="hd-rank-col-sold">售出件数</span>
+                    <span className="hd-rank-col-sold">成交单数</span>
+                  </>
+                ) : null}
+                {kind === 'traffic' ? (
+                  <>
+                    <span className="hd-rank-col-sold">访客数</span>
+                    <span className="hd-rank-col-sold">UV 价值</span>
+                  </>
+                ) : null}
                 <span className="hd-rank-col-value">{kind === 'sales' ? '销售额' : '浏览量'}</span>
               </>
             )}
@@ -168,21 +181,49 @@ export function RankingDialog({
                 {kind === 'product' ? (
                   <>
                     <span className="hd-rank-col-main"><ProductCell row={row} /></span>
+                    <span className="hd-rank-col-store">
+                      <span className="hd-store-cell">
+                        <strong title={row.storeName}>{row.storeName}</strong>
+                        {row.storeAlias ? <em title={row.storeAlias}>{row.storeAlias}</em> : null}
+                      </span>
+                    </span>
                     <span className="hd-rank-col-sku">
                       <span className="hd-link" title="查看出单 SKU" onClick={() => setSkuRow(row)}>{row.skuCount ?? 0} 个</span>
                     </span>
-                    <span className="hd-rank-col-store">{row.storeName}</span>
                     <span className="hd-rank-col-value">{productMetric === 'gmv' ? fmtMoney(row.value) : fmtInt(row.value)}</span>
                   </>
                 ) : kind === 'level' ? (
                   <>
-                    <span className="hd-rank-col-main">{row.storeName}</span>
+                    <span className="hd-rank-col-main">
+                      <span className="hd-store-cell hd-rank-store-cell">
+                        <strong title={row.storeName}>{row.storeName}</strong>
+                        {row.storeAlias ? <em title={row.storeAlias}>{row.storeAlias}</em> : null}
+                      </span>
+                    </span>
+                    <span className="hd-rank-col-cate">{row.catePubName}</span>
                     <span className="hd-rank-col-level">{levelChip(row)}</span>
                     <span className="hd-rank-col-value">{valueText(row)}</span>
                   </>
                 ) : (
                   <>
-                    <span className="hd-rank-col-main">{row.storeName}</span>
+                    <span className="hd-rank-col-main">
+                      <span className="hd-store-cell hd-rank-store-cell">
+                        <strong title={row.storeName}>{row.storeName}</strong>
+                        {row.storeAlias ? <em title={row.storeAlias}>{row.storeAlias}</em> : null}
+                      </span>
+                    </span>
+                    {kind === 'sales' ? (
+                      <>
+                        <span className="hd-rank-col-sold">{fmtInt(row.qty ?? 0)}</span>
+                        <span className="hd-rank-col-sold">{fmtInt(row.orders ?? 0)}</span>
+                      </>
+                    ) : null}
+                    {kind === 'traffic' ? (
+                      <>
+                        <span className="hd-rank-col-sold">{fmtInt(row.uv ?? 0)}</span>
+                        <span className="hd-rank-col-sold">{row.uvValue == null ? '-' : fmtMoney(row.uvValue)}</span>
+                      </>
+                    ) : null}
                     <span className="hd-rank-col-value">{valueText(row)}</span>
                   </>
                 )}

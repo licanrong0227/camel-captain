@@ -6,6 +6,52 @@
     "targetPath": "prototypes/home-dashboard",
     "filePath": ".axhub/make/comments/873b3c60485b91e28089b32af368602491e2f7963093ee11eb70df76e69f485a.json"
   },
-  "comments": [],
+  "comments": [
+    {
+      "elementKey": "div_10",
+      "label": "div(\"排名商品出单 SKU 数量店铺订单数\")",
+      "locator": {
+        "selectors": [
+          ".hd-rank-head",
+          "body > div > div > div:nth-of-type(1) > div > div:nth-of-type(3) > div > div:nth-of-type(3) > div:nth-of-type(1)"
+        ],
+        "fingerprint": "div|class=hd-rank-head|text=排名商品出单 SKU 数量店铺订单数",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          3,
+          0,
+          2,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 896,
+        "clientY": 172,
+        "documentX": 896,
+        "documentY": 172,
+        "xPercent": 46.86192468619247,
+        "y": 172,
+        "isFixed": true,
+        "offsetX": 372,
+        "offsetY": 5.5625,
+        "dirtySince": 1794299586691
+      },
+      "id": "abc51a7a-bf5c-436e-baac-bb8d321af51f",
+      "state": "idle",
+      "comment": "商品和sku之间加一列：店铺",
+      "pageScope": "prototypes/home-dashboard::page::home",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    }
+  ],
   "images": []
 }

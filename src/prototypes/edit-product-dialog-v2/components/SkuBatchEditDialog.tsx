@@ -145,6 +145,9 @@ export default function SkuBatchEditDialog({
   onClose,
   onApply,
   onToast,
+  title,
+  overlayClassName,
+  entityLabel = 'SKU',
 }: {
   field: SkuBatchField;
   rows: SkuRow[];
@@ -152,7 +155,11 @@ export default function SkuBatchEditDialog({
   onClose: () => void;
   onApply: (next: SkuRow[]) => void;
   onToast: (message: string) => void;
+  title?: string;
+  overlayClassName?: string;
+  entityLabel?: string;
 }) {
+  const dialogTitle = title ?? TITLES[field];
   const [op, setOp] = useState(field === 'skuCode' ? 'auto' : 'set');
   const [value, setValue] = useState('');
   const [saleStatus, setSaleStatus] = useState(1);
@@ -232,7 +239,7 @@ export default function SkuBatchEditDialog({
   const finish = (next: SkuRow[], count: number) => {
     onApply(next);
     onClose();
-    if (count > 0) onToast(`已修改 ${count} 个SKU`);
+    if (count > 0) onToast(`已修改 ${count} 个${entityLabel}`);
   };
 
   const handleConfirm = () => {
@@ -302,7 +309,11 @@ export default function SkuBatchEditDialog({
       onApply(next);
       onClose();
       if (edited > 0) {
-        onToast(failed > 0 ? `已修改 ${edited} 个SKU，${failed} 个失败` : `已修改 ${edited} 个SKU`);
+        onToast(
+          failed > 0
+            ? `已修改 ${edited} 个${entityLabel}，${failed} 个失败`
+            : `已修改 ${edited} 个${entityLabel}`,
+        );
       } else {
         onToast('未计算出有效价格，请检查采集价/采购价与价格模板');
       }
@@ -357,10 +368,10 @@ export default function SkuBatchEditDialog({
   };
 
   return (
-    <div className="sbe-mask">
-      <div className="sbe-dialog" role="dialog" aria-modal="true" aria-label={TITLES[field]}>
+    <div className={overlayClassName ? `sbe-mask ${overlayClassName}` : 'sbe-mask'}>
+      <div className="sbe-dialog" role="dialog" aria-modal="true" aria-label={dialogTitle}>
         <header className="sbe-head">
-          <h3 className="sbe-title">{TITLES[field]}</h3>
+          <h3 className="sbe-title">{dialogTitle}</h3>
           <button type="button" className="sbe-close" aria-label="关闭" onClick={onClose}>
             <X size={16} />
           </button>

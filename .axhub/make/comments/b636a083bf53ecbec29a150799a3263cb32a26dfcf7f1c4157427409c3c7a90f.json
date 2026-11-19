@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "claim-product-dialog",
+    "targetPath": "prototypes/claim-product-dialog",
+    "filePath": ".axhub/make/comments/b636a083bf53ecbec29a150799a3263cb32a26dfcf7f1c4157427409c3c7a90f.json"
+  },
+  "comments": [
+    {
+      "elementKey": "div_18",
+      "label": "div[role=\"note\"]",
+      "locator": {
+        "selectors": [
+          ".cpd-publish-hint",
+          "body > div > div > div > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(3)",
+          "#root div > div > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(3)"
+        ],
+        "fingerprint": "div|class=cpd-publish-hint|text=本次认领的商品中包含衣服或鞋类商品，建议通过“自动编辑”选择尺码",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1,
+          2
+        ]
+      },
+      "marker": {
+        "clientX": 1012,
+        "clientY": 626,
+        "documentX": 1012,
+        "documentY": 626,
+        "xPercent": 66.31716906946265,
+        "y": 626,
+        "isFixed": true,
+        "offsetX": 579,
+        "offsetY": 7.90625,
+        "dirtySince": 1794539579943
+      },
+      "id": "721de866-2b24-4d2e-9c90-911e11decef2",
+      "state": "idle",
+      "comment": "改一下文案：请先通过批量编辑完善商品信息，否则可能发布失败，\n改成悬浮提示，选中“认领并发布”时始终显示在“自动编辑”上方，并隐藏“直接认领”按钮",
+      "pageScope": "/prototypes/claim-product-dialog",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    },
+    {
+      "elementKey": "span_1",
+      "label": "span(\"认领完成后同时发布\")",
+      "locator": {
+        "selectors": [
+          "body > div > div > div > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > span",
+          "#root div > div > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > span"
+        ],
+        "fingerprint": "span|class=cpd-method-desc|text=认领完成后同时发布",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "marker": {
+        "clientX": 995,
+        "clientY": 618,
+        "documentX": 995,
+        "documentY": 618,
+        "xPercent": 52.03974895397489,
+        "y": 618,
+        "isFixed": true,
+        "offsetX": 89,
+        "offsetY": 6.90625,
+        "dirtySince": 1794385250636
+      },
+      "id": "13ea9fb8-a636-4003-b269-4d035831a1d7",
+      "state": "idle",
+      "comment": "选中选项时，下方显示高亮提示：\n本次认领的商品中包含衣服或鞋类商品，建议通过“自动编辑”选择尺码模板后再认领，否则可能发布失败。",
+      "pageScope": "/prototypes/claim-product-dialog",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null,
+      "author": null,
+      "readOnly": false
+    }
+  ],
+  "images": []
+}

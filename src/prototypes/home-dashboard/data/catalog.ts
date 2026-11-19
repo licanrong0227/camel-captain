@@ -22,11 +22,11 @@ const THUMBS = [
 ];
 
 const REAL_STORES: StoreInfo[] = [
-  { id: 152, name: '包包', alias: 'bag', groupId: 22, adEnabled: true, openDate: '2026-01-01', weight: 1, unitPrice: 56, level: 5, score: 4.62 },
-  { id: 153, name: '鞋子', alias: 'shoes', groupId: 22, adEnabled: true, openDate: '2026-01-01', weight: 0.9, unitPrice: 42, level: 3, score: 3.85 },
-  { id: 155, name: 'clothes', alias: '服装测试', groupId: 23, adEnabled: true, openDate: '2026-01-01', weight: 0.72, unitPrice: 32, level: 3, score: 3.42 },
-  { id: 161, name: 'sneakerhub8', alias: '运营测试-张诗淇专用', groupId: 23, adEnabled: true, openDate: '2026-01-01', weight: 0.82, unitPrice: 40, level: 2, score: 2.86 },
-  { id: 1957, name: 'echvolt', alias: 'echvolt', groupId: 24, adEnabled: true, openDate: '2026-01-01', weight: 0.66, unitPrice: 48, level: 2, score: 2.64 },
+  { id: 152, name: '包包', alias: 'bag', catePubName: '箱包', groupId: 22, adEnabled: true, openDate: '2026-01-01', weight: 1, unitPrice: 56, level: 5, score: 4.62 },
+  { id: 153, name: '鞋子', alias: 'shoes', catePubName: '鞋靴', groupId: 22, adEnabled: true, openDate: '2026-01-01', weight: 0.9, unitPrice: 42, level: 3, score: 3.85 },
+  { id: 155, name: 'clothes', alias: '服装测试', catePubName: '服饰', groupId: 23, adEnabled: true, openDate: '2026-01-01', weight: 0.72, unitPrice: 32, level: 3, score: 3.42 },
+  { id: 161, name: 'sneakerhub8', alias: '运营测试-张诗淇专用', catePubName: '鞋靴', groupId: 23, adEnabled: true, openDate: '2026-01-01', weight: 0.82, unitPrice: 40, level: 2, score: 2.86 },
+  { id: 1957, name: 'echvolt', alias: 'echvolt', catePubName: '消费电子', groupId: 24, adEnabled: true, openDate: '2026-01-01', weight: 0.66, unitPrice: 48, level: 2, score: 2.64 },
 ];
 
 const GENERATED: Array<[number, string, string, number, number]> = [
@@ -56,12 +56,40 @@ const GENERATED: Array<[number, string, string, number, number]> = [
   [324, '全球购', 'global2', 25, 0.38],
 ];
 
+const CATE_BY_ALIAS: Record<string, string> = {
+  women: '女装',
+  shoes2: '鞋靴',
+  outdoor: '户外用品',
+  home: '家居',
+  digital: '数码',
+  beauty: '美妆个护',
+  baby: '母婴',
+  jewelry: '饰品',
+  sport: '运动装备',
+  pet: '宠物用品',
+  office: '办公文具',
+  auto: '汽车用品',
+  tools: '五金工具',
+  kitchen: '厨房电器',
+  lighting: '灯饰照明',
+  toys: '玩具模型',
+  garden: '园艺花艺',
+  underwear: '内衣家居服',
+  watch: '手表眼镜',
+  luggage: '箱包',
+  music: '乐器音响',
+  industrial: '工业耗材',
+  global: '综合',
+  global2: '综合',
+};
+
 export const STORES: StoreInfo[] = [
   ...REAL_STORES,
   ...GENERATED.map(([id, name, alias, groupId, weight]): StoreInfo => ({
     id,
     name: `骆驼队长·${name}`,
     alias,
+    catePubName: CATE_BY_ALIAS[alias] ?? '综合',
     groupId,
     adEnabled: false,
     openDate: '2026-01-01',
@@ -70,7 +98,7 @@ export const STORES: StoreInfo[] = [
     level: weight >= 0.4 ? 4 : weight >= 0.33 ? 3 : weight >= 0.26 ? 2 : weight >= 0.2 ? 1 : 0,
     score: Math.min(4.9, Math.round((1.2 + weight * 7 + (groupId % 3) * 0.12) * 100) / 100),
   })),
-  { id: 1960, name: '骆驼队长·新店测试', alias: 'new-store', groupId: 25, adEnabled: false, openDate: '2026-09-20', weight: 0.3, unitPrice: 38, level: 0, score: 1.18 },
+  { id: 1960, name: '骆驼队长·新店测试', alias: 'new-store', catePubName: '综合', groupId: 25, adEnabled: false, openDate: '2026-09-20', weight: 0.3, unitPrice: 38, level: 0, score: 1.18 },
 ];
 
 export const LEVEL_COLORS = ['#94A3B8', '#3B82F6', '#F59E0B', '#10B981', '#8B5CF6', '#EC4899'];
@@ -115,12 +143,66 @@ const SIZES_GENERAL = ['S', 'M', 'L', 'XL', 'XXL'];
 const PATTERNS = ['纯色', '老花', '菱格', '条纹', '印花', '刺绣', '拼接'];
 
 const NAMES_BY_CATEGORY: Record<string, string[]> = {
-  bag: ['女士复古真皮手提包 通勤单肩包', '老花帆布托特包 大容量子母包', '简约双肩背包 学生旅行包', '菱格链条包 小香风斜挎包', '头层牛皮腋下手提包', '软皮托特包 通勤大容量', '迷你斜挎手机包 链条小方包', '轻便尼龙斜挎包 防泼水'],
-  shoes: ['真皮厚底小白鞋 百搭板鞋', '复古德训鞋 休闲运动鞋', '软底乐福鞋 通勤一脚蹬', '高帮帆布鞋 学生百搭', '尖头细跟单鞋 法式通勤', '厚底老爹鞋 增高显瘦', '真皮马丁靴 短筒', '轻便跑鞋 缓震透气'],
-  clothes: ['法式碎花连衣裙 收腰长裙', '女士西装外套 通勤职业套装', '纯棉圆领短袖T恤 宽松打底', '高腰阔腿裤 垂感西装裤', '针织开衫 慵懒风外套', '雪纺衬衫 法式复古上衣', '牛仔直筒裤 显瘦百搭', '羊毛混纺大衣 中长款'],
-  home: ['北欧风收纳篮 桌面整理', '简约陶瓷餐具四件套', '棉麻抱枕套 沙发靠垫', '折叠收纳箱 衣物整理', '香薰蜡烛 家居礼盒', '厨房置物架 台面收纳', '防水桌布 印花餐桌布', '懒人沙发套 弹力全包'],
-  digital: ['无线蓝牙耳机 降噪入耳', '快充数据线 编织耐用', '便携充电宝 10000mAh', '手机支架 桌面折叠', '蓝牙音箱 户外防水', 'USB 分线器 多口扩展', '智能手表表带 硅胶', '车载手机支架 磁吸'],
-  other: ['简约通勤双肩包 大容量', '纯棉基础款T恤 百搭', '轻便运动鞋 透气缓震', '多功能收纳盒 桌面整理', '便携保温杯 不锈钢', '复古印花丝巾 百搭', '轻奢耳饰套装 日常', '旅行收纳袋 六件套'],
+  bag: [
+    'Womens Vintage Genuine Leather Handbag Large Capacity Tote Bag Top Handle Shoulder Bag Purse for Work Travel Daily Commute Adjustable Straps',
+    'Classic Monogram Canvas Tote Bag Large Capacity Mother and Child Bag Set Fashion Shoulder Bag for Women Shopping Office School',
+    'Minimalist Commuter Backpack Water Resistant Laptop Backpack Fits 15.6 Inch Notebook Lightweight Travel Daypack for Men and Women',
+    'Quilted Chain Crossbody Bag Small Flap Purse Elegant Evening Bag with Gold Tone Hardware for Party Wedding Dating',
+    'Genuine Leather Underarm Handbag Soft Cowhide Hobo Bag Vintage Style Top Handle Purse for Women Office and Daily Use',
+    'Soft Leather Tote Bag Large Capacity Shoulder Bag with Inner Pockets Casual Handbag for Work Travel and Shopping',
+    'Mini Crossbody Phone Bag with Chain Strap Small Square Purse Credit Card Holder Shoulder Bag for Women Evening Out',
+    'Lightweight Nylon Crossbody Bag Water Repellent Sling Bag Multi Pocket Shoulder Bag for Travel Hiking and Daily Commute',
+  ],
+  shoes: [
+    'Genuine Leather Platform White Sneakers Classic Low Top Casual Shoes Non Slip Walking Sneakers for Women and Men Unisex Daily Wear',
+    'Retro German Army Trainer Shoes Suede Leather Casual Sneakers Comfortable Low Top Walking Shoes for Men and Women Spring Autumn',
+    'Soft Sole Loafers Slip On Walking Shoes Casual Driving Loafers Lightweight Comfortable Flats for Women Office and Travel',
+    'High Top Canvas Sneakers Classic Student Shoes Breathable Casual Basketball Style Shoes for Teens Boys and Girls',
+    'Pointed Toe Stiletto Heels French Style Pumps Elegant High Heel Shoes for Women Office Wedding Party Dress Shoes',
+    'Chunky Dad Shoes Platform Sneakers Height Increasing Walking Shoes Retro Casual Shoes for Women and Men Streetwear',
+    'Genuine Leather Martin Boots Short Ankle Boots Lace Up Combat Boots for Women Autumn and Winter Fashion Shoes',
+    'Lightweight Running Shoes Breathable Cushioning Athletic Sneakers Non Slip Sports Shoes for Men and Women Gym Jogging',
+  ],
+  clothes: [
+    'French Floral Print Midi Dress V Neck Ruffle Sleeve A Line Long Dress High Waist Elegant Summer Dress for Women Vacation Party',
+    'Women Blazer Suit Two Piece Set Business Casual Office Outfit Long Sleeve Jacket and Pants Set with Pockets',
+    'Cotton Crew Neck Short Sleeve T Shirt Loose Fit Basic Tee Solid Color Casual Top for Women and Men Summer Daily Wear',
+    'High Waist Wide Leg Pants Drape Suit Pants Straight Leg Trousers with Pockets for Women Office Work Business Casual',
+    'Knit Cardigan Sweater Long Sleeve Open Front Lazy Style Outerwear Soft Warm Cardigan for Women Autumn and Winter',
+    'Chiffon Blouse French Vintage Tops Long Sleeve Button Down Shirt Elegant Office Blouse for Women Spring and Summer',
+    'Denim Straight Leg Jeans High Waist Slim Fit Pants Classic Blue Denim Trousers for Women Casual Daily Wear',
+    'Wool Blend Coat Mid Length Trench Coat Lapel Collar Overcoat Warm Winter Outerwear for Women Business Casual',
+  ],
+  home: [
+    'Nordic Style Storage Basket Desktop Organizer Woven Basket for Cosmetics Remote Control Stationery Home Office Decor',
+    'Simple Ceramic Dinnerware Set 4 Pieces Plate Bowl and Mug Set Microwave Safe Tableware for Kitchen Home Restaurant',
+    'Cotton Linen Cushion Cover Sofa Throw Pillow Case Square Decorative Pillowcase for Living Room Bedroom Home Decor',
+    'Foldable Storage Box Clothes Organizer Large Capacity Fabric Storage Bin with Lid for Wardrobe Bedroom Dorm',
+    'Scented Candle Home Fragrance Gift Box Soy Wax Aromatherapy Candle for Birthday Wedding Holiday Relaxation',
+    'Kitchen Countertop Organizer Rack Spice Rack Storage Shelf Multi Layer Seasoning Organizer for Kitchen and Home',
+    'Waterproof Tablecloth Printed Dining Table Cover Rectangular Washable Table Cloth for Kitchen Party Home Decor',
+    'Lazy Sofa Cover Stretch Full Wrap Slipcover Elastic Couch Cover Furniture Protector for Living Room and Bedroom',
+  ],
+  digital: [
+    'Wireless Bluetooth Earbuds Active Noise Cancelling In Ear Headphones Touch Control HiFi Stereo Earphones with Charging Case',
+    'Fast Charging Data Cable Braided USB Type C Cable Durable Charging Cord for Phone Tablet and Laptop 1m 2m 3m',
+    'Portable Power Bank 10000mAh Fast Charging External Battery Pack with Dual USB Output for Smartphone and Tablet',
+    'Phone Stand Desktop Foldable Holder Adjustable Aluminum Phone Holder for Desk Office Bedside Compatible with Most Phones',
+    'Bluetooth Speaker Outdoor Waterproof Portable Wireless Speaker with Rich Bass Stereo Sound for Travel and Camping',
+    'USB Hub Multi Port Adapter Splitter with USB 3.0 Ports for Laptop Desktop PC and Computer Accessories',
+    'Smart Watch Band Silicone Strap Replacement Wristband Soft Comfortable Quick Release Band for Sports Watch',
+    'Car Phone Holder Magnetic Air Vent Mount Stand 360 Degree Rotation Car Mount for Smartphone and GPS',
+  ],
+  other: [
+    'Minimalist Commuter Backpack Large Capacity Business Laptop Backpack Water Resistant Daypack for Men and Women Travel Office',
+    'Cotton Basic T Shirt Short Sleeve Crew Neck Solid Color Tee Top Casual Summer Shirt for Men and Women Unisex',
+    'Lightweight Sports Shoes Breathable Cushioning Running Sneakers Casual Walking Shoes for Men and Women Gym Fitness',
+    'Multi Functional Storage Box Desktop Organizer Large Capacity Storage Basket for Home Office Bedroom Supplies',
+    'Portable Insulated Water Bottle Stainless Steel Vacuum Flask Leak Proof Travel Mug for Sports Camping and Office',
+    'Retro Print Silk Scarf Square Neck Scarf Fashion Hair Scarf Bandana for Women Daily Wear Party and Gift',
+    'Light Luxury Earrings Set Daily Jewelry Set Geometric Stud Earrings Dangle Earrings for Women Birthday Gift',
+    'Travel Storage Bag Set 6 Pieces Packing Cubes Luggage Organizer Set for Clothes Shoes and Cosmetics Travel Accessories',
+  ],
 };
 
 function categoryOf(store: StoreInfo): string {
@@ -171,6 +253,7 @@ function buildSkus(product: ProductInfo, category: string): SkuInfo[] {
       color: '',
       size,
       pattern: '无图案',
+      image: index === 3 ? '' : product.thumb,
       weight: 1,
     }));
   }
@@ -187,6 +270,7 @@ function buildSkus(product: ProductInfo, category: string): SkuInfo[] {
         color,
         size,
         pattern,
+        image: sizeIndex === 3 ? '' : product.thumb,
         weight: 1,
       });
     });
@@ -202,7 +286,8 @@ export const PRODUCTS: ProductInfo[] = STORES.flatMap((store, storeIndex) => {
     const random = mulberry32(hashStr(`${store.id}|${index}|product`));
     const itemcode = `2048176${String(storeIndex * 100 + index + 1).padStart(3, '0')}`;
     const nameBase = names[(index + storeIndex * 3) % names.length];
-    const name = index >= names.length ? `${nameBase} ${Math.floor(index / names.length) + 1}` : nameBase;
+    const rawName = index >= names.length ? `${nameBase} ${Math.floor(index / names.length) + 1}` : nameBase;
+    const name = rawName.slice(0, 140);
     const product: ProductInfo = {
       itemcode,
       storeId: store.id,

@@ -7,6 +7,7 @@ export interface StoreInfo {
   id: number;
   name: string;
   alias: string;
+  catePubName: string;
   groupId: number;
   adEnabled: boolean;
   openDate: string;
@@ -27,6 +28,7 @@ export interface SkuInfo {
   color: string;
   size: string;
   pattern: string;
+  image: string;
   weight: number;
 }
 
@@ -88,7 +90,7 @@ export interface ProdReportRow {
   gmv: number;
 }
 
-/** 订单商品行 / 补单行 */
+/** 订单商品行 / 无效单行 */
 export interface OrderRow {
   date: string;
   storeId: number;
@@ -138,6 +140,8 @@ export interface ItemRow extends Metrics {
   name: string;
   thumb: string;
   adTypes: AdType[];
+  productGmv: number;
+  adRatio: number | null;
   zeroConv: boolean;
   lowRoas: boolean;
 }
@@ -230,13 +234,6 @@ export const AD_TYPE_LABEL: Record<AdType, string> = {
   shopauto: '全店自动',
 };
 
-export const AD_TYPE_OPTIONS = [
-  { value: '', label: '全部广告类型' },
-  { value: 'ppc', label: '手动广告' },
-  { value: 'prodauto', label: '商品自动' },
-  { value: 'shopauto', label: '全店自动' },
-];
-
 export const COUNTRIES: Array<{ id: 'TOTAL' | CountryId; name: string }> = [
   { id: 'TOTAL', name: '全部国家' },
   { id: 'US', name: '美国' },
@@ -248,8 +245,8 @@ export const COUNTRIES: Array<{ id: 'TOTAL' | CountryId; name: string }> = [
 ];
 
 export const ORDER_LABELS: Array<{ id: string; name: string; description: string }> = [
-  { id: 'lbl-supplement', name: '补单', description: '人为补足销量的订单' },
-  { id: 'lbl-brush', name: '刷单', description: '虚假交易订单' },
+  { id: 'lbl-supplement', name: '无效单', description: '标记为无效的订单' },
+  { id: 'lbl-brush', name: '风险单', description: '标记为风险的订单' },
   { id: 'lbl-gift', name: '赠品单', description: '赠品或 0 元订单' },
   { id: 'lbl-test', name: '测试单', description: '内部测试下单' },
   { id: 'lbl-friend', name: '熟人单', description: '熟人/内部人员购买' },

@@ -42,8 +42,7 @@ export function StoreCascader({
 
   const allIds = useMemo(() => groups.flatMap((group) => group.stores.map((store) => store.id)), [groups]);
   const valueSet = useMemo(() => new Set(value), [value]);
-  const allIdSet = useMemo(() => new Set(allIds), [allIds]);
-  const effectiveSet = value.length === 0 ? allIdSet : valueSet;
+  const effectiveSet = useMemo(() => (value.length === 0 ? new Set<number>() : valueSet), [value, valueSet]);
   const groupMap = useMemo(() => {
     const map = new Map<string, CascaderGroup>();
     groups.forEach((group) => map.set(group.id, group));
@@ -134,14 +133,14 @@ export function StoreCascader({
   };
 
   const toggleOne = (id: number) => {
-    const base = value.length ? value : allIds;
+    const base = value;
     onChange(effectiveSet.has(id) ? base.filter((item) => item !== id) : Array.from(new Set([...base, id])));
   };
 
   const toggleGroup = (group: CascaderGroup) => {
-    const base = value.length ? value : allIds;
+    const base = value;
     const ids = group.stores.map((store) => store.id);
-    const allOn = ids.every((id) => effectiveSet.has(id));
+    const allOn = ids.length > 0 && ids.every((id) => effectiveSet.has(id));
     onChange(allOn ? base.filter((id) => !ids.includes(id)) : Array.from(new Set([...base, ...ids])));
   };
 

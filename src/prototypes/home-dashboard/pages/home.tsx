@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Check, X } from 'lucide-react';
+import { Check, Minus, Plus, X } from 'lucide-react';
 import {
   buildHomeKpis,
   buildHomeTrend,
   levelRank,
   productRank,
-  resolveExclusions,
   storeSalesRank,
   storeTrafficRank,
   type HomeKpi,
@@ -13,9 +12,8 @@ import {
   type ProductRankMetric,
   type RankRow,
 } from '../data/aggregate';
-import { LEVEL_COLORS, LEVEL_LIGHT_COLORS, STORES } from '../data/catalog';
+import { LEVEL_COLORS, LEVEL_LIGHT_COLORS } from '../data/catalog';
 import { fmtAxis, fmtInt, fmtMoney, fmtMoneyAxis, fmtRoas } from '../data/format';
-import { REPORT_TO, addDays } from '../data/generate';
 import type { ExclusionConfig, StorePeriodKey } from '../data/types';
 import homeJson from '../data/home.json';
 import bgDeco from '../assets/bg-deco.png';
@@ -32,8 +30,11 @@ import promo2 from '../assets/promo-2.png';
 import promo3 from '../assets/promo-3.png';
 import { Chart, type ChartSeries } from '../components/Chart';
 import { ExclusionDialog } from '../components/ExclusionDialog';
+import { MetricHelp } from '../components/MetricHelp';
 import { RankingDialog } from '../components/RankingDialog';
 import { Segmented } from '../components/Segmented';
+import { Select } from '../components/Select';
+import { SyncActions } from '../components/SyncActions';
 
 type Announcement = { id: number; title: string; categoryName: string; date: string };
 
@@ -53,6 +54,14 @@ const PROMOS = [
   { src: promo3, alt: '直播预告' },
 ];
 
+const HOME_KPI_TIPS: Record<string, string> = {
+  sales: '当日成交金额之和，按当前 GMV 口径',
+  orders: '当日成交订单数',
+  qty: '当日成交商品件数',
+  adCost: '当日广告花费之和',
+  roas: '当日广告 GMV / 广告消耗',
+};
+
 const ALERT_STATUSES = [
   '订单取消', '等待买家付款', '买家已付款，等待平台确认', '等待发货', '买家申请退款，等待协商结果',
   '退款协议已达成', '部分退款后，等待发货', '买家取消退款申请', '已部分发货', '等待买家确认收货',
@@ -61,6 +70,17 @@ const ALERT_STATUSES = [
 ];
 
 const DEFAULT_CHECKED = ['订单取消', '买家申请退款，等待协商结果', '退款/退货协商中，等待协议达成', '买家投诉到平台'];
+
+const INTL_STATUSES = ['未查询到物流信息', '物流商已收货', '运输中', '运输过久', '投递失败', '到达待取', '已妥投'];
+
+type AlertType = 'order' | 'delivery' | 'onnet' | 'logistics';
+
+const ALERT_CONFIG: Record<AlertType, { statuses: string[]; intl: string[]; online: 'online' | 'offline'; deliveryDays: number; netDays: number; staleDays: number }> = {
+  order: { statuses: DEFAULT_CHECKED, intl: [], online: 'offline', deliveryDays: 3, netDays: 7, staleDays: 5 },
+  delivery: { statuses: ['等待发货'], intl: [], online: 'offline', deliveryDays: 3, netDays: 7, staleDays: 5 },
+  onnet: { statuses: ['等待买家确认收货'], intl: [], online: 'offline', deliveryDays: 3, netDays: 7, staleDays: 5 },
+  logistics: { statuses: ['等待买家确认收货'], intl: ['投递失败', '到达待取'], online: 'offline', deliveryDays: 3, netDays: 7, staleDays: 5 },
+};
 
 const MEDALS = [rank1, rank2, rank3];
 
@@ -76,18 +96,16 @@ const TREND_PERIODS: Array<{ key: HomeTrendPeriod; label: string }> = [
   { key: 'm6', label: '近6月' },
 ];
 
-const PERIOD_DAYS: Record<HomeTrendPeriod, number> = { m1: 30, m2: 60, m3: 90, m6: 180 };
-
 const STORE_RANK_TABS: Array<{ key: 'sales' | 'traffic' | 'level'; label: string }> = [
-  { key: 'sales', label: '销量' },
-  { key: 'traffic', label: '流量' },
+  { key: 'sales', label: '销售额' },
+  { key: 'traffic', label: '浏览量' },
   { key: 'level', label: '等级' },
 ];
 
 const PRODUCT_METRICS: Array<{ key: ProductRankMetric; label: string }> = [
   { key: 'qty', label: '销量' },
   { key: 'gmv', label: '销售额' },
-  { key: 'orders', label: '订单数' },
+  { key: 'orders', label: '订单量' },
 ];
 
 const RANK_PERIODS = {
@@ -97,9 +115,9 @@ const RANK_PERIODS = {
     { key: 'months3' as StorePeriodKey, label: '近3月' },
   ],
   traffic: [
-    { key: 'day' as StorePeriodKey, label: '近1天' },
-    { key: 'week' as StorePeriodKey, label: '近7天' },
-    { key: 'month' as StorePeriodKey, label: '近30天' },
+    { key: 'week' as StorePeriodKey, label: '近1周' },
+    { key: 'month' as StorePeriodKey, label: '近1月' },
+    { key: 'months3' as StorePeriodKey, label: '近3月' },
   ],
   product: [
     { key: 'week' as StorePeriodKey, label: '近1周' },
@@ -155,23 +173,51 @@ function AnnouncementDialog({ announcements, onClose }: { announcements: Announc
   );
 }
 
-function AlertSettingsDialog({ onClose }: { onClose: () => void }) {
-  const [checked, setChecked] = useState<string[]>(DEFAULT_CHECKED);
-  const [selectAll, setSelectAll] = useState(true);
+function Stepper({ value, onChange }: { value: number; onChange: (value: number) => void }) {
+  return (
+    <div className="hd-stepper">
+      <button type="button" className="hd-stepper-btn" aria-label="减少" disabled={value <= 1} onClick={() => onChange(Math.max(1, value - 1))}>
+        <Minus size={12} strokeWidth={2} />
+      </button>
+      <input
+        className="hd-stepper-input"
+        type="text"
+        inputMode="numeric"
+        value={value}
+        onChange={(event) => {
+          const next = Number(event.target.value.replace(/[^\d]/g, ''));
+          if (Number.isFinite(next) && next >= 1) onChange(next);
+        }}
+      />
+      <button type="button" className="hd-stepper-btn" aria-label="增加" onClick={() => onChange(value + 1)}>
+        <Plus size={12} strokeWidth={2} />
+      </button>
+    </div>
+  );
+}
+
+function AlertSettingsDialog({ type, onClose }: { type: AlertType; onClose: () => void }) {
+  const config = ALERT_CONFIG[type];
+  const [checked, setChecked] = useState<string[]>(config.statuses);
+  const [intlChecked, setIntlChecked] = useState<string[]>(config.intl);
+  const [online, setOnline] = useState<string>(config.online);
+  const [deliveryDays, setDeliveryDays] = useState(config.deliveryDays);
+  const [netDays, setNetDays] = useState(config.netDays);
+  const [staleDays, setStaleDays] = useState(config.staleDays);
+
+  const allChecked = checked.length === ALERT_STATUSES.length;
+  const mixed = checked.length > 0 && !allChecked;
 
   const toggle = (status: string) => {
     setChecked((current) => (current.includes(status) ? current.filter((item) => item !== status) : [...current, status]));
-    setSelectAll(false);
   };
 
   const toggleAll = () => {
-    if (selectAll) {
-      setSelectAll(false);
-      setChecked([]);
-    } else {
-      setSelectAll(true);
-      setChecked([...ALERT_STATUSES]);
-    }
+    setChecked(allChecked ? [] : [...ALERT_STATUSES]);
+  };
+
+  const toggleIntl = (status: string) => {
+    setIntlChecked((current) => (current.includes(status) ? current.filter((item) => item !== status) : [...current, status]));
   };
 
   return (
@@ -182,24 +228,87 @@ function AlertSettingsDialog({ onClose }: { onClose: () => void }) {
           <button type="button" className="hd-alert-dialog-close" aria-label="关闭" onClick={onClose}><X size={18} /></button>
         </div>
         <div className="hd-alert-dialog-body">
-          <div className="hd-alert-section-head">
-            <span className="hd-alert-section-title">平台订单状态</span>
-            <span className={`hd-checkbox${selectAll || checked.length > 0 ? ' is-checked' : ''}`} onClick={toggleAll} role="checkbox" aria-checked={selectAll}>
-              <span className="hd-checkbox-box">{selectAll || checked.length > 0 ? <Check size={10} strokeWidth={3} /> : null}</span>
-              全选
-            </span>
+          <div className="hd-alert-section">
+            <div className="hd-alert-section-head">
+              <span className="hd-alert-section-title">平台订单状态</span>
+              <span
+                className={`hd-checkbox${allChecked ? ' is-checked' : ''}${mixed ? ' is-indeterminate' : ''}`}
+                onClick={toggleAll}
+                role="checkbox"
+                aria-checked={mixed ? 'mixed' : allChecked}
+              >
+                <span className="hd-checkbox-box">{allChecked ? <Check size={10} strokeWidth={3} /> : mixed ? <i className="hd-checkbox-dash" /> : null}</span>
+                全选
+              </span>
+            </div>
+            <div className="hd-alert-grid">
+              {ALERT_STATUSES.map((status) => {
+                const isChecked = checked.includes(status);
+                return (
+                  <span className={`hd-checkbox${isChecked ? ' is-checked' : ''}`} key={status} onClick={() => toggle(status)}>
+                    <span className="hd-checkbox-box">{isChecked ? <Check size={10} strokeWidth={3} /> : null}</span>
+                    <span className="hd-checkbox-text">{status}</span>
+                  </span>
+                );
+              })}
+            </div>
           </div>
-          <div className="hd-alert-grid">
-            {ALERT_STATUSES.map((status) => {
-              const isChecked = checked.includes(status);
-              return (
-                <span className={`hd-checkbox${isChecked ? ' is-checked' : ''}`} key={status} onClick={() => toggle(status)}>
-                  <span className="hd-checkbox-box">{isChecked ? <Check size={10} strokeWidth={3} /> : null}</span>
-                  <span className="hd-checkbox-text">{status}</span>
-                </span>
-              );
-            })}
-          </div>
+
+          {type === 'logistics' ? (
+            <div className="hd-alert-section">
+              <div className="hd-alert-section-head">
+                <span className="hd-alert-section-title">国际物流状态</span>
+              </div>
+              <div className="hd-alert-grid">
+                {INTL_STATUSES.map((status) => {
+                  const isChecked = intlChecked.includes(status);
+                  return (
+                    <span className={`hd-checkbox${isChecked ? ' is-checked' : ''}`} key={status} onClick={() => toggleIntl(status)}>
+                      <span className="hd-checkbox-box">{isChecked ? <Check size={10} strokeWidth={3} /> : null}</span>
+                      <span className="hd-checkbox-text">{status}</span>
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null}
+
+          {type === 'delivery' ? (
+            <div className="hd-alert-extra">
+              <span className="hd-alert-section-title">剩余发货天数</span>
+              <div className="hd-alert-extra-row">
+                <span className="hd-alert-extra-text">剩余几天内发货</span>
+                <Stepper value={deliveryDays} onChange={setDeliveryDays} />
+              </div>
+            </div>
+          ) : null}
+
+          {type === 'onnet' ? (
+            <div className="hd-alert-extra">
+              <span className="hd-alert-section-title">未上网天数</span>
+              <div className="hd-alert-extra-row">
+                <Select
+                  value={online}
+                  options={[{ value: 'online', label: '已上网' }, { value: 'offline', label: '未上网' }]}
+                  onChange={setOnline}
+                  width={140}
+                  placeholder="是否已上网"
+                />
+                <span className="hd-alert-extra-text">超过几天未上网</span>
+                <Stepper value={netDays} onChange={setNetDays} />
+              </div>
+            </div>
+          ) : null}
+
+          {type === 'logistics' ? (
+            <div className="hd-alert-extra">
+              <span className="hd-alert-section-title">断更天数</span>
+              <div className="hd-alert-extra-row">
+                <span className="hd-alert-extra-text">轨迹断更天数</span>
+                <Stepper value={staleDays} onChange={setStaleDays} />
+              </div>
+            </div>
+          ) : null}
         </div>
         <div className="hd-alert-dialog-footer">
           <button type="button" className="hd-btn is-default" onClick={onClose}>取消</button>
@@ -215,12 +324,29 @@ function StoreRankList({ rows, kind }: { rows: RankRow[]; kind: 'sales' | 'traff
   return (
     <ul className="hd-ranking-list">
       {rows.map((row) => (
-        <li className="hd-ranking-item" key={row.key}>
+        <li className="hd-ranking-item is-store-rank" key={row.key}>
           {row.rank <= 3 ? <img className="hd-rank-medal" src={MEDALS[row.rank - 1]} alt="" /> : <div className="hd-rank-badge">{row.rank}</div>}
-          <span className="hd-store-name" title={row.storeName}>{row.storeName}</span>
-          <span className={`hd-store-amount ${row.rank <= 3 ? 'is-top' : 'is-normal'}`}>
-            {kind === 'sales' ? fmtMoney(row.value) : fmtInt(row.value)}
-          </span>
+          <div className="hd-rank-store-main">
+            <span className="hd-store-cell hd-rank-store-cell">
+              <strong title={row.storeName}>{row.storeName}</strong>
+              {row.storeAlias ? <em title={row.storeAlias}>{row.storeAlias}</em> : null}
+            </span>
+            {kind === 'sales' ? (
+              <>
+                <span className="hd-store-metric">售出 {fmtInt(row.qty ?? 0)} 件</span>
+                <span className="hd-store-metric">成交 {fmtInt(row.orders ?? 0)} 单</span>
+              </>
+            ) : null}
+            {kind === 'traffic' ? (
+              <>
+                <span className="hd-store-metric">{fmtInt(row.uv ?? 0)} 访客</span>
+                <span className="hd-store-metric">{row.uvValue == null ? '-' : fmtMoney(row.uvValue)} UV</span>
+              </>
+            ) : null}
+            <span className={`hd-store-amount ${row.rank <= 3 ? 'is-top' : 'is-normal'}`}>
+              {kind === 'sales' ? fmtMoney(row.value) : fmtInt(row.value)}
+            </span>
+          </div>
         </li>
       ))}
     </ul>
@@ -239,6 +365,10 @@ function ProductRankList({ rows, metric }: { rows: RankRow[]; metric: ProductRan
             <span className="hd-rank-product-mini">
               <span className="hd-store-name" title={row.name}>{row.name}</span>
               <em>{row.itemcode}</em>
+            </span>
+            <span className="hd-store-cell hd-product-store">
+              <strong title={row.storeName}>{row.storeName}</strong>
+              {row.storeAlias ? <em title={row.storeAlias}>{row.storeAlias}</em> : null}
             </span>
             <span className={`hd-store-amount ${row.rank <= 3 ? 'is-top' : 'is-normal'}`}>
               {metric === 'gmv' ? fmtMoney(row.value) : fmtInt(row.value)}
@@ -259,14 +389,22 @@ function LevelRankList({ rows }: { rows: RankRow[] }) {
         return (
           <li className="hd-ranking-item is-level" key={row.key}>
             {row.rank <= 3 ? <img className="hd-rank-medal" src={MEDALS[row.rank - 1]} alt="" /> : <div className="hd-rank-badge">{row.rank}</div>}
-            <span className="hd-store-name" title={row.storeName}>{row.storeName}</span>
-            <span
-              className="hd-level-chip"
-              style={{ color: LEVEL_COLORS[level] || LEVEL_COLORS[0], background: LEVEL_LIGHT_COLORS[level] || LEVEL_LIGHT_COLORS[0] }}
-            >
-              LV.{level}
-            </span>
-            <span className="hd-level-score">{(row.score ?? 0).toFixed(2)} 分</span>
+            <div className="hd-rank-level-main">
+              <span className="hd-store-cell hd-rank-store-cell">
+                <strong title={row.storeName}>{row.storeName}</strong>
+                {row.storeAlias ? <em title={row.storeAlias}>{row.storeAlias}</em> : null}
+              </span>
+              <span className="hd-store-cate" title={row.catePubName} data-annotation-id={row.rank === 1 ? 'hd-store-cate' : undefined}>
+                {row.catePubName}
+              </span>
+              <span
+                className="hd-level-chip"
+                style={{ color: LEVEL_COLORS[level] || LEVEL_COLORS[0], background: LEVEL_LIGHT_COLORS[level] || LEVEL_LIGHT_COLORS[0] }}
+              >
+                LV.{level}
+              </span>
+              <span className="hd-level-score">{(row.score ?? 0).toFixed(2)} 分</span>
+            </div>
           </li>
         );
       })}
@@ -286,25 +424,31 @@ export function HomePage({
   onToggleExclusion,
   configs,
   onSaveConfigs,
+  lastSync,
+  syncing,
+  onSync,
   onNavigate,
 }: {
   exclusionEnabled: boolean;
   onToggleExclusion: () => void;
   configs: ExclusionConfig[];
   onSaveConfigs: (next: ExclusionConfig[]) => void;
-  onNavigate: (page: 'ad-detail' | 'store-detail', options?: { tab?: 'ad' }) => void;
+  lastSync: string;
+  syncing: boolean;
+  onSync: () => void;
+  onNavigate: (page: 'store-detail', options?: { tab?: 'ad' }) => void;
 }) {
   const [trendView, setTrendView] = useState<'store' | 'ad'>('store');
   const [trendPeriod, setTrendPeriod] = useState<HomeTrendPeriod>('m1');
   const [hiddenSeries, setHiddenSeries] = useState<string[]>([]);
   const [salesPeriod, setSalesPeriod] = useState<StorePeriodKey>('week');
-  const [trafficPeriod, setTrafficPeriod] = useState<StorePeriodKey>('day');
+  const [trafficPeriod, setTrafficPeriod] = useState<StorePeriodKey>('week');
   const [productPeriod, setProductPeriod] = useState<StorePeriodKey>('week');
   const [rankDialog, setRankDialog] = useState<'sales' | 'traffic' | 'product' | 'level' | null>(null);
   const [storeRankTab, setStoreRankTab] = useState<'sales' | 'traffic' | 'level'>('sales');
   const [productMetric, setProductMetric] = useState<ProductRankMetric>('qty');
   const [announcementOpen, setAnnouncementOpen] = useState(false);
-  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState<AlertType | null>(null);
   const [exclusionOpen, setExclusionOpen] = useState(false);
   const [promoIndex, setPromoIndex] = useState(1);
 
@@ -326,18 +470,13 @@ export function HomePage({
   const productRows = useMemo(() => productRank(productPeriod, productMetric), [productPeriod, productMetric]);
   const levelRows = useMemo(() => levelRank(), []);
   const announcements = useMemo(() => DATA.announcements.slice(0, 10), []);
-  const trendFrom = addDays(REPORT_TO, -(PERIOD_DAYS[trendPeriod] - 1));
-  const exclusionInfo = useMemo(
-    () => resolveExclusions(configs, exclusionEnabled, trendFrom, REPORT_TO, STORES.map((store) => store.id)),
-    [configs, exclusionEnabled, trendFrom],
-  );
 
   const abnormal = DATA.abnormal;
-  const alerts = [
-    { title: '异常订单', count: abnormal.abnormalOrderCount, desc: '平台异常未处理的订单', tone: 'danger', icon: alertIcon1 },
-    { title: '异常发货', count: abnormal.abnormalDeliveryCount, desc: '承诺发货截止时间的订单', tone: 'purple', icon: alertIcon2 },
-    { title: '异常上网', count: abnormal.abnormalOnNetCount, desc: '有发货但无上网记录的订单', tone: 'green', icon: alertIcon3 },
-    { title: '异常物流', count: abnormal.abnormalLogisticsCount, desc: '物流还未显示录入的订单', tone: 'orange', icon: alertIcon4 },
+  const alerts: Array<{ key: AlertType; title: string; count: number; desc: string; tone: string; icon: string }> = [
+    { key: 'order', title: '异常订单', count: abnormal.abnormalOrderCount, desc: '平台异常未处理的订单', tone: 'danger', icon: alertIcon1 },
+    { key: 'delivery', title: '异常发货', count: abnormal.abnormalDeliveryCount, desc: '承诺发货截止时间的订单', tone: 'purple', icon: alertIcon2 },
+    { key: 'onnet', title: '异常上网', count: abnormal.abnormalOnNetCount, desc: '有发货但无上网记录的订单', tone: 'green', icon: alertIcon3 },
+    { key: 'logistics', title: '异常物流', count: abnormal.abnormalLogisticsCount, desc: '物流还未显示录入的订单', tone: 'orange', icon: alertIcon4 },
   ];
 
   const rankDialogPeriod = rankDialog === 'traffic' ? trafficPeriod : rankDialog === 'product' ? productPeriod : rankDialog === 'level' ? 'month' : salesPeriod;
@@ -380,6 +519,7 @@ export function HomePage({
           <h1 className="hd-title">智慧运营中台</h1>
           <p className="hd-subtitle">运营全局尽在掌握，数据驱动增长</p>
         </div>
+        <SyncActions lastSync={lastSync} syncing={syncing} onSync={onSync} />
       </div>
 
       <div className="hd-grid">
@@ -398,7 +538,7 @@ export function HomePage({
                   >
                     <div className="hd-metric-top">
                       <img className="hd-metric-icon" src={metricIcon} alt="" />
-                      <span className="hd-metric-label">{kpi.label}</span>
+                      <span className="hd-metric-label">{kpi.label}<MetricHelp tip={HOME_KPI_TIPS[kpi.key] ?? ''} /></span>
                       <span className="hd-metric-go">›</span>
                     </div>
                     <div className="hd-metric-value">{kpiText(kpi)}</div>
@@ -424,7 +564,7 @@ export function HomePage({
                     </div>
                     <div className="hd-alert-bottom">
                       <span className="hd-alert-desc">{alert.desc}</span>
-                      <span className="hd-alert-setting" onClick={(event) => { event.stopPropagation(); setAlertOpen(true); }}>设置</span>
+                      <span className="hd-alert-setting" onClick={(event) => { event.stopPropagation(); setAlertOpen(alert.key); }}>设置</span>
                     </div>
                   </div>
                 </div>
@@ -439,7 +579,7 @@ export function HomePage({
                   <Segmented value={trendPeriod} options={TREND_PERIODS} onChange={setTrendPeriod} />
                   <Segmented
                     value={exclusionEnabled ? 'exclude' : 'raw'}
-                    options={[{ key: 'exclude', label: '剔除补单' }, { key: 'raw', label: '原始数据' }]}
+                    options={[{ key: 'exclude', label: '剔除数据' }, { key: 'raw', label: '原始数据' }]}
                     onChange={(next) => {
                       if ((next === 'exclude') !== exclusionEnabled) onToggleExclusion();
                     }}
@@ -594,13 +734,10 @@ export function HomePage({
         />
       ) : null}
       {announcementOpen ? <AnnouncementDialog announcements={DATA.announcements} onClose={() => setAnnouncementOpen(false)} /> : null}
-      {alertOpen ? <AlertSettingsDialog onClose={() => setAlertOpen(false)} /> : null}
+      {alertOpen ? <AlertSettingsDialog type={alertOpen} onClose={() => setAlertOpen(null)} /> : null}
       {exclusionOpen ? (
         <ExclusionDialog
           configs={configs}
-          excludedGmv={exclusionInfo.gmv}
-          excludedCount={exclusionInfo.count}
-          manualTotal={exclusionInfo.manualTotal}
           onSave={(next) => { onSaveConfigs(next); setExclusionOpen(false); }}
           onClose={() => setExclusionOpen(false)}
         />

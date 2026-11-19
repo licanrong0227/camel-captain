@@ -12,6 +12,7 @@ type SkuMetric = ProductRankMetric;
 interface AggRow {
   key: string;
   label: string;
+  image?: string;
   qty: number;
   gmv: number;
   orders: number;
@@ -73,6 +74,7 @@ export function ProductSkuDialog({
         return {
           key: sku.id,
           label: parts.join(' ') || '默认规格',
+          image: sku.image,
           qty: sku.qty,
           gmv: sku.gmv,
           orders: sku.orders,
@@ -83,7 +85,7 @@ export function ProductSkuDialog({
     skus.forEach((sku) => {
       const value = sku[dimension] || EMPTY_VALUE[dimension];
       const label = `${DIMENSION_LABEL[dimension]}:${value}`;
-      const current = groups.get(label) ?? { key: label, label, qty: 0, gmv: 0, orders: 0 };
+      const current = groups.get(label) ?? { key: label, label, image: sku.image, qty: 0, gmv: 0, orders: 0 };
       current.qty += sku.qty;
       current.gmv += sku.gmv;
       current.orders += sku.orders;
@@ -135,7 +137,12 @@ export function ProductSkuDialog({
               {sorted.map((item, index) => (
                 <tr key={item.key}>
                   <td className="is-rank">{index + 1}</td>
-                  <td>{item.label}</td>
+                  <td>
+                    <span className="hd-sku-spec">
+                      {item.image ? <img className="hd-sku-thumb" src={item.image} alt="" /> : <span className="hd-sku-thumb" />}
+                      <span className="hd-sku-spec-label">{item.label}</span>
+                    </span>
+                  </td>
                   <td className={`is-num${metric === 'qty' ? ' is-active' : ''}`}>{fmtInt(item.qty)}</td>
                   <td className={`is-num${metric === 'gmv' ? ' is-active' : ''}`}>{fmtMoney(item.gmv)}</td>
                   <td className={`is-num${metric === 'orders' ? ' is-active' : ''}`}>{fmtInt(item.orders)}</td>

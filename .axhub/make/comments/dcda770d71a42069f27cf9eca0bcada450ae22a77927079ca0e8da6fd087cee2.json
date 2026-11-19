@@ -6,6 +6,95 @@
     "targetPath": "prototypes/batch-image-white-bg-copy",
     "filePath": ".axhub/make/comments/dcda770d71a42069f27cf9eca0bcada450ae22a77927079ca0e8da6fd087cee2.json"
   },
-  "comments": [],
+  "comments": [
+    {
+      "elementKey": "div_10",
+      "label": "div[data-testid=\"axhub-annotation-j4h83i\"]",
+      "locator": {
+        "selectors": [
+          "[data-testid=\"axhub-annotation-j4h83i\"]",
+          ".biw-process",
+          "body > div > div > div > div:nth-of-type(2) > div"
+        ],
+        "fingerprint": "div|class=biw-process|text=转白底翻译加水印去水印裁剪缩放主图站外推广图SKU图详情图水印模",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 857,
+        "clientY": 350,
+        "documentX": 857,
+        "documentY": 350,
+        "xPercent": 44.82217573221757,
+        "y": 350,
+        "isFixed": true,
+        "offsetX": 386,
+        "offsetY": 154.90625,
+        "dirtySince": 1794299272666
+      },
+      "id": "b6627dc0-95db-45aa-a07e-d0213986b4c3",
+      "state": "idle",
+      "comment": "图片上传右侧新增“内置图片”按钮，点击打开弹窗，可从系统内置图标库选择图标作为水印\n内置图标素材见：D:\\projects\\DEMAND\\内置图标",
+      "pageScope": "/prototypes/batch-image-white-bg-copy",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    },
+    {
+      "elementKey": "nav_15",
+      "label": "nav[data-testid=\"axhub-annotation-vltgoy\"]",
+      "locator": {
+        "selectors": [
+          "[data-testid=\"axhub-annotation-vltgoy\"]",
+          ".biw-nav",
+          "body > div > div > div > div:nth-of-type(2) > div > nav",
+          "[data-testid=\"axhub-annotation-j4h83i\"] nav"
+        ],
+        "fingerprint": "nav|class=biw-nav|text=转白底翻译加水印去水印裁剪缩放",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 519,
+        "clientY": 298,
+        "documentX": 519,
+        "documentY": 298,
+        "xPercent": 27.144351464435147,
+        "y": 298,
+        "isFixed": true,
+        "offsetX": 55.5,
+        "offsetY": 101.90625,
+        "dirtySince": 1794299427707
+      },
+      "id": "0db02dd2-d671-40d2-9a99-2ae6a7088f60",
+      "state": "idle",
+      "comment": "加水印改为：加水印、图标\n",
+      "pageScope": "/prototypes/batch-image-white-bg-copy",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    }
+  ],
   "images": []
 }

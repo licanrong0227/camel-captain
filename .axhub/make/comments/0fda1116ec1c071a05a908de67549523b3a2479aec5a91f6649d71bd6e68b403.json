@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 3,
+  "kind": "prototype-edit-comments",
+  "resource": {
+    "id": "order-config-dialog",
+    "targetPath": "prototypes/order-config-dialog",
+    "filePath": ".axhub/make/comments/0fda1116ec1c071a05a908de67549523b3a2479aec5a91f6649d71bd6e68b403.json"
+  },
+  "comments": [],
+  "images": []
+}

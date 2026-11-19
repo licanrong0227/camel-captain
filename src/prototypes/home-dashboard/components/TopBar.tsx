@@ -89,7 +89,7 @@ function NavIcon({ name }: { name: string }) {
   return <>{map[name] || <FileText size={14} />}</>;
 }
 
-export function TopBar({ homeActive, onHome }: { homeActive: boolean; onHome: () => void }) {
+export function TopBar({ homeActive, onHome, onStoreBoard }: { homeActive: boolean; onHome: () => void; onStoreBoard: () => void }) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [popover, setPopover] = useState<null | 'theme' | 'message' | 'avatar'>(null);
   const [theme, setTheme] = useState('日落橙');
@@ -130,7 +130,15 @@ export function TopBar({ homeActive, onHome }: { homeActive: boolean; onHome: ()
                       <div className="hd-submenu-title">{group.title}</div>
                       <div className="hd-submenu-grid">
                         {items.map((item) => (
-                          <div className="hd-submenu-item" key={`${group.title}-${item.title}`}>
+                          <div
+                            className="hd-submenu-item"
+                            key={`${group.title}-${item.title}`}
+                            onClick={() => {
+                              if (menu.title !== '报表' || item.title !== '店铺看板') return;
+                              setOpenMenu(null);
+                              onStoreBoard();
+                            }}
+                          >
                             <NavIcon name={item.icon} />
                             <span>{item.title}</span>
                           </div>

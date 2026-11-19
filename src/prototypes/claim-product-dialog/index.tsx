@@ -19,6 +19,15 @@ function IconClose() {
   );
 }
 
+function IconSearch() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" aria-hidden="true">
+      <circle cx="7" cy="7" r="4.5" />
+      <path d="M10.4 10.4l3.1 3.1" />
+    </svg>
+  );
+}
+
 function IconCheck() {
   return (
     <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -418,7 +427,17 @@ const AiKeywordField = ({ value, onChange }: { value: string; onChange: (next: s
 
 /* ============ 数据 ============ */
 
-const STORES = ['echvolt', '运营测试-张诗淇专用', '服装测试', 'shoes', 'bag'];
+const STORES = [
+  'echvolt',
+  '运营测试-张诗淇专用',
+  '服装测试',
+  'shoes',
+  'bag',
+  '深圳优选服饰',
+  '义乌小商品批发',
+  'Outdoor Pro 户外专营',
+  'Kids Joy 童装',
+];
 
 const PRODUCT = {
   image: productShoe,
@@ -435,6 +454,7 @@ const PLATFORM = {
 
 export default function ClaimProductDialog() {
   const [selectedStores, setSelectedStores] = useState<string[]>([]);
+  const [storeKeyword, setStoreKeyword] = useState('');
   const [open, setOpen] = useState(true);
   const [toast, setToast] = useState('');
   const toastTimer = useRef<number | undefined>(undefined);
@@ -467,7 +487,12 @@ export default function ClaimProductDialog() {
   const [nextDayTime, setNextDayTime] = useState('');
 
   const selectedCount = selectedStores.length;
-  const allSelected = selectedCount === STORES.length;
+  const storeKeywordQuery = storeKeyword.trim().toLowerCase();
+  const visibleStores = storeKeywordQuery
+    ? STORES.filter((store) => store.toLowerCase().includes(storeKeywordQuery))
+    : STORES;
+  const visibleSelectedCount = visibleStores.filter((store) => selectedStores.includes(store)).length;
+  const allSelected = visibleStores.length > 0 && visibleSelectedCount === visibleStores.length;
   const hasSelection = selectedCount > 0;
   const loopVisible = claimMode === 'publish' && loopOn;
 
@@ -484,7 +509,11 @@ export default function ClaimProductDialog() {
   };
 
   const toggleAll = () => {
-    setSelectedStores(allSelected ? [] : [...STORES]);
+    setSelectedStores((prev) => {
+      const everyVisibleSelected = visibleStores.every((store) => prev.includes(store));
+      if (everyVisibleSelected) return prev.filter((store) => !visibleStores.includes(store));
+      return [...prev, ...visibleStores.filter((store) => !prev.includes(store))];
+    });
   };
 
   const addBackupTitle = () => setBackupTitles((list) => [...list, '']);
@@ -595,20 +624,46 @@ export default function ClaimProductDialog() {
                     选择店铺
                     <span className="cpd-label-sub">（可多选）已选择{selectedCount}个店铺</span>
                   </div>
-                  <label className={`cpd-select-all${allSelected ? ' is-checked' : ''}`}>
+                  <label className={`cpd-select-all${allSelected ? ' is-checked' : ''}${visibleStores.length ? '' : ' is-disabled'}`}>
                     <span className="cpd-select-all-box">{allSelected ? <IconCheck /> : null}</span>
                     <span className="cpd-select-all-text">全选</span>
                     <input
                       className="cpd-visually-hidden"
                       type="checkbox"
                       checked={allSelected}
+                      disabled={!visibleStores.length}
                       onChange={toggleAll}
                     />
                   </label>
                 </div>
 
+                <div className="cpd-store-search">
+                  <span className="cpd-store-search-icon" aria-hidden="true"><IconSearch /></span>
+                  <input
+                    className="cpd-store-search-input"
+                    type="text"
+                    value={storeKeyword}
+                    placeholder="搜索店铺名称"
+                    aria-label="搜索店铺名称"
+                    onChange={(e) => setStoreKeyword(e.target.value)}
+                  />
+                  {storeKeyword ? (
+                    <button
+                      className="cpd-store-search-clear"
+                      type="button"
+                      aria-label="清空搜索"
+                      onClick={() => setStoreKeyword('')}
+                    >
+                      <IconClose />
+                    </button>
+                  ) : null}
+                </div>
+
                 <div className="cpd-store-list">
-                  {STORES.map((store) => {
+                  {visibleStores.length === 0 ? (
+                    <div className="cpd-store-empty">没有匹配的店铺</div>
+                  ) : null}
+                  {visibleStores.map((store) => {
                     const checked = selectedStores.includes(store);
                     return (
                       <button
@@ -866,30 +921,39 @@ export default function ClaimProductDialog() {
           </div>
         </div>
 
-        <div className="cpd-footer">
+        <div className={`cpd-footer${claimMode === 'publish' ? ' cpd-footer--publish' : ''}`}>
           <div className="cpd-footer-status">平台 {PLATFORM.name} 已选{selectedCount}个店铺</div>
           <div className="cpd-footer-actions">
             <span className={`cpd-footer-hint${hasSelection ? '' : ' is-warn'}`}>
               {hasSelection ? '请选择操作方式' : '请至少选择 1 个店铺'}
             </span>
-            <button
-              className="cpd-btn cpd-btn--direct"
-              type="button"
-              disabled={!hasSelection}
-              onClick={() => handleClaim('direct')}
-            >
-              <IconSend />
-              <span>直接认领</span>
-            </button>
-            <button
-              className="cpd-btn cpd-btn--auto"
-              type="button"
-              disabled={!hasSelection}
-              onClick={() => handleClaim('auto')}
-            >
-              <IconEdit />
-              <span>自动编辑</span>
-            </button>
+            {claimMode === 'publish' ? null : (
+              <button
+                className="cpd-btn cpd-btn--direct"
+                type="button"
+                disabled={!hasSelection}
+                onClick={() => handleClaim('direct')}
+              >
+                <IconSend />
+                <span>直接认领</span>
+              </button>
+            )}
+            <span className="cpd-auto-wrap">
+              {claimMode === 'publish' ? (
+                <span className="cpd-publish-tip" role="note">
+                  请先通过批量编辑完善商品信息，否则可能发布失败
+                </span>
+              ) : null}
+              <button
+                className="cpd-btn cpd-btn--auto"
+                type="button"
+                disabled={!hasSelection}
+                onClick={() => handleClaim('auto')}
+              >
+                <IconEdit />
+                <span>自动编辑</span>
+              </button>
+            </span>
           </div>
         </div>
       </div>

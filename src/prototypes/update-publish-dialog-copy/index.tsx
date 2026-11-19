@@ -53,6 +53,8 @@ type PublishProduct = {
   id: string;
   title: string;
   image: string;
+  shopName: string;
+  shopAlias: string;
   loopState?: ProductLoopState;
   attempts?: number;
   publishResult?: PublishResult;
@@ -67,24 +69,24 @@ type PublishRecord = {
   products: PublishProduct[];
 };
 
-const PRODUCT_CATALOG: Record<ProductKey, Pick<PublishProduct, 'id' | 'title' | 'image'>> = {
-  dress: { id: '22098134561', title: '夏季碎花连衣裙', image: productDress },
-  kidsCanvas: { id: '22098134562', title: '儿童帆布鞋', image: productSneaker },
-  blackBackpack: { id: '22098134563', title: '双肩包（黑）', image: productBag },
-  jacket: { id: '22098134564', title: '男士休闲夹克', image: productSuit },
-  shoulderBag: { id: '22098134565', title: '女士单肩包', image: productBag },
-  kidsSneaker: { id: '22098134566', title: '儿童运动鞋', image: productSneaker },
-  travelBackpack: { id: '22098134567', title: '防水旅行背包', image: productBag },
-  tote: { id: '22098134568', title: '简约托特包', image: productBag },
-  runningShoes: { id: '22098134569', title: '轻便跑步鞋', image: productSneaker },
-  briefcase: { id: '22098134570', title: '男士商务公文包', image: productBag },
-  chainBag: { id: '22098134571', title: '女士链条小方包', image: productBag },
-  schoolBag: { id: '22098134572', title: '学生双肩书包', image: productBag },
-  leatherHandbag: { id: '22098134573', title: '真皮女士手提包', image: productBag },
-  canvasSneaker: { id: '22098134574', title: '休闲帆布板鞋', image: productSneaker },
+const PRODUCT_CATALOG: Record<ProductKey, Pick<PublishProduct, 'id' | 'title' | 'image' | 'shopName' | 'shopAlias'>> = {
+  dress: { id: '22098134561', title: '夏季碎花连衣裙', image: productDress, shopName: 'clothes', shopAlias: '服装测试' },
+  kidsCanvas: { id: '22098134562', title: '儿童帆布鞋', image: productSneaker, shopName: 'sneakerhub8', shopAlias: '运营测试-张诗淇专用' },
+  blackBackpack: { id: '22098134563', title: '双肩包（黑）', image: productBag, shopName: '包包', shopAlias: 'bag' },
+  jacket: { id: '22098134564', title: '男士休闲夹克', image: productSuit, shopName: 'clothes', shopAlias: '服装测试' },
+  shoulderBag: { id: '22098134565', title: '女士单肩包', image: productBag, shopName: '包包', shopAlias: 'bag' },
+  kidsSneaker: { id: '22098134566', title: '儿童运动鞋', image: productSneaker, shopName: 'sneakerhub8', shopAlias: '运营测试-张诗淇专用' },
+  travelBackpack: { id: '22098134567', title: '防水旅行背包', image: productBag, shopName: '包包', shopAlias: 'bag' },
+  tote: { id: '22098134568', title: '简约托特包', image: productBag, shopName: '包包', shopAlias: 'bag' },
+  runningShoes: { id: '22098134569', title: '轻便跑步鞋', image: productSneaker, shopName: '鞋子', shopAlias: 'shoes' },
+  briefcase: { id: '22098134570', title: '男士商务公文包', image: productBag, shopName: '包包', shopAlias: 'bag' },
+  chainBag: { id: '22098134571', title: '女士链条小方包', image: productBag, shopName: '包包', shopAlias: 'bag' },
+  schoolBag: { id: '22098134572', title: '学生双肩书包', image: productBag, shopName: '包包', shopAlias: 'bag' },
+  leatherHandbag: { id: '22098134573', title: '真皮女士手提包', image: productBag, shopName: '包包', shopAlias: 'bag' },
+  canvasSneaker: { id: '22098134574', title: '休闲帆布板鞋', image: productSneaker, shopName: '鞋子', shopAlias: 'shoes' },
 };
 
-const product = (key: ProductKey, extra: Omit<PublishProduct, 'id' | 'title' | 'image'>): PublishProduct => ({
+const product = (key: ProductKey, extra: Omit<PublishProduct, 'id' | 'title' | 'image' | 'shopName' | 'shopAlias'>): PublishProduct => ({
   ...PRODUCT_CATALOG[key],
   ...extra,
 });
@@ -769,6 +771,10 @@ const UpdatePublishDialog = () => {
   const detailTotalPages = Math.max(1, Math.ceil(detailProducts.length / detailPageSize));
   const detailCurrentPage = Math.min(detailPage, detailTotalPages);
   const pagedDetailProducts = detailProducts.slice((detailCurrentPage - 1) * detailPageSize, detailCurrentPage * detailPageSize);
+  const detailStats = activeRecord ? recordStats(activeRecord) : null;
+  const detailTotal = activeRecord ? activeRecord.products.length : 0;
+  const detailPending = detailStats ? detailTotal - detailStats.done - detailStats.failed : 0;
+  const detailStatus = activeRecord ? recordStatus(activeRecord) : '发布完成';
 
   useEffect(() => { setDetailPage(1); }, [detailLoopFilter, detailResultFilter, detailStatusFilter]);
   useEffect(() => {
@@ -893,7 +899,7 @@ const UpdatePublishDialog = () => {
         <div className="up-overlay">
           <div className="up-dialog up-dialog--records" role="dialog" aria-modal="true" aria-label="发布记录">
             <div className="up-dialog__header">
-              <span className="up-dialog__title" data-annotation-id="publish-records-tab">发布记录</span>
+              <span className="up-dialog__title" data-annotation-id="publish-records-tab">刊登任务</span>
               <button type="button" className="up-dialog__close" aria-label="关闭" onClick={() => setVisible(false)}>×</button>
             </div>
 
@@ -918,6 +924,23 @@ const UpdatePublishDialog = () => {
                         : '批量复制商品编号'}
                     </button>
                   </div>
+                  {detailStats ? (
+                    <div className="up-task-stats">
+                      <span className="up-task-stats__item">商品总数 <b>{detailTotal}</b></span>
+                      <span className="up-task-stats__item is-success">发布完成 <b>{detailStats.done}</b></span>
+                      <span className="up-task-stats__item is-danger">发布失败 <b>{detailStats.failed}</b></span>
+                      {detailPending > 0 ? <span className="up-task-stats__item is-info">处理中 <b>{detailPending}</b></span> : null}
+                      <span className="up-task-stats__progress">
+                        <span className="up-task-progress__bar is-wide">
+                          <span
+                            className={detailStatus === '发布中' ? 'is-running' : detailStats.failed > 0 ? 'is-partial' : 'is-done'}
+                            style={{ width: `${detailStats.percent}%` }}
+                          />
+                        </span>
+                        <span className="up-task-stats__percent">{detailStats.percent}%</span>
+                      </span>
+                    </div>
+                  ) : null}
                   <div className="up-record-query up-record-query--detail">
                     {activeRecord.isLoop ? (
                       <div className="up-record-query__field">
@@ -953,6 +976,8 @@ const UpdatePublishDialog = () => {
                   <div className="up-records up-records--detail">
                     <div className="up-records__row up-records__row--head up-records__row--products" data-annotation-id="record-detail-fields">
                       <span>商品信息</span>
+                      <span>刊登平台</span>
+                      <span>刊登店铺</span>
                       <span className="up-records__th--help">
                         循环状态
                         <HelpTooltip label="循环状态说明">
@@ -975,6 +1000,11 @@ const UpdatePublishDialog = () => {
                             <span className="up-product-cell__title" title={product.title}>{product.title}</span>
                             <span className="up-product-cell__id">{product.id}</span>
                           </span>
+                        </span>
+                        <span>敦煌网</span>
+                        <span className="up-shop-cell">
+                          <span className="up-shop-cell__name" title={product.shopName}>{product.shopName}</span>
+                          <span className="up-shop-cell__alias" title={product.shopAlias}>{product.shopAlias}</span>
                         </span>
                         <span>{activeRecord.isLoop ? product.loopState ?? '-' : '-'}</span>
                         <span>{activeRecord.isLoop && product.attempts != null ? `${product.attempts}/${activeRecord.loopLimit}` : '-'}</span>
@@ -1061,7 +1091,7 @@ const UpdatePublishDialog = () => {
                           <span className="up-help__line">每个商品的结果请点进对应记录查看商品发布明细。</span>
                         </HelpTooltip>
                       </span>
-                      <span className="up-records__cell--num">发布进度</span>
+                      <span>发布进度</span>
                       <span className="up-records__cell--num">发布完成数量</span>
                       <span className="up-records__cell--num">发布失败数量</span>
                       <span />
@@ -1099,7 +1129,17 @@ const UpdatePublishDialog = () => {
                               {status}
                             </span>
                           </span>
-                          <span className="up-records__cell--num">{stats.percent}%</span>
+                          <span className="up-task-progress">
+                            <span className="up-task-progress__bar">
+                              <span
+                                className={status === '发布中' ? 'is-running' : stats.failed > 0 ? 'is-partial' : 'is-done'}
+                                style={{ width: `${stats.percent}%` }}
+                              />
+                            </span>
+                            <span className="up-task-progress__text">
+                              {stats.done + stats.failed}/{record.products.length} · {stats.percent}%
+                            </span>
+                          </span>
                           <span className="up-records__cell--num">{stats.done}</span>
                           <span className="up-records__cell--num">{stats.failed}</span>
                           <span className="up-records__arrow">›</span>

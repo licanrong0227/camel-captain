@@ -48,10 +48,18 @@
 }
 
 .sip-tab-dot,
+.sip-tab-logo,
 .sip-tab-label,
 .sip-tab-caret {
   position: relative;
   z-index: 1;
+}
+
+.sip-tab-logo {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
 }
 
 .sip-tab-dot {
@@ -95,12 +103,68 @@
 .sip-tab-caret {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #f2d3bd;
+  border-radius: 4px;
+  background: #fff;
   cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.sip-tab-caret:hover,
+.sip-tab-caret.is-open {
+  border-color: #ff781f;
+  background: #fff5ef;
 }
 
 .sip-tab-caret img {
   width: 12px;
   height: 12px;
+  transition: transform 0.15s;
+}
+
+.sip-tab-caret.is-open img {
+  transform: rotate(180deg);
+}
+
+/* 悬停提示：页签带上方的卡片区域会被裁切，气泡放在按钮下方 */
+.sip-tab-caret-tip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  z-index: 50;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(48, 49, 51, 0.92);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #fff;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.sip-tab-caret-tip::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-bottom-color: rgba(48, 49, 51, 0.92);
+}
+
+.sip-tab-caret:hover .sip-tab-caret-tip {
+  opacity: 1;
+}
+
+.sip-tab-caret.is-open .sip-tab-caret-tip {
+  opacity: 0;
 }
 
 .sip-menu-mask {
@@ -372,6 +436,123 @@
 .sip-source.is-link { color: #ff781f; }
 
 .sip-col-source { display: flex; justify-content: center; }
+
+/* ===== 勾选、行操作条与批量栏 ===== */
+.sip-col-check { cursor: pointer; }
+
+.sip-tr { cursor: pointer; }
+
+.sip-checkbox {
+  position: relative;
+  cursor: pointer;
+}
+
+.sip-checkbox.is-checked,
+.sip-checkbox.is-indeterminate {
+  border-color: var(--si-primary);
+  background: var(--si-primary);
+}
+
+.sip-checkbox.is-checked::after {
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 3px;
+  height: 7px;
+  border: 1px solid #fff;
+  border-top: 0;
+  border-left: 0;
+  transform: rotate(45deg);
+  content: "";
+}
+
+.sip-checkbox.is-indeterminate::after {
+  position: absolute;
+  top: 6px;
+  left: 2px;
+  width: 10px;
+  height: 2px;
+  background: #fff;
+  content: "";
+}
+
+.sip-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 26px;
+  border-bottom: 1px solid #ebeef5;
+  background: #fff;
+}
+
+.sip-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 6px 14px;
+  border: 1px solid var(--si-primary);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 12px;
+  color: var(--si-primary);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.sip-action-btn:hover {
+  background: #fff5ef;
+}
+
+.sip-table-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0 18px;
+}
+
+.sip-batch-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+}
+
+.sip-selected-count {
+  margin-right: 4px;
+  font-size: 13px;
+  color: var(--si-text-secondary);
+}
+
+.sip-btn-mini {
+  height: 32px;
+  padding: 0 14px;
+  font-size: 12px;
+}
+
+.sip-table-footer .sip-pagination {
+  margin-left: auto;
+  padding: 0 26px 0 0;
+}
+
+.sip-toast {
+  position: fixed;
+  top: 32px;
+  left: 50%;
+  z-index: 1100;
+  box-sizing: border-box;
+  max-width: calc(100vw - 32px);
+  padding: 12px 20px;
+  border: 1px solid #ebeef5;
+  border-radius: 8px;
+  background: #edf2fc;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  color: var(--si-text-regular);
+  transform: translateX(-50%);
+}
 
 /* ===== 分页 ===== */
 .sip-pagination {

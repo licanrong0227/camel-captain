@@ -1,0 +1,86 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "data": {
+    "version": 2,
+    "prototypeName": "camel-captain-app",
+    "pageId": "login",
+    "nodes": [],
+    "updatedAt": 1794473600000
+  },
+  "markdownMap": {},
+  "assetMap": {},
+  "directory": {
+    "nodes": [
+      {
+        "type": "folder",
+        "id": "directory-auth",
+        "title": "账号",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "route",
+            "id": "route-login",
+            "title": "登录",
+            "route": "login"
+          },
+          {
+            "type": "route",
+            "id": "route-register",
+            "title": "注册",
+            "route": "register"
+          },
+          {
+            "type": "route",
+            "id": "route-forgot",
+            "title": "忘记密码",
+            "route": "forgot"
+          }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "directory-main",
+        "title": "经营看板",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "route",
+            "id": "route-home",
+            "title": "首页",
+            "route": "home"
+          },
+          {
+            "type": "route",
+            "id": "route-ad-board",
+            "title": "店铺看板",
+            "route": "ad-board"
+          }
+        ]
+      },
+      {
+        "type": "folder",
+        "id": "directory-profile",
+        "title": "个人中心",
+        "defaultExpanded": true,
+        "children": [
+          {
+            "type": "route",
+            "id": "route-profile",
+            "title": "我的",
+            "route": "profile"
+          },
+          {
+            "type": "route",
+            "id": "route-distribution",
+            "title": "分销中心",
+            "route": "distribution"
+          }
+        ]
+      }
+    ]
+  },
+  "documents": {
+    "nodes": []
+  }
+}

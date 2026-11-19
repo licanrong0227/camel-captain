@@ -89,7 +89,14 @@
       "Bash(cd \"d:/projects/camel captain\" && git stash list)",
       "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && npx tsc --noEmit --pretty src/prototypes/edit-product-dialog-media/components/CollageDialog.tsx 2>&1 | head -30)",
       "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('src/prototypes/edit-product-dialog-media/annotation-source.json','utf8'\\)\\); console.log\\('JSON valid'\\)\")",
-      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('src/prototypes/shopify-integration/annotation-source.json', 'utf8'\\)\\); console.log\\('JSON valid'\\)\")"
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('src/prototypes/shopify-integration/annotation-source.json', 'utf8'\\)\\); console.log\\('JSON valid'\\)\")",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && npx tsc --noEmit -p tsconfig.json 2>&1 | head -20)",
+      "Bash(ls -R \"D:\\\\projects\\\\CAMEL CAPTAIN\\\\src\\\\prototypes\\\\shopify-integration\\\\pages\" | head -50; echo ---; ls \"D:\\\\projects\\\\CAMEL CAPTAIN\\\\src\\\\prototypes\\\\shopify-integration\\\\components\")",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\\\\src\\\\prototypes\\\\shopify-integration\" && python -c \"\nimport json,sys\nd=json.load\\(open\\('annotation-source.json',encoding='utf-8'\\)\\)\ns=json.dumps\\(d,ensure_ascii=False\\)\nprint\\(len\\(s\\)\\)\n\" 2>/dev/null || node -e \"const fs=require\\('fs'\\);const d=JSON.parse\\(fs.readFileSync\\('D:/projects/CAMEL CAPTAIN/src/prototypes/shopify-integration/annotation-source.json','utf8'\\)\\);console.log\\(Object.keys\\(d\\)\\);\")",
+      "Bash(node:*)",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && node -e \"const p=require\\('./package.json'\\);console.log\\(JSON.stringify\\(p.scripts\\)\\)\")",
+      "Bash(cd \"D:\\\\projects\\\\CAMEL CAPTAIN\" && npx tsc --noEmit -p tsconfig.typecheck.json 2>&1 | grep -i \"shopify-integration\" | head -20; echo \"exit=$?\")",
+      "Bash(cd \"D:/projects/CAMEL CAPTAIN\" && node -e \"const d=JSON.parse\\(require\\('fs'\\).readFileSync\\('src/prototypes/home-dashboard/annotation-source.json','utf8'\\)\\);console.log\\('JSON valid'\\);console.log\\(d.markdownMap['hd-sync']\\)\")"
     ]
   }
 }

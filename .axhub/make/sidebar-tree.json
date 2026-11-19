@@ -1,38 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-06T08:53:29.566Z",
+  "updatedAt": "2026-11-19T07:29:52.528Z",
   "prototypes": [
-    {
-      "id": "item:prototypes:home-dashboard",
-      "kind": "item",
-      "title": "首页",
-      "itemKey": "prototypes/home-dashboard"
-    },
-    {
-      "id": "item:prototypes:shop-dashboard",
-      "kind": "item",
-      "title": "店铺看板",
-      "itemKey": "prototypes/shop-dashboard"
-    },
-    {
-      "id": "folder-1793243018426-mvwgle",
-      "kind": "folder",
-      "title": "广告看板设计",
-      "children": [
-        {
-          "id": "item:prototypes:dhgate-ad-report-copy",
-          "kind": "item",
-          "title": "广告看板 1",
-          "itemKey": "prototypes/dhgate-ad-report-copy"
-        },
-        {
-          "id": "item:prototypes:ad-link-board",
-          "kind": "item",
-          "title": "广告看板 2",
-          "itemKey": "prototypes/ad-link-board"
-        }
-      ]
-    },
     {
       "id": "folder-1792977929149-qn5xzy",
       "kind": "folder",
@@ -155,6 +124,12 @@
               "itemKey": "prototypes/edit-product-dialog-media"
             },
             {
+              "id": "item:prototypes:main-image-collage",
+              "kind": "item",
+              "title": "主图拼图",
+              "itemKey": "prototypes/main-image-collage"
+            },
+            {
               "id": "item:prototypes:update-publish-dialog",
               "kind": "item",
               "title": "更新发布弹窗-循环刊登策略",
@@ -169,7 +144,7 @@
             {
               "id": "item:prototypes:auto-edit-dialog-copy2",
               "kind": "item",
-              "title": "自动编辑弹窗 - 多项功能调整",
+              "title": "批量编辑弹窗 - 多项功能调整",
               "itemKey": "prototypes/auto-edit-dialog-copy2"
             },
             {
@@ -259,8 +234,14 @@
             {
               "id": "item:prototypes:update-publish-dialog-copy",
               "kind": "item",
-              "title": "更新发布弹窗-发布记录",
+              "title": "刊登任务",
               "itemKey": "prototypes/update-publish-dialog-copy"
+            },
+            {
+              "id": "item:prototypes:task-manager-dialog",
+              "kind": "item",
+              "title": "任务管理器弹窗",
+              "itemKey": "prototypes/task-manager-dialog"
             },
             {
               "id": "item:prototypes:channel-settings-dialog",
@@ -273,6 +254,49 @@
               "kind": "item",
               "title": "订单配置项弹窗",
               "itemKey": "prototypes/order-config-dialog"
+            },
+            {
+              "id": "item:prototypes:member-purchase-dialog",
+              "kind": "item",
+              "title": "购买会员弹窗",
+              "itemKey": "prototypes/member-purchase-dialog"
+            },
+            {
+              "id": "folder-1793243018426-mvwgle",
+              "kind": "folder",
+              "title": "广告看板设计",
+              "children": [
+                {
+                  "id": "item:prototypes:dhgate-ad-report-copy",
+                  "kind": "item",
+                  "title": "广告看板 1",
+                  "itemKey": "prototypes/dhgate-ad-report-copy"
+                },
+                {
+                  "id": "item:prototypes:ad-link-board",
+                  "kind": "item",
+                  "title": "广告看板 2",
+                  "itemKey": "prototypes/ad-link-board"
+                },
+                {
+                  "id": "item:prototypes:shop-dashboard",
+                  "kind": "item",
+                  "title": "店铺看板融合广告数据",
+                  "itemKey": "prototypes/shop-dashboard"
+                },
+                {
+                  "id": "item:prototypes:home-dashboard",
+                  "kind": "item",
+                  "title": "首页融合店铺及广告数据",
+                  "itemKey": "prototypes/home-dashboard"
+                }
+              ]
+            },
+            {
+              "id": "item:prototypes:member-center",
+              "kind": "item",
+              "title": "个人中心 - 会员中心（我的权益 / 优惠券）",
+              "itemKey": "prototypes/member-center"
             }
           ]
         },
@@ -298,8 +322,20 @@
               "kind": "item",
               "title": "运营后台 · 会员报表",
               "itemKey": "prototypes/ops-report-center"
+            },
+            {
+              "id": "item:prototypes:coupon-template-dialog",
+              "kind": "item",
+              "title": "优惠券模板列表",
+              "itemKey": "prototypes/coupon-template-dialog"
             }
           ]
+        },
+        {
+          "id": "item:prototypes:camel-captain-app",
+          "kind": "item",
+          "title": "移动端",
+          "itemKey": "prototypes/camel-captain-app"
         }
       ]
     },
@@ -313,6 +349,12 @@
   "docs": [],
   "themesTree": [
     {
+      "id": "item-themes-bal-agent",
+      "kind": "item",
+      "title": "bal agent",
+      "itemKey": "themes/bal-agent"
+    },
+    {
       "id": "item:themes:camel-captain-erp",
       "kind": "item",
       "title": "camel-captain-erp",
@@ -323,12 +365,6 @@
       "kind": "item",
       "title": "element-ui",
       "itemKey": "themes/element-ui"
-    },
-    {
-      "id": "item-themes-bal-agent",
-      "kind": "item",
-      "title": "bal agent",
-      "itemKey": "themes/bal-agent"
     }
   ],
   "themes": [

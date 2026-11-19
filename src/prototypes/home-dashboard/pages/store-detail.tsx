@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { X } from 'lucide-react';
+import { Settings2, X } from 'lucide-react';
 import {
   AD_STORE_IDS,
   buildStoreSnapshot,
   buildStoreTableRows,
   presetRange,
   rangeDays,
-  resolveExclusions,
   sortByNumber,
   validateStoreRange,
 } from '../data/aggregate';
@@ -20,12 +19,15 @@ import { AdMultiViewTable } from '../components/AdMultiViewTable';
 import { AdSummarySection } from '../components/AdSummarySection';
 import { Chart } from '../components/Chart';
 import { ExclusionDialog } from '../components/ExclusionDialog';
+import { MetricCardConfigDialog } from '../components/MetricCardConfigDialog';
+import { MetricHelp } from '../components/MetricHelp';
 import { Segmented } from '../components/Segmented';
 import { Select } from '../components/Select';
 import { Sparkline } from '../components/Sparkline';
 import { StoreCascader } from '../components/StoreCascader';
+import { SyncActions } from '../components/SyncActions';
 import { Tooltip } from '../components/Tooltip';
-import type { AdTrendView } from '../data/adTrend';
+import { AD_KPI_KEYS, AD_KPI_LABELS, AD_KPI_TREND, type AdTrendView } from '../data/adTrend';
 
 const DATE_PRESETS = [
   { key: '1', label: '近1天', days: 1 },
@@ -46,6 +48,7 @@ function StoreTrendDialog({
   to,
   initialTabKey,
   initialMetricKey,
+  cardConfig,
   onClose,
 }: {
   storeId: number;
@@ -54,13 +57,20 @@ function StoreTrendDialog({
   to: string;
   initialTabKey: string;
   initialMetricKey: MetricKey;
+  cardConfig: Record<string, MetricKey[]>;
   onClose: () => void;
 }) {
   const initialTab = STORE_TABS.find((item) => item.key === initialTabKey) ?? STORE_TABS[0];
+  const initialOrder = cardConfig[initialTab.key] ?? initialTab.metrics.map((item) => item.key);
   const [tabKey, setTabKey] = useState(initialTab.key);
   const tab = STORE_TABS.find((item) => item.key === tabKey) ?? STORE_TABS[0];
+  const metrics = useMemo(() => {
+    const order = cardConfig[tab.key] ?? tab.metrics.map((item) => item.key);
+    const map = new Map(tab.metrics.map((item) => [item.key, item]));
+    return order.map((key) => map.get(key)).filter((item): item is StoreMetric => Boolean(item));
+  }, [cardConfig, tab]);
   const [metricKey, setMetricKey] = useState<MetricKey>(
-    initialTab.metrics.some((item) => item.key === initialMetricKey) ? initialMetricKey : initialTab.metrics[0].key,
+    initialOrder.includes(initialMetricKey) ? initialMetricKey : (initialOrder[0] ?? initialTab.metrics[0].key),
   );
   const metric = STORE_METRIC_MAP[metricKey];
   const snapshot = useMemo(
@@ -78,8 +88,10 @@ function StoreTrendDialog({
   }, [onClose]);
 
   useEffect(() => {
-    setMetricKey(tab.metrics[0].key);
-  }, [tabKey]);
+    if (!metrics.some((item) => item.key === metricKey)) {
+      setMetricKey(metrics[0]?.key ?? tab.metrics[0].key);
+    }
+  }, [metrics, metricKey, tab]);
 
   return (
     <div className="hd-modal-mask" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
@@ -95,7 +107,7 @@ function StoreTrendDialog({
           <Segmented value={tabKey} options={STORE_TABS.map((item) => ({ key: item.key, label: item.label }))} onChange={setTabKey} />
         </div>
         <div className="hd-store-trend-kpis">
-          {tab.metrics.map((item) => (
+          {metrics.map((item) => (
             <button
               type="button"
               key={item.key}
@@ -140,6 +152,9 @@ export function StoreDetailPage({
   onToggleExclusion,
   configs,
   onSaveConfigs,
+  lastSync,
+  syncing,
+  onSync,
   onHome,
 }: {
   initialTab?: 'deal' | 'ad';
@@ -147,9 +162,12 @@ export function StoreDetailPage({
   onToggleExclusion: () => void;
   configs: ExclusionConfig[];
   onSaveConfigs: (next: ExclusionConfig[]) => void;
+  lastSync: string;
+  syncing: boolean;
+  onSync: () => void;
   onHome: () => void;
 }) {
-  const [storeIds, setStoreIds] = useState<number[]>(STORES.map((store) => store.id));
+  const [storeIds, setStoreIds] = useState<number[]>([]);
   const allStoreIds = useMemo(() => STORES.map((store) => store.id), []);
   const effectiveStoreIds = storeIds.length ? storeIds : allStoreIds;
   const adStoreIds = useMemo(() => effectiveStoreIds.filter((id) => AD_STORE_IDS.includes(id)), [effectiveStoreIds]);
@@ -171,12 +189,15 @@ export function StoreDetailPage({
   const [rangeError, setRangeError] = useState('');
   const [exclusionOpen, setExclusionOpen] = useState(false);
   const [adTrendMetric, setAdTrendMetric] = useState<AdTrendView>('cost');
+  const [cardConfigOpen, setCardConfigOpen] = useState(false);
+  const [storeCardConfig, setStoreCardConfig] = useState<Record<string, MetricKey[]>>(() => {
+    const init: Record<string, MetricKey[]> = {};
+    STORE_TABS.forEach((item) => { init[item.key] = item.metrics.map((metricItem) => metricItem.key); });
+    return init;
+  });
+  const [adCardKeys, setAdCardKeys] = useState<string[]>(() => [...AD_KPI_KEYS]);
 
   const rangeErrorText = useMemo(() => validateStoreRange(from, to), [from, to]);
-  const exclusionInfo = useMemo(
-    () => resolveExclusions(configs, exclusionEnabled, from, to, adStoreIds),
-    [configs, exclusionEnabled, from, to, adStoreIds],
-  );
   const rangeLength = rangeDays(from, to);
   const metric = STORE_METRIC_MAP[metricKey];
 
@@ -242,12 +263,46 @@ export function StoreDetailPage({
     setPage(1);
   };
 
+  const visibleMetrics = useMemo(() => {
+    const order = storeCardConfig[tab.key] ?? tab.metrics.map((item) => item.key);
+    const map = new Map(tab.metrics.map((item) => [item.key, item]));
+    return order.map((key) => map.get(key)).filter((item): item is StoreMetric => Boolean(item));
+  }, [storeCardConfig, tab]);
+
+  const configTitle = tabKey === 'ad' ? '广告' : tab.label;
+  const configOptions = tabKey === 'ad'
+    ? AD_KPI_KEYS.map((key) => ({ key, label: AD_KPI_LABELS[key] ?? key }))
+    : tab.metrics.map((item) => ({ key: item.key, label: item.label }));
+  const configVisible = tabKey === 'ad' ? adCardKeys : visibleMetrics.map((item) => item.key);
+
+  const applyCardConfig = (next: string[]) => {
+    if (!next.length) return;
+    if (tabKey === 'ad') {
+      setAdCardKeys(next);
+      const activeKey = Object.keys(AD_KPI_TREND).find((key) => AD_KPI_TREND[key] === adTrendMetric);
+      if (activeKey && !next.includes(activeKey)) setAdTrendMetric(AD_KPI_TREND[next[0]]);
+      return;
+    }
+    const keys = next as MetricKey[];
+    setStoreCardConfig((prev) => ({ ...prev, [tabKey]: keys }));
+    if (!keys.includes(metricKey)) setMetricKey(keys[0]);
+  };
+
+  const resetCardConfig = () => {
+    if (tabKey === 'ad') {
+      setAdCardKeys([...AD_KPI_KEYS]);
+      return;
+    }
+    setStoreCardConfig((prev) => ({ ...prev, [tabKey]: tab.metrics.map((item) => item.key) }));
+  };
+
   const switchTab = (next: string) => {
     setTabKey(next);
     setPage(1);
     if (next === 'ad') return;
     const target = STORE_TABS.find((item) => item.key === next) ?? STORE_TABS[0];
-    setMetricKey(target.metrics[0].key);
+    const order = storeCardConfig[target.key] ?? target.metrics.map((item) => item.key);
+    setMetricKey(order[0] ?? target.metrics[0].key);
     setSortKey(target.metrics[0].key);
     setSortDir('desc');
   };
@@ -256,9 +311,10 @@ export function StoreDetailPage({
 
   return (
     <div className="hd-l2">
-      <Breadcrumb items={['报表', '店铺报表']} onHome={onHome} />
+      <Breadcrumb items={['报表', '店铺看板']} onHome={onHome} />
       <div className="hd-l2-title-row">
-        <h1 className="hd-l2-title">店铺报表</h1>
+        <h1 className="hd-l2-title">店铺看板</h1>
+        <SyncActions lastSync={lastSync} syncing={syncing} onSync={onSync} />
       </div>
 
       <div className="hd-glass hd-filter-card">
@@ -271,10 +327,6 @@ export function StoreDetailPage({
               width={260}
               onChange={(next) => { setStoreIds(next); setPage(1); }}
             />
-          </div>
-          <div className="hd-filter-group">
-            <span className="hd-filter-label">国家</span>
-            <Select value={country} options={COUNTRIES.map((item) => ({ value: item.id, label: item.name }))} width={120} onChange={(value) => { setCountry(value); setPage(1); }} />
           </div>
           <div className="hd-filter-group is-grow">
             <span className="hd-filter-label">时间</span>
@@ -290,7 +342,7 @@ export function StoreDetailPage({
               type="button"
               className="hd-btn is-default"
               onClick={() => {
-                setStoreIds(STORES.map((store) => store.id));
+                setStoreIds([]);
                 setCountry('TOTAL');
                 applyPreset('30');
               }}
@@ -300,35 +352,44 @@ export function StoreDetailPage({
           </div>
         </div>
         {rangeError || rangeErrorText ? <div className="hd-filter-error">{rangeError || rangeErrorText}</div> : null}
-        {preset === '60' || preset === '90' ? <div className="hd-filter-hint">近 60/90 天基于系统累计数据统计，新注册店铺历史不足时按已有天数展示。</div> : null}
       </div>
 
       <div className="hd-glass hd-l2-card">
         <div className="hd-l2-card-head">
-          <div className="hd-table-tabs">
-            {STORE_TABS.map((item: StoreTab) => (
-              <button type="button" key={item.key} className={`hd-table-tab${tabKey === item.key ? ' is-active' : ''}`} onClick={() => switchTab(item.key)}>
-                {item.label}
-                <span className="hd-table-tab-count">{item.metrics.length}</span>
+          <div className="hd-card-head-left">
+            <div className="hd-table-tabs">
+              {STORE_TABS.map((item: StoreTab) => (
+                <button type="button" key={item.key} className={`hd-table-tab${tabKey === item.key ? ' is-active' : ''}`} onClick={() => switchTab(item.key)}>
+                  {item.label}
+                  <span className="hd-table-tab-count">{storeCardConfig[item.key]?.length ?? item.metrics.length}</span>
+                </button>
+              ))}
+              <button type="button" className={`hd-table-tab${tabKey === 'ad' ? ' is-active' : ''}`} onClick={() => switchTab('ad')}>
+                广告
+                <span className="hd-table-tab-count">{adCardKeys.length}</span>
               </button>
-            ))}
-            <button type="button" className={`hd-table-tab${tabKey === 'ad' ? ' is-active' : ''}`} onClick={() => switchTab('ad')}>
-              广告
-              <span className="hd-table-tab-count">7</span>
+            </div>
+            <button type="button" className="hd-card-config-btn" onClick={() => setCardConfigOpen(true)}>
+              <Settings2 size={13} />
+              自定义指标卡
             </button>
           </div>
           {tabKey === 'ad' ? (
             <div className="hd-ad-exclusion">
               <Segmented
                 value={exclusionEnabled ? 'exclude' : 'raw'}
-                options={[{ key: 'exclude', label: '剔除补单' }, { key: 'raw', label: '原始数据' }]}
+                options={[{ key: 'exclude', label: '剔除数据' }, { key: 'raw', label: '原始数据' }]}
                 onChange={(next) => {
                   if ((next === 'exclude') !== exclusionEnabled) onToggleExclusion();
                 }}
               />
               <span className="hd-link" onClick={() => setExclusionOpen(true)}>剔除设置</span>
             </div>
-          ) : null}
+          ) : (
+            <div className="hd-tab-country">
+              <Select value={country} options={COUNTRIES.map((item) => ({ value: item.id, label: item.name }))} width={120} onChange={(value) => { setCountry(value); setPage(1); }} />
+            </div>
+          )}
         </div>
 
         {tabKey === 'ad' ? (
@@ -336,16 +397,16 @@ export function StoreDetailPage({
             storeIds={adStoreIds}
             from={from}
             to={to}
-            country={country}
             exclusionEnabled={exclusionEnabled}
             configs={configs}
             trendMetric={adTrendMetric}
             onTrendMetricChange={setAdTrendMetric}
+            visibleKpis={adCardKeys}
           />
         ) : (
           <>
         <div className="hd-store-kpi-grid">
-          {tab.metrics.map((item) => (
+          {visibleMetrics.map((item) => (
             <button
               type="button"
               key={item.key}
@@ -389,6 +450,7 @@ export function StoreDetailPage({
           exclusionEnabled={exclusionEnabled}
           configs={configs}
           trendMetric={adTrendMetric}
+          kpiKeys={adCardKeys}
         />
       ) : (
       <div className="hd-glass hd-l2-card">
@@ -412,7 +474,7 @@ export function StoreDetailPage({
                     else { setSortKey(item.key); setSortDir('desc'); }
                     setPage(1);
                   }}>
-                    {item.label} {sortMark(item.key)}
+                    {item.label} <MetricHelp tip={item.tip} /> {sortMark(item.key)}
                   </th>
                 ))}
               </tr>
@@ -422,9 +484,11 @@ export function StoreDetailPage({
                 <tr key={row.storeId}>
                   <td>
                     <span className="hd-store-cell">
-                      <strong>{row.storeName}</strong>
-                      <em>{row.alias}</em>
-                      {row.daysAvailable === 0 ? <span className="hd-tag is-muted">无数据</span> : row.daysAvailable < rangeLength ? <span className="hd-tag is-warn">数据不足 {rangeLength - row.daysAvailable} 天</span> : null}
+                      <span className="hd-store-name">
+                        <strong>{row.storeName}</strong>
+                        {row.daysAvailable === 0 ? <span className="hd-tag is-muted">无数据</span> : row.daysAvailable < rangeLength ? <span className="hd-tag is-warn">数据不足 {rangeLength - row.daysAvailable} 天</span> : null}
+                      </span>
+                      {row.alias ? <em>{row.alias}</em> : null}
                     </span>
                   </td>
                   <td>
@@ -477,6 +541,7 @@ export function StoreDetailPage({
           to={to}
           initialTabKey={tabKey}
           initialMetricKey={metricKey}
+          cardConfig={storeCardConfig}
           onClose={() => setDialogStore(null)}
         />
       ) : null}
@@ -484,14 +549,22 @@ export function StoreDetailPage({
       {exclusionOpen ? (
         <ExclusionDialog
           configs={configs}
-          excludedGmv={exclusionInfo.gmv}
-          excludedCount={exclusionInfo.count}
-          manualTotal={exclusionInfo.manualTotal}
           onSave={(next) => {
             onSaveConfigs(next);
             setExclusionOpen(false);
           }}
           onClose={() => setExclusionOpen(false)}
+        />
+      ) : null}
+
+      {cardConfigOpen ? (
+        <MetricCardConfigDialog
+          title={configTitle}
+          options={configOptions}
+          visible={configVisible}
+          onChange={applyCardConfig}
+          onReset={resetCardConfig}
+          onClose={() => setCardConfigOpen(false)}
         />
       ) : null}
     </div>

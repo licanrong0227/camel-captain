@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 3,
+  "kind": "document-edit-comments",
+  "resource": {
+    "id": "9f762923047055c043bc2c1852fbfbdb77fc2976a511e07f17abcf57eb429329",
+    "targetPath": "src/prototypes/task-manager-dialog/.spec/spec.md",
+    "filePath": ".axhub/make/comments/9f762923047055c043bc2c1852fbfbdb77fc2976a511e07f17abcf57eb429329.json"
+  },
+  "comments": [],
+  "images": [],
+  "documentPath": "src/prototypes/task-manager-dialog/.spec/spec.md"
+}

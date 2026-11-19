@@ -1,0 +1,139 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "presentation": {
+    "layerSelectors": [".ctd-mask"]
+  },
+  "data": {
+    "version": 2,
+    "prototypeName": "coupon-template-dialog",
+    "pageId": "coupon-template",
+    "updatedAt": 1795100000000,
+    "nodes": [
+      {
+        "id": "ann-query-func",
+        "index": 1,
+        "title": "查询条件：优惠券功能",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"ann-query-func\"]"],
+          "fingerprint": "div|data-annotation-id=ann-query-func",
+          "path": []
+        },
+        "aiPrompt": "",
+        "annotationText": "查询条件新增「优惠券功能」：代金券 / 功能券，默认「全部」。\n审核列表（优惠券模板审核列表）的查询条件需同步新增「优惠券功能」。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795100000000,
+        "updatedAt": 1795100000000
+      },
+      {
+        "id": "ann-table-func",
+        "index": 2,
+        "title": "列表列：优惠券功能",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"ann-table-func\"]"],
+          "fingerprint": "th|data-annotation-id=ann-table-func",
+          "path": []
+        },
+        "aiPrompt": "",
+        "annotationText": "列表新增「优惠券功能」列，展示代金券 / 功能券。\n审核列表需同步新增该列。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795100000000,
+        "updatedAt": 1795100000000
+      },
+      {
+        "id": "ann-table-feature",
+        "index": 3,
+        "title": "列表列：功能及数量",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"ann-table-feature\"]"],
+          "fingerprint": "th|data-annotation-id=ann-table-feature",
+          "path": []
+        },
+        "aiPrompt": "",
+        "annotationText": "列表新增「功能及数量」列：功能券展示功能名称与数量（如「刊登数量 5」），代金券显示「-」。\n审核列表需同步新增该列。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795100000000,
+        "updatedAt": 1795100000000
+      },
+      {
+        "id": "ann-dialog-func",
+        "index": 4,
+        "title": "弹窗：优惠券功能",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"ann-dialog-func\"]"],
+          "fingerprint": "div|data-annotation-id=ann-dialog-func",
+          "path": []
+        },
+        "aiPrompt": "",
+        "annotationText": "新增「优惠券功能」，必填，单选：代金券 / 功能券。\n选代金券：显示适用产品、优惠券类型、优惠值、最低消费门槛；\n选功能券：隐藏上述 4 项，改为显示「功能及数量」。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795100000000,
+        "updatedAt": 1795100000000
+      },
+      {
+        "id": "ann-dialog-feature",
+        "index": 5,
+        "title": "弹窗：功能及数量",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"ann-dialog-feature\"]"],
+          "fingerprint": "div|data-annotation-id=ann-dialog-feature",
+          "path": []
+        },
+        "aiPrompt": "",
+        "annotationText": "仅优惠券功能=功能券时显示。\n同一行两个控件：功能下拉（刊登数量 / 定时刊登数量 / 循环刊登次数）+ 数量输入。\n数量输入提示随所选功能变化；功能选项后续扩展时按下拉维护。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795100000000,
+        "updatedAt": 1795100000000
+      },
+      {
+        "id": "ann-dialog-points",
+        "index": 6,
+        "title": "弹窗：积分兑换值（位置调整）",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"ann-dialog-points\"]"],
+          "fingerprint": "div|data-annotation-id=ann-dialog-points",
+          "path": []
+        },
+        "aiPrompt": "",
+        "annotationText": "位置调整：从「每户限额领取个数」下方移到「发放方式」下方。\n仅发放方式=活动兑换时显示，其他发放方式不显示。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795100000000,
+        "updatedAt": 1795100000000
+      },
+      {
+        "id": "ann-dialog-threshold",
+        "index": 7,
+        "title": "弹窗：领取金额门槛（位置调整）",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"ann-dialog-threshold\"]"],
+          "fingerprint": "div|data-annotation-id=ann-dialog-threshold",
+          "path": []
+        },
+        "aiPrompt": "",
+        "annotationText": "位置调整：从「每户限额领取个数」下方移到「发放方式」下方。\n仅发放方式=下单返券时显示，其他发放方式不显示。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795100000000,
+        "updatedAt": 1795100000000
+      }
+    ]
+  },
+  "markdownMap": {},
+  "assetMap": {},
+  "directory": {
+    "nodes": []
+  }
+}

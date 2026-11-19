@@ -1,0 +1,72 @@
+{
+  "documentVersion": 1,
+  "format": "axhub-annotation-source",
+  "presentation": {
+    "layerSelectors": [
+      ".hd-modal-mask"
+    ]
+  },
+  "data": {
+    "version": 2,
+    "prototypeName": "home-dashboard",
+    "pageId": "home",
+    "nodes": [
+      {
+        "id": "hd-store-cate",
+        "index": 1,
+        "title": "店铺经营类目",
+        "pageId": "home",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"hd-store-cate\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=hd-store-cate",
+          "path": []
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795000000000,
+        "updatedAt": 1795000000000
+      },
+      {
+        "id": "hd-sync",
+        "index": 2,
+        "title": "数据同步逻辑",
+        "pageId": [
+          "home",
+          "store-detail"
+        ],
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"hd-sync\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=hd-sync",
+          "path": []
+        },
+        "aiPrompt": "",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795000000001,
+        "updatedAt": 1795000000001
+      }
+    ],
+    "updatedAt": 1795000000000
+  },
+  "markdownMap": {
+    "hd-store-cate": "- 接口：`dh.seller.crm.cate.list`（查询卖家经营类目信息）\n- 字段：`sellerPubCateInfoList[].catePubName`（发布类目名称）\n- 展示店铺的发布类目名称，如「箱包」「鞋靴」「服饰」\n- 文档：[接口文档](https://open.dhgate.com/docs/api/detail/4a2388915b7e44a7b5db0042dbf44f18)",
+    "hd-sync": "1. 每天定时同步一次\n2. 登录时后台自动同步一次\n3. 手动点击时同步一次\n\n无论哪种同步方式都需要更新同步时间。\n\n同步范围：只同步能通过接口即时拿到的统计数据，不同步商品和订单数据。"
+  },
+  "assetMap": {},
+  "targets": [],
+  "directory": {
+    "nodes": []
+  },
+  "documents": {
+    "nodes": []
+  }
+}

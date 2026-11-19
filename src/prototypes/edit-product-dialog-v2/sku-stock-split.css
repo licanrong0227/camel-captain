@@ -1,0 +1,259 @@
+.ss-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.ss-dialog {
+  display: flex;
+  flex-direction: column;
+  width: 720px;
+  max-width: calc(100vw - 48px);
+  max-height: 78vh;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+
+.ss-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.ss-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #303133;
+}
+
+.ss-sub {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: #909399;
+}
+
+.ss-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: #909399;
+  cursor: pointer;
+}
+
+.ss-close:hover {
+  background: #f5f7fa;
+  color: #606266;
+}
+
+.ss-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 20px;
+}
+
+.ss-grid {
+  display: grid;
+  align-items: center;
+  gap: 10px;
+}
+
+.ss-grid--head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 38px;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #606266;
+  background: #f5f7fa;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.ss-grid--head span:not(:first-child) {
+  text-align: center;
+}
+
+.ss-grid--row {
+  height: 42px;
+  padding: 0 6px;
+  border-bottom: 1px solid #f2f3f5;
+  font-size: 13px;
+  color: #303133;
+}
+
+.ss-spec {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ss-spec__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ss-tag {
+  flex: none;
+  padding: 0 6px;
+  height: 18px;
+  line-height: 18px;
+  border-radius: 9px;
+  background: #eef9f1;
+  color: #2ba471;
+  font-size: 11px;
+}
+
+.ss-tag.is-off {
+  background: #f4f4f5;
+  color: #909399;
+}
+
+.ss-stepper {
+  display: inline-flex;
+  align-items: center;
+  justify-self: center;
+  height: 26px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.ss-stepper__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: #f5f7fa;
+  color: #606266;
+  cursor: pointer;
+}
+
+.ss-stepper__btn:hover {
+  color: #ff781f;
+}
+
+.ss-stepper__input {
+  width: 58px;
+  height: 100%;
+  border: 0;
+  outline: none;
+  text-align: center;
+  font-size: 12px;
+  color: #303133;
+  font-family: inherit;
+}
+
+.ss-total {
+  text-align: center;
+  font-weight: 700;
+  color: #303133;
+}
+
+.ss-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 20px 16px;
+  border-top: 1px solid #ebeef5;
+}
+
+.ss-btn {
+  height: 32px;
+  padding: 0 18px;
+  border: 1px solid #dcdfe6;
+  border-radius: 6px;
+  background: #fff;
+  color: #606266;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ss-btn:hover {
+  border-color: #ff781f;
+  color: #ff781f;
+}
+
+.ss-btn--primary {
+  border-color: #ff781f;
+  background: #ff781f;
+  color: #fff;
+}
+
+.ss-btn--primary:hover {
+  border-color: #ff9a4d;
+  background: #ff9a4d;
+  color: #fff;
+}
+
+.ss-sellable {
+  text-align: center;
+  color: #606266;
+}
+
+.ss-total.is-short {
+  color: #e6a23c;
+}
+
+.ss-grid--total {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: #fafbfc;
+  border-top: 1px solid #ebeef5;
+  font-weight: 700;
+  color: #303133;
+}
+
+.ss-total-label {
+  color: #303133;
+}
+
+.ss-loc-total {
+  text-align: center;
+  color: #303133;
+}
+
+.ss-loc-batch {
+  display: inline-flex;
+  align-items: center;
+  justify-self: center;
+  gap: 3px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  color: #ff781f;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ss-loc-batch:hover {
+  color: #ff9a4d;
+}

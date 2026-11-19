@@ -12,7 +12,7 @@
     "version": 2,
     "prototypeName": "edit-product-dialog-v2",
     "pageId": "edit-product-dialog-v2",
-    "updatedAt": 1793260000000,
+    "updatedAt": 1794987239333,
     "nodes": [
       {
         "id": "ai-video-entry",
@@ -545,6 +545,166 @@
         "images": [],
         "createdAt": 1793268769371,
         "updatedAt": 1793268769371
+      },
+      {
+        "id": "custom-config",
+        "index": 17,
+        "title": "定制商品按方式分别配置",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"custom-config\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=custom-config",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明定制商品的提交条件、定制方式编码，以及每种方式独立的交期、起订量、单价与 SKU 编码。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#000000",
+        "images": [],
+        "createdAt": 1794972260427,
+        "updatedAt": 1794987239332
+      },
+      {
+        "id": "stock-status",
+        "index": 18,
+        "title": "备货状态与在途开关",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"stock-status\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=stock-status",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明三种备货状态分别如何提交 itemInventory 与 ifInTransit，以及切换状态时哪些字段不参与提交。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#000000",
+        "images": [],
+        "createdAt": 1794972260427,
+        "updatedAt": 1794982628450
+      },
+      {
+        "id": "stock-locations",
+        "index": 19,
+        "title": "备货所在地及备货期",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"stock-locations\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=stock-locations",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明备货所在地的提交结构、国家去重、仓级发货时效限制，以及 SKU 分仓库存与备货地/国家定价的对应字段。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#000000",
+        "images": [],
+        "createdAt": 1794972260427,
+        "updatedAt": 1794981535167
+      },
+      {
+        "id": "stock-cut",
+        "index": 20,
+        "title": "库存扣减时点",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"stock-cut\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=stock-cut",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明库存扣减方式的两个取值与提交条件。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#000000",
+        "images": [],
+        "createdAt": 1794972260427,
+        "updatedAt": 1794972260427
+      },
+      {
+        "id": "product-inventory",
+        "index": 21,
+        "title": "产品总库存的汇总口径",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"product-inventory\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=product-inventory",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明产品总库存的提交字段、求和口径与不可手填的原因。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#000000",
+        "images": [],
+        "createdAt": 1794972260427,
+        "updatedAt": 1794981688595
+      },
+      {
+        "id": "sku-split",
+        "index": 22,
+        "title": "SKU 分仓库存",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"sku-split\"]"
+          ],
+          "fingerprint": "button|data-annotation-id=sku-split",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明 SKU 分仓库存的提交结构、与 SKU 总库存及产品总库存的求和关系。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#000000",
+        "images": [],
+        "createdAt": 1794972260427,
+        "updatedAt": 1794982218323
+      },
+      {
+        "id": "stock-leadtime",
+        "index": 23,
+        "title": "备货期的两级口径",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"stock-leadtime\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=stock-leadtime",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明产品级与仓级备货期的字段、优先级、各状态取值范围与单位。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#000000",
+        "images": [],
+        "createdAt": 1794972260427,
+        "updatedAt": 1794981401437
+      },
+      {
+        "id": "price-tiers",
+        "index": 24,
+        "title": "价格区间与折扣换算",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"price-tiers\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=price-tiers",
+          "path": []
+        },
+        "aiPrompt": "根据标注正文说明价格区间的提交字段、首档与后续档的差别、折扣小数换算与档位限制。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#000000",
+        "images": [],
+        "createdAt": 1794972260427,
+        "updatedAt": 1794972260427
       }
     ]
   },
@@ -564,7 +724,15 @@
     "compliance-item-price": "- 演示场景下本项为检测失败：卡片折叠，头部直接给出失败原因摘要，展开后是「失败原因」一行。\n- 检测失败没有错误条目、没有建议、不提供点赞点踩，但可以「重新检测」。\n- 「卡片状态」切到通过 / 违规或疑似违规可对照另外两种样式。",
     "compliance-item-legal": "- 演示场景下本项为 1 条违规，错误来自图片：详情图检出外部网址与扫码二维码。\n- 图片类错误与文字类结构一致：内容行改为「原图」并展示缩略图，缩略图下方只标来源「主图 / 首张主图 / 详情图」，不带序号；识别到的网址与二维码写在原因里，不再单独展示识别内容，也不再展示「位置」行。\n- 「原图」行的缩略图点击可查看大图。\n- 「卡片状态」可切到通过 / 检测失败，对照另外两种样式。",
     "price-submit-api": "点击「提交并更新价格」调用敦煌开放平台接口更新价格，仅更新价格信息，无需重新发布审核。\n\n- 接口文档：[更新产品价格](https://open.dhgate.com/docs/api/detail/3a30562ba9154e07afd02a9283a65f51)\n- 如同时调整价格以外的信息，仍需重新发布审核。",
-    "purchase-price": "采购价即采集价，选填。\n\n没有填写时，套用价格公式按 0 元处理。"
+    "purchase-price": "采购价即采集价，选填。\n\n没有填写时，套用价格公式按 0 元处理。",
+    "custom-config": "**接口字段**：`itemCustomTypeInfo[]`。\n\n- 是否定制 = 是 时才提交；否 时不提交定制配置。\n- `customType`：1 logo / 2 包装 / 3 外形 / 4 颜色 / 5 尺寸 / 6 款式；本页所有选中选项共用一套 `leadingTime`（≤35 个工作日）、`minWholesaleQty`、`maxSaleQty`、`retailPrice`、`saleStatus`、`skuCode`，提交为一条 `itemCustomTypeInfo`，`customType` 用英文逗号拼接。\n- 若不同定制选项的价格或交期不同，接口允许拆成多条 `itemCustomTypeInfo`；本页按现有系统只提供一套共用配置。\n- 定制商品按无备货处理，不提交实物库存。",
+    "stock-status": "**接口字段**：`itemInventory` + `ifInTransit`。\n\n- 有备货：提交 `itemInventory`，`ifInTransit=0`，按实物库存销售。\n- 备货中：提交 `itemInventory`，`ifInTransit=1`，表示在途；发货时效按 5–10 个工作日。\n- 待备货：不提交 `itemInventory`，只承诺交期；必须填一次最大购买数量（1–10000）。\n- 切换状态时，隐藏的备货所在地与扣减方式不参与提交。\n- 在途标记以 `itemInventory.ifInTransit` 为准；当前系统表单里另有一个顶层 `ifInTransit`，联调时需确认后端最终提交的位置。",
+    "stock-locations": "**接口字段**：`itemInventory.inventoryLocation`（主备货地）+ `invenLocationList[]`。\n\n- 每个备货地一条：`inventoryLocation`（国家代码，如 CN / US）、`leadingTime`（该仓发货时效）、`sortVal`（展示顺序）。\n- 国家不能重复；原型下拉显示中文名，提交时转国家代码。\n- 各仓时效：中国仓 1–4 个工作日，海外仓 1–3 个工作日。\n- 每个 SKU 在各仓的库存分别提交到 `itemSkuInvenList[]`，用 `skuMD5 + inventoryLocation` 关联。\n- 备货地差异价 `inventoryLocationPriceList`、销售国家价 `shiptoCountryPriceList` 本页暂未提供。",
+    "stock-cut": "**接口字段**：`itemInventory.subtractStockType`。\n\n- 1 = 下单扣减库存；2 = 支付完成扣减库存。\n- 有备货时必填；选 2 时未支付订单不占库存。",
+    "product-inventory": "**接口字段**：`itemInventory.inventoryQty` + `itemSkuInvenList[].skuInventoryQty`。\n\n- 可售库存 = 可售 SKU 的 `itemSkuList[].inventory` 之和，提交为 `inventoryQty`；下架 SKU 不计入。\n- 备货库存 = 各备货地 `skuInventoryQty` 之和，只用于发货分配，不要求与可售库存相等。\n- 允许超卖开启：可售与备货可以不一致；可售 > 备货时提示超出部分需自行备货/调拨，不拦截保存；可售 < 备货时提示备货多于可售。\n- 允许超卖关闭：二次确认后可售库存锁定为各仓备货合计，SKU 库存不可编辑；备货数量变化时自动重算。\n- 直接修改上方 SKU 库存只改可售数量，不会改动分仓备货数量。",
+    "sku-split": "**接口字段**：`itemSkuInvenList[]`。\n\n- 每条 = `skuMD5` + `inventoryLocation` + `skuInventoryQty` + `saleStatus`。\n- 分仓数量是仓内实物备货，独立于 SKU 可售库存（`itemSkuList[].inventory`），不要求两者相等。\n- 可售 SKU 的备货合计只用于超卖/积压提示，不影响保存。\n- 某仓停售只改该条的 `saleStatus`，不影响其他仓；某 SKU 只在部分仓有货时，其余仓填 0 或不提交。\n- 各备货地列头可点开批量修改，按颜色 / Options 范围对该仓备货数量做替换 / 加 / 减 / 乘 / 除 / 清空。",
+    "stock-leadtime": "**接口字段**：`itemSaleSetting.leadingTime`（产品级）+ `invenLocationList[].leadingTime`（仓级）。\n\n- 产品级必填，作为兜底；仓级优先，未配置时取产品级。\n- 有备货 1–4 个工作日（海外仓 ≤3）；备货中 5–10 个工作日；待备货按类目：非定制 1–10、定制类目 1–45、指定类目最多 90 个工作日。\n- 单位是工作日，不是自然日；超出范围时保存会被校验拦截。",
+    "price-tiers": "**接口字段**：`itemWholesaleRangeList[]`。\n\n- 每档提交 `startQty` + `discount`；`discount` 是小数，减免 5% 提交 0.05（即 95 折），不是 5。\n- 首档只填起批数量，单价取价格表里的实际收入；第 2 档起填减免比例。\n- 最多 4 档；购买数量必须逐档递增，否则保存被拦截。"
   },
   "assetMap": {}
 }

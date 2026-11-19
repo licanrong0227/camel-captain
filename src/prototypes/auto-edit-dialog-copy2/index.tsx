@@ -47,6 +47,19 @@ const CloseIcon = () => (
   </svg>
 );
 
+const SearchIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="11" cy="11" r="7" />
+    <line x1="16.5" y1="16.5" x2="21" y2="21" />
+  </svg>
+);
+
+const ChevronRightIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="9 6 15 12 9 18" />
+  </svg>
+);
+
 // 销售国家/地区旗帜（简化 SVG，与编辑产品弹窗保持一致）
 const Flag = ({ code }: { code: string }) => {
   switch (code) {
@@ -268,7 +281,7 @@ const menuItems: MenuItem[] = [
   { id: 'basic', label: '商品基本信息', count: 6, icon: <MenuHome /> },
   { id: 'detail', label: '详情页面', count: 1, icon: <MenuDoc /> },
   { id: 'attr', label: '属性', count: 1, icon: <MenuAttr /> },
-  { id: 'service', label: '服务', count: 4, icon: <MenuUser /> },
+  { id: 'service', label: '服务', count: 3, icon: <MenuUser /> },
   { id: 'price', label: '商品价格', count: 2, icon: <MenuTag /> },
   { id: 'sale', label: '销售方案', count: 1, icon: <MenuList /> },
   { id: 'sku', label: 'SKU信息', count: 6, icon: <MenuGrid /> },
@@ -283,39 +296,266 @@ const menuItems: MenuItem[] = [
 const gradeModes = ['成人属性', '非成人属性'];
 const serviceFields = ['运费模板', '售后模板', '线上分组'];
 const serviceTplRows = [
-  { id: 'svc-1', name: '服装测试' },
-  { id: 'svc-2', name: 'bag' },
-  { id: 'svc-3', name: 'shoes' },
+  { id: 'svc-1', name: 'klyto' },
+  { id: 'svc-2', name: 'sneakerhub8' },
+  { id: 'svc-3', name: 'clothes' },
 ];
 const sizeTplRows = [
-  { id: 'size-1', name: 'clothes', cat: '服装 < 男装 < 男士外套 < 男士羽绒服' },
-  { id: 'size-2', name: '包包', cat: '服装 < 女装 < 女士套装 < 女士裤装两件套' },
-  { id: 'size-3', name: 'clothes', cat: '服装 < 女装 < 女士套装 < 女士裤装两件套' },
-  { id: 'size-4', name: '包包', cat: '箱包及箱包辅料 < 时装包 < 斜挎包' },
-  { id: 'size-5', name: '鞋子', cat: '鞋类及鞋类辅料 < 正装鞋' },
-  { id: 'size-6', name: 'clothes', cat: '女士裤子（非牛仔）' },
+  { id: 'size-1', name: 'klyto' },
+  { id: 'size-2', name: 'sneakerhub8' },
+  { id: 'size-3', name: 'clothes' },
 ];
+
+// ===== 类目选择（数据同线上敦煌类目树） =====
+type CategoryNode = { label: string; children?: CategoryNode[] };
+const catLeaf = (label: string): CategoryNode => ({ label });
+const catGroup = (label: string, children: CategoryNode[]): CategoryNode => ({ label, children });
+
+const categoryTree: CategoryNode[] = [
+  catLeaf('婚纱礼服'),
+  catLeaf('珠宝'),
+  catLeaf('表'),
+  catLeaf('玩具与礼物'),
+  catLeaf('安全与监控'),
+  catLeaf('消费类电子'),
+  catLeaf('计算机和网络'),
+  catLeaf('办公文教 & 工商业'),
+  catGroup('服装', [
+    catLeaf('舞台装'),
+    catLeaf('民族服装'),
+    catLeaf('其它服装'),
+    catLeaf('角色扮演服'),
+    catLeaf('缝纫辅料与工具'),
+    catLeaf('服装面料'),
+    catGroup('女装', [
+      catLeaf('女士上装'),
+      catLeaf('女士衬衫'),
+      catLeaf('女士卫衣(有帽，无帽）'),
+      catLeaf('女士外套'),
+      catLeaf('女士毛衣'),
+      catLeaf('女士西装'),
+      catLeaf('女士运动套装'),
+      catLeaf('女士泳装'),
+      catLeaf('女士牛仔裤'),
+      catLeaf('女士裤子（非牛仔）'),
+      catLeaf('女士短裤'),
+      catLeaf('女士连体裤'),
+      catLeaf('打底裤'),
+      catLeaf('短裙'),
+      catLeaf('女士连衣裙'),
+      catLeaf('女士套装'),
+      catLeaf('女士睡衣居家服'),
+      catLeaf('女士健身服'),
+      catLeaf('女士沙滩装'),
+    ]),
+    catLeaf('内衣'),
+    catLeaf('男装'),
+    catLeaf('户外运动服装'),
+    catLeaf('定制服装'),
+    catLeaf('大码服装'),
+    catLeaf('新趋势服装'),
+    catLeaf('新潮流服装'),
+  ]),
+  catLeaf('健康与美容'),
+  catLeaf('家居与花园'),
+  catGroup('运动与户外产品', [
+    catLeaf('其他体育用品'),
+    catLeaf('水上运动'),
+    catLeaf('休闲运动游戏'),
+    catLeaf('高尔夫'),
+    catLeaf('骑行'),
+    catLeaf('狩猎'),
+    catLeaf('野营徒步户外装备'),
+    catLeaf('专业运动&户外服装'),
+    catLeaf('拍类运动'),
+    catLeaf('雪地运动'),
+    catLeaf('运动户外配饰'),
+    catLeaf('运动健身用品'),
+    catLeaf('专业运动鞋'),
+    catLeaf('极限运动'),
+    catLeaf('运动户外包'),
+    catLeaf('钓鱼'),
+    catLeaf('户外花园'),
+    catLeaf('户外鞋'),
+    catLeaf('游泳用品&装备'),
+    catLeaf('运动康复'),
+    catLeaf('新潮流户外服饰'),
+    catLeaf('定制运动户外产品'),
+  ]),
+  catLeaf('其他产品'),
+  catGroup('手机和手机附件', [
+    catLeaf('手机'),
+    catLeaf('手机模型'),
+    catLeaf('翻新手机'),
+    catLeaf('手机配件'),
+    catLeaf('手机附件'),
+    catLeaf('品牌手机'),
+    catLeaf('可穿戴设备'),
+    catLeaf('中国品牌手机'),
+    catLeaf('配件'),
+  ]),
+  catLeaf('数码相机、摄影器材'),
+  catGroup('箱包及箱包辅料', [
+    catLeaf('箱类'),
+    catLeaf('运动户外包'),
+    catLeaf('公文包'),
+    catLeaf('书包'),
+    catLeaf('晚宴包'),
+    catLeaf('化妆包'),
+    catLeaf('购物袋'),
+    catLeaf('钱包及卡包'),
+    catLeaf('腰包'),
+    catGroup('时装包', [
+      catLeaf('沙滩包'),
+      catLeaf('单肩包'),
+      catLeaf('手提包'),
+      catLeaf('斜挎包'),
+      catLeaf('女士手拿包'),
+      catLeaf('横向矩形包'),
+      catLeaf('流浪包'),
+      catLeaf('双肩款时装包'),
+      catLeaf('水桶包'),
+      catLeaf('波士顿包'),
+      catLeaf('单手柄包'),
+      catLeaf('时尚帆布包'),
+    ]),
+    catLeaf('箱包制造材料'),
+    catLeaf('箱包配件'),
+    catLeaf('其他包包'),
+    catLeaf('整理包'),
+    catLeaf('功能性箱包'),
+    catLeaf('新星箱包'),
+    catLeaf('定制箱包'),
+    catLeaf('精品箱包'),
+  ]),
+  catLeaf('电玩游戏'),
+  catLeaf('时尚配件'),
+  catGroup('鞋类及鞋类辅料', [
+    catLeaf('靴子'),
+    catGroup('运动鞋', [
+      catLeaf('跑鞋'),
+      catLeaf('篮球鞋'),
+      catLeaf('网球鞋'),
+      catLeaf('高尔夫鞋'),
+      catLeaf('保龄球鞋'),
+      catLeaf('训练鞋'),
+      catLeaf('滑雪靴'),
+      catLeaf('滑板鞋'),
+      catLeaf('马靴'),
+      catLeaf('摔跤鞋'),
+      catLeaf('散步鞋'),
+      catLeaf('英式足球鞋'),
+      catLeaf('美式足球鞋/橄榄球鞋'),
+      catLeaf('棒球/垒球鞋'),
+      catLeaf('拳击鞋'),
+      catLeaf('武术(功夫/柔道/空手道)鞋'),
+      catLeaf('登山鞋'),
+      catLeaf('攀岩鞋'),
+      catLeaf('暴走鞋'),
+      catLeaf('健身运动鞋'),
+      catLeaf('自行车鞋'),
+      catLeaf('摩托车鞋'),
+      catLeaf('滑冰鞋'),
+      catLeaf('轮滑鞋'),
+      catLeaf('蛙鞋'),
+      catLeaf('专业舞蹈鞋'),
+      catLeaf('定制鞋'),
+    ]),
+    catLeaf('休闲鞋'),
+    catLeaf('正装鞋'),
+    catLeaf('木底鞋'),
+    catLeaf('凉鞋'),
+    catLeaf('拖鞋'),
+    catLeaf('鞋配件'),
+    catLeaf('制鞋原材料'),
+    catLeaf('纯手工鞋'),
+    catLeaf('其他鞋'),
+    catLeaf('特殊功能鞋'),
+    catLeaf('涉水鞋'),
+    catLeaf('邀请类目（鞋）'),
+    catLeaf('潮流时尚鞋'),
+    catLeaf('鞋CS'),
+    catLeaf('定制鞋类'),
+    catLeaf('精品鞋靴'),
+  ]),
+  catLeaf('母婴用品'),
+  catLeaf('汽车、摩托车'),
+  catLeaf('乐器'),
+  catLeaf('照明灯饰'),
+  catLeaf('发制品'),
+  catLeaf('战术装备'),
+  catLeaf('食品饮料'),
+  catLeaf('家用电器'),
+  catLeaf('特定专用'),
+  catLeaf('可再生能源'),
+  catGroup('宠物用品', [
+    catLeaf('水生动物和鱼类用品'),
+    catLeaf('鸟类用品'),
+    catLeaf('猫用品'),
+    catGroup('狗用品', [
+      catLeaf('狗训导用品'),
+      catLeaf('狗跳蚤和壁虱治疗'),
+      catLeaf('狗汽车座套'),
+      catLeaf('其他狗用品'),
+      catLeaf('狗挂牌'),
+      catGroup('狗服饰', [
+        catLeaf('狗配饰'),
+        catLeaf('狗靴和鞋子'),
+        catLeaf('狗大衣和夹克'),
+        catLeaf('狗降温背心和装备'),
+        catLeaf('狗节日服装'),
+        catLeaf('狗连衣裙'),
+        catLeaf('狗户外装备'),
+        catLeaf('狗衬衫'),
+        catLeaf('狗毛衣和连帽衫'),
+        catLeaf('其他狗服饰用品'),
+      ]),
+      catLeaf('狗食具及附件'),
+      catLeaf('狗笼，箱（包）和肩袋'),
+      catLeaf('狗狗清洁和便溺用品'),
+      catLeaf('狗项圈和牵引带'),
+      catLeaf('狗食物'),
+      catLeaf('狗美容用品'),
+      catLeaf('狗舍和狗窝配件'),
+      catLeaf('狗玩具及咀嚼'),
+      catLeaf('狗旅行与户外用品'),
+      catLeaf('狗零食'),
+      catLeaf('狗舍和围栏'),
+      catLeaf('狗电子围栏'),
+    ]),
+    catLeaf('其它宠物用品'),
+    catLeaf('宠物防护'),
+    catLeaf('马用品'),
+    catLeaf('小动物用品'),
+    catLeaf('爬行动物用品'),
+    catLeaf('定制个性化宠物用品'),
+    catLeaf('农场动物'),
+  ]),
+];
+
+const categoryLeafPaths: string[][] = (() => {
+  const paths: string[][] = [];
+  const walk = (nodes: CategoryNode[], prefix: string[]) => {
+    nodes.forEach((node) => {
+      const path = [...prefix, node.label];
+      if (node.children && node.children.length) walk(node.children, path);
+      else paths.push(path);
+    });
+  };
+  walk(categoryTree, []);
+  return paths;
+})();
 
 // ===== 商品基本信息 =====
 const keywordModes = ['AI生成关键词', '覆盖关键词', '替换关键词', '新增关键词'];
-const featureModes = ['AI生成短描', '免费生成短描', '新增短描'];
-const MAX_FEATURE_TEXTS = 5;
+const featureModes = ['AI生成短描', '免费生成短描', '覆盖短描', '替换短描', '新增短描'];
+const MAX_KEYWORD_TEXTS = 3;
+const COVER_FEATURE_MODE = '覆盖短描';
+const REPLACE_FEATURE_MODE = '替换短描';
 const APPEND_FEATURE_MODE = '新增短描';
 const AI_FEATURE_MODE = 'AI生成短描';
 const attrBasisModes = ['平台类目属性'];
 
-// ===== 关联产品模板 =====
-// 示例数据对应接口 dh.relmodel.pageget$2.0：relModelList>modelName=产品名称，展示位数量=relModelProdList 列表长度
-const MAX_TEMPLATE_SLOTS = 6;
-const productTemplates = [
-  { id: 'tpl-digital', modelName: '【全新未拆封】i17Pro Max 灵动岛 16+1TB 全网通5G智能手机', relModelProdList: ['P20261012001', 'P20261012002', 'P20261012003', 'P20261012004'] },
-  { id: 'tpl-earbuds', modelName: '【跨境专供】无线蓝牙耳机 主动降噪 超长续航', relModelProdList: ['P20261011001'] },
-  { id: 'tpl-bag', modelName: '【爆款】男士休闲双肩包 大容量防水通勤背包', relModelProdList: ['P20261010001', 'P20261010002', 'P20261010003', 'P20261010004', 'P20261010005', 'P20261010006'] },
-];
-const tplSyncModes = [
-  { id: 'add', label: '新增产品', hint: '把当前选中的、已有产品编号的产品加入模板。最多能加几个，取决于模板的剩余展示位。' },
-  { id: 'modify', label: '修改产品', hint: '用当前选中的、已有产品编号的产品直接替换模板中已有的产品，只替换不新增。' },
-];
 // 标题处理方式分三组，组间互斥（单选），文本处理组内部可多选
 const titleOpGroups = [
   { id: 'text', ops: ['过滤文字', '追加文本', '裁剪', '随机打乱', '随机插入', '查找替换', '首字母大写'] },
@@ -324,6 +564,25 @@ const titleOpGroups = [
 ];
 const skuSpecValueOps = ['删除超出的字符', '删除名称中的', '查找替换', '追加文本', '清空规格属性名称'];
 const specValueAppendModes = ['自定义', '自增长'];
+
+// ===== 备货信息 =====
+type StockStatusId = 'stock' | 'incoming' | 'none';
+const stockStatusModes: { id: StockStatusId; label: string; hint: string }[] = [
+  { id: 'stock', label: '有备货', hint: '按实物库存销售，承诺 1–4 个工作日发货' },
+  { id: 'incoming', label: '备货中', hint: '库存仍在途中，按 5–10 个工作日承诺发货' },
+  { id: 'none', label: '待备货', hint: '接单后采购，不提交实物库存' },
+];
+const stockCutModes = ['下单扣减库存', '支付扣减库存'];
+type StockLocationRow = { id: string; country: string; leadTime: string };
+const stockCountryOptions = ['中国', '美国', '英国', '德国', '加拿大', '澳大利亚'];
+const stockLocationModes = ['覆盖现有数据', '追加'];
+const stockLeadTimeMax = (country: string) => (country === '中国' ? 4 : 3);
+const stockLeadTimeHints: Record<StockStatusId, string> = {
+  stock: '有备货 1–4 个工作日',
+  incoming: '备货中 5–10 个工作日',
+  none: '待备货按类目，1–90 个工作日',
+};
+const stockLeadTimeHintMixed = '有备货 1–4 个工作日、备货中 5–10 个工作日、待备货按类目（1–90 个工作日）';
 
 // ===== 主图 =====
 const MAX_MAIN_IMAGES = 8;
@@ -402,7 +661,21 @@ const detailOps: { id: string; label: string }[] = [
   { id: 'image-pre', label: '图像附加到详情前面' },
   { id: 'image-post', label: '图像附加到详情后面' },
   { id: 'delete-image', label: '删除详情图像' },
+  { id: 'rel-template', label: '插入产品模板' },
 ];
+
+// 插入产品模板：按店铺分别选择模板，模板内容可选择附加到详情前面或后面
+const detailTplShops = [
+  { id: 'shop-1', name: '服装测试' },
+  { id: 'shop-2', name: 'bag' },
+  { id: 'shop-3', name: 'shoes' },
+];
+const detailTplOptions = [
+  { id: 'tpl-digital', name: '【全新未拆封】i17Pro Max 灵动岛 16+1TB 全网通5G智能手机' },
+  { id: 'tpl-earbuds', name: '【跨境专供】无线蓝牙耳机 主动降噪 超长续航' },
+  { id: 'tpl-bag', name: '【爆款】男士休闲双肩包 大容量防水通勤背包' },
+];
+const detailTplPositions = ['附加到详情前面', '附加到详情后面'];
 const detailDeleteImageModes = ['删除全部图像', '删除尺码表以外图像'];
 const detailFilterOptions = [
   '过滤HTML',
@@ -560,8 +833,8 @@ const numValue = (prev: string, delta: number) =>
 
 const thumbMenuItems = ['AI图像编辑', '高级图像翻译', '快速裁剪'];
 
-const TrashIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+const TrashIcon = ({ color = '#fff' }: { color?: string }) => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <polyline points="3 6 5 6 21 6" />
     <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
     <path d="M10 11v6" />
@@ -1111,101 +1384,18 @@ function SvStepper({
   );
 }
 
-// ===== 关联产品模板：按店铺分别关联 =====
-type ShopTplState = { tplId: string; mode: string };
-const defaultShopTpl: ShopTplState = { tplId: '', mode: '' };
-
-function ProductTplBlock({
-  shopId,
-  state,
-  menuOpen,
-  menuPos,
-  onOpenMenu,
-  onPickTpl,
-  onModeChange,
-  annotationId,
-}: {
-  shopId: string;
-  state: ShopTplState;
-  menuOpen: boolean;
-  menuPos: { left: number; top?: number; bottom?: number; minWidth: number; maxWidth: number } | null;
-  onOpenMenu: (trigger: HTMLDivElement) => void;
-  onPickTpl: (id: string) => void;
-  onModeChange: (mode: string) => void;
-  annotationId?: string;
-}) {
-  const selectedTpl = productTemplates.find((t) => t.id === state.tplId);
-  const remainSlots = selectedTpl ? MAX_TEMPLATE_SLOTS - selectedTpl.relModelProdList.length : 0;
-  return (
-    <div className="ae-svc-tpl" data-annotation-id={annotationId}>
-      <div className="ae-tpl-line">
-        <div className="ae-svc-field">
-          <span className="ae-svc-label">产品模板</span>
-          <div className="ae-dropdown ae-tpl-dropdown" onClick={(e) => onOpenMenu(e.currentTarget)}>
-            <span className={selectedTpl ? 'ae-dropdown-value' : 'ae-dropdown-placeholder'} title={selectedTpl?.modelName}>
-              {selectedTpl ? `展示位剩余${remainSlots}` : '请选择产品模板'}
-            </span>
-            <ChevronDown />
-            {menuOpen && menuPos && (
-              <div className="ae-wm-menu ae-wm-menu--fixed" style={menuPos} onClick={(e) => e.stopPropagation()}>
-                {productTemplates.map((tpl) => (
-                  <div
-                    key={tpl.id}
-                    className={`ae-wm-menu-item${tpl.id === state.tplId ? ' is-active' : ''}`}
-                    title={tpl.modelName}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onPickTpl(tpl.id);
-                    }}
-                  >
-                    {`展示位剩余${MAX_TEMPLATE_SLOTS - tpl.relModelProdList.length}`}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-      {selectedTpl && (
-        <div className={`ae-tpl-slots${remainSlots <= 0 ? ' is-exhausted' : ''}`}>
-          剩余展示位：{remainSlots}（最多{MAX_TEMPLATE_SLOTS}个展示位）
-        </div>
-      )}
-      {selectedTpl && (
-        <div className="ae-radio-group">
-          {tplSyncModes.map((mode) => {
-            const addDisabled = mode.id === 'add' && remainSlots <= 0;
-            return (
-              <label key={mode.id} className={`ae-radio${addDisabled ? ' is-disabled' : ''}`}>
-                <input
-                  type="radio"
-                  name={`productTplMode-${shopId}`}
-                  disabled={addDisabled}
-                  checked={state.mode === mode.id}
-                  onChange={() => onModeChange(mode.id)}
-                />
-                <span className="ae-radio-mask" />
-                <span>{mode.label}</span>
-                {addDisabled && <span className="ae-opt-warn">（展示位已满）</span>}
-              </label>
-            );
-          })}
-        </div>
-      )}
-      {selectedTpl && state.mode && (
-        <div className="ae-hint sub">{tplSyncModes.find((m) => m.id === state.mode)?.hint}</div>
-      )}
-    </div>
-  );
-}
-
 // ===== Main =====
 export default function AutoEditDialog() {
   const [activeMenu, setActiveMenu] = useState('basic');
   const [basicChecked, setBasicChecked] = useState<Record<string, boolean>>({});
   const [keywordMode, setKeywordMode] = useState('');
+  // 覆盖 / 新增关键词共用一个列表，最多 3 条
+  const [keywordTexts, setKeywordTexts] = useState<string[]>([]);
+  const [keywordReplaceRows, setKeywordReplaceRows] = useState<{ find: string; replace: string }[]>([]);
   const [featureMode, setFeatureMode] = useState('');
   const [featureTexts, setFeatureTexts] = useState<string[]>([]);
+  const [coverFeatureTexts, setCoverFeatureTexts] = useState<string[]>([]);
+  const [replaceFeatureRows, setReplaceFeatureRows] = useState<{ find: string; replace: string }[]>([]);
   const [attrBasis, setAttrBasis] = useState('');
   const [attrChecked, setAttrChecked] = useState(false);
   const [brandValue, setBrandValue] = useState('');
@@ -1249,6 +1439,8 @@ export default function AutoEditDialog() {
   const [detailDeleteImageMode, setDetailDeleteImageMode] = useState('');
   const [detailImageChecks, setDetailImageChecks] = useState<Record<string, string[]>>({ 'image-pre': [], 'image-post': [] });
   const [detailImageCustom, setDetailImageCustom] = useState<Record<string, UploadedImage | null>>({ 'image-pre': null, 'image-post': null });
+  const [detailTplByShop, setDetailTplByShop] = useState<Record<string, { tplId: string; pos: string }>>({});
+  const [detailTplMenu, setDetailTplMenu] = useState<string | null>(null);
   const [slotIds, setSlotIds] = useState<number[]>(() =>
     Array.from({ length: MAX_MAIN_IMAGES }, (_, i) => i + 1));
   const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -1256,9 +1448,6 @@ export default function AutoEditDialog() {
   const [deletedPositions, setDeletedPositions] = useState<number[]>([]);
   const [appendImages, setAppendImages] = useState<UploadedImage[]>([]);
   const [uploadDialog, setUploadDialog] = useState<'replace' | 'append' | null>(null);
-  const [tplByShop, setTplByShop] = useState<Record<string, { tplId: string; mode: string }>>({});
-  const [tplMenuFor, setTplMenuFor] = useState('');
-  const [tplMenuPos, setTplMenuPos] = useState<{ left: number; top?: number; bottom?: number; minWidth: number; maxWidth: number } | null>(null);
   const [toast, setToast] = useState('');
 
   useEffect(() => {
@@ -1266,20 +1455,6 @@ export default function AutoEditDialog() {
     const timer = window.setTimeout(() => setToast(''), 2000);
     return () => window.clearTimeout(timer);
   }, [toast]);
-
-  useEffect(() => {
-    if (!tplMenuFor) return;
-    const close = () => {
-      setTplMenuFor('');
-      setTplMenuPos(null);
-    };
-    window.addEventListener('scroll', close, true);
-    window.addEventListener('resize', close);
-    return () => {
-      window.removeEventListener('scroll', close, true);
-      window.removeEventListener('resize', close);
-    };
-  }, [tplMenuFor]);
   const [sampleAtPos3, setSampleAtPos3] = useState(true);
   const [appendSample, setAppendSample] = useState(true);
   const pasteTargetRef = useRef<{ kind: 'append' } | null>(null);
@@ -1352,13 +1527,93 @@ export default function AutoEditDialog() {
       return next;
     });
 
-  const patchShopTpl = (shopId: string, patch: Partial<ShopTplState>) =>
-    setTplByShop((prev) => {
-      const next = { ...(prev[shopId] ?? defaultShopTpl), ...patch };
-      const tpl = productTemplates.find((t) => t.id === next.tplId);
-      if (tpl && tpl.relModelProdList.length >= MAX_TEMPLATE_SLOTS && next.mode === 'add') next.mode = '';
-      return { ...prev, [shopId]: next };
+  // ===== 服务：同步前的类目选择 =====
+  const [catDialogKind, setCatDialogKind] = useState<'service' | 'size' | null>(null);
+  const [catKeyword, setCatKeyword] = useState('');
+  const [catResultSearch, setCatResultSearch] = useState<{ keyword: string; paths: string[][] } | null>(null);
+  const [catSelected, setCatSelected] = useState<string[]>([]);
+  const [catOpenPath, setCatOpenPath] = useState<string[]>([]);
+
+  const openCatDialog = (kind: 'service' | 'size') => {
+    setCatDialogKind(kind);
+    setCatKeyword('');
+    setCatResultSearch(null);
+    setCatSelected([]);
+    setCatOpenPath([]);
+  };
+
+  const closeCatDialog = () => setCatDialogKind(null);
+
+  const catNodesAt = (path: string[]) => {
+    let nodes = categoryTree;
+    for (const segment of path) {
+      const node = nodes.find((item) => item.label === segment);
+      if (!node || !node.children) return [];
+      nodes = node.children;
+    }
+    return nodes;
+  };
+
+  const handleCatNode = (node: CategoryNode, parentPath: string[]) => {
+    const fullPath = [...parentPath, node.label];
+    const stillOnSelectedBranch =
+      catSelected.length >= fullPath.length && fullPath.every((segment, index) => catSelected[index] === segment);
+    if (!stillOnSelectedBranch) setCatSelected([]);
+    setCatOpenPath(fullPath);
+    if (!node.children || !node.children.length) setCatSelected(fullPath);
+  };
+
+  const searchCategories = () => {
+    const keyword = catKeyword.trim();
+    if (!keyword) return;
+    setCatResultSearch({
+      keyword,
+      paths: categoryLeafPaths.filter((path) => path.join(' > ').includes(keyword)),
     });
+  };
+
+  const confirmCatSync = () => {
+    if (!catSelected.length) {
+      setToast('请选择类目');
+      return;
+    }
+    const kind = catDialogKind;
+    setCatDialogKind(null);
+    setToast(kind === 'size' ? '同步尺码模板成功' : '同步成功');
+  };
+
+  const renderCatPath = (path: string[]) => {
+    const keyword = catResultSearch?.keyword ?? '';
+    return path.map((segment, index) => (
+      <React.Fragment key={`${segment}-${index}`}>
+        {index > 0 && ' > '}
+        {keyword && segment.includes(keyword)
+          ? segment.split(keyword).map((part, partIndex) => (
+            <React.Fragment key={partIndex}>
+              {partIndex > 0 && <span className="acd-hi">{keyword}</span>}
+              {part}
+            </React.Fragment>
+          ))
+          : segment}
+      </React.Fragment>
+    ));
+  };
+
+  const catColumnCount = () => {
+    if (!catOpenPath.length) return 1;
+    const parentNodes = catNodesAt(catOpenPath.slice(0, -1));
+    const lastNode = parentNodes.find((node) => node.label === catOpenPath[catOpenPath.length - 1]);
+    return catOpenPath.length + (lastNode?.children?.length ? 1 : 0);
+  };
+
+  useEffect(() => {
+    if (!catDialogKind) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setCatDialogKind(null);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [catDialogKind]);
 
   // ===== SKU信息 =====
   const [skuChecked, setSkuChecked] = useState<Record<string, boolean>>({});
@@ -1384,6 +1639,116 @@ export default function AutoEditDialog() {
   const [stockCalc, setStockCalc] = useState('');
   const [stockQty, setStockQty] = useState('');
   const [stockZeroSkip, setStockZeroSkip] = useState(false);
+
+  // ===== 备货信息 =====
+  const [stockChecked, setStockChecked] = useState<Record<string, boolean>>({});
+  const [stockStatusMode, setStockStatusMode] = useState<StockStatusId | ''>('');
+  const [stockCutMode, setStockCutMode] = useState('');
+  const [stockMaxSale, setStockMaxSale] = useState('');
+  const [stockOversell, setStockOversell] = useState(true);
+  const [stockLeadTime, setStockLeadTime] = useState('');
+  const [stockLocations, setStockLocations] = useState<StockLocationRow[]>([
+    { id: 'loc-1', country: '中国', leadTime: '4' },
+  ]);
+  const [stockLocationMode, setStockLocationMode] = useState(stockLocationModes[0]);
+  const [openLocationId, setOpenLocationId] = useState<string | null>(null);
+
+  const toggleStockBlock = () =>
+    setStockChecked((prev) => {
+      const next = { ...prev, status: !prev.status };
+      if (!next.status) {
+        setStockStatusMode('');
+        setStockCutMode('');
+        setStockMaxSale('');
+        setStockOversell(true);
+        setStockLeadTime('');
+        setStockLocations([{ id: 'loc-1', country: '中国', leadTime: '4' }]);
+        setStockLocationMode(stockLocationModes[0]);
+        setOpenLocationId(null);
+      }
+      return next;
+    });
+
+  const ensureStock = () =>
+    setStockChecked((prev) => (prev.status ? prev : { ...prev, status: true }));
+
+  const stepStockNumber = (value: string, setValue: (next: string) => void, delta: number, max: number) => {
+    ensureStock();
+    const next = Math.min(max, Math.max(1, (Number(value) || 0) + delta));
+    setValue(String(next));
+  };
+
+  const addStockLocation = () => {
+    ensureStock();
+    const used = new Set(stockLocations.map((location) => location.country));
+    const country = stockCountryOptions.find((item) => !used.has(item));
+    if (!country) {
+      setToast('已添加全部备货地');
+      return;
+    }
+    setStockLocations((prev) => [
+      ...prev,
+      { id: `loc-${Date.now()}`, country, leadTime: String(stockLeadTimeMax(country)) },
+    ]);
+  };
+
+  const updateStockLocation = (id: string, patch: Partial<Pick<StockLocationRow, 'country' | 'leadTime'>>) => {
+    ensureStock();
+    setStockLocations((prev) =>
+      prev.map((location) => {
+        if (location.id !== id) return location;
+        if (patch.country) {
+          const max = stockLeadTimeMax(patch.country);
+          return {
+            ...location,
+            country: patch.country,
+            leadTime: String(Math.min(max, Number(location.leadTime) || max)),
+          };
+        }
+        return { ...location, ...patch };
+      }),
+    );
+  };
+
+  const removeStockLocation = (id: string) => {
+    ensureStock();
+    setStockLocations((prev) => prev.filter((location) => location.id !== id));
+  };
+
+  const stepStockLocationTime = (id: string, delta: number) => {
+    ensureStock();
+    setStockLocations((prev) =>
+      prev.map((location) =>
+        location.id === id
+          ? {
+              ...location,
+              leadTime: String(
+                Math.min(
+                  stockLeadTimeMax(location.country),
+                  Math.max(1, (Number(location.leadTime) || 0) + delta),
+                ),
+              ),
+            }
+          : location,
+      ),
+    );
+  };
+
+  useEffect(() => {
+    if (!openLocationId) return;
+    const closeOnOutside = (event: MouseEvent) => {
+      if (!(event.target as HTMLElement).closest('.ae-loc-select')) setOpenLocationId(null);
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpenLocationId(null);
+    };
+    document.addEventListener('mousedown', closeOnOutside, true);
+    document.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.removeEventListener('mousedown', closeOnOutside, true);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [openLocationId]);
 
   const toggleSkuRow = (id: string) =>
     setSkuChecked((prev) => {
@@ -1512,6 +1877,22 @@ export default function AutoEditDialog() {
     setDetailOpsOn((prev) => (prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]));
   };
 
+  useEffect(() => {
+    if (!detailTplMenu) return;
+    const onDown = (e: MouseEvent) => {
+      if ((e.target as HTMLElement).closest?.('.ae-tpl-select')) return;
+      setDetailTplMenu(null);
+    };
+    document.addEventListener('mousedown', onDown);
+    return () => document.removeEventListener('mousedown', onDown);
+  }, [detailTplMenu]);
+
+  const patchDetailTpl = (shopId: string, patch: Partial<{ tplId: string; pos: string }>) =>
+    setDetailTplByShop((prev) => ({
+      ...prev,
+      [shopId]: { ...(prev[shopId] ?? { tplId: '', pos: detailTplPositions[0] }), ...patch },
+    }));
+
   const removeDetailOp = (id: string) => setDetailOpsOn((prev) => prev.filter((v) => v !== id));
 
   const toggleDetailRow = () => {
@@ -1524,6 +1905,8 @@ export default function AutoEditDialog() {
       setDetailDeleteImageMode('');
       setDetailImageChecks({ 'image-pre': [], 'image-post': [] });
       setDetailImageCustom({ 'image-pre': null, 'image-post': null });
+      setDetailTplByShop({});
+      setDetailTplMenu(null);
       setDetailAppendPrefix({ on: false, mode: '', text: '', len: '', rich: '' });
       setDetailAppendSuffix({ on: false, mode: '', text: '', len: '', rich: '' });
       setDetailReplaceMode('text');
@@ -1560,15 +1943,59 @@ export default function AutoEditDialog() {
     setDetailImageCustom((prev) => ({ ...prev, [opId]: uploaded }));
   };
 
+  const selectKeywordMode = (mode: string) => {
+    // 点击任一关键词方式即视为启用该行
+    ensureBasic('keyword');
+    setKeywordMode(mode);
+  };
+
+  const addKeywordText = () =>
+    setKeywordTexts((prev) => (prev.length >= MAX_KEYWORD_TEXTS ? prev : [...prev, '']));
+
+  const removeKeywordText = (index: number) =>
+    setKeywordTexts((prev) => prev.filter((_, i) => i !== index));
+
+  const updateKeywordText = (index: number, value: string) =>
+    setKeywordTexts((prev) => prev.map((v, i) => (i === index ? value : v)));
+
+  const addKeywordReplaceRow = () =>
+    setKeywordReplaceRows((prev) => [...prev, { find: '', replace: '' }]);
+
+  const removeKeywordReplaceRow = (index: number) =>
+    setKeywordReplaceRows((prev) => prev.filter((_, i) => i !== index));
+
+  const updateKeywordReplaceRow = (index: number, patch: Partial<{ find: string; replace: string }>) =>
+    setKeywordReplaceRows((prev) => prev.map((row, i) => (i === index ? { ...row, ...patch } : row)));
+
   const selectFeatureMode = (mode: string) => {
     // 点击任一短描方式即视为启用该行
     ensureBasic('feature');
     setFeatureMode(mode);
-    if (mode !== APPEND_FEATURE_MODE) setFeatureTexts([]);
+    if (mode === APPEND_FEATURE_MODE) {
+      setFeatureTexts((prev) => (prev.length ? prev : ['']));
+    } else {
+      setFeatureTexts([]);
+    }
   };
 
-  const addFeatureText = () =>
-    setFeatureTexts((prev) => (prev.length >= MAX_FEATURE_TEXTS ? prev : [...prev, '']));
+  const addFeatureText = () => setFeatureTexts((prev) => [...prev, '']);
+
+  const addCoverFeatureText = () => setCoverFeatureTexts((prev) => [...prev, '']);
+
+  const removeCoverFeatureText = (index: number) =>
+    setCoverFeatureTexts((prev) => prev.filter((_, i) => i !== index));
+
+  const updateCoverFeatureText = (index: number, value: string) =>
+    setCoverFeatureTexts((prev) => prev.map((v, i) => (i === index ? value : v)));
+
+  const addReplaceFeatureRow = () =>
+    setReplaceFeatureRows((prev) => [...prev, { find: '', replace: '' }]);
+
+  const removeReplaceFeatureRow = (index: number) =>
+    setReplaceFeatureRows((prev) => prev.filter((_, i) => i !== index));
+
+  const updateReplaceFeatureRow = (index: number, patch: Partial<{ find: string; replace: string }>) =>
+    setReplaceFeatureRows((prev) => prev.map((row, i) => (i === index ? { ...row, ...patch } : row)));
 
   const removeFeatureText = (index: number) =>
     setFeatureTexts((prev) => prev.filter((_, i) => i !== index));
@@ -1686,7 +2113,7 @@ export default function AutoEditDialog() {
           </div>
           <div className="ae-header-right">
             <span className="ae-tag-plain">敦煌网</span>
-            <span className="ae-tag-shop"><ShopIcon /> 1 店铺</span>
+            <span className="ae-tag-shop"><ShopIcon /> 3 店铺</span>
             <button className="ae-close" type="button"><CloseIcon /></button>
           </div>
         </div>
@@ -1939,6 +2366,74 @@ export default function AutoEditDialog() {
                             </div>
                           )}
 
+                          {id === 'rel-template' && (
+                            <>
+                              {detailTplShops.map((shop) => {
+                                const state = detailTplByShop[shop.id] ?? { tplId: '', pos: detailTplPositions[0] };
+                                const picked = detailTplOptions.find((tpl) => tpl.id === state.tplId);
+                                return (
+                                  <div className="ae-tpl-row" key={shop.id}>
+                                    <span className="ae-tpl-shop" title={shop.name}>{shop.name}</span>
+                                    <div className="ae-tpl-select">
+                                      <div
+                                        className="ae-dropdown ae-tpl-dropdown"
+                                        onClick={() =>
+                                          setDetailTplMenu((prev) => (prev === shop.id ? null : shop.id))
+                                        }
+                                      >
+                                        <span
+                                          className={picked ? 'ae-dropdown-value' : 'ae-dropdown-placeholder'}
+                                          title={picked?.name}
+                                        >
+                                          {picked ? picked.name : '请选择产品模板'}
+                                        </span>
+                                        <ChevronDown />
+                                        {detailTplMenu === shop.id && (
+                                          <div className="ae-tpl-menu" onClick={(e) => e.stopPropagation()}>
+                                            {detailTplOptions.map((tpl) => (
+                                              <div
+                                                key={tpl.id}
+                                                className={`ae-tpl-menu-item${tpl.id === state.tplId ? ' is-active' : ''}`}
+                                                title={tpl.name}
+                                                onClick={() => {
+                                                  patchDetailTpl(shop.id, { tplId: tpl.id });
+                                                  setDetailTplMenu(null);
+                                                }}
+                                              >
+                                                {tpl.name}
+                                              </div>
+                                            ))}
+                                          </div>
+                                        )}
+                                      </div>
+                                      <button
+                                        className="ae-tpl-sync"
+                                        type="button"
+                                        onClick={() => setToast('同步成功')}
+                                      >
+                                        同步
+                                      </button>
+                                    </div>
+                                    <div className="ae-radio-group ae-tpl-pos">
+                                      {detailTplPositions.map((pos) => (
+                                        <label key={pos} className="ae-radio">
+                                          <input
+                                            type="radio"
+                                            name={`detailTplPos-${shop.id}`}
+                                            checked={state.pos === pos}
+                                            onChange={() => patchDetailTpl(shop.id, { pos })}
+                                          />
+                                          <span className="ae-radio-mask" />
+                                          <span>{pos}</span>
+                                        </label>
+                                      ))}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </>
+                          )}
+
                           {(id === 'image-pre' || id === 'image-post') && (
                             <>
                               <div className="ae-proc-checks">
@@ -1997,16 +2492,76 @@ export default function AutoEditDialog() {
                       type="radio"
                       name="keywordMode"
                       checked={keywordMode === mode}
-                      onChange={() => {
-                        ensureBasic('keyword');
-                        setKeywordMode(mode);
-                      }}
+                      onChange={() => selectKeywordMode(mode)}
                     />
                     <span className="ae-radio-mask" />
                     <span>{mode}</span>
                   </label>
                 ))}
               </div>
+              {(keywordMode === '覆盖关键词' || keywordMode === '新增关键词') && (
+                <div className="ae-sub-list">
+                  {keywordTexts.map((text, index) => (
+                    <div className="ae-sub-row" key={index}>
+                      <span className="ae-sub-label">关键词{index + 1}</span>
+                      <input
+                        className="ae-sub-input"
+                        type="text"
+                        value={text}
+                        onChange={(e) => updateKeywordText(index, e.target.value)}
+                      />
+                      <button
+                        className="ae-mini-del"
+                        type="button"
+                        aria-label={`删除关键词${index + 1}`}
+                        onClick={() => removeKeywordText(index)}
+                      >
+                        <TrashIcon />
+                      </button>
+                    </div>
+                  ))}
+                  {keywordTexts.length < MAX_KEYWORD_TEXTS && (
+                    <button className="ae-mini-add" type="button" onClick={addKeywordText}>
+                      <PlusIcon /> 增加关键词
+                    </button>
+                  )}
+                </div>
+              )}
+              {keywordMode === '替换关键词' && (
+                <div className="ae-sub-list">
+                  {keywordReplaceRows.map((row, index) => (
+                    <div className="ae-sub-row" key={index}>
+                      <span className="ae-sub-label">关键词</span>
+                      <input
+                        className="ae-sub-input"
+                        type="text"
+                        placeholder="旧关键词"
+                        value={row.find}
+                        onChange={(e) => updateKeywordReplaceRow(index, { find: e.target.value })}
+                      />
+                      <span className="ae-sub-label">替换为</span>
+                      <input
+                        className="ae-sub-input"
+                        type="text"
+                        placeholder="新关键词"
+                        value={row.replace}
+                        onChange={(e) => updateKeywordReplaceRow(index, { replace: e.target.value })}
+                      />
+                      <button
+                        className="ae-mini-del"
+                        type="button"
+                        aria-label={`删除第${index + 1}组替换`}
+                        onClick={() => removeKeywordReplaceRow(index)}
+                      >
+                        <TrashIcon />
+                      </button>
+                    </div>
+                  ))}
+                  <button className="ae-mini-add" type="button" onClick={addKeywordReplaceRow}>
+                    <PlusIcon /> 替换关键词
+                  </button>
+                </div>
+              )}
             </FormRow>
 
             {/* 产品特性 */}
@@ -2041,28 +2596,109 @@ export default function AutoEditDialog() {
                   </span>
                 </div>
               )}
-              {featureMode === APPEND_FEATURE_MODE && (
-                <div className="ae-feature-list">
-                  {featureTexts.map((text, index) => (
-                    <div className="ae-feature-item" key={index}>
-                      <span className="ae-feature-label">短描{index + 1}</span>
-                      <input
-                        className="ae-feature-input"
-                        type="text"
-                        placeholder="请输入短描内容"
-                        value={text}
-                        onChange={(e) => updateFeatureText(index, e.target.value)}
-                      />
-                      <button className="ae-feature-del" type="button" onClick={() => removeFeatureText(index)}>
-                        <TrashIcon />
+              {featureMode === COVER_FEATURE_MODE && (
+                <div className="ae-sub-list">
+                  {coverFeatureTexts.map((text, index) => (
+                    <div className="ae-sub-row ae-sub-row--area" key={index}>
+                      <span className="ae-area-field">
+                        <textarea
+                          className="ae-area-input"
+                          rows={2}
+                          maxLength={300}
+                          placeholder={`短描 ${index + 1}`}
+                          value={text}
+                          onChange={(e) => updateCoverFeatureText(index, e.target.value.slice(0, 300))}
+                        />
+                        <span className="ae-area-count">{text.length}/300</span>
+                      </span>
+                      <button
+                        className="ae-text-del"
+                        type="button"
+                        aria-label={`删除短描${index + 1}`}
+                        onClick={() => removeCoverFeatureText(index)}
+                      >
+                        <TrashIcon color="currentColor" />
                       </button>
                     </div>
                   ))}
-                  {featureTexts.length < MAX_FEATURE_TEXTS && (
-                    <button className="ae-btn-primary ae-feature-add" type="button" onClick={addFeatureText}>
-                      <PlusIcon /> 新增短描
-                    </button>
-                  )}
+                  <button className="ae-text-add" type="button" onClick={addCoverFeatureText}>
+                    <PlusIcon /> 增加短描
+                  </button>
+                </div>
+              )}
+              {featureMode === REPLACE_FEATURE_MODE && (
+                <div className="ae-sub-list">
+                  {replaceFeatureRows.map((row, index) => (
+                    <div className="ae-sub-row ae-sub-row--replace" key={index}>
+                      <span className="ae-sub-label">短描</span>
+                      <span className="ae-area-field">
+                        <textarea
+                          className="ae-area-input"
+                          rows={2}
+                          maxLength={300}
+                          placeholder="旧短描"
+                          value={row.find}
+                          onChange={(e) => updateReplaceFeatureRow(index, { find: e.target.value.slice(0, 300) })}
+                        />
+                        <span className="ae-area-count">{row.find.length}/300</span>
+                      </span>
+                      <span className="ae-sub-label">替换为</span>
+                      <span className="ae-area-field">
+                        <textarea
+                          className="ae-area-input"
+                          rows={2}
+                          maxLength={300}
+                          placeholder="新短描"
+                          value={row.replace}
+                          onChange={(e) => updateReplaceFeatureRow(index, { replace: e.target.value.slice(0, 300) })}
+                        />
+                        <span className="ae-area-count">{row.replace.length}/300</span>
+                      </span>
+                      <button
+                        className="ae-text-del"
+                        type="button"
+                        aria-label={`删除第${index + 1}组替换`}
+                        onClick={() => removeReplaceFeatureRow(index)}
+                      >
+                        <TrashIcon color="currentColor" />
+                      </button>
+                    </div>
+                  ))}
+                  <button className="ae-text-add" type="button" onClick={addReplaceFeatureRow}>
+                    <PlusIcon /> 替换短描
+                  </button>
+                </div>
+              )}
+              {featureMode === APPEND_FEATURE_MODE && (
+                <div className="ae-sub-list">
+                  {featureTexts.map((text, index) => (
+                    <div className="ae-sub-row ae-sub-row--area" key={index}>
+                      <span className="ae-area-field">
+                        <textarea
+                          className="ae-area-input"
+                          rows={2}
+                          maxLength={300}
+                          placeholder={`短描 ${index + 1}`}
+                          value={text}
+                          onChange={(e) => updateFeatureText(index, e.target.value.slice(0, 300))}
+                        />
+                        <span className="ae-area-count">{text.length}/300</span>
+                      </span>
+                      {featureTexts.length > 1 && (
+                        <button
+                          className="ae-text-del"
+                          type="button"
+                          aria-label={`删除短描${index + 1}`}
+                          onClick={() => removeFeatureText(index)}
+                        >
+                          <TrashIcon color="currentColor" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button className="ae-text-add" type="button" onClick={addFeatureText}>
+                    <PlusIcon /> 添加短描
+                  </button>
                 </div>
               )}
             </FormRow>
@@ -2960,112 +3596,67 @@ export default function AutoEditDialog() {
               </>
             )}
 
-            {/* 服务栏目内容沿用线上已有配置，原实现暂注释保留
             {activeMenu === 'service' && (
               <>
-                <FormRow label="商品分级管理" checked={!!serviceChecked.grade} onCheck={() => toggleServiceRow('grade')} annotationId="service-grade-row">
-                  <div className="ae-radio-group">
-                    {gradeModes.map((mode) => (
-                      <label key={mode} className="ae-radio">
-                        <input
-                          type="radio"
-                          name="serviceGrade"
-                          disabled={!serviceChecked.grade}
-                          checked={gradeMode === mode}
-                          onChange={() => setGradeMode(mode)}
-                        />
-                        <span className="ae-radio-mask" />
-                        <span>{mode}</span>
-                      </label>
-                    ))}
-                  </div>
-                </FormRow>
+              <FormRow label="商品分级管理" checked={!!serviceChecked.grade} onCheck={() => toggleServiceRow('grade')} bodyClass="ae-svc-body" annotationId="service-grade-row">
+                <div className="ae-radio-group">
+                  {gradeModes.map((mode) => (
+                    <label key={mode} className="ae-radio">
+                      <input
+                        type="radio"
+                        name="serviceGrade"
+                        checked={gradeMode === mode}
+                        onChange={() => {
+                          if (!serviceChecked.grade) setServiceChecked((prev) => ({ ...prev, grade: true }));
+                          setGradeMode(mode);
+                        }}
+                      />
+                      <span className="ae-radio-mask" />
+                      <span>{mode}</span>
+                    </label>
+                  ))}
+                </div>
+              </FormRow>
 
-                <FormRow label="服务模板" checked={!!serviceChecked.tpl} onCheck={() => toggleServiceRow('tpl')} bodyClass="ae-svc-body" annotationId="service-tpl-row">
-                  <div className="ae-svc-list">
-                    {serviceTplRows.map((row, index) => {
-                      const st = tplByShop[row.id] ?? defaultShopTpl;
-                      return (
-                        <div className="ae-svc-item ae-svc-item--shop" key={row.id}>
-                          <div className="ae-svc-line">
-                            <span className="ae-svc-name" title={row.name}>{row.name}</span>
-                            {serviceFields.map((field) => (
-                              <div className="ae-svc-field" key={field}>
-                                <span className="ae-svc-label">{field}</span>
-                                <div className="ae-svc-select">
-                                  <span>{`请选择${field}`}</span>
-                                  <ChevronDown />
-                                </div>
-                              </div>
-                            ))}
-                            <button className="ae-sync-btn" type="button" disabled={!serviceChecked.tpl} onClick={() => setToast('同步成功')}>同步</button>
-                          </div>
-                          <ProductTplBlock
-                            shopId={row.id}
-                            state={st}
-                            menuOpen={tplMenuFor === row.id}
-                            menuPos={tplMenuFor === row.id ? tplMenuPos : null}
-                            onOpenMenu={(trigger) => {
-                              if (tplMenuFor === row.id) {
-                                setTplMenuFor('');
-                                setTplMenuPos(null);
-                                return;
-                              }
-                              const rect = trigger.getBoundingClientRect();
-                              const bounds = trigger.closest('.ae-content')?.getBoundingClientRect();
-                              const menuMax = Math.min(480, window.innerWidth - rect.left - 24);
-                              const spaceBelow = (bounds?.bottom ?? window.innerHeight) - rect.bottom;
-                              const spaceAbove = rect.top - (bounds?.top ?? 0);
-                              const openUp = spaceBelow < 240 && spaceAbove > spaceBelow;
-                              setTplMenuPos({
-                                left: rect.left,
-                                minWidth: rect.width,
-                                maxWidth: menuMax,
-                                ...(openUp ? { bottom: window.innerHeight - rect.top + 4 } : { top: rect.bottom + 4 }),
-                              });
-                              setTplMenuFor(row.id);
-                            }}
-                            onPickTpl={(id) => {
-                              patchShopTpl(row.id, { tplId: id });
-                              setTplMenuFor('');
-                              setTplMenuPos(null);
-                              if (!serviceChecked.tpl) {
-                                setServiceChecked((prev) => ({ ...prev, tpl: true }));
-                              }
-                            }}
-                            onModeChange={(mode) => patchShopTpl(row.id, { mode })}
-                            annotationId={index === 0 ? 'basic-product-template-row' : undefined}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </FormRow>
-
-                <FormRow label="尺码模板" checked={!!serviceChecked.size} onCheck={() => toggleServiceRow('size')} last bodyClass="ae-svc-body" annotationId="service-size-row">
-                  <div className="ae-svc-toolbar">
-                    <button className="ae-sync-btn" type="button" disabled={!serviceChecked.size} onClick={() => setToast('全部同步成功')}>一键同步所有</button>
-                  </div>
-                  <div className="ae-svc-list">
-                    {sizeTplRows.map((row) => (
-                      <div className="ae-svc-item" key={row.id}>
-                        <span className="ae-svc-name" title={row.name}>{row.name}</span>
-                        <span className="ae-svc-cat" title={row.cat}>{row.cat}</span>
-                        <div className="ae-svc-field">
-                          <span className="ae-svc-label">尺码模板</span>
+              <FormRow label="服务模板" checked={!!serviceChecked.tpl} onCheck={() => toggleServiceRow('tpl')} bodyClass="ae-svc-body" annotationId="service-tpl-row">
+                <div className="ae-svc-list">
+                  {serviceTplRows.map((row) => (
+                    <div className="ae-svc-item" key={row.id}>
+                      <span className="ae-svc-name" title={row.name}>{row.name}</span>
+                      {serviceFields.map((field) => (
+                        <div className="ae-svc-field" key={field}>
+                          <span className="ae-svc-label">{field}</span>
                           <div className="ae-svc-select">
-                            <span>请选择尺码模板</span>
+                            <span>{`请选择${field}`}</span>
                             <ChevronDown />
                           </div>
                         </div>
-                        <button className="ae-sync-btn" type="button" disabled={!serviceChecked.size} onClick={() => setToast('同步成功')}>同步</button>
+                      ))}
+                      <button className="ae-sync-btn" type="button" onClick={() => openCatDialog('service')}>同步</button>
+                    </div>
+                  ))}
+                </div>
+              </FormRow>
+
+              <FormRow label="尺码模板" checked={!!serviceChecked.size} onCheck={() => toggleServiceRow('size')} last bodyClass="ae-svc-body" annotationId="service-size-row">
+                <div className="ae-svc-list">
+                  {sizeTplRows.map((row) => (
+                    <div className="ae-svc-item" key={row.id}>
+                      <span className="ae-svc-name" title={row.name}>{row.name}</span>
+                      <div className="ae-svc-field ae-svc-field--size">
+                        <span className="ae-svc-label">尺码模板</span>
+                        <div className="ae-svc-select">
+                          <span>请选择尺码模板</span>
+                          <ChevronDown />
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                </FormRow>
+                      <button className="ae-sync-btn" type="button" onClick={() => openCatDialog('size')}>同步</button>
+                    </div>
+                  ))}
+                </div>
+              </FormRow>
               </>
             )}
-            */}
 
             {activeMenu === 'attr' && (
               <>
@@ -3098,7 +3689,259 @@ export default function AutoEditDialog() {
               </>
             )}
 
-            {activeMenu !== 'basic' && activeMenu !== 'image' && activeMenu !== 'sku' && activeMenu !== 'attr' && activeMenu !== 'detail' && (
+            {activeMenu === 'stock' && (
+              <FormRow label="备货状态" checked={!!stockChecked.status} onCheck={toggleStockBlock} last flush annotationId="stock-row">
+                <div className="ae-stock-body">
+                  <div className="ae-stock-field ae-stock-field--inline">
+                    <span className="ae-stock-label">备货状态</span>
+                    <div className="ae-stock-control">
+                      <div className="ae-radio-group">
+                        {stockStatusModes.map((mode) => (
+                          <label key={mode.id} className="ae-radio">
+                            <input
+                              type="radio"
+                              name="stockStatusMode"
+                              checked={stockStatusMode === mode.id}
+                              onChange={() => {
+                                ensureStock();
+                                setStockStatusMode(mode.id);
+                              }}
+                            />
+                            <span className="ae-radio-mask" />
+                            <span>{mode.label}</span>
+                          </label>
+                        ))}
+                      </div>
+                      {stockStatusMode && (
+                        <div className="ae-hint">
+                          {stockStatusModes.find((mode) => mode.id === stockStatusMode)?.hint}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {(stockStatusMode === 'stock' || stockStatusMode === 'incoming') && (
+                    <>
+                      <div className="ae-stock-field">
+                        <span className="ae-stock-label">备货所在地及备货期</span>
+                        <div className="ae-stock-control">
+                          <div className="ae-radio-group">
+                            {stockLocationModes.map((mode) => (
+                              <label key={mode} className="ae-radio">
+                                <input
+                                  type="radio"
+                                  name="stockLocationMode"
+                                  checked={stockLocationMode === mode}
+                                  onChange={() => {
+                                    ensureStock();
+                                    setStockLocationMode(mode);
+                                  }}
+                                />
+                                <span className="ae-radio-mask" />
+                                <span>{mode}</span>
+                              </label>
+                            ))}
+                          </div>
+                          <div className="ae-hint">相同备货地会自动覆盖备货期数据</div>
+                          <div className="ae-loc-list">
+                            {stockLocations.map((location, index) => (
+                              <div className="ae-loc-row" key={location.id}>
+                                <div className="ae-loc-select">
+                                  <button
+                                    type="button"
+                                    className="ae-loc-trigger"
+                                    onClick={() =>
+                                      setOpenLocationId(openLocationId === location.id ? null : location.id)
+                                    }
+                                  >
+                                    <span>{location.country}</span>
+                                    <ChevronDown />
+                                  </button>
+                                  {openLocationId === location.id && (
+                                    <div className="ae-loc-menu">
+                                      {stockCountryOptions
+                                        .filter(
+                                          (country) =>
+                                            country === location.country ||
+                                            !stockLocations.some(
+                                              (other) =>
+                                                other.id !== location.id && other.country === country,
+                                            ),
+                                        )
+                                        .map((country) => (
+                                          <div
+                                            key={country}
+                                            className={`ae-loc-option${country === location.country ? ' is-selected' : ''}`}
+                                            onClick={() => {
+                                              updateStockLocation(location.id, { country });
+                                              setOpenLocationId(null);
+                                            }}
+                                          >
+                                            {country}
+                                          </div>
+                                        ))}
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="ae-input-wrap">
+                                  <input
+                                    className="ae-input ae-loc-time"
+                                    type="text"
+                                    inputMode="numeric"
+                                    value={location.leadTime}
+                                    onChange={(e) =>
+                                      updateStockLocation(location.id, {
+                                        leadTime: e.target.value.replace(/[^\d]/g, ''),
+                                      })
+                                    }
+                                  />
+                                  <div className="ae-input-steps">
+                                    <button className="ae-step" type="button" onClick={() => stepStockLocationTime(location.id, 1)}>▲</button>
+                                    <button className="ae-step" type="button" onClick={() => stepStockLocationTime(location.id, -1)}>▼</button>
+                                  </div>
+                                </div>
+                                <span className="ae-unit">个工作日</span>
+                                {index > 0 ? (
+                                  <button
+                                    className="ae-loc-del"
+                                    type="button"
+                                    aria-label="删除备货地"
+                                    onClick={() => removeStockLocation(location.id)}
+                                  >
+                                    ×
+                                  </button>
+                                ) : (
+                                  <span className="ae-loc-actions">
+                                    <button className="ae-loc-add" type="button" onClick={addStockLocation}>
+                                      <PlusIcon /> 新增
+                                    </button>
+                                    <span className="ae-loc-count">{stockLocations.length}/217</span>
+                                  </span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                          <div className="ae-hint">中国仓 1–4 个工作日，海外仓 1–3 个工作日</div>
+                        </div>
+                      </div>
+
+                      <div className="ae-stock-field ae-stock-field--inline">
+                        <span className="ae-stock-label">库存扣减方式</span>
+                        <div className="ae-radio-group">
+                          {stockCutModes.map((mode) => (
+                            <label key={mode} className="ae-radio">
+                              <input
+                                type="radio"
+                                name="stockCutMode"
+                                checked={stockCutMode === mode}
+                                onChange={() => {
+                                  ensureStock();
+                                  setStockCutMode(mode);
+                                }}
+                              />
+                              <span className="ae-radio-mask" />
+                              <span>{mode}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="ae-stock-field ae-stock-field--inline">
+                        <span className="ae-stock-label">
+                          允许超卖
+                          <span className="ae-help" role="img" aria-label="允许超卖说明" tabIndex={0}>
+                            <span className="ae-label-tip-icon">?</span>
+                            <span className="ae-help__tip" role="tooltip">
+                              <span className="ae-help__line">允许超卖：可售库存和备货库存可以不一致，超出备货的部分需自行备货/调拨。</span>
+                              <span className="ae-help__line">不允许超卖：可售库存锁定为各仓备货合计，SKU 库存不可编辑。</span>
+                            </span>
+                          </span>
+                        </span>
+                        <div className="ae-switch-line">
+                          <button
+                            type="button"
+                            role="switch"
+                            aria-checked={stockOversell}
+                            className={`ae-switch${stockOversell ? ' is-on' : ''}`}
+                            onClick={() => {
+                              ensureStock();
+                              setStockOversell((v) => !v);
+                            }}
+                          >
+                            <span className="ae-switch-knob" />
+                          </button>
+                          <span className="ae-switch-text">{stockOversell ? '允许' : '不允许'}</span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {stockStatusMode === 'none' && (
+                    <div className="ae-stock-field">
+                      <span className="ae-stock-label">一次最大购买数量</span>
+                      <div className="ae-stock-control">
+                        <div className="ae-input-wrap">
+                          <input
+                            className="ae-input"
+                            type="text"
+                            inputMode="numeric"
+                            value={stockMaxSale}
+                            onChange={(e) => {
+                              ensureStock();
+                              setStockMaxSale(e.target.value.replace(/[^\d]/g, ''));
+                            }}
+                          />
+                          <div className="ae-input-steps">
+                            <button className="ae-step" type="button" onClick={() => stepStockNumber(stockMaxSale, setStockMaxSale, 1, 10000)}>▲</button>
+                            <button className="ae-step" type="button" onClick={() => stepStockNumber(stockMaxSale, setStockMaxSale, -1, 10000)}>▼</button>
+                          </div>
+                        </div>
+                        <div className="ae-hint">1–10000</div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="ae-stock-field">
+                    <span className="ae-stock-label">
+                      备货期
+                      <span className="ae-help" role="img" aria-label="备货期说明" tabIndex={0}>
+                        <span className="ae-label-tip-icon">?</span>
+                        <span className="ae-help__tip" role="tooltip">
+                          <span className="ae-help__line">上方每个备货地的备货期是该仓的发货时效（中国仓 1–4 个工作日、海外仓 1–3 个工作日）；</span>
+                          <span className="ae-help__line">这里的备货期是产品级兜底值，仓级优先，未设置仓级时取这里的值。有备货 1–4 个工作日、备货中 5–10 个工作日、待备货按类目</span>
+                        </span>
+                      </span>
+                    </span>
+                    <div className="ae-stock-control">
+                      <div className="ae-unit-line">
+                        <div className="ae-input-wrap">
+                          <input
+                            className="ae-input"
+                            type="text"
+                            inputMode="numeric"
+                            value={stockLeadTime}
+                            onChange={(e) => {
+                              ensureStock();
+                              setStockLeadTime(e.target.value.replace(/[^\d]/g, ''));
+                            }}
+                          />
+                          <div className="ae-input-steps">
+                            <button className="ae-step" type="button" onClick={() => stepStockNumber(stockLeadTime, setStockLeadTime, 1, 90)}>▲</button>
+                            <button className="ae-step" type="button" onClick={() => stepStockNumber(stockLeadTime, setStockLeadTime, -1, 90)}>▼</button>
+                          </div>
+                        </div>
+                        <span className="ae-unit">个工作日</span>
+                      </div>
+                      <div className="ae-hint">
+                        {stockStatusMode ? stockLeadTimeHints[stockStatusMode] : stockLeadTimeHintMixed}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </FormRow>
+            )}
+
+            {activeMenu !== 'basic' && activeMenu !== 'image' && activeMenu !== 'sku' && activeMenu !== 'attr' && activeMenu !== 'detail' && activeMenu !== 'service' && activeMenu !== 'stock' && (
               <div className="ae-empty">该栏目内容沿用线上已有配置</div>
             )}
           </div>
@@ -3159,8 +4002,96 @@ export default function AutoEditDialog() {
         </div>
       </div>
     )}
-    {toast && <div className="ae-toast">{toast}</div>}
-    <AnnotationViewer
+
+    {/* 同步前的类目选择弹窗 */}
+    {catDialogKind && (
+      <div className="acd-overlay">
+        <div className="acd-modal" role="dialog" aria-modal="true" aria-label="类目选择" data-annotation-id="category-dialog">
+          <div className="acd-header">
+            <span className="acd-title">类目选择</span>
+            <button className="ae-close" type="button" onClick={closeCatDialog}>
+              <CloseIcon />
+            </button>
+          </div>
+          <div className="acd-body">
+            <div className="acd-search">
+              <span className="acd-search-field">
+                <SearchIcon />
+                <input
+                  value={catKeyword}
+                  placeholder="请输入关键词查找"
+                  onChange={(event) => setCatKeyword(event.target.value)}
+                  onKeyDown={(event) => { if (event.key === 'Enter') searchCategories(); }}
+                />
+              </span>
+              <button className="acd-search-btn" type="button" onClick={searchCategories}>查找</button>
+            </div>
+            {catResultSearch ? (
+              <div className="acd-results">
+                <div className="acd-results-head">
+                  <span>已为您找到 {catResultSearch.paths.length} 个类目</span>
+                  <button className="acd-results-close" type="button" aria-label="清除查找结果" onClick={() => setCatResultSearch(null)}>
+                    <TrashIcon color="#909399" />
+                  </button>
+                </div>
+                {catResultSearch.paths.length ? (
+                  <div className="acd-results-list">
+                    {catResultSearch.paths.map((path, index) => {
+                      const selected =
+                        path.length === catSelected.length && path.every((segment, segmentIndex) => catSelected[segmentIndex] === segment);
+                      return (
+                        <div
+                          key={index}
+                          className={`acd-result${selected ? ' is-selected' : ''}`}
+                          onClick={() => setCatSelected(path)}
+                        >
+                          {renderCatPath(path)}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="acd-results-empty">未找到相关类目</div>
+                )}
+              </div>
+            ) : (
+              <div className="acd-cascader">
+                {Array.from({ length: catColumnCount() }).map((_, depth) => {
+                  const parentPath = catOpenPath.slice(0, depth);
+                  return (
+                    <div className="acd-col" key={depth}>
+                      {catNodesAt(parentPath).map((node) => {
+                        const nodePath = [...parentPath, node.label];
+                        const isOpen = catOpenPath[depth] === node.label;
+                        const isChosen =
+                          nodePath.length === catSelected.length && nodePath.every((segment, segmentIndex) => catSelected[segmentIndex] === segment);
+                        return (
+                          <div
+                            key={node.label}
+                            className={`acd-node${isOpen || isChosen ? ' is-active' : ''}`}
+                            onClick={() => handleCatNode(node, parentPath)}
+                          >
+                            <span className="acd-node-label">{node.label}</span>
+                            {node.children && node.children.length ? (
+                              <span className="acd-node-arrow"><ChevronRightIcon /></span>
+                            ) : null}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+          <div className="acd-footer">
+            <button className="acd-btn acd-btn--ghost" type="button" onClick={closeCatDialog}>取消</button>
+            <button className="acd-btn acd-btn--primary" type="button" onClick={confirmCatSync}>确定</button>
+          </div>
+        </div>
+      </div>
+    )}
+    {toast && <div className="ae-toast">{toast}</div>}    <AnnotationViewer
       source={annotationSourceDocument as unknown as AnnotationSourceDocument}
       options={{
         currentPageId: 'auto-edit-dialog',

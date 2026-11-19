@@ -15,6 +15,7 @@ import './create-product.css';
 import './my-orders.css';
 import './order-detail-dialog.css';
 import './claim-center.css';
+import './ai-clone-dialog.css';
 
 import { defineHashPageRoute, useHashPage } from '../../common/useHashPage';
 import { AppShell } from './components/AppShell';

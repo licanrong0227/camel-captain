@@ -4,16 +4,24 @@ import { fmtInt, fmtMoney, fmtMoneyAxis, fmtPct, fmtRoas } from './format';
 export type AdTrendView = AdTrendMetric | 'storeGmv' | 'share';
 
 export const AD_TREND_LABELS: Record<AdTrendView, string> = {
-  cost: '广告花费',
+  cost: '广告消耗',
   gmv: '广告 GMV',
   storeGmv: '整店 GMV',
   share: '广告 GMV 占比',
-  roas: 'ROAS',
+  roas: '投产比',
   orders: '订单数',
   click: '点击量',
 };
 
-export const AD_TREND_KPI_KEYS = ['cost', 'gmv', 'storeGmv', 'ratio', 'roas', 'orders', 'click'];
+export const AD_KPI_LABELS: Record<string, string> = {
+  cost: '广告消耗',
+  gmv: '广告 GMV',
+  storeGmv: '整店 GMV',
+  ratio: '广告 GMV 占比',
+  roas: '投产比',
+};
+
+export const AD_KPI_KEYS = ['cost', 'gmv', 'storeGmv', 'ratio', 'roas'];
 
 export const AD_KPI_TREND: Record<string, AdTrendView> = {
   cost: 'cost',
@@ -21,8 +29,6 @@ export const AD_KPI_TREND: Record<string, AdTrendView> = {
   storeGmv: 'storeGmv',
   ratio: 'share',
   roas: 'roas',
-  orders: 'orders',
-  click: 'click',
 };
 
 export function adTrendFormat(metric: AdTrendView, value: number | null): string {

@@ -121,9 +121,24 @@ export function buildItemRows(rows: ProdReportRow[]): ItemRow[] {
       types: new Set([row.adType]),
     });
   });
+  let rangeFrom = '';
+  let rangeTo = '';
+  rows.forEach((row) => {
+    if (!rangeFrom || row.date < rangeFrom) rangeFrom = row.date;
+    if (!rangeTo || row.date > rangeTo) rangeTo = row.date;
+  });
+  const productGmvMap = new Map<string, number>();
+  if (rangeFrom) {
+    getDataset().itemDay.forEach((row) => {
+      if (row.date < rangeFrom || row.date > rangeTo) return;
+      const key = `${row.storeId}__${row.itemcode}`;
+      productGmvMap.set(key, round2((productGmvMap.get(key) ?? 0) + row.gmv));
+    });
+  }
   return Array.from(groups.entries()).map(([key, group]) => {
     const metrics = finalize(group.acc);
     const product = PRODUCT_MAP[group.itemcode];
+    const productGmv = Math.max(productGmvMap.get(key) ?? 0, metrics.gmv);
     return {
       key,
       storeId: group.storeId,
@@ -133,6 +148,8 @@ export function buildItemRows(rows: ProdReportRow[]): ItemRow[] {
       thumb: product?.thumb ?? '',
       adTypes: sortAdTypes(group.types),
       ...metrics,
+      productGmv,
+      adRatio: productGmv > 0 ? metrics.gmv / productGmv : null,
       ...flags(metrics),
     };
   });
@@ -270,7 +287,7 @@ export function validateStoreRange(from: string, to: string): string {
   if (!from || !to) return '请选择完整的起止日期';
   if (to < from) return '结束日期不能早于开始日期';
   if (to > REPORT_TO) return `店铺数据截至 ${REPORT_TO.replace(/-/g, '/')}，区间不能超过这一天`;
-  if (from < DATA_FROM) return `店铺报表仅保留 ${DATA_FROM.replace(/-/g, '/')} 之后的数据`;
+  if (from < DATA_FROM) return `店铺看板仅保留 ${DATA_FROM.replace(/-/g, '/')} 之后的数据`;
   if (rangeDays(from, to) > 180) return '单次查询最长 180 天，请缩短日期范围';
   return '';
 }
@@ -286,16 +303,16 @@ export function buildAdKpis(current: Metrics, previous: Metrics, storeGmv: numbe
   const ratioCur = storeGmv > 0 ? current.gmv / storeGmv : null;
   const ratioPrev = prevStoreGmv > 0 ? previous.gmv / prevStoreGmv : null;
   const entries: Array<Omit<AdKpiCard, 'delta' | 'prev'> & { rawPrev: number | null }> = [
-    { key: 'cost', label: '广告消耗', hint: '区间内所有链接的广告花费之和', format: 'money', main: true, value: current.cost, rawPrev: previous.cost, goodWhenUp: false },
+    { key: 'cost', label: '广告消耗', hint: '区间内所有链接的广告消耗之和', format: 'money', main: true, value: current.cost, rawPrev: previous.cost, goodWhenUp: false },
     { key: 'gmv', label: '广告 GMV', hint: '广告商品维度成交额之和', format: 'money', main: true, value: current.gmv, rawPrev: previous.gmv, goodWhenUp: true },
     { key: 'storeGmv', label: '整店 GMV', hint: '店铺成交额之和，按当前 GMV 口径', format: 'money', main: true, value: storeGmv, rawPrev: prevStoreGmv, goodWhenUp: true },
     { key: 'ratio', label: '广告 GMV 占比', hint: '广告 GMV / 整店 GMV', format: 'pct', main: true, value: ratioCur, rawPrev: ratioPrev, goodWhenUp: true },
-    { key: 'roas', label: '投产比', hint: '广告 GMV / 广告消耗（ROAS）', format: 'roas', main: true, value: current.roas, rawPrev: previous.roas, goodWhenUp: true },
+    { key: 'roas', label: '投产比', hint: '广告 GMV / 广告消耗', format: 'roas', main: true, value: current.roas, rawPrev: previous.roas, goodWhenUp: true },
     { key: 'orders', label: '广告订单数', hint: '广告商品维度成交订单数', format: 'int', main: true, value: current.orders, rawPrev: previous.orders, goodWhenUp: true },
     { key: 'imp', label: '曝光量', hint: '广告曝光次数之和', format: 'int', main: false, value: current.imp, rawPrev: previous.imp, goodWhenUp: true },
     { key: 'click', label: '点击量', hint: '广告点击次数之和', format: 'int', main: false, value: current.click, rawPrev: previous.click, goodWhenUp: true },
     { key: 'ctr', label: '点击率', hint: '点击量 / 曝光量', format: 'pct', main: false, value: current.ctr, rawPrev: previous.ctr, goodWhenUp: true },
-    { key: 'cpc', label: '平均点击单价', hint: '广告消耗 / 点击量', format: 'money', main: false, value: current.cpc, rawPrev: previous.cpc, goodWhenUp: false },
+    { key: 'cpc', label: '点击单价', hint: '广告消耗 / 点击量', format: 'money', main: false, value: current.cpc, rawPrev: previous.cpc, goodWhenUp: false },
     { key: 'cvr', label: '转化率', hint: '广告订单数 / 点击量', format: 'pct', main: false, value: current.cvr, rawPrev: previous.cvr, goodWhenUp: true },
     { key: 'aov', label: '客单价', hint: '广告 GMV / 广告订单数', format: 'money', main: false, value: aovCur || null, rawPrev: aovPrev || null, goodWhenUp: true },
   ];
@@ -715,6 +732,8 @@ export interface RankRow {
   key: string;
   storeId?: number;
   storeName?: string;
+  storeAlias?: string;
+  catePubName?: string;
   itemcode?: string;
   name?: string;
   thumb?: string;
@@ -724,6 +743,10 @@ export interface RankRow {
   level?: number;
   score?: number;
   skuCount?: number;
+  qty?: number;
+  orders?: number;
+  uv?: number;
+  uvValue?: number | null;
   value: number;
   itemCount?: number;
 }
@@ -740,10 +763,14 @@ export function storeSalesRank(
 ): RankRow[] {
   const { from, to } = rankPeriodRange(period);
   const storeIds = STORES.map((store) => store.id);
-  const totals = new Map<number, number>();
+  const totals = new Map<number, { gmv: number; qty: number; orders: number }>();
   getDataset().storeDaily.forEach((row) => {
     if (row.date < from || row.date > to) return;
-    totals.set(row.storeId, round2((totals.get(row.storeId) ?? 0) + row.gmv));
+    const current = totals.get(row.storeId) ?? { gmv: 0, qty: 0, orders: 0 };
+    current.gmv = round2(current.gmv + row.gmv);
+    current.qty += row.qty;
+    current.orders += row.orders;
+    totals.set(row.storeId, current);
   });
   const excluded = exclusionByStore(storeIds, from, to, exclusionEnabled, configs);
   return STORES.map((store) => ({
@@ -751,7 +778,11 @@ export function storeSalesRank(
     key: String(store.id),
     storeId: store.id,
     storeName: store.name,
-    value: Math.max(0, round2((totals.get(store.id) ?? 0) - (excluded.get(store.id) ?? 0))),
+    storeAlias: store.alias,
+    catePubName: store.catePubName,
+    qty: totals.get(store.id)?.qty ?? 0,
+    orders: totals.get(store.id)?.orders ?? 0,
+    value: Math.max(0, round2((totals.get(store.id)?.gmv ?? 0) - (excluded.get(store.id) ?? 0))),
   }))
     .sort((a, b) => b.value - a.value || a.storeId! - b.storeId!)
     .map((row, index) => ({ ...row, rank: index + 1 }));
@@ -759,18 +790,30 @@ export function storeSalesRank(
 
 export function storeTrafficRank(period: StorePeriodKey): RankRow[] {
   const { from, to } = rankPeriodRange(period);
-  const totals = new Map<number, number>();
+  const totals = new Map<number, { pv: number; uv: number; gmv: number }>();
   getDataset().storeDaily.forEach((row) => {
     if (row.date < from || row.date > to) return;
-    totals.set(row.storeId, (totals.get(row.storeId) ?? 0) + row.pv);
+    const current = totals.get(row.storeId) ?? { pv: 0, uv: 0, gmv: 0 };
+    current.pv += row.pv;
+    current.uv += row.uv;
+    current.gmv = round2(current.gmv + row.gmv);
+    totals.set(row.storeId, current);
   });
-  return STORES.map((store) => ({
-    rank: 0,
-    key: String(store.id),
-    storeId: store.id,
-    storeName: store.name,
-    value: totals.get(store.id) ?? 0,
-  }))
+  return STORES.map((store) => {
+    const total = totals.get(store.id);
+    const uv = total?.uv ?? 0;
+    return {
+      rank: 0,
+      key: String(store.id),
+      storeId: store.id,
+      storeName: store.name,
+      storeAlias: store.alias,
+      catePubName: store.catePubName,
+      uv,
+      uvValue: uv > 0 ? round2((total?.gmv ?? 0) / uv) : null,
+      value: total?.pv ?? 0,
+    };
+  })
     .sort((a, b) => b.value - a.value || a.storeId! - b.storeId!)
     .map((row, index) => ({ ...row, rank: index + 1 }));
 }
@@ -782,6 +825,8 @@ export function levelRank(): RankRow[] {
     key: String(store.id),
     storeId: store.id,
     storeName: store.name,
+    storeAlias: store.alias,
+    catePubName: store.catePubName,
     level: store.level,
     score: store.score,
     value: store.score,
@@ -795,6 +840,7 @@ export interface SkuSalesRow {
   color: string;
   size: string;
   pattern: string;
+  image: string;
   qty: number;
   gmv: number;
   orders: number;
@@ -859,6 +905,7 @@ export function productSkuRows(productCode: string, period: StorePeriodKey): Sku
     color: sku.color,
     size: sku.size,
     pattern: sku.pattern,
+    image: sku.image,
     qty: qtys[index] ?? 0,
     gmv: gmvs[index] ?? 0,
     orders: orderSplit[index] ?? 0,
@@ -889,6 +936,7 @@ export function productRank(period: StorePeriodKey, metric: ProductRankMetric = 
         itemcode,
         storeId: product?.storeId,
         storeName: product ? storeNameOf(product.storeId) : '',
+        storeAlias: product ? STORE_MAP[product.storeId]?.alias ?? '' : '',
         name: product?.name ?? itemcode,
         thumb: product?.thumb ?? '',
         value,

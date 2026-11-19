@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>骆驼队长移动端 App 原型 · 主规格</title>
+  <style>
+    :root {
+      font-family:
+        ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "PingFang SC", "Microsoft YaHei", sans-serif;
+      --brand: #ff7d29;
+      --brand-ink: #d25909;
+      --brand-soft: #ffefe5;
+      --brand-surface: #fff8f3;
+      --brand-border: #ffd9bf;
+      --text: #1d2129;
+      --text-secondary: #4e5969;
+      --text-muted: #86909c;
+      --text-placeholder: #a9b0bb;
+      color: var(--text);
+      background: #f5f7fb;
+      scrollbar-gutter: stable;
+    }
+
+    * { box-sizing: border-box; }
+
+    body { margin: 0; padding: 32px 20px 64px; }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 32px;
+      padding: 18px 14px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .sidebar-title {
+      margin: 0 8px 10px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .page-nav { display: flex; flex-direction: column; gap: 4px; }
+
+    .page-nav button {
+      width: 100%;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .page-nav button:hover,
+    .page-nav button[aria-current="page"] {
+      color: var(--brand-ink);
+      background: var(--brand-soft);
+    }
+
+    .page-nav button[aria-current="page"] { font-weight: 600; }
+
+    main {
+      min-width: 0;
+      padding: 40px;
+      border: 1px solid #dfe4ee;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 16px rgb(30 45 75 / 6%);
+    }
+
+    h1 { margin: 0; font-size: 32px; line-height: 1.3; }
+
+    h2 {
+      margin: 44px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e7eaf0;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    h3 { margin: 28px 0 12px; font-size: 17px; line-height: 1.5; }
+
+    p, li { font-size: 15px; line-height: 1.9; }
+
+    p { margin: 16px 0; }
+
+    td, th { font-size: 14px; line-height: 1.65; }
+
+    .definition {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-left: 3px solid var(--brand);
+      color: var(--text-secondary);
+      background: var(--brand-surface);
+    }
+
+    .hint { color: var(--text-muted); }
+
+    ul { margin: 10px 0 20px; padding-left: 22px; }
+
+    .placeholder-list { padding-left: 0; }
+
+    .placeholder-list li {
+      list-style: none;
+      color: var(--text-placeholder);
+    }
+
+    .placeholder-list li::before {
+      margin-right: 8px;
+      color: #b2bac6;
+      content: "—";
+    }
+
+    table { width: 100%; margin-top: 14px; border-collapse: collapse; }
+
+    th, td {
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 1px solid #dfe4ee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f6f8fb; }
+
+    td:empty::after { content: "待补充"; color: var(--text-placeholder); }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #eef1f6;
+      font-size: 13px;
+    }
+
+    .spec-page[hidden] { display: none; }
+
+    @media (max-width: 720px) {
+      body { padding: 0 8px 40px; }
+      .shell { display: block; }
+      .sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        margin: 0 -8px 12px;
+        padding: 10px 8px;
+        border-width: 0 0 1px;
+        border-radius: 0;
+      }
+      .sidebar-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+      .page-nav { flex-direction: row; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+      .page-nav::-webkit-scrollbar { display: none; }
+      .page-nav button { width: auto; flex: 0 0 auto; white-space: nowrap; }
+      main { padding: 24px 18px; border-radius: 8px; }
+      .table-wrap { overflow: visible; }
+      table, tbody, tr, td { display: block; width: 100%; }
+      thead { display: none; }
+      tbody { display: grid; gap: 12px; }
+      tr { overflow: hidden; border: 1px solid #dfe4ee; border-radius: 6px; background: #fff; }
+      td {
+        display: grid;
+        grid-template-columns: minmax(96px, 36%) minmax(0, 1fr);
+        gap: 12px;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 0;
+        border-bottom: 1px solid #e7eaf0;
+      }
+      td:last-child { border-bottom: 0; }
+      td::before {
+        content: attr(data-label);
+        color: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <p class="sidebar-title">目录</p>
+      <nav class="page-nav" aria-label="规格文档页面">
+        <button type="button" data-page-target="overview" aria-current="page">当前方案</button>
+      </nav>
+    </aside>
+
+    <main>
+      <article class="spec-page" data-spec-page="overview">
+        <h1>骆驼队长移动端 App 原型</h1>
+        <p class="definition">本文档是用户与 Agent 围绕当前原型进行方案沟通、确认和持续生成的事实依据。只维护当前有效方案，并简短记录会影响当前原型的重要用户决策和变更。</p>
+
+        <section id="current-plan">
+          <h2>当前方案</h2>
+          <ul>
+            <li>原型意图：把 PC「智慧运营中台」的核心能力做成手机端 App 原型，给开发直接对照手机尺寸的样式与交互。</li>
+            <li>使用场景：卖家/运营在手机上查看当日经营与广告数据、处理异常入口；查看个人资料、算力/积分资产与分销客户。</li>
+            <li>当前表达：固定 375×812 画布，外套 393×830 手机边框，居中展示；不做自适应，所有尺寸写死，内部滚动。</li>
+            <li>原型地址：<code>http://localhost:53817/?projectId=make-project-2&amp;p=camel-captain-app&amp;page=login</code></li>
+          </ul>
+        </section>
+
+        <section id="facts-inputs">
+          <h2>事实与输入</h2>
+          <h3>用户确认事实</h3>
+          <ul>
+            <li>范围：注册、登录、首页（首页看板 + 店铺广告数据看板）、我的（个人信息 + 资产信息 + 分销）。</li>
+            <li>首页完整对齐 PC 首页；广告看板作为独立底部 Tab「数据」；视觉沿用途项目主题；启动默认登录页。</li>
+            <li>手机尺寸样式，不做自适应，可加手机边框；分销中心按线上有数据账号重做。</li>
+            <li>我的真实资料：李灿荣 / 至尊会员 / 到期 2027-10-22 23:59:59 / ID LT10035 / VIP3 / 邀请码 L0TS0C / 用户名称 licanrong@ygq123456 / 手机 18575595171 / 邮箱 906069595@qq.com / 所属部门·角色 暂无 / 创建日期 2026-09-28 15:32:29 / 算力余额 2188 / 积分 20。</li>
+            <li>算力统计：可用 2188.00 / 冻结 0.00 / 累计充值 2251.00 / 累计消费 63.00；流水含「操作账号」列。</li>
+            <li>线上有数据账号的分销中心：数据看板 8 条客户订单（AI算力/会员/店铺数量，已支付/已取消），我的客户 6 人（含 ceshi11 金牌会员、消费 ¥2,979.65）。</li>
+          </ul>
+
+          <h3>参考资料</h3>
+          <ul>
+            <li>PC 首页与广告看板：<code>src/prototypes/home-dashboard/</code>（数据引擎、聚合函数、Chart/Sparkline）。</li>
+            <li>线上登录/注册：<code>https://test.kuachengjing.com/login</code>、<code>/register</code>（已采集文案与字段）。</li>
+            <li>线上我的：<code>https://test.kuachengjing.com/profile/index?tab=basic</code>（已登录采集）。</li>
+            <li>线上分销：<code>https://www.camelcaptainbi.com/profile/index?tab=distribution</code>（已登录采集 8 条订单 / 6 个客户真实数据）。</li>
+            <li>设计基底：<code>src/themes/camel-captain-erp/DESIGN.md</code>。</li>
+            <li>素材：<code>src/prototypes/home-dashboard/assets/</code>（logo、指标/异常图标、奖牌、推广图、商品图、客服二维码）。</li>
+          </ul>
+
+          <h3>当前假设</h3>
+          <ul>
+            <li>登录接受任意非空账号 + ≥6 位密码；注册/重置验证码接受任意 6 位；不做真实 MFA/短信。</li>
+            <li>「生成推广链接」在原型中按当前 origin + 邀请码生成，不代表线上真实链接。</li>
+            <li>推广链接 Sheet 内点「复制链接」后，按钮原位变为绿色「✓ 已复制」，约 1.6 秒后恢复。</li>
+            <li>分销数据来自线上有数据账号，用于原型展示，不进入首页/广告看板统计。</li>
+            <li>忘记密码页纳入本期，因为线上登录页已有入口。</li>
+          </ul>
+        </section>
+
+        <section id="prototype-scope">
+          <h2>原型范围</h2>
+          <h3>本次呈现</h3>
+          <ul>
+            <li>7 个页面：登录、注册、忘记密码、首页、店铺看板（底部 Tab：数据）、我的、分销中心。</li>
+            <li>右侧页面目录：标注面板「页面目录」按 账号 / 经营看板 / 个人中心 三组列出 7 个页面，点击切换到对应 hash 路由。</li>
+            <li>首页：头部下方为推广轮播（左右滑动切换，可点圆点定位，不设左右箭头），其下为指标、异常提醒、经营趋势、店铺 TOP5、商品 TOP5、悬浮客服；公告入口在顶部图标。</li>
+            <li>滚动与返回顶部：首页头部（品牌 + 同步）、数据页筛选条与「成交/下单/流量/潜在/广告」页签行（以及广告页签里的「店铺/商品/计划/成单词」视图页签，吸顶位置按上方页签行的实际底边动态对齐、吸顶时改直角，回顶部恢复卡片圆角）、我的会员卡在滚动时吸顶；首页和数据页滚动超过约一屏后右下角出现「返回顶部」按钮（首页位于客服按钮上方），点击回到顶部。</li>
+            <li>长列表统一交互：完整榜单 / 商品 Top100 / 公告为全屏 Sheet，顶部页签与周期筛选固定、不随列表滚动；列表或懒加载加载完毕后底部显示「已经到底了」（广告明细、店铺对比同样适用）。</li>
+            <li>商品 TOP5 / 商品排行点条目打开 SKU 明细 Sheet（可点行右侧带 › 箭头提示）：顶部为「主图 + 单行省略的商品名 + itemcode · 店铺名」，其下：顶部可切换「组合 / 颜色 / 尺码 / 图案」查看维度，非组合维度按规格值汇总（销量、销售额、订单数求和，按销量降序），每行展示缩略图、规格、销售额与「订单数 单 · 件数 件」，列表底部显示「已经到底了」。</li>
+            <li>趋势卡横屏查看：首页经营趋势、店铺看板广告趋势、广告明细趋势均提供「横屏」入口，点击后整页切换为横屏；经营趋势横屏保留页签并铺开多曲线、图例可显隐，退出回原卡片。</li>
+            <li>广告看板：店铺/时间筛选（店铺默认不勾选，未选即统计全部店铺，勾选后只统计所选；时间用底部滚轮选择年/月/日起止日期，另保留近1/7/30/60/90天预设；广告页签的筛选条显示当前 GMV 口径（剔除数据/原始数据），点开「数据口径」面板可切换口径并进入剔除设置，时间面板不含口径设置）；成交/下单/流量/潜在/广告五个页签；店铺页签含指标卡、单指标趋势、国家筛选与店铺对比（每行店铺是一张独立卡片，同广告板块卡片；标题右侧「指标 ↓/↑」排序按钮，弹窗可选排序字段与方向；卡片内店铺名后带所选指标的趋势缩略图（点缩略图弹出该店趋势弹窗：成交/下单/流量/潜在 4 个页签 + 当前页签的指标卡（名称 + 区间数值），点指标卡换曲线；横屏视图同样带 4 个页签与指标卡），指标收在一张小卡里，合计行与列表行同款小卡，含加载更多）；广告页签的 5 个广告指标卡与趋势同卡（点指标卡切换趋势，趋势不单设指标页签）、四视图、排序与明细，列表底部有「合计」（按当前筛选的行求和，比率类指标按汇总值重算，同其他页签样式；商品/计划/成单词视图各有广告类型筛选与搜索框（按视图独立记忆，只影响当前视图的列表与角标，不改变其他视图），店铺视图两者都没有、直接跟随顶部店铺筛选）；指标卡设置按页签生效。</li>
+            <li>我的：资料卡、邀请码与推广链接、算力/积分、资料宫格、分销中心、修改密码、联系我们、退出登录（不含算力明细/头像编辑）。</li>
+            <li>分销中心：数据看板（直接展示 8 条客户订单卡片，不再有顶部统计卡）、我的客户（6 个客户，默认只露出姓名搜索，右侧「更多筛选」展开用户名/手机号（两列）和注册时间（标题在上、两个日期控件与上方两列同宽对齐、中间不写「至」），收起后条件仍生效；下方客户卡片 + 15 字段明细；两个页签的列表底部都有「已经到底了」）；注册时间同样用底部滚轮选择起止日期。</li>
+          </ul>
+          <h3>本次不呈现</h3>
+          <ul>
+            <li>不接真实接口、不做真实登录安全/MFA/短信、不做真实上传服务端。</li>
+            <li>不做响应式/桌面布局/缩放；不提供 PC 全站导航、主题切换、暗色模式。</li>
+            <li>不做会员中心、订单中心、发票管理。</li>
+            <li>不做原型批注、Review、发布；本期不产出 <code>annotation-source.json</code>。</li>
+          </ul>
+        </section>
+
+        <section id="pages-content">
+          <h2>页面与内容方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>页面/视图</th>
+                  <th>页面作用</th>
+                  <th>主要模块与内容</th>
+                  <th>示例数据或素材</th>
+                  <th>与其他页面的关系</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-label="页面/视图">登录</td>
+                  <td data-label="页面作用">进入 App 的入口</td>
+                  <td data-label="主要模块与内容">logo 与「欢迎回来」；账号、密码（可见切换）、记住此设备、忘记密码；主按钮「进入智慧运营中台」；注册入口；MFA 提示</td>
+                  <td data-label="示例数据或素材">账号预填仅来自「记住此设备」；无第三方登录</td>
+                  <td data-label="与其他页面的关系">登录成功 → 首页；去注册/忘记密码</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图">注册</td>
+                  <td data-label="页面作用">创建账号</td>
+                  <td data-label="主要模块与内容">三步注册：① 手机号 + 验证码 + 协议勾选（协议名称可点开查看正文）；② 用户名、设置密码、确认密码；③ 注册成功提示 + 手机号/用户名确认 + 去登录。每步只放当前所需信息。</td>
+                  <td data-label="示例数据或素材">任意 6 位验证码通过；手机号 11 位</td>
+                  <td data-label="与其他页面的关系">注册成功 → 去登录（不自动登录）</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图">忘记密码</td>
+                  <td data-label="页面作用">找回账号</td>
+                  <td data-label="主要模块与内容">两步：① 手机号 + 验证码 + 获取验证码；② 新密码 + 确认密码 + 重置密码</td>
+                  <td data-label="示例数据或素材">同上</td>
+                  <td data-label="与其他页面的关系">成功 → 登录 + Toast</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图">首页</td>
+                  <td data-label="页面作用">经营与广告总览</td>
+                  <td data-label="主要模块与内容">头部/同步 + 顶部公告图标（点开公告列表/历史公告，点条目看详情）；推广轮播（紧贴头部，左右滑动切换、圆点可定位，无左右箭头）；「经营指标」大卡（5 个指标）、「异常提醒」大卡（4 张异常卡 + 状态设置）分区；经营趋势（店铺销售/广告投放，单指标切换 + 时间/口径设置 Sheet）；店铺 TOP5；商品 TOP5；悬浮客服</td>
+                  <td data-label="示例数据或素材">复用 PC 首页数据引擎与素材</td>
+                  <td data-label="与其他页面的关系">指标 → 数据 Tab；榜单/公告/设置 → Sheet</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图">店铺看板</td>
+                  <td data-label="页面作用">店铺广告产出</td>
+                  <td data-label="主要模块与内容">筛选条；成交/下单/流量/潜在/广告 5 个页签；店铺页签：指标卡（可配置）与单指标趋势同卡 + 国家筛选 + 店铺对比（合计/加载更多）；广告页签：5 个广告指标 + 指标卡设置 + 趋势 + 四视图 + 广告类型/搜索/排序 + 明细 Sheet + 剔除设置</td>
+                  <td data-label="示例数据或素材">PC 广告数据集；默认全部广告店铺、近 30 天</td>
+                  <td data-label="与其他页面的关系">底部 Tab；指标 点击联动趋势指标</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图">我的</td>
+                  <td data-label="页面作用">个人资料与资产</td>
+                  <td data-label="主要模块与内容">金色资料卡（头像/姓名/会员/ID）；邀请码 + 生成推广链接；算力 2188、积分 20；7 项资料宫格；分销中心、修改密码、联系我们、退出登录</td>
+                  <td data-label="示例数据或素材">线上真实资料</td>
+                  <td data-label="与其他页面的关系">分销中心 → 分销页；修改密码/退出/推广链接 → Sheet</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图">分销中心</td>
+                  <td data-label="页面作用">分销客户与订单</td>
+                  <td data-label="主要模块与内容">数据看板（8 条客户订单：AI算力/会员/店铺数量，已支付/已取消，4 项统计）；我的客户（姓名/用户名/手机号/注册时间筛选 + 6 个客户卡片 + 15 字段明细）</td>
+                  <td data-label="示例数据或素材">线上有数据账号真实数据</td>
+                  <td data-label="与其他页面的关系">从我的进入；页内返回</td>
+                </tr>
+                <tr>
+                  <td data-label="页面/视图">Sheet 浮层</td>
+                  <td data-label="页面作用">承载 PC 的弹窗/表格细节</td>
+                  <td data-label="主要模块与内容">状态设置、剔除设置、指标卡设置、店铺筛选、广告明细、榜单、公告详情、趋势设置、修改密码、联系我们、退出确认、推广链接</td>
+                  <td data-label="示例数据或素材">—</td>
+                  <td data-label="与其他页面的关系">不改变 hash；关闭回原页</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="interaction-states">
+          <h2>交互与状态方案</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>对象/场景</th>
+                  <th>前置状态</th>
+                  <th>用户操作</th>
+                  <th>原型表现</th>
+                  <th>后续状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-label="对象/场景">登录</td>
+                  <td data-label="前置状态">未登录</td>
+                  <td data-label="用户操作">填写账号/≥6 位密码，点登录</td>
+                  <td data-label="原型表现">就地校验红字；800ms loading；写入 sessionStorage</td>
+                  <td data-label="后续状态">进入首页</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">注册</td>
+                  <td data-label="前置状态">未登录</td>
+                  <td data-label="用户操作">分三步填写：手机号 + 验证码 + 协议 → 用户名/密码 → 确认信息</td>
+                  <td data-label="原型表现">按步校验；验证码 60s；协议在第一步勾选、名称可点开阅读正文；每步只展示当前所需字段</td>
+                  <td data-label="后续状态">注册成功提示 → 去登录</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">忘记密码</td>
+                  <td data-label="前置状态">未登录</td>
+                  <td data-label="用户操作">先验证手机，再设置新密码</td>
+                  <td data-label="原型表现">两步步骤条；验证码 60s；手机上一步/下一步校验</td>
+                  <td data-label="后续状态">重置成功 → 登录 + Toast</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">路由守卫</td>
+                  <td data-label="前置状态">任意</td>
+                  <td data-label="用户操作">直链访问受保护页</td>
+                  <td data-label="原型表现">未登录 → 登录；已登录访问登录/注册 → 首页</td>
+                  <td data-label="后续状态">保持当前会话</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">首页 指标</td>
+                  <td data-label="前置状态">首页</td>
+                  <td data-label="用户操作">点销售额/订单/销量/广告消耗/投产比</td>
+                  <td data-label="原型表现">跳数据 Tab，并选中对应趋势指标</td>
+                  <td data-label="后续状态">广告看板</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">经营趋势</td>
+                  <td data-label="前置状态">首页</td>
+                  <td data-label="用户操作">切换店铺销售/广告投放与销售额/销量等指标；点「近1月 · 剔除数据」</td>
+                  <td data-label="原型表现">单指标曲线立即可切换；时间范围与 GMV 口径在「趋势设置」Sheet 内调整</td>
+                  <td data-label="后续状态">保持当前选择</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">广告筛选</td>
+                  <td data-label="前置状态">数据 Tab</td>
+                  <td data-label="用户操作">选店铺/时间/国家或剔除</td>
+                  <td data-label="原型表现">选择即生效，无查询按钮；回到列表第一批</td>
+                  <td data-label="后续状态">指标/趋势/列表同步刷新</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">设置弹窗（对齐现有系统）</td>
+                  <td data-label="前置状态">首页 / 数据 Tab</td>
+                  <td data-label="用户操作">打开四张异常卡片的设置、剔除数据 GMV、指标卡设置</td>
+                  <td data-label="原型表现">筛选状态设置：平台订单状态 17 项 + 全选，并按卡片追加配置——异常订单无追加；异常发货：剩余发货天数（剩余几天内发货，默认 3）；异常上网：未上网天数（是否已上网，默认未上网 + 超过几天未上网，默认 7）；异常物流：国际物流状态（7 项，默认投递失败/到达待取）+ 断更天数（轨迹断更天数，默认 5）。剔除数据 GMV：先展示店铺列表（每行标注已配置/未配置，可搜索），点店铺进入剔除配置页（按标签多选、手动订单号、手动扣减金额），可清空该店铺配置，可返回列表；指标卡设置 · 广告：已展示/已关闭、调整顺序即时生效、至少保留 1 个、恢复默认 + 完成</td>
+                  <td data-label="后续状态">关闭后按设置重算</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">广告四视图</td>
+                  <td data-label="前置状态">数据 Tab</td>
+                  <td data-label="用户操作">切店铺/商品/计划/成单词；搜索/排序</td>
+                  <td data-label="原型表现">卡片列表同步切换；搜索 250ms 防抖</td>
+                  <td data-label="后续状态">加载更多重置</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">广告明细</td>
+                  <td data-label="前置状态">列表有数据</td>
+                  <td data-label="用户操作">点卡片</td>
+                  <td data-label="原型表现">全屏 Sheet，同 PC 明细抽屉：店铺/商品/计划为「可点切换的可配置指标卡（5 张，计划为消耗/GMV/订单数/点击量/投产比，店铺/商品含整店或商品 GMV 与占比）+ 指标趋势（可横屏，横屏内同样带指标卡、可点切换）+ 流量（曝光量/点击量/点击率/点击单价）+ 转化（订单数/转化率/单均花费）+ 按计划或按商品拆分（每条拆分为一张卡片：按计划拆分时显示「计划名 + 广告类型 · 广告组」，按商品拆分时显示「主图 + 单行省略的商品名 + itemcode · 店铺名」，右侧消耗，下方订单/GMV/投产比指标块，展示全部行；标题右侧一个排序按钮，点开弹窗选排序方向和字段：消耗/订单/GMV/投产比，与列表排序同一套交互）+ 带单成单词 Top6」；成单词为「4 个指标卡（成单 GMV/订单数/涉及商品数/最近成单日）+ 成单 GMV 趋势 + 订单明细（按日期倒序；每条为主图 + 订单号 + 单行商品名 + itemcode · 店铺名，右侧金额与日期）」；商品明细头部为「主图 + 单行省略标题 + itemcode · 店铺名」；所有指标名后带 ? 说明气泡（口径同 PC），店铺趋势弹窗的指标卡同样带说明</td>
+                  <td data-label="后续状态">关闭回列表</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">公告列表</td>
+                  <td data-label="前置状态">首页</td>
+                  <td data-label="用户操作">点顶部公告图标（有新公告时带红点，打开后消失）；切公告/历史公告；滚动到底；点条目</td>
+                  <td data-label="原型表现">全屏 Sheet，默认「公告」页签；历史公告按 10 条懒加载，滚动接近底部自动续载，全部加载后显示「已经到底了」；点条目在列表之上打开公告详情，不关闭列表</td>
+                  <td data-label="后续状态">关闭详情回列表原位置；关闭列表回首页</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">进入首页公告弹窗</td>
+                  <td data-label="前置状态">已登录，进入首页</td>
+                  <td data-label="用户操作">进入首页</td>
+                  <td data-label="原型表现">每次进入首页都自动弹出最新一条「弹窗公告」（权益到期通知），用居中弹窗展示（非底部弹层），正文较长时弹窗内滚动，点「我知道了」/关闭回首页；演示需要每次进入都弹</td>
+                  <td data-label="后续状态">仍可从顶部公告图标查看</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">公告详情</td>
+                  <td data-label="前置状态">首页</td>
+                  <td data-label="用户操作">点公告条目</td>
+                  <td data-label="原型表现">Sheet 与「筛选状态设置」同高，展示分类、标题、日期与正文，页脚置底；演示公告给出多段说明性正文</td>
+                  <td data-label="后续状态">关闭回首页</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">趋势设置</td>
+                  <td data-label="前置状态">首页经营趋势</td>
+                  <td data-label="用户操作">点「近1月 · 剔除数据」</td>
+                  <td data-label="原型表现">Sheet 内调整近1/2/3/6月、剔除/原始与剔除设置</td>
+                  <td data-label="后续状态">完成关闭，图表重算</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">趋势横屏</td>
+                  <td data-label="前置状态">趋势卡</td>
+                  <td data-label="用户操作">点「横屏」/「退出横屏」</td>
+                  <td data-label="原型表现">整块趋势卡切为横屏：保留店铺销售/广告投放页签与时间口径，铺开多曲线（店铺：销售额+销量；广告：广告消耗+广告 GMV+投产比），图例可点击显隐曲线，隐藏后减淡且轴与提示同步收起；点击/滑动查看点位，退出回原卡片。广告看板的趋势横屏保留指标切换条，店铺看板横屏的指标页签与竖屏「指标卡设置」保持一致（关闭的指标不出现），广告页签同理跟随广告指标卡配置</td>
+                  <td data-label="后续状态">原卡片状态保留</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">退出登录</td>
+                  <td data-label="前置状态">已登录</td>
+                  <td data-label="用户操作">点退出并确认</td>
+                  <td data-label="原型表现">清除会话</td>
+                  <td data-label="后续状态">回登录页</td>
+                </tr>
+                <tr>
+                  <td data-label="对象/场景">分销筛选</td>
+                  <td data-label="前置状态">我的客户</td>
+                  <td data-label="用户操作">输入姓名/用户名/手机号/注册时间</td>
+                  <td data-label="原型表现">即时过滤客户；无匹配显示空态</td>
+                  <td data-label="后续状态">重置恢复全部</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="hint">空状态：广告筛选无结果、分销筛选无匹配；错误状态：登录/注册/密码/日期范围就地提示；加载状态：登录/注册 800ms、验证码倒计时。</p>
+        </section>
+
+        <section id="design-basis">
+          <h2>设计基底与原型特有调整</h2>
+          <ul>
+            <li>采用的 <code>DESIGN.md</code>：<code>src/themes/camel-captain-erp/DESIGN.md</code>（项目默认主题）。</li>
+            <li>继承方式：主色 <code>#FF7D29</code>、功能色、中性色、字号/圆角/阴影/间距均沿用主题 token；系统字体栈。</li>
+            <li>本原型特有调整：固定 375×812 内容画布 + 393×830 手机边框；0 个 <code>@media</code>、0 个 vw/vh 布局；状态栏 44、Tab 56、Home Indicator 20；状态栏不再绘制灵动岛。</li>
+            <li>我的资料卡沿用线上金色渐变 <code>linear-gradient(135deg,#FFD666,#FAAD14 50%,#D48806)</code>；邀请码卡 <code>#FFFBF0→#FFF7E6</code>。</li>
+            <li>登录页不照搬线上玻璃球背景，改为浅灰底 + 顶部橙色柔光 + 白卡，保持项目主题一致。</li>
+            <li>PC 的 7 列固定宽表格不搬进手机：广告四视图改卡片列表，筛选/配置/明细改底部抽屉或全屏 Sheet。</li>
+          </ul>
+        </section>
+
+        <section id="data-events">
+          <h2>数据口径与示例数据</h2>
+          <h3>首页与广告看板</h3>
+          <ul>
+            <li>复制 <code>home-dashboard/data/</code>：确定性数据、<code>REPORT_TO=2026-10-31</code>、30 家店、180 天；首页同步时间沿用 <code>2026-10-31 09:12</code>。</li>
+            <li>指标口径与 PC 一致：销售额 = 成交金额；订单量 = 成交订单数；广告消耗 = 广告花费；广告 GMV；整店 GMV；投产比 = 广告 GMV / 广告消耗。</li>
+            <li>广告看板默认全部广告店铺、近 30 天；空选店铺等同全部；剔除设置只影响 GMV 类指标；广告明细保留 2026-08-03 之后的数据，单次查询最长 90 天。</li>
+          </ul>
+          <h3>我的</h3>
+          <ul>
+            <li>资料字段见「用户确认事实」；算力余额 2,188 与积分 20 直接展示，不展开算力流水与定价。</li>
+          </ul>
+          <h3>分销中心数据（线上有数据账号）</h3>
+          <ul>
+            <li>数据看板 8 条：AI算力 ×50 ¥1.75 已支付/已取消；至尊会员 ×12 ¥1,938 已取消；金牌会员 ×12 ¥2,803 已支付；店铺数量 ×1 ¥19.90 已支付；铜牌会员 ×1 ¥155 已支付；金牌会员 ×1 ¥0 已支付（jxjx1998 / xiongzhilin）。统计：客户订单 8、已支付 6、已取消 2、已支付金额 ¥2,979.65。</li>
+            <li>我的客户 6 个：周星 / monica5288 / 周星（zhouxing）/ ceshi11 / 姜鑫 / 熊志林；含店铺数/上限、订单数/上限、消费总金额、算力余额、积分、优惠券、子账号、会员类型/周期。ceshi11 为金牌会员，消费 ¥2,979.65、算力 550、积分 2,978。</li>
+            <li>数据来自线上有数据账号，不进入首页/广告看板统计。</li>
+          </ul>
+        </section>
+
+        <section id="acceptance">
+          <h2>验收重点</h2>
+          <ul>
+            <li>393×852 下手机框完整可见；375 内容内无横向滚动；状态栏、底部 Tab、Home Indicator 固定。</li>
+            <li>右侧「页面目录」可展开，7 个页面可点击跳转。</li>
+            <li>登录/注册/忘记密码校验与倒计时可用；登录 → 首页；刷新保持；退出 → 登录；直链拦截生效。</li>
+            <li>首页 8 个区块齐全；指标、趋势、榜单、公告、设置均可交互。</li>
+            <li>广告看板筛选即时生效；五个页签可切换；店铺对比与合计可见；四视图可切换；明细/剔除/指标卡设置可开合；加载更多正常。</li>
+            <li>三处趋势卡可横屏查看并退出；点击/滑动图表显示点位，点外部收起。</li>
+            <li>我的资料与线上一致；修改密码/退出可用；公告详情与趋势设置可打开。</li>
+            <li>分销两页签有真实数据（8 单 / 6 客户）；筛选生效；无匹配有空态。</li>
+            <li><code>npm run typecheck</code>、构建与 393×852 逐页截图通过。</li>
+          </ul>
+        </section>
+
+        <section id="open-questions">
+          <h2>当前待确认事项</h2>
+          <ul class="placeholder-list">
+            <li>无；规格确认后进入实现。</li>
+          </ul>
+        </section>
+
+        <section id="decision-history">
+          <h2>用户重要决策与变更</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>日期</th><th>用户决策或变更</th><th>对当前原型的影响</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-label="日期">2026-11-12</td>
+                  <td data-label="用户决策或变更">移动端原型，固定手机尺寸，不做自适应，可加手机边框</td>
+                  <td data-label="对当前原型的影响">采用 375×812 内容 + 393×830 手机框；0 个 @media</td>
+                </tr>
+                <tr>
+                  <td data-label="日期">2026-11-12</td>
+                  <td data-label="用户决策或变更">首页完整对齐 PC；广告看板独立底部 Tab；视觉沿用途项目主题</td>
+                  <td data-label="对当前原型的影响">底部「首页/数据/我的」；首页 8 区块；橙色主题</td>
+                </tr>
+                <tr>
+                  <td data-label="日期">2026-11-12</td>
+                  <td data-label="用户决策或变更">我的使用线上真实资料；分销按线上有数据账号重做；启动默认登录页</td>
+                  <td data-label="对当前原型的影响">真实资料；数据看板 8 单 / 我的客户 6 人；默认 login</td>
+                </tr>
+                <tr>
+                  <td data-label="日期">2026-11-12</td>
+                  <td data-label="用户决策或变更">分销中心切换到有数据账号参考，重新调整设计</td>
+                  <td data-label="对当前原型的影响">数据看板改为 8 单统计 + 订单卡片；我的客户改为 6 个真实客户卡片与 15 字段明细</td>
+                </tr>
+                <tr>
+                  <td data-label="日期">2026-11-12</td>
+                  <td data-label="用户决策或变更">批注：注册分多步、忘记密码分步、协议可看、首页趋势移动化、公告可看详情、广告卡片对齐/字号、我的去掉复制/头像编辑/算力明细</td>
+                  <td data-label="对当前原型的影响">注册 3 步 + 忘记密码 2 步 + 协议 Sheet；趋势单指标 + 设置 Sheet；新增公告详情；广告卡片对齐、字号提升；我的精简</td>
+                </tr>
+                <tr>
+                  <td data-label="日期">2026-11-12</td>
+                  <td data-label="用户决策或变更">把原型页面罗列到原型目录的「框架右侧入口」</td>
+                  <td data-label="对当前原型的影响">annotation-source.json directory 分组列出 7 页；接入 AnnotationViewer 右侧工具栏</td>
+                </tr>
+                <tr>
+                  <td data-label="日期">2026-11-12</td>
+                  <td data-label="用户决策或变更">主规格使用 HTML</td>
+                  <td data-label="对当前原型的影响">固定使用 <code>.spec/spec.html</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const navItems = [...document.querySelectorAll('[data-page-target]')];
+    const pages = [...document.querySelectorAll('[data-spec-page]')];
+
+    const showPage = (pageId) => {
+      for (const navItem of navItems) {
+        if (navItem.dataset.pageTarget === pageId) {
+          navItem.setAttribute('aria-current', 'page');
+        } else {
+          navItem.removeAttribute('aria-current');
+        }
+      }
+      for (const page of pages) {
+        page.hidden = page.dataset.specPage !== pageId;
+      }
+    };
+
+    for (const navItem of navItems) {
+      navItem.addEventListener('click', () => showPage(navItem.dataset.pageTarget));
+    }
+  </script>
+</body>
+</html>

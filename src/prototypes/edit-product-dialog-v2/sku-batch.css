@@ -363,3 +363,7 @@
   background: #ff8a3d;
   color: #fff;
 }
+
+.sbe-mask--front {
+  z-index: 59;
+}

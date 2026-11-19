@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import CreateProductDialog from '../components/CreateProductDialog';
+import AiCloneDialog from '../components/AiCloneDialog';
+import SyncOnlineDialog from '../components/SyncOnlineDialog';
 
 import thumbSneaker from '../assets/thumb-sneaker.jpg';
 import thumbBracelet from '../assets/thumb-bracelet.jpg';
@@ -60,6 +62,7 @@ interface ProductRow {
   claimVersion: string;
   currentVersion: string;
   source: string;
+  status?: string;
 }
 
 const ROWS: ProductRow[] = [
@@ -70,7 +73,7 @@ const ROWS: ProductRow[] = [
     category: '计算机和网络 < 电脑周边附件 < 电脑分享器',
     store: '鞋子',
     parentSku: '20261015000004',
-    price: '$ 70.1',
+    price: '$ 70.10',
     claimAt: '2026-10-15 17:29:48',
     modifyAt: '2026-10-15 17:50:30',
     publishAt: '-',
@@ -99,7 +102,7 @@ const ROWS: ProductRow[] = [
     category: '珠宝 > 手链 · 手镯 > 手牌手链',
     store: 'sneakerhub8',
     parentSku: '-',
-    price: '¥ 0',
+    price: '$ 0.00',
     claimAt: '2026-10-15 15:30:24',
     modifyAt: '2026-10-15 15:30:24',
     publishAt: '-',
@@ -128,7 +131,7 @@ const ROWS: ProductRow[] = [
     category: '珠宝 > 手链 · 手镯 > 手牌手链',
     store: 'clothes',
     parentSku: '-',
-    price: '¥ 0',
+    price: '$ 0.00',
     claimAt: '2026-10-15 14:12:10',
     modifyAt: '2026-10-15 14:12:10',
     publishAt: '-',
@@ -277,12 +280,17 @@ function TabBand({
           />
         </svg>
         <span className="sip-tab-dot" />
+        <img className="sip-tab-logo" src={platform.icon} alt="" />
         <span className="sip-tab-label">{`我的商品-${platform.label}`}</span>
         <span
-          className="sip-tab-caret"
+          className={'sip-tab-caret' + (menuOpen ? ' is-open' : '')}
+          role="button"
+          aria-label="切换平台"
+          aria-expanded={menuOpen}
           onClick={() => setMenuOpen((prev) => !prev)}
         >
-          <img src={icChevron} alt="切换平台" />
+          <img src={icChevron} alt="" />
+          <span className="sip-tab-caret-tip" aria-hidden="true">切换平台</span>
         </span>
         {menuOpen && (
           <>
@@ -314,11 +322,13 @@ function Filters({
   store,
   onStoreChange,
   onCreate,
+  onSync,
 }: {
   platformId: string;
   store: string;
   onStoreChange: (name: string) => void;
   onCreate: () => void;
+  onSync: () => void;
 }) {
   return (
     <div className="sip-filters">
@@ -353,7 +363,7 @@ function Filters({
         <span className="sip-filter-spacer" />
         <button type="button" className="sip-btn">导出</button>
         <button type="button" className="sip-btn">导入货源</button>
-        <button type="button" className="sip-btn" data-annotation-id="mp-sync-online">同步线上</button>
+        <button type="button" className="sip-btn" data-annotation-id="mp-sync-online" onClick={onSync}>同步线上</button>
         <img className="sip-gear" src={icGear} alt="列设置" />
       </div>
     </div>
@@ -393,11 +403,96 @@ function TimeBlock({ row }: { row: ProductRow }) {
   );
 }
 
-function ProductTable() {
+const ROW_ACTIONS = ['编辑', '更新发布', '标签', '删除', 'AI一键克隆'];
+const BATCH_ACTIONS = ['批量编辑', '批量更新发布', '批量标签', '批量删除', '批量AI克隆'];
+
+function ProductTable({
+  onEdit,
+  onClone,
+  notify,
+}: {
+  onEdit: () => void;
+  onClone: (count: number) => void;
+  notify: (message: string) => void;
+}) {
+  const [rows, setRows] = useState<ProductRow[]>(ROWS);
+  const [selected, setSelected] = useState<number[]>([0]);
+  const [expanded, setExpanded] = useState<number | null>(0);
+
+  const allChecked = rows.length > 0 && selected.length === rows.length;
+  const someChecked = selected.length > 0 && !allChecked;
+
+  const toggleRow = (index: number) => {
+    setSelected((prev) => (prev.includes(index) ? prev.filter((item) => item !== index) : [...prev, index]));
+  };
+
+  const toggleAll = () => {
+    setSelected((prev) => (prev.length === rows.length ? [] : rows.map((_, index) => index)));
+  };
+
+  const handleRowAction = (action: string, index: number) => {
+    if (action === '编辑') {
+      onEdit();
+      return;
+    }
+    if (action === '更新发布') {
+      setRows((prev) => prev.map((row, i) => (i === index ? { ...row, status: '发布中' } : row)));
+      notify('已提交更新发布：1 条商品');
+      return;
+    }
+    if (action === '标签') {
+      notify('已提交标签设置：1 条商品');
+      return;
+    }
+    if (action === '删除') {
+      setRows((prev) => prev.filter((_, i) => i !== index));
+      setSelected([]);
+      setExpanded(null);
+      notify('已删除 1 条商品');
+      return;
+    }
+    if (action === 'AI一键克隆') {
+      onClone(selected.includes(index) ? selected.length : 1);
+    }
+  };
+
+  const handleBatch = (action: string) => {
+    const count = selected.length;
+    if (action === '批量编辑') {
+      notify(`已提交批量编辑：${count} 条商品`);
+      return;
+    }
+    if (action === '批量更新发布') {
+      setRows((prev) => prev.map((row, index) => (selected.includes(index) ? { ...row, status: '发布中' } : row)));
+      notify(`已提交更新发布：${count} 条商品`);
+      return;
+    }
+    if (action === '批量标签') {
+      notify(`已提交标签设置：${count} 条商品`);
+      return;
+    }
+    if (action === '批量删除') {
+      setRows((prev) => prev.filter((_, index) => !selected.includes(index)));
+      setSelected([]);
+      setExpanded(null);
+      notify(`已删除 ${count} 条商品`);
+      return;
+    }
+    if (action === '批量AI克隆') onClone(count);
+  };
+
   return (
     <div className="sip-table">
       <div className="sip-thead">
-        <span className="sip-col-check"><span className="sip-checkbox" /></span>
+        <span
+          className="sip-col-check"
+          role="checkbox"
+          aria-label="全选商品"
+          aria-checked={allChecked ? 'true' : someChecked ? 'mixed' : 'false'}
+          onClick={toggleAll}
+        >
+          <span className={'sip-checkbox' + (allChecked ? ' is-checked' : '') + (someChecked ? ' is-indeterminate' : '')} />
+        </span>
         <span className="sip-col-img">图片</span>
         <span className="sip-col-info">商品信息</span>
         <div className="sip-col-sku" data-annotation-id="mp-col-product-id">产品编号</div>
@@ -406,50 +501,100 @@ function ProductTable() {
         <span className="sip-col-time">时间/版本</span>
         <span className="sip-col-source">来源</span>
       </div>
-      {ROWS.map((row, index) => (
-        <div key={index} className="sip-tr">
-          <span className="sip-col-check"><span className="sip-checkbox" /></span>
-          <span className="sip-col-img">
-            {row.image ? (
-              <img className="sip-thumb" src={row.image} alt="" />
-            ) : (
-              <span className="sip-thumb sip-thumb-text">{row.imageText}</span>
-            )}
-          </span>
-          <span className="sip-col-info">
-            <span className="sip-title">{row.title}</span>
-            <span className="sip-meta">
-              <span className="sip-cat">{row.category}</span>
-              <span className="sip-meta-right">
-                <span className="sip-pill">待发布</span>
-                <img className="sip-dh" src={dhBadge} alt="DHgate" />
-                <span className="sip-store">{row.store}</span>
+      {rows.map((row, index) => (
+        <React.Fragment key={index}>
+          <div
+            className={'sip-tr' + (expanded === index ? ' is-expanded' : '')}
+            onClick={(event) => {
+              if ((event.target as HTMLElement).closest('.sip-col-check')) return;
+              setExpanded((prev) => (prev === index ? null : index));
+            }}
+          >
+            <span
+              className="sip-col-check"
+              role="checkbox"
+              aria-label={`选择商品：${row.title}`}
+              aria-checked={selected.includes(index)}
+              onClick={(event) => {
+                event.stopPropagation();
+                toggleRow(index);
+              }}
+            >
+              <span className={'sip-checkbox' + (selected.includes(index) ? ' is-checked' : '')} />
+            </span>
+            <span className="sip-col-img">
+              {row.image ? (
+                <img className="sip-thumb" src={row.image} alt="" />
+              ) : (
+                <span className="sip-thumb sip-thumb-text">{row.imageText}</span>
+              )}
+            </span>
+            <span className="sip-col-info">
+              <span className="sip-title">{row.title}</span>
+              <span className="sip-meta">
+                <span className="sip-cat">{row.category}</span>
+                <span className="sip-meta-right">
+                  <span className="sip-pill">{row.status ?? '待发布'}</span>
+                  <img className="sip-dh" src={dhBadge} alt="DHgate" />
+                  <span className="sip-store">{row.store}</span>
+                </span>
               </span>
             </span>
-          </span>
-          <span className="sip-col-sku"><span className="sip-sku">{row.parentSku}</span></span>
-          <span className="sip-col-price"><span className="sip-money">{row.price}</span></span>
-          <span className="sip-col-tag" />
-          <span className="sip-col-time"><TimeBlock row={row} /></span>
-          <span className="sip-col-source">
-            <span className={'sip-source' + (row.source === '-' ? '' : ' is-link')}>{row.source}</span>
-          </span>
-        </div>
+            <span className="sip-col-sku"><span className="sip-sku">{row.parentSku}</span></span>
+            <span className="sip-col-price"><span className="sip-money">{row.price}</span></span>
+            <span className="sip-col-tag" />
+            <span className="sip-col-time"><TimeBlock row={row} /></span>
+            <span className="sip-col-source">
+              <span className={'sip-source' + (row.source === '-' ? '' : ' is-link')}>{row.source}</span>
+            </span>
+          </div>
+          {expanded === index ? (
+            <div className="sip-actions-row">
+              {ROW_ACTIONS.map((action) => (
+                <button
+                  key={action}
+                  type="button"
+                  className="sip-action-btn"
+                  onClick={() => handleRowAction(action, index)}
+                >
+                  {action}
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </React.Fragment>
       ))}
-      <div className="sip-pagination">
-        <span className="sip-total">共 266 条</span>
-        <SelectBox value="10条/页" width={110} />
-        <span className="sip-page-btn"><img src={icChevLeft} alt="上一页" /></span>
-        <span className="sip-page-btn is-active">1</span>
-        {[2, 3, 4, 5, 6].map((n) => (
-          <span key={n} className="sip-page-btn">{n}</span>
-        ))}
-        <span className="sip-page-btn sip-page-ellipsis">…</span>
-        <span className="sip-page-btn">27</span>
-        <span className="sip-page-btn"><img src={icChevRight} alt="下一页" /></span>
-        <span className="sip-jump">前往</span>
-        <div className="sip-input sip-jump-input"><span className="sip-input-text">1</span></div>
-        <span className="sip-jump">页</span>
+      <div className="sip-table-footer">
+        {selected.length > 0 ? (
+          <div className="sip-batch-bar">
+            <span className="sip-selected-count">已选 {selected.length} 项</span>
+            {BATCH_ACTIONS.map((action) => (
+              <button
+                key={action}
+                type="button"
+                className="sip-btn sip-btn-mini"
+                onClick={() => handleBatch(action)}
+              >
+                {action}
+              </button>
+            ))}
+          </div>
+        ) : null}
+        <div className="sip-pagination">
+          <span className="sip-total">共 266 条</span>
+          <SelectBox value="10条/页" width={110} />
+          <span className="sip-page-btn"><img src={icChevLeft} alt="上一页" /></span>
+          <span className="sip-page-btn is-active">1</span>
+          {[2, 3, 4, 5, 6].map((n) => (
+            <span key={n} className="sip-page-btn">{n}</span>
+          ))}
+          <span className="sip-page-btn sip-page-ellipsis">…</span>
+          <span className="sip-page-btn">27</span>
+          <span className="sip-page-btn"><img src={icChevRight} alt="下一页" /></span>
+          <span className="sip-jump">前往</span>
+          <div className="sip-input sip-jump-input"><span className="sip-input-text">1</span></div>
+          <span className="sip-jump">页</span>
+        </div>
       </div>
     </div>
   );
@@ -465,26 +610,67 @@ function ScrollFloat() {
 }
 
 export default function MyProductsPage() {
-  const [createOpen, setCreateOpen] = useState(false);
   const [platformId, setPlatformId] = useState('shopify');
   const [store, setStore] = useState('');
-  const openCreate = () => setCreateOpen(true);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [createTitle, setCreateTitle] = useState('创建新产品');
+  const [cloneCount, setCloneCount] = useState<number | null>(null);
+  const [syncOpen, setSyncOpen] = useState(false);
+  const [toast, setToast] = useState('');
+
+  useEffect(() => {
+    if (!toast) return undefined;
+    const timer = window.setTimeout(() => setToast(''), 2200);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
+
+  const openCreate = () => {
+    setCreateTitle('创建新产品');
+    setCreateOpen(true);
+  };
+
+  const openEdit = () => {
+    setCreateTitle('编辑产品');
+    setCreateOpen(true);
+  };
 
   const handlePlatform = (id: string) => {
     setPlatformId(id);
     if (!authorizedStores(id).includes(store)) setStore('');
   };
 
+  const syncStores = useMemo(
+    () => PLATFORM_STORES
+      .filter((item) => item.authStatus === '已授权')
+      .map((item) => ({
+        storeId: `${item.platform}::${item.name}`,
+        storeName: item.name,
+        storeAliasName: item.name,
+        platformId: item.platform,
+        platformName: PLATFORMS.find((platform) => platform.id === item.platform)?.label ?? item.platform,
+      })),
+    [],
+  );
+
   return (
     <>
       <TabBand platformId={platformId} onPlatform={handlePlatform} />
-      <Filters platformId={platformId} store={store} onStoreChange={setStore} onCreate={openCreate} />
+      <Filters
+        platformId={platformId}
+        store={store}
+        onStoreChange={setStore}
+        onCreate={openCreate}
+        onSync={() => setSyncOpen(true)}
+      />
       <div className="sip-body">
         <SideStats />
-        <ProductTable />
+        <ProductTable onEdit={openEdit} onClone={(count) => setCloneCount(count)} notify={setToast} />
       </div>
       <ScrollFloat />
-      {createOpen && <CreateProductDialog onClose={() => setCreateOpen(false)} />}
+      {createOpen && <CreateProductDialog title={createTitle} onClose={() => setCreateOpen(false)} />}
+      {cloneCount !== null && <AiCloneDialog count={cloneCount} onClose={() => setCloneCount(null)} />}
+      {syncOpen && <SyncOnlineDialog stores={syncStores} onClose={() => setSyncOpen(false)} />}
+      {toast ? <div className="sip-toast">{toast}</div> : null}
     </>
   );
 }

@@ -41,6 +41,11 @@ import ComplianceEntry from './components/ComplianceEntry';
 import ComplianceDialog from './components/ComplianceDialog';
 import SkuBatchEditDialog, { type SkuBatchField, type SkuRow } from './components/SkuBatchEditDialog';
 import SkuImageUpdateDialog from './components/SkuImageUpdateDialog';
+import SkuStockSplitDialog, {
+  type StockBatchPatch,
+  type StockSplitMap,
+} from './components/SkuStockSplitDialog';
+import RelateTemplateDialog from './components/RelateTemplateDialog';
 import { AnnotationViewer, setProtoDevState, useProtoDevState, type AnnotationSourceDocument } from '@axhub/annotation';
 import { ITEM_DEFS, type ComplianceItemCode, type ComplianceScenario, type ItemPreview } from './lib/compliance';
 import { useCompliance } from './lib/useCompliance';
@@ -291,7 +296,61 @@ const INITIAL_SKU_ROWS: SkuRow[] = SKU_ROWS.map((item) => ({
   purchasePrice: '',
 }));
 
+const INITIAL_SKU_SPLITS: StockSplitMap = Object.fromEntries(
+  INITIAL_SKU_ROWS.map((row) => [row.row, { 'loc-cn': '900' }]),
+);
+
 type SpecKey = 'color' | 'option';
+
+type StockStatus = 'stock' | 'incoming' | 'none';
+
+type StockLocation = {
+  id: string;
+  country: string;
+  leadTime: string;
+};
+
+type PriceTier = {
+  id: string;
+  qty: string;
+  discount: string;
+};
+
+type CustomConfig = {
+  leadTime: string;
+  minQty: string;
+  maxQty: string;
+  price: string;
+  saleStatus: number;
+  skuCode: string;
+};
+
+const DEFAULT_CUSTOM_CONFIG: CustomConfig = {
+  leadTime: '15',
+  minQty: '10',
+  maxQty: '1000',
+  price: '',
+  saleStatus: 1,
+  skuCode: '',
+};
+
+const COUNTRY_OPTIONS = ['中国', '美国', '英国', '德国', '加拿大', '澳大利亚'];
+
+const CUSTOM_TYPE_OPTIONS = ['定制logo', '定制包装', '定制外形', '定制颜色', '定制尺寸', '定制款式'];
+
+const STOCK_STATUS_HINT: Record<StockStatus, string> = {
+  stock: '有备货：按实物库存销售，承诺 1–4 个工作日发货',
+  incoming: '备货中：库存仍在途中，按 5–10 个工作日承诺发货',
+  none: '待备货：接单后采购，不提交实物库存',
+};
+
+const LEAD_TIME_HINT: Record<StockStatus, string> = {
+  stock: '有备货 1–4 个工作日；海外仓不超过 3 个工作日',
+  incoming: '备货中 5–10 个工作日',
+  none: '非定制 1–10 个工作日；定制类目 1–45 个工作日；指定类目最多 90 个工作日',
+};
+
+const stockLeadTimeMax = (country: string) => (country === '中国' ? 4 : 3);
 
 type SpecTag = {
   id: string;
@@ -409,15 +468,17 @@ function Stepper({
   onChange,
   step = 1,
   precision,
+  disabled,
 }: {
   value?: string;
   unit?: string;
   onChange?: (next: string) => void;
   step?: number;
   precision?: number;
+  disabled?: boolean;
 }) {
   const bump = (direction: number) => {
-    if (!onChange) return;
+    if (!onChange || disabled) return;
     const current = Number(value);
     const base = Number.isFinite(current) ? current : 0;
     const next = Math.max(0, base + direction * step);
@@ -425,16 +486,33 @@ function Stepper({
   };
 
   return (
-    <span className="ep-stepper">
-      <button type="button" className="ep-stepper__btn" aria-label="减少" onClick={() => bump(-1)}>
+    <span className={disabled ? 'ep-stepper is-disabled' : 'ep-stepper'}>
+      <button
+        type="button"
+        className="ep-stepper__btn"
+        aria-label="减少"
+        disabled={disabled}
+        onClick={() => bump(-1)}
+      >
         −
       </button>
       {onChange ? (
-        <input className="ep-stepper__input" value={value} onChange={(event) => onChange(event.target.value)} />
+        <input
+          className="ep-stepper__input"
+          value={value}
+          disabled={disabled}
+          onChange={(event) => onChange(event.target.value)}
+        />
       ) : (
-        <input className="ep-stepper__input" defaultValue={value} />
+        <input className="ep-stepper__input" defaultValue={value} disabled={disabled} />
       )}
-      <button type="button" className="ep-stepper__btn" aria-label="增加" onClick={() => bump(1)}>
+      <button
+        type="button"
+        className="ep-stepper__btn"
+        aria-label="增加"
+        disabled={disabled}
+        onClick={() => bump(1)}
+      >
         +
       </button>
       {unit && <span className="ep-stepper__unit">{unit}</span>}
@@ -442,31 +520,211 @@ function Stepper({
   );
 }
 
+function Switch({
+  checked,
+  onChange,
+  label,
+}: {
+  checked: boolean;
+  onChange: () => void;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
+      className={checked ? 'ep-toggle is-on' : 'ep-toggle'}
+      onClick={onChange}
+    >
+      <span className="ep-toggle__dot" />
+    </button>
+  );
+}
+
+function HelpTip({
+  text,
+  align = 'left',
+  sections,
+}: {
+  text: string;
+  align?: 'left' | 'right';
+  sections?: string[];
+}) {
+  return (
+    <span
+      className={align === 'right' ? 'ep-help ep-help--right' : 'ep-help'}
+      role="img"
+      aria-label={text}
+      tabIndex={0}
+    >
+      <HelpCircle size={13} />
+      <span className="ep-help__tip" role="tooltip">
+        {sections
+          ? sections.map((section) => (
+              <span className="ep-help__line" key={section}>
+                {section}
+              </span>
+            ))
+          : text}
+      </span>
+    </span>
+  );
+}
+
+function OversellConfirmDialog({
+  total,
+  onCancel,
+  onConfirm,
+}: {
+  total: string;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) {
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onCancel();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [onCancel]);
+
+  return (
+    <div
+      className="ep-confirm-mask"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onCancel();
+      }}
+    >
+      <div className="ep-confirm" role="dialog" aria-modal="true" aria-labelledby="oversell-confirm-title">
+        <h4 className="ep-confirm__title" id="oversell-confirm-title">
+          关闭允许超卖？
+        </h4>
+        <p className="ep-confirm__text">
+          关闭后可售库存会按各仓备货合计重新赋值（当前 {total} 件），SKU 库存不可再手动编辑；修改分仓备货时会自动同步可售库存。
+        </p>
+        <div className="ep-confirm__actions">
+          <button type="button" className="ep-btn ep-btn--default" onClick={onCancel}>
+            取消
+          </button>
+          <button type="button" className="ep-btn ep-btn--primary" onClick={onConfirm}>
+            确定关闭
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Radio({
   label,
   checked,
   name,
+  onChange,
 }: {
   label: string;
   checked?: boolean;
   name: string;
+  onChange?: () => void;
 }) {
   return (
     <label className={checked ? 'ep-radio is-checked' : 'ep-radio'}>
-      <input type="radio" name={name} defaultChecked={checked} />
+      <input
+        type="radio"
+        name={name}
+        checked={onChange ? Boolean(checked) : undefined}
+        defaultChecked={onChange ? undefined : checked}
+        onChange={onChange ? () => onChange() : undefined}
+      />
       <span className="ep-radio__dot" />
       <span className="ep-radio__label">{label}</span>
     </label>
   );
 }
 
-function Checkbox({ label, checked }: { label: string; checked?: boolean }) {
+function Checkbox({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked?: boolean;
+  onChange?: () => void;
+}) {
   return (
     <label className="ep-check">
-      <input type="checkbox" defaultChecked={checked} />
+      <input
+        type="checkbox"
+        checked={onChange ? Boolean(checked) : undefined}
+        defaultChecked={onChange ? undefined : checked}
+        onChange={onChange ? () => onChange() : undefined}
+      />
       <span className="ep-check__box" />
       <span className="ep-check__label">{label}</span>
     </label>
+  );
+}
+
+function MiniSelect({
+  value,
+  options,
+  onChange,
+  placeholder,
+  className = '',
+}: {
+  value?: string;
+  options: string[];
+  onChange: (next: string) => void;
+  placeholder?: string;
+  className?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (event: MouseEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <span className={`ep-select ep-mini-select ${className}`.trim()} ref={rootRef}>
+      <button type="button" className="ep-mini-select__trigger" aria-haspopup="listbox" onClick={() => setOpen((next) => !next)}>
+        <span className={value ? 'ep-select__value' : 'ep-select__ph'}>{value || placeholder}</span>
+        <ChevronDown size={12} className="ep-select__caret" />
+      </button>
+      {open && (
+        <span className="ep-mini-select__menu" role="listbox">
+          {options.map((option) => (
+            <button
+              type="button"
+              role="option"
+              aria-selected={option === value}
+              key={option}
+              className={option === value ? 'ep-mini-select__item is-active' : 'ep-mini-select__item'}
+              onClick={() => {
+                onChange(option);
+                setOpen(false);
+              }}
+            >
+              {option}
+            </button>
+          ))}
+        </span>
+      )}
+    </span>
   );
 }
 
@@ -491,10 +749,33 @@ export default function EditProductDialogV2() {
   const [toast, setToast] = useState<string | null>(null);
   const [skuRows, setSkuRows] = useState<SkuRow[]>(INITIAL_SKU_ROWS);
   const [batchField, setBatchField] = useState<SkuBatchField | null>(null);
+  const [stockStatus, setStockStatus] = useState<StockStatus>('incoming');
+  const [stockLocations, setStockLocations] = useState<StockLocation[]>([
+    { id: 'loc-cn', country: '中国', leadTime: '4' },
+  ]);
+  const [productLeadTime, setProductLeadTime] = useState('7');
+  const [stockCut, setStockCut] = useState(1);
+  const [maxSaleQty, setMaxSaleQty] = useState('1000');
+  const [priceTiers, setPriceTiers] = useState<PriceTier[]>([{ id: 'tier-1', qty: '1', discount: '' }]);
+  const [customEnabled, setCustomEnabled] = useState(false);
+  const [customTypes, setCustomTypes] = useState<string[]>([]);
+  const [customConfig, setCustomConfig] = useState<CustomConfig>(DEFAULT_CUSTOM_CONFIG);
+  const [stockSplitOpen, setStockSplitOpen] = useState(false);
+  const [skuSplits, setSkuSplits] = useState<StockSplitMap>(INITIAL_SKU_SPLITS);
+  const [allowOversell, setAllowOversell] = useState(true);
+  const [oversellConfirmOpen, setOversellConfirmOpen] = useState(false);
+  const [locationBatch, setLocationBatch] = useState<{
+    id: string;
+    country: string;
+    seed: StockSplitMap;
+  } | null>(null);
+  const [locationBatchPatch, setLocationBatchPatch] = useState<StockBatchPatch | null>(null);
   const [productTags, setProductTags] = useState<Record<number, Record<SpecKey, SpecTag[]>>>({});
   const [specPicked, setSpecPicked] = useState<Record<SpecKey, string[]>>({ color: [], option: [] });
   const [specImages, setSpecImages] = useState<SpecImages>(INITIAL_SPEC_IMAGES);
   const [imageDialogKey, setImageDialogKey] = useState<SpecKey | null>(null);
+  const [relateOpen, setRelateOpen] = useState(false);
+  const [relatedTpl, setRelatedTpl] = useState<{ id: string; name: string } | null>(null);
   const [addMenuKey, setAddMenuKey] = useState<SpecKey | null>(null);
   const [tagEditor, setTagEditor] = useState<{ key: SpecKey; name: string } | null>(null);
   const specTags = productTags[selectedId] ?? EMPTY_SPEC_TAGS;
@@ -529,6 +810,186 @@ export default function EditProductDialogV2() {
 
   const updateSku = (row: number, patch: Partial<SkuRow>) => {
     setSkuRows((list) => list.map((item) => (item.row === row ? { ...item, ...patch } : item)));
+  };
+
+  const physicalStockOf = (row: number) =>
+    Object.values(skuSplits[row] ?? {}).reduce((sum, value) => sum + (Number(value) || 0), 0);
+
+  const splitTotalOf = (splits: StockSplitMap, row: number) =>
+    Object.values(splits[row] ?? {}).reduce((sum, value) => sum + (Number(value) || 0), 0);
+
+  const syncSellableToPhysical = (splits: StockSplitMap) => {
+    setSkuRows((rows) => rows.map((row) => ({ ...row, inventory: String(splitTotalOf(splits, row.row)) })));
+  };
+
+  const toggleOversell = () => {
+    if (allowOversell) {
+      setOversellConfirmOpen(true);
+      return;
+    }
+    setAllowOversell(true);
+  };
+
+  const confirmDisableOversell = () => {
+    setAllowOversell(false);
+    syncSellableToPhysical(skuSplits);
+    setOversellConfirmOpen(false);
+  };
+
+  const sellableSkuRows = useMemo(() => skuRows.filter((row) => row.saleStatus === 1), [skuRows]);
+
+  const sellableStockTotal = useMemo(
+    () => sellableSkuRows.reduce((sum, row) => sum + (Number(row.inventory) || 0), 0),
+    [sellableSkuRows],
+  );
+
+  const physicalStockTotal = useMemo(
+    () => sellableSkuRows.reduce((sum, row) => sum + physicalStockOf(row.row), 0),
+    [sellableSkuRows, skuSplits],
+  );
+
+  const stockGap = sellableStockTotal - physicalStockTotal;
+
+  const leadTimeRange: [number, number] =
+    stockStatus === 'stock' ? [1, 4] : stockStatus === 'incoming' ? [5, 10] : [1, 90];
+  const leadTimeNumber = Number(productLeadTime);
+  const leadTimeInvalid =
+    !Number.isFinite(leadTimeNumber) || leadTimeNumber < leadTimeRange[0] || leadTimeNumber > leadTimeRange[1];
+  const maxSaleQtyNumber = Number(maxSaleQty);
+  const maxSaleQtyInvalid =
+    stockStatus === 'none' &&
+    (!Number.isFinite(maxSaleQtyNumber) || maxSaleQtyNumber < 1 || maxSaleQtyNumber > 10000);
+  const locationInvalid = (location: StockLocation) => {
+    const current = Number(location.leadTime);
+    return !Number.isFinite(current) || current < 1 || current > stockLeadTimeMax(location.country);
+  };
+
+  const changeStockStatus = (next: StockStatus) => {
+    setStockStatus(next);
+    if (next === 'stock') {
+      setProductLeadTime((current) => {
+        const value = Number(current);
+        return value >= 1 && value <= 4 ? current : '4';
+      });
+    }
+    if (next === 'incoming') {
+      setProductLeadTime((current) => {
+        const value = Number(current);
+        return value >= 5 && value <= 10 ? current : '7';
+      });
+    }
+    if (next !== 'none' && stockLocations.length === 0) {
+      setStockLocations([{ id: `loc-${Date.now()}`, country: '中国', leadTime: '4' }]);
+    }
+  };
+
+  const addStockLocation = () => {
+    if (stockLocations.length >= 217) {
+      showToast('最多只能添加 217 个备货所在地');
+      return;
+    }
+    const used = new Set(stockLocations.map((location) => location.country));
+    const country = COUNTRY_OPTIONS.find((item) => !used.has(item)) ?? COUNTRY_OPTIONS[0];
+    setStockLocations((current) => [
+      ...current,
+      { id: `loc-${Date.now()}`, country, leadTime: String(stockLeadTimeMax(country)) },
+    ]);
+  };
+
+  const updateStockLocation = (id: string, patch: Partial<StockLocation>) => {
+    setStockLocations((current) =>
+      current.map((location) => (location.id === id ? { ...location, ...patch } : location)),
+    );
+  };
+
+  const removeStockLocation = (id: string) => {
+    setStockLocations((current) => current.filter((location) => location.id !== id));
+    const nextSplits = Object.fromEntries(
+      Object.entries(skuSplits).map(([row, map]) => {
+        const next = { ...map };
+        delete next[id];
+        return [row, next];
+      }),
+    ) as StockSplitMap;
+    setSkuSplits(nextSplits);
+    if (!allowOversell) syncSellableToPhysical(nextSplits);
+  };
+
+  const addPriceTier = () => {
+    if (priceTiers.length >= 4) {
+      showToast('价格区间最多 4 档');
+      return;
+    }
+    setPriceTiers((current) => [...current, { id: `tier-${Date.now()}`, qty: '', discount: '0' }]);
+  };
+
+  const updatePriceTier = (id: string, patch: Partial<PriceTier>) => {
+    setPriceTiers((current) => current.map((tier) => (tier.id === id ? { ...tier, ...patch } : tier)));
+  };
+
+  const removePriceTier = (id: string) => {
+    setPriceTiers((current) => (current.length > 1 ? current.filter((tier) => tier.id !== id) : current));
+  };
+
+  const toggleCustomType = (name: string) => {
+    setCustomTypes((current) =>
+      current.includes(name) ? current.filter((item) => item !== name) : [...current, name],
+    );
+  };
+
+  const updateCustomConfig = (patch: Partial<CustomConfig>) => {
+    setCustomConfig((current) => ({ ...current, ...patch }));
+  };
+
+  const openStockSplit = () => {
+    if (stockLocations.length === 0) {
+      showToast('请先添加备货所在地');
+      return;
+    }
+    setLocationBatch(null);
+    setLocationBatchPatch(null);
+    setStockSplitOpen(true);
+  };
+
+  const applyStockSplit = (splits: StockSplitMap) => {
+    setSkuSplits(splits);
+    if (!allowOversell) syncSellableToPhysical(splits);
+    setLocationBatch(null);
+    setLocationBatchPatch(null);
+    setStockSplitOpen(false);
+  };
+
+  const validateAndSave = (successMessage: string) => {
+    if (stockStatus !== 'none') {
+      if (leadTimeInvalid) {
+        showToast(`备货期需在 ${leadTimeRange[0]}–${leadTimeRange[1]} 个工作日之间`);
+        return;
+      }
+      const invalid = stockLocations.find((location) => locationInvalid(location));
+      if (invalid) {
+        showToast(`${invalid.country}仓的备货期需在 1–${stockLeadTimeMax(invalid.country)} 个工作日之间`);
+        return;
+      }
+    } else if (
+      !Number.isFinite(maxSaleQtyNumber) ||
+      maxSaleQtyNumber < 1 ||
+      maxSaleQtyNumber > 10000
+    ) {
+      showToast('一次最大购买数量需在 1–10000 之间');
+      return;
+    }
+    const invalidTier = priceTiers
+      .slice(1)
+      .find((tier, index) => Number(tier.qty) <= Number(priceTiers[index].qty));
+    if (invalidTier) {
+      showToast('价格区间的购买数量需要递增');
+      return;
+    }
+    if (customEnabled && customTypes.length === 0) {
+      showToast('请选择定制选项');
+      return;
+    }
+    showToast(successMessage);
   };
 
   const skuSpecs = useMemo(
@@ -1460,6 +1921,7 @@ export default function EditProductDialogV2() {
                                 <span className="ep-video-gen__meta">
                                   {aiJob.duration} 秒 · {aiJob.ratioLabel} · {aiJob.refs.length} 张参考图
                                 </span>
+                                <span className="ep-video-gen__hint">关闭编辑弹窗不影响生成</span>
                                 <button
                                   type="button"
                                   className="ep-video-gen__stop"
@@ -1682,7 +2144,13 @@ export default function EditProductDialogV2() {
                           </div>
                         </Section>
 
-                        <Section title="价格 USD" required innerRef={setSectionRef('price')} extra={<PriceSubmitButton onToast={showToast} />}>
+                        <Section
+                          title="价格 USD"
+                          count={`SKU 数量 ${skuRows.length}`}
+                          required
+                          innerRef={setSectionRef('price')}
+                          extra={<PriceSubmitButton onToast={showToast} />}
+                        >
                           <div className="ep-table-wrap">
                             <div className="ep-sku-table">
                               <div className="ep-sku-head">
@@ -1707,8 +2175,14 @@ export default function EditProductDialogV2() {
                                 </button>
                                 <button
                                   type="button"
-                                  className="ep-sku-head__edit"
-                                  onClick={() => setBatchField('inventory')}
+                                  className={allowOversell ? 'ep-sku-head__edit' : 'ep-sku-head__edit is-disabled'}
+                                  onClick={() => {
+                                    if (!allowOversell) {
+                                      showToast('不允许超卖时，可售库存由备货库存自动计算');
+                                      return;
+                                    }
+                                    setBatchField('inventory');
+                                  }}
                                 >
                                   库存
                                   <Pencil size={12} />
@@ -1764,6 +2238,7 @@ export default function EditProductDialogV2() {
                                       value={row.inventory}
                                       step={1}
                                       precision={0}
+                                      disabled={!allowOversell}
                                       onChange={(next) => updateSku(row.row, { inventory: next })}
                                     />
                                   </span>
@@ -1798,11 +2273,118 @@ export default function EditProductDialogV2() {
                         </Section>
 
                         <Section title="定制商品" required innerRef={setSectionRef('custom')}>
-                          <div className="ep-field">
+                          <div className="ep-field" data-annotation-id="custom-config">
                             <span className="ep-field__label">是否定制商品</span>
-                            <Radio label="否" name="custom" checked />
-                            <Radio label="是" name="custom" />
+                            <Radio
+                              label="否"
+                              name="custom"
+                              checked={!customEnabled}
+                              onChange={() => setCustomEnabled(false)}
+                            />
+                            <Radio
+                              label="是"
+                              name="custom"
+                              checked={customEnabled}
+                              onChange={() => setCustomEnabled(true)}
+                            />
                           </div>
+                          {customEnabled && (
+                            <div className="ep-custom-config">
+                              <div className="ep-stack-field">
+                                <span className="ep-field__label">定制选项</span>
+                                <div className="ep-check-group">
+                                  {CUSTOM_TYPE_OPTIONS.map((name) => (
+                                    <Checkbox
+                                      key={name}
+                                      label={name}
+                                      checked={customTypes.includes(name)}
+                                      onChange={() => toggleCustomType(name)}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="ep-custom-fields">
+                                <div className="ep-custom-field">
+                                  <span className="ep-field__label">
+                                    <Req />备货期
+                                  </span>
+                                  <div className="ep-inline-actions">
+                                    <Stepper
+                                      value={customConfig.leadTime}
+                                      onChange={(next) => updateCustomConfig({ leadTime: next })}
+                                    />
+                                    <span className="ep-hint">个工作日（1–35）</span>
+                                  </div>
+                                </div>
+                                <div className="ep-custom-field">
+                                  <span className="ep-field__label">
+                                    <Req />一次最小购买量
+                                  </span>
+                                  <Stepper
+                                    value={customConfig.minQty}
+                                    onChange={(next) => updateCustomConfig({ minQty: next })}
+                                  />
+                                </div>
+                                <div className="ep-custom-field">
+                                  <span className="ep-field__label">
+                                    <Req />一次最大购买量
+                                  </span>
+                                  <Stepper
+                                    value={customConfig.maxQty}
+                                    onChange={(next) => updateCustomConfig({ maxQty: next })}
+                                  />
+                                </div>
+                              </div>
+                              <div className="ep-table-wrap">
+                                <div className="ep-custom-simple">
+                                  <div className="ep-custom-simple__head">
+                                    <span>商品</span>
+                                    <span>销售</span>
+                                    <span>单价</span>
+                                    <span>SKU编码</span>
+                                  </div>
+                                  <div className="ep-custom-simple__row">
+                                    <span>用户定制商品</span>
+                                    <span>
+                                      <MiniSelect
+                                        value={customConfig.saleStatus === 1 ? '可销售' : '不可销售'}
+                                        options={['可销售', '不可销售']}
+                                        onChange={(next) =>
+                                          updateCustomConfig({
+                                            saleStatus: next === '可销售' ? 1 : 0,
+                                          })
+                                        }
+                                      />
+                                    </span>
+                                    <span>
+                                      <Stepper
+                                        value={customConfig.price}
+                                        step={0.01}
+                                        precision={2}
+                                        onChange={(next) => updateCustomConfig({ price: next })}
+                                      />
+                                    </span>
+                                    <span>
+                                      <input
+                                        className="ep-sku-input"
+                                        value={customConfig.skuCode}
+                                        placeholder="SKU编码"
+                                        onChange={(event) =>
+                                          updateCustomConfig({ skuCode: event.target.value })
+                                        }
+                                      />
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="ep-custom-simple__foot">
+                                  <span className="ep-muted">0/20</span>
+                                </div>
+                              </div>
+                              <span className="ep-hint">
+                                定制商品按无备货处理；选中的定制选项共用这一套交期、起订量与单价。
+                              </span>
+                            </div>
+                          )}
                         </Section>
 
                         <div className="ep-split" ref={setSectionRef('sales')}>
@@ -1822,58 +2404,254 @@ export default function EditProductDialogV2() {
                                 <Radio label="按包卖" name="sell-mode" />
                               </div>
                             </div>
-                            <div className="ep-stack-field">
+                            <div className="ep-stack-field" data-annotation-id="stock-status">
                               <span className="ep-field__label">备货状态</span>
                               <div className="ep-radio-group">
-                                <Radio label="有备货" name="stock-status" />
-                                <Radio label="备货中" name="stock-status" checked />
-                                <Radio label="待备货" name="stock-status" />
+                                <Radio
+                                  label="有备货"
+                                  name="stock-status"
+                                  checked={stockStatus === 'stock'}
+                                  onChange={() => changeStockStatus('stock')}
+                                />
+                                <Radio
+                                  label="备货中"
+                                  name="stock-status"
+                                  checked={stockStatus === 'incoming'}
+                                  onChange={() => changeStockStatus('incoming')}
+                                />
+                                <Radio
+                                  label="待备货"
+                                  name="stock-status"
+                                  checked={stockStatus === 'none'}
+                                  onChange={() => changeStockStatus('none')}
+                                />
                               </div>
+                              <span className="ep-hint">{STOCK_STATUS_HINT[stockStatus]}</span>
                             </div>
-                            <div className="ep-stack-field">
-                              <span className="ep-field__label">备货所在地</span>
-                              <div className="ep-inline-actions">
-                                <SelectBox value="中国" />
-                                <button type="button" className="ep-btn ep-btn--primary ep-btn--tiny">
-                                  <Plus size={11} />
-                                  新增
-                                </button>
-                                <span className="ep-muted">1/217</span>
+
+                            {stockStatus !== 'none' ? (
+                              <>
+                                <div className="ep-stack-field" data-annotation-id="stock-locations">
+                                  <span className="ep-field__label">备货所在地及备货期</span>
+                                  {stockLocations.map((location, index) => (
+                                    <div className="ep-loc-row" key={location.id}>
+                                      <MiniSelect
+                                        className="ep-loc-row__country"
+                                        value={location.country}
+                                        options={COUNTRY_OPTIONS.filter(
+                                          (item) =>
+                                            item === location.country ||
+                                            !stockLocations.some(
+                                              (other) => other.id !== location.id && other.country === item,
+                                            ),
+                                        )}
+                                        onChange={(next) =>
+                                          updateStockLocation(location.id, {
+                                            country: next,
+                                            leadTime:
+                                              next === '中国'
+                                                ? location.leadTime
+                                                : String(Math.min(3, Number(location.leadTime) || 3)),
+                                          })
+                                        }
+                                      />
+                                      <Stepper
+                                        value={location.leadTime}
+                                        onChange={(next) => updateStockLocation(location.id, { leadTime: next })}
+                                      />
+                                      <span className="ep-loc-row__unit">个工作日</span>
+                                      {index > 0 && (
+                                        <button
+                                          type="button"
+                                          className="ep-loc-row__del"
+                                          aria-label="删除备货地"
+                                          onClick={() => removeStockLocation(location.id)}
+                                        >
+                                          <Trash2 size={13} />
+                                        </button>
+                                      )}
+                                      {index === 0 && (
+                                        <span className="ep-loc-row__actions">
+                                          <button
+                                            type="button"
+                                            className="ep-btn ep-btn--primary ep-btn--tiny"
+                                            onClick={addStockLocation}
+                                          >
+                                            <Plus size={11} />
+                                            新增
+                                          </button>
+                                          <span className="ep-muted">{stockLocations.length}/217</span>
+                                        </span>
+                                      )}
+                                    </div>
+                                  ))}
+                                  <span
+                                    className={
+                                      stockLocations.some((location) => locationInvalid(location))
+                                        ? 'ep-hint is-warn'
+                                        : 'ep-hint'
+                                    }
+                                  >
+                                    中国仓 1–4 个工作日，海外仓 1–3 个工作日
+                                  </span>
+                                </div>
+
+                                <div className="ep-stack-field" data-annotation-id="stock-cut">
+                                  <span className="ep-field__label">
+                                    <Req />库存扣减方式
+                                  </span>
+                                  <div className="ep-radio-group">
+                                    <Radio
+                                      label="下单扣减库存"
+                                      name="stock-cut"
+                                      checked={stockCut === 1}
+                                      onChange={() => setStockCut(1)}
+                                    />
+                                    <Radio
+                                      label="支付扣减库存"
+                                      name="stock-cut"
+                                      checked={stockCut === 2}
+                                      onChange={() => setStockCut(2)}
+                                    />
+                                  </div>
+                                </div>
+
+                                <div className="ep-stack-field" data-annotation-id="product-inventory">
+                                  <div className="ep-stock-head">
+                                    <span className="ep-field__label">产品总库存</span>
+                                    <span className="ep-oversell">
+                                      <span className="ep-oversell__label">允许超卖</span>
+                                      <Switch
+                                        checked={allowOversell}
+                                        onChange={toggleOversell}
+                                        label="允许超卖"
+                                      />
+                                      <HelpTip
+                                        align="right"
+                                        text="允许超卖：可售库存和备货库存可以不一致，超出备货的部分需自行备货/调拨。不允许超卖：可售库存锁定为各仓备货合计，SKU 库存不可编辑。"
+                                        sections={[
+                                          '允许超卖：可售库存和备货库存可以不一致，超出备货的部分需自行备货/调拨。',
+                                          '不允许超卖：可售库存锁定为各仓备货合计，SKU 库存不可编辑。',
+                                        ]}
+                                      />
+                                    </span>
+                                  </div>
+                                  <div className="ep-inline-actions ep-stock-metrics">
+                                    <span className="ep-stock-metric">
+                                      <span className="ep-stock-metric__label">可售</span>
+                                      <span className="ep-total-value">
+                                        {sellableStockTotal.toLocaleString('en-US')}
+                                      </span>
+                                    </span>
+                                    <span className="ep-stock-metric">
+                                      <span className="ep-stock-metric__label">备货</span>
+                                      <span className="ep-total-value">
+                                        {physicalStockTotal.toLocaleString('en-US')}
+                                      </span>
+                                    </span>
+                                    <button
+                                      type="button"
+                                      className="ep-link"
+                                      data-annotation-id="sku-split"
+                                      onClick={openStockSplit}
+                                    >
+                                      分仓库存
+                                    </button>
+                                  </div>
+                                  <span className="ep-hint">
+                                    {allowOversell
+                                      ? '可售 = 可售 SKU 库存合计；备货 = 各仓实物合计'
+                                      : '不允许超卖：可售库存 = 各仓备货合计，SKU 库存不可编辑'}
+                                  </span>
+                                  {allowOversell && stockGap > 0 ? (
+                                    <span className="ep-hint is-alert">
+                                      可售比备货多 {stockGap.toLocaleString('en-US')} 件，超出部分需自行备货/调拨
+                                    </span>
+                                  ) : (
+                                    allowOversell &&
+                                    stockGap < 0 && (
+                                      <span className="ep-hint">
+                                        备货比可售多 {Math.abs(stockGap).toLocaleString('en-US')} 件
+                                      </span>
+                                    )
+                                  )}
+                                </div>
+                              </>
+                            ) : (
+                              <div className="ep-stack-field">
+                                <span className="ep-field__label">
+                                  <Req />一次最大购买数量
+                                </span>
+                                <div className="ep-inline-actions">
+                                  <Stepper value={maxSaleQty} onChange={setMaxSaleQty} />
+                                  <span className={maxSaleQtyInvalid ? 'ep-hint is-warn' : 'ep-hint'}>
+                                    1–10000
+                                  </span>
+                                </div>
                               </div>
-                            </div>
-                            <div className="ep-stack-field">
-                              <span className="ep-field__label">
-                                <Req />库存扣减方式
-                              </span>
-                              <div className="ep-radio-group">
-                                <Radio label="下单扣减库存" name="stock-cut" checked />
-                                <Radio label="支付扣减库存" name="stock-cut" />
-                              </div>
-                            </div>
-                            <div className="ep-stack-field">
+                            )}
+
+                            <div className="ep-stack-field" data-annotation-id="stock-leadtime">
                               <span className="ep-field__label">
                                 <Req />备货期
+                                <HelpTip text="上方每个备货地的备货期是该仓的发货时效（中国仓 1–4 个工作日、海外仓 1–3 个工作日）；这里的备货期是产品级兜底值，仓级优先，未设置仓级时取这里的值。有备货 1–4 个工作日、备货中 5–10 个工作日、待备货按类目。" />
                               </span>
                               <div className="ep-inline-actions">
-                                <Stepper />
-                                <span>天</span>
+                                <Stepper value={productLeadTime} onChange={setProductLeadTime} />
+                                <span>个工作日</span>
                               </div>
-                              <span className="ep-hint">(备货期为5-10天)</span>
+                              <span className={leadTimeInvalid ? 'ep-hint is-warn' : 'ep-hint'}>
+                                {LEAD_TIME_HINT[stockStatus]}
+                              </span>
                             </div>
-                            <div className="ep-stack-field">
+
+                            <div className="ep-stack-field" data-annotation-id="price-tiers">
                               <span className="ep-field__label">价格区间</span>
-                              <div className="ep-inline-actions">
-                                <Stepper />
-                                <button type="button" className="ep-btn ep-btn--primary ep-btn--tiny">
-                                  <Plus size={11} />
-                                  新增
-                                </button>
-                                <span className="ep-muted">1/4</span>
-                              </div>
-                              <span className="ep-hint">
-                                (购买(件)以上时,为表格中填写的实际收入)
-                              </span>
+                              {priceTiers.map((tier, index) => (
+                                <div className="ep-tier-row" key={tier.id}>
+                                  {index > 0 && <span className="ep-tier-row__text">购买</span>}
+                                  <Stepper
+                                    value={tier.qty}
+                                    onChange={(next) => updatePriceTier(tier.id, { qty: next })}
+                                  />
+                                  <span className="ep-tier-row__text">
+                                    {index === 0 ? '件以上' : '件以上时，减免'}
+                                  </span>
+                                  {index > 0 && (
+                                    <>
+                                      <Stepper
+                                        value={tier.discount}
+                                        unit="%"
+                                        onChange={(next) => updatePriceTier(tier.id, { discount: next })}
+                                      />
+                                      <button
+                                        type="button"
+                                        className="ep-loc-row__del"
+                                        aria-label="删除价格区间"
+                                        onClick={() => removePriceTier(tier.id)}
+                                      >
+                                        <Trash2 size={13} />
+                                      </button>
+                                    </>
+                                  )}
+                                  {index === 0 && (
+                                    <span className="ep-loc-row__actions">
+                                      <button
+                                        type="button"
+                                        className="ep-btn ep-btn--primary ep-btn--tiny"
+                                        onClick={addPriceTier}
+                                      >
+                                        <Plus size={11} />
+                                        新增
+                                      </button>
+                                      <span className="ep-muted">{priceTiers.length}/4</span>
+                                    </span>
+                                  )}
+                                </div>
+                              ))}
+                              <span className="ep-hint">首档按表格实际收入；减免 5% 提交折扣 0.05</span>
                             </div>
+
                             <div className="ep-stack-field">
                               <span className="ep-field__label">有效期</span>
                               <SelectBox placeholder="请选择" />
@@ -1971,18 +2749,6 @@ export default function EditProductDialogV2() {
                   </div>
                 ) : tab === 'detail' ? (
                   <div className="ep-editor">
-                    <div className="ep-tpl-bar">
-                      <div className="ep-tpl-select">
-                        <input readOnly placeholder="选择已有详情模板快速替换" />
-                        <ChevronDown size={12} />
-                      </div>
-                      <button type="button" className="ep-btn ep-btn--primary-plain">
-                        创建详情模板
-                      </button>
-                      <button type="button" className="ep-btn ep-btn--default">
-                        管理详情模板
-                      </button>
-                    </div>
                     <div className="ep-quill-bar">
                       <span className="ep-quill-group">
                         <button type="button" className="ep-quill-btn ep-quill-btn--b">B</button>
@@ -2013,7 +2779,21 @@ export default function EditProductDialogV2() {
                           <span className="ep-quill-clear">T</span>
                         </button>
                       </span>
-                      <span className="ep-quill-hint">支持粘贴图片、批量排版</span>
+                      <button type="button" className="ep-btn ep-btn--default" onClick={() => setRelateOpen(true)}>
+                        插入产品模板
+                      </button>
+                      <div className="ep-quill-right">
+                        <div className="ep-tpl-select">
+                          <input readOnly placeholder="选择已有详情模板快速替换" />
+                          <ChevronDown size={12} />
+                        </div>
+                        <button type="button" className="ep-btn ep-btn--primary-plain">
+                          创建详情模板
+                        </button>
+                        <button type="button" className="ep-btn ep-btn--default">
+                          管理详情模板
+                        </button>
+                      </div>
                     </div>
                     <div className="ep-editor-scroll">
                       <div className="ep-editor-page">
@@ -2064,14 +2844,14 @@ export default function EditProductDialogV2() {
               <button
                 type="button"
                 className="ep-btn ep-btn--primary ep-btn--lg"
-                onClick={() => showToast('保存成功')}
+                onClick={() => validateAndSave('保存成功')}
               >
                 保存
               </button>
               <button
                 type="button"
                 className="ep-btn ep-btn--primary ep-btn--lg"
-                onClick={() => showToast('已保存并发布')}
+                onClick={() => validateAndSave('已保存并发布')}
               >
                 保存并发布
               </button>
@@ -2098,6 +2878,67 @@ export default function EditProductDialogV2() {
           onClose={() => setBatchField(null)}
           onApply={setSkuRows}
           onToast={showToast}
+        />
+      )}
+      {stockSplitOpen && (
+        <SkuStockSplitDialog
+          rows={skuRows}
+          locations={stockLocations.map((location) => ({ id: location.id, country: location.country }))}
+          value={skuSplits}
+          onClose={() => {
+            setStockSplitOpen(false);
+            setLocationBatch(null);
+            setLocationBatchPatch(null);
+          }}
+          onApply={applyStockSplit}
+          onToast={showToast}
+          onRequestBatch={(locationId, currentSplits) => {
+            const location = stockLocations.find((item) => item.id === locationId);
+            if (!location) return;
+            setLocationBatch({ id: location.id, country: location.country, seed: currentSplits });
+          }}
+          batchPatch={locationBatchPatch}
+        />
+      )}
+      {locationBatch && (
+        <SkuBatchEditDialog
+          field="inventory"
+          title={`批量修改${locationBatch.country}仓备货库存`}
+          overlayClassName="sbe-mask--front"
+          rows={skuRows.map((row) => ({
+            ...row,
+            inventory: String(locationBatch.seed[row.row]?.[locationBatch.id] ?? '0'),
+          }))}
+          specs={skuSpecs}
+          onClose={() => setLocationBatch(null)}
+          onApply={(next) => {
+            const values: Record<number, string> = {};
+            next.forEach((row) => {
+              values[row.row] = row.inventory;
+            });
+            setLocationBatchPatch({ token: Date.now(), locationId: locationBatch.id, values });
+            setLocationBatch(null);
+          }}
+          onToast={showToast}
+        />
+      )}
+      {oversellConfirmOpen && (
+        <OversellConfirmDialog
+          total={physicalStockTotal.toLocaleString('en-US')}
+          onCancel={() => setOversellConfirmOpen(false)}
+          onConfirm={confirmDisableOversell}
+        />
+      )}
+      {relateOpen && (
+        <RelateTemplateDialog
+          selectedId={relatedTpl?.id ?? null}
+          onClose={() => setRelateOpen(false)}
+          onToast={showToast}
+          onConfirm={(template) => {
+            setRelatedTpl(template);
+            setRelateOpen(false);
+            showToast(`已插入产品模板「${template.name}」`);
+          }}
         />
       )}
       <AiVideoDialog

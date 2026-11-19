@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 3,
+  "kind": "document-edit-comments",
+  "resource": {
+    "id": "4ad2784efbe28ecf8f9b125ab0f3e88869b8185a033a407ec41f7830d087a6de",
+    "targetPath": "src/prototypes/camel-captain-app/.spec/spec.html",
+    "filePath": ".axhub/make/comments/4ad2784efbe28ecf8f9b125ab0f3e88869b8185a033a407ec41f7830d087a6de.json"
+  },
+  "comments": [],
+  "images": [],
+  "documentPath": "src/prototypes/camel-captain-app/.spec/spec.html"
+}

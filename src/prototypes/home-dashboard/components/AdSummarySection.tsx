@@ -8,7 +8,7 @@ import {
   finalize,
   previousRange,
 } from '../data/aggregate';
-import { AD_KPI_TREND, AD_TREND_KPI_KEYS, AD_TREND_LABELS, adKpiText, adTrendAxisFormat, adTrendFormat, type AdTrendView } from '../data/adTrend';
+import { AD_KPI_TREND, AD_TREND_LABELS, adKpiText, adTrendAxisFormat, adTrendFormat, type AdTrendView } from '../data/adTrend';
 import { getDataset } from '../data/generate';
 import type { ExclusionConfig } from '../data/types';
 import { Chart } from './Chart';
@@ -18,20 +18,20 @@ export function AdSummarySection({
   storeIds,
   from,
   to,
-  country,
   exclusionEnabled,
   configs,
   trendMetric,
   onTrendMetricChange,
+  visibleKpis,
 }: {
   storeIds: number[];
   from: string;
   to: string;
-  country: string;
   exclusionEnabled: boolean;
   configs: ExclusionConfig[];
   trendMetric: AdTrendView;
   onTrendMetricChange: (next: AdTrendView) => void;
+  visibleKpis: string[];
 }) {
 
   const adRows = useMemo(
@@ -55,10 +55,16 @@ export function AdSummarySection({
     () => (storeIds.length ? buildStoreSnapshot(storeIds, 'TOTAL', previous.from, previous.to, exclusionEnabled, configs).summary.confirmGmv : 0),
     [storeIds, previous.from, previous.to, exclusionEnabled, configs],
   );
-  const kpis = useMemo(
-    () => buildAdKpis(current, prevMetrics, storeGmv, prevStoreGmv).filter((kpi) => AD_TREND_KPI_KEYS.includes(kpi.key)),
-    [current, prevMetrics, storeGmv, prevStoreGmv],
-  );
+  const kpis = useMemo(() => {
+    const all = buildAdKpis(current, prevMetrics, storeGmv, prevStoreGmv);
+    const byKey = new Map(all.map((kpi) => [kpi.key, kpi]));
+    const visible: typeof all = [];
+    visibleKpis.forEach((key) => {
+      const kpi = byKey.get(key);
+      if (kpi) visible.push(kpi);
+    });
+    return visible;
+  }, [current, prevMetrics, storeGmv, prevStoreGmv, visibleKpis]);
   const trend = useMemo(() => {
     const base = buildAdTrend(adRows, from, to);
     const storeSeries = storeSnapshot?.series.confirmGmv ?? [];
@@ -77,7 +83,6 @@ export function AdSummarySection({
 
   return (
     <>
-      {country !== 'TOTAL' ? <div className="hd-filter-hint">广告数据无国家维度，按全部国家统计。</div> : null}
       <div className="hd-store-kpi-grid">
         {kpis.map((kpi) => (
           <button

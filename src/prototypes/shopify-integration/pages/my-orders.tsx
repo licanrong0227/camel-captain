@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import OrderDetailDialog, { type OrderDetailData } from '../components/OrderDetailDialog';
+import SyncOrderDialog from '../components/SyncOrderDialog';
 import dhBadge from '../assets/dh-badge.png';
 import iconDhgate from '../assets/icon-dhgate.png';
 import iconShopify from '../assets/icon-shopify.png';
@@ -816,6 +817,14 @@ export default function MyOrdersPage() {
   const [activeTab, setActiveTab] = useState('全部订单');
   const [assignOrderNo, setAssignOrderNo] = useState<string | null>(null);
   const [directShipOrderNo, setDirectShipOrderNo] = useState<string | null>(null);
+  const [syncOpen, setSyncOpen] = useState(false);
+  const [syncToast, setSyncToast] = useState('');
+
+  useEffect(() => {
+    if (!syncToast) return undefined;
+    const timer = window.setTimeout(() => setSyncToast(''), 2400);
+    return () => window.clearTimeout(timer);
+  }, [syncToast]);
 
   const platformOptions: DropdownOption[] = [
     { id: '', label: '全部平台' },
@@ -882,7 +891,7 @@ export default function MyOrdersPage() {
         <div className="so-filter-right">
           <button className="so-btn so-btn-primary" type="button">高级筛选</button>
           <button className="so-btn so-btn-primary" type="button">排序</button>
-          <button className="so-btn so-btn-primary" type="button">同步店铺订单</button>
+          <button className="so-btn so-btn-primary" type="button" onClick={() => setSyncOpen(true)}>同步店铺订单</button>
           <button className="so-btn so-btn-primary" type="button">
             导入/导出
             <IconChevron className="so-btn-chev" />
@@ -1156,6 +1165,15 @@ export default function MyOrdersPage() {
       {detail && <OrderDetailDialog data={detail} onClose={() => setDetail(null)} />}
       {assignOrderNo && <AssignTrackingDialog onClose={() => setAssignOrderNo(null)} />}
       {directShipOrderNo && <DirectShipDialog onClose={() => setDirectShipOrderNo(null)} />}
+      {syncOpen && (
+        <SyncOrderDialog
+          stores={ORDER_STORES}
+          platforms={ORDER_PLATFORMS.map((item) => ({ id: item.id, label: item.label }))}
+          onClose={() => setSyncOpen(false)}
+          onSubmitted={() => setSyncToast('同步任务已提交，可在任务管理查看进度')}
+        />
+      )}
+      {syncToast ? <div className="so-toast" role="status">{syncToast}</div> : null}
     </div>
   );
 }

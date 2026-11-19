@@ -1,0 +1,22 @@
+.mic-page {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef0f2;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei",
+    Arial, sans-serif;
+}
+
+.mic-reopen {
+  height: 40px;
+  padding: 0 20px;
+  border: 1px solid #33c276;
+  border-radius: 8px;
+  background: #33c276;
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}

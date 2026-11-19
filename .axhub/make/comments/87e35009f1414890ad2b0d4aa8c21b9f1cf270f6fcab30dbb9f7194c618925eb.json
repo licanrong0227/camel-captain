@@ -8,7 +8,91 @@
   },
   "comments": [
     {
-      "elementKey": "div_6",
+      "elementKey": "div_1",
+      "label": "div[aria-label=\"AI克隆\"]",
+      "locator": {
+        "selectors": [
+          "[aria-label=\"AI克隆\"]",
+          ".acd-dialog",
+          "body > div > div > div > div"
+        ],
+        "fingerprint": "div|class=acd-dialog|text=AI克隆（已选 10 条）1选择克隆方式选择目标店铺克隆到原店铺",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 764,
+        "clientY": 434,
+        "documentX": 764,
+        "documentY": 434,
+        "xPercent": 39.9581589958159,
+        "y": 434,
+        "isFixed": true,
+        "offsetX": 168,
+        "offsetY": 302.90625,
+        "dirtySince": 1794294201553
+      },
+      "id": "d54961b0-c5cd-4cb6-bd44-22fe29810377",
+      "state": "idle",
+      "comment": "搬家配置调整一下，参考[更新发布弹窗](src/prototypes/update-publish-dialog)\n但注意，不要完全照搬，循环刊登是因为每次重试都需要修改条件，但克隆不一样，只有一次修改机会，所以那些像 前后缀自增之类的功能在这个场景就没有意义",
+      "pageScope": "/prototypes/ai-clone-dialog",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    },
+    {
+      "elementKey": "div_5",
+      "label": "div[aria-label=\"AI克隆\"]",
+      "locator": {
+        "selectors": [
+          "[aria-label=\"AI克隆\"]",
+          ".acd-dialog",
+          "body > div > div > div > div"
+        ],
+        "fingerprint": "div|class=acd-dialog|text=AI克隆（已选 10 条）1选择克隆方式选择目标店铺克隆到原店铺",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "marker": {
+        "clientX": 770,
+        "clientY": 457,
+        "documentX": 770,
+        "documentY": 457,
+        "xPercent": 40.27196652719665,
+        "y": 457,
+        "isFixed": true,
+        "offsetX": 174,
+        "offsetY": 325.90625,
+        "dirtySince": 1794294087223
+      },
+      "id": "72f78fa0-7d80-4cd0-b195-3fb8eba11aef",
+      "state": "idle",
+      "comment": "搬家配置调整一下，参考",
+      "pageScope": "/prototypes/ai-clone-dialog",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    },
+    {
+      "elementKey": "div_1",
       "label": "div[aria-label=\"AI克隆\"]",
       "locator": {
         "selectors": [
@@ -27,15 +111,15 @@
         ]
       },
       "marker": {
-        "clientX": 924,
-        "clientY": 243,
-        "documentX": 924,
-        "documentY": 243,
-        "xPercent": 48.32635983263599,
-        "y": 243,
+        "clientX": 1079,
+        "clientY": 499,
+        "documentX": 1079,
+        "documentY": 499,
+        "xPercent": 56.43305439330544,
+        "y": 499,
         "isFixed": true,
-        "offsetX": 328,
-        "offsetY": 111.90625,
+        "offsetX": 483,
+        "offsetY": 367.90625,
         "dirtySince": 1792477108642
       },
       "id": "0010d294-d3d5-4aed-8836-b8f8d7fc01a3",
@@ -47,7 +131,9 @@
       "sessionId": null,
       "updatedAt": null,
       "message": null,
-      "code": null
+      "code": null,
+      "author": null,
+      "readOnly": false
     }
   ],
   "images": []

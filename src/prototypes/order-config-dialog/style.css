@@ -593,6 +593,19 @@
   text-align: left;
 }
 
+.ocd-pid-eu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ocd-pid-eu__label {
+  color: var(--ocd-text);
+  font-size: 13px;
+  line-height: 20px;
+}
+
 .ocd-row--pid .ocd-row-label {
   width: 224px;
 }

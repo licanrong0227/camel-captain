@@ -580,7 +580,7 @@ function BatchInventoryLocationDialog({
   );
 }
 
-export default function CreateProductDialog({ onClose }: { onClose: () => void }) {
+export default function CreateProductDialog({ onClose, title: headerTitle = '创建新产品' }: { onClose: () => void; title?: string }) {
   const [tab, setTab] = useState<'basic' | 'detail'>('basic');
   const [active, setActive] = useState<SectionId>('shop');
   const paneRef = useRef<HTMLDivElement>(null);
@@ -675,9 +675,9 @@ export default function CreateProductDialog({ onClose }: { onClose: () => void }
 
   return (
     <div className="cpd-overlay" onClick={onClose}>
-      <div className="cpd-dialog" role="dialog" aria-modal="true" aria-label="创建新产品" onClick={(event) => event.stopPropagation()}>
+      <div className="cpd-dialog" role="dialog" aria-modal="true" aria-label={headerTitle} onClick={(event) => event.stopPropagation()}>
         <div className="cpd-header">
-          <h2 className="cpd-header__title" data-annotation-id="cpd-header-title">创建新产品</h2>
+          <h2 className="cpd-header__title" data-annotation-id="cpd-header-title">{headerTitle}</h2>
           <button type="button" className="cpd-header__close" aria-label="关闭" onClick={onClose}>
             <Ico src={icClose} />
           </button>

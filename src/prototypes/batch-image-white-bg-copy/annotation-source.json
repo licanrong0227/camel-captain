@@ -12,30 +12,11 @@
     "version": 2,
     "prototypeName": "batch-image-white-bg",
     "pageId": "batch-image-white-bg",
-    "updatedAt": 1793264556588,
+    "updatedAt": 1795068180344,
     "nodes": [
       {
-        "id": "position-tabs-disable",
-        "index": 1,
-        "title": "处理中禁用位置切换",
-        "locator": {
-          "selectors": [
-            "[data-annotation-id=\"position-tabs-disable\"]"
-          ],
-          "fingerprint": "div|data-annotation-id=position-tabs-disable",
-          "path": []
-        },
-        "aiPrompt": "根据处理中禁用位置切换标注生成实现说明。",
-        "annotationText": "处理中时，禁用，避免切换到其他板块导致处理失败",
-        "hasMarkdown": false,
-        "color": "#F5222D",
-        "images": [],
-        "createdAt": 1791878937575,
-        "updatedAt": 1793262116099
-      },
-      {
         "id": "translate-detect",
-        "index": 2,
+        "index": 1,
         "title": "识别后翻译判定",
         "locator": {
           "selectors": [

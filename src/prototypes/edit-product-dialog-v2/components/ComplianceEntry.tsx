@@ -73,6 +73,8 @@ export default function ComplianceEntry({ checking, hasRecord, onDetect, onViewR
             {tipOpen && (
               <span className="ep-c-tip" role="tooltip">
                 单个商品检测消耗 xx 算力
+                <br />
+                每检测一张图片额外消耗 xx 算力
               </span>
             )}
           </span>

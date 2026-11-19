@@ -11,7 +11,9 @@ import icCalendar from '../assets/icons/calendar.svg';
 import icGear from '../assets/icons/gear.svg';
 import icChevLeft from '../assets/icons/chevron-left.svg';
 import icChevRight from '../assets/icons/chevron-right.svg';
-import ClaimProductDialog from '../components/ClaimProductDialog';
+import icChevDown from '../assets/icons/chevron-down.svg';
+import ClaimProductDialog, { TOTAL_CLAIM_STORES } from '../components/ClaimProductDialog';
+import ClaimStoreDialog from '../components/ClaimStoreDialog';
 
 interface ClaimRow {
   image: string;
@@ -19,7 +21,7 @@ interface ClaimRow {
   parentSku: string;
   category: string;
   price: string;
-  claimed: boolean;
+  claimedStores: string[];
   source: string;
   account: string;
 }
@@ -31,7 +33,7 @@ const ROWS: ClaimRow[] = [
     parentSku: '20261017000001',
     category: '项链',
     price: '¥ 0.95',
-    claimed: true,
+    claimedStores: ['camel-captain', 'camel-outlet', 'shoes', 'bag', '运营测试-张诗淇专用'],
     source: '1688',
     account: 'ceshi',
   },
@@ -41,7 +43,7 @@ const ROWS: ClaimRow[] = [
     parentSku: '20261016000001',
     category: '手链',
     price: '¥ 6.4',
-    claimed: true,
+    claimedStores: ['camel-captain', '服装测试'],
     source: '1688',
     account: 'ceshi',
   },
@@ -51,7 +53,7 @@ const ROWS: ClaimRow[] = [
     parentSku: '20261015000007',
     category: '皮草',
     price: '¥ 269',
-    claimed: false,
+    claimedStores: [],
     source: '1688',
     account: 'test2@ceshi',
   },
@@ -61,7 +63,7 @@ const ROWS: ClaimRow[] = [
     parentSku: '20261015000006',
     category: '女士单肩包',
     price: '¥ 13',
-    claimed: false,
+    claimedStores: [],
     source: '1688',
     account: 'zoubobo@ceshi',
   },
@@ -71,7 +73,7 @@ const ROWS: ClaimRow[] = [
     parentSku: '20261015000005',
     category: '女士手提包',
     price: '¥ 95',
-    claimed: false,
+    claimedStores: [],
     source: '1688',
     account: 'test2@ceshi',
   },
@@ -81,7 +83,7 @@ const ROWS: ClaimRow[] = [
     parentSku: '20261015000004',
     category: '普通数码相机',
     price: '¥ 470',
-    claimed: true,
+    claimedStores: ['camel-captain', 'camel-outlet', 'camel-home', 'shoes'],
     source: '1688',
     account: 'ceshi',
   },
@@ -91,7 +93,7 @@ const ROWS: ClaimRow[] = [
     parentSku: '20261015000003',
     category: '懒人沙发',
     price: '¥ 17.89',
-    claimed: true,
+    claimedStores: ['camel-captain', 'camel-outlet', '运营测试-张诗淇专用'],
     source: '1688',
     account: 'ceshi',
   },
@@ -101,7 +103,7 @@ const ROWS: ClaimRow[] = [
     parentSku: '20261015000002',
     category: '其他毛毯、绒毯',
     price: '¥ 5.01',
-    claimed: true,
+    claimedStores: ['camel-captain', 'camel-outlet', 'camel-home', 'shoes', 'bag', '运营测试-张诗淇专用'],
     source: '1688',
     account: 'ceshi',
   },
@@ -111,7 +113,7 @@ const ROWS: ClaimRow[] = [
     parentSku: '20261015000001',
     category: '厚底拖鞋',
     price: '¥ 14',
-    claimed: false,
+    claimedStores: [],
     source: '1688',
     account: 'ceshi',
   },
@@ -121,7 +123,7 @@ const ROWS: ClaimRow[] = [
     parentSku: '20261010000001',
     category: 'All-in-Ones',
     price: '$ 1099.99',
-    claimed: true,
+    claimedStores: ['camel-captain'],
     source: '亚马逊',
     account: 'ceshi',
   },
@@ -227,7 +229,15 @@ function Filters() {
   );
 }
 
-function ClaimTable({ onClaim }: { onClaim: () => void }) {
+function ClaimTable({
+  rows,
+  onClaim,
+  onShowStores,
+}: {
+  rows: ClaimRow[];
+  onClaim: (index: number) => void;
+  onShowStores: (index: number) => void;
+}) {
   return (
     <div className="cc-body">
       <div className="cc-thead">
@@ -240,8 +250,9 @@ function ClaimTable({ onClaim }: { onClaim: () => void }) {
         <span className="cc-th cc-th-center">来源</span>
         <span className="cc-th cc-th-center">采集账号</span>
       </div>
-      {ROWS.map((row, index) => {
+      {rows.map((row, index) => {
         const checked = index === 0;
+        const isClaimed = row.claimedStores.length > 0;
         return (
           <React.Fragment key={row.parentSku}>
             <div className="cc-tr">
@@ -253,7 +264,20 @@ function ClaimTable({ onClaim }: { onClaim: () => void }) {
               </span>
               <span className="cc-td cc-td-center"><span className="cc-money">{row.price}</span></span>
               <span className="cc-td cc-td-center">
-                <span className={row.claimed ? 'cc-status is-claimed' : 'cc-status'}>{row.claimed ? '已认领' : '未认领'}</span>
+                {isClaimed ? (
+                  <button
+                    type="button"
+                    className="cc-status cc-status-btn is-claimed"
+                    title="查看认领店铺"
+                    onClick={() => onShowStores(index)}
+                  >
+                    已认领
+                    <span className="cc-status-count">{`${row.claimedStores.length}/${TOTAL_CLAIM_STORES}`}</span>
+                    <img className="cc-status-arrow" src={icChevDown} alt="" />
+                  </button>
+                ) : (
+                  <span className="cc-status">未认领</span>
+                )}
               </span>
               <span className="cc-td cc-td-center" />
               <span className="cc-td cc-td-center"><span className="cc-source">{row.source}</span></span>
@@ -262,7 +286,7 @@ function ClaimTable({ onClaim }: { onClaim: () => void }) {
             {checked && (
               <div className="cc-row-actions">
                 <button type="button" className="cc-mini-btn">编辑</button>
-                <button type="button" className="cc-mini-btn" onClick={onClaim}>认领</button>
+                <button type="button" className="cc-mini-btn" onClick={() => onClaim(index)}>认领</button>
                 <button type="button" className="cc-mini-btn">标签</button>
                 <button type="button" className="cc-mini-btn">删除</button>
               </div>
@@ -307,16 +331,51 @@ function Footer({ onClaim }: { onClaim: () => void }) {
 }
 
 export default function ClaimCenterPage() {
-  const [claimOpen, setClaimOpen] = useState(false);
-  const openClaim = () => setClaimOpen(true);
+  const [rows, setRows] = useState<ClaimRow[]>(ROWS);
+  const [storeRow, setStoreRow] = useState<number | null>(null);
+  const [claimTarget, setClaimTarget] = useState<{ row: number; stores: string[] } | null>(null);
+
+  const openClaim = (row = -1) => setClaimTarget({ row, stores: [] });
+
+  const handleStoreClaim = (stores: string[]) => {
+    if (storeRow === null) return;
+    setClaimTarget({ row: storeRow, stores });
+    setStoreRow(null);
+  };
+
+  const handleClaimed = (stores: string[]) => {
+    if (!claimTarget || claimTarget.row < 0) return;
+    const rowIndex = claimTarget.row;
+    setRows((prev) => prev.map((row, index) => (
+      index === rowIndex
+        ? { ...row, claimedStores: Array.from(new Set([...row.claimedStores, ...stores])) }
+        : row
+    )));
+  };
 
   return (
     <>
       <TabBand />
       <Filters />
-      <ClaimTable onClaim={openClaim} />
-      <Footer onClaim={openClaim} />
-      {claimOpen && <ClaimProductDialog onClose={() => setClaimOpen(false)} />}
+      <ClaimTable rows={rows} onClaim={openClaim} onShowStores={setStoreRow} />
+      <Footer onClaim={() => openClaim()} />
+      {storeRow !== null && (
+        <ClaimStoreDialog
+          productTitle={rows[storeRow].title}
+          claimedStores={rows[storeRow].claimedStores}
+          onClose={() => setStoreRow(null)}
+          onClaim={handleStoreClaim}
+        />
+      )}
+      {claimTarget && (
+        <ClaimProductDialog
+          onClose={() => setClaimTarget(null)}
+          initialSelection={claimTarget.stores}
+          productTitle={claimTarget.row >= 0 ? rows[claimTarget.row].title : undefined}
+          productImage={claimTarget.row >= 0 ? rows[claimTarget.row].image : undefined}
+          onClaim={handleClaimed}
+        />
+      )}
     </>
   );
 }

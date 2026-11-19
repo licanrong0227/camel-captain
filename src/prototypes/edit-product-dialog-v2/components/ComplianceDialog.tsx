@@ -298,6 +298,8 @@ function ItemCard({
             style={{ right: costTip.right, bottom: costTip.bottom }}
           >
             单项检测消耗xx算力
+            <br />
+            每检测一张图片额外消耗xx算力
           </span>
         )}
       </span>

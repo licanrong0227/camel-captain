@@ -48,7 +48,7 @@ const SYNC_MODE_ORDER: SyncMode[] = ['full', 'incremental'];
 
 const SYNC_MODE_LABEL: Record<SyncMode, string> = {
   full: '全量同步',
-  incremental: '增量同步',
+  incremental: '快速同步',
 };
 
 const SYNC_MODE_NOTES: { mode: SyncMode; text: string }[] = [

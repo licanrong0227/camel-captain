@@ -6,6 +6,58 @@
     "targetPath": "prototypes/edit-product-dialog-v2",
     "filePath": ".axhub/make/comments/04cc0f457e97b1ebe7532c16b37a9cbe8ab245fd39bd68e6d77602cdaad930f7.json"
   },
-  "comments": [],
+  "comments": [
+    {
+      "elementKey": "div_14",
+      "label": "div[data-testid=\"axhub-annotation-e7jhri\"]",
+      "locator": {
+        "selectors": [
+          "[data-testid=\"axhub-annotation-e7jhri\"]",
+          ".ep-video-fail",
+          "body > div > div > div > div:nth-of-type(1) > div > main > div:nth-of-type(2) > div > div > section:nth-of-type(6) > div:nth-of-type(2) > div",
+          "[data-testid=\"axhub-annotation-naj83g\"] div:nth-of-type(2) > div"
+        ],
+        "fingerprint": "div|class=ep-video-fail|text=!视频生成失败5 秒 · 自适应 · 2 张参考图重新生成取消生",
+        "path": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          1,
+          0,
+          5,
+          1,
+          5
+        ]
+      },
+      "marker": {
+        "clientX": 645,
+        "clientY": 347,
+        "documentX": 645,
+        "documentY": 347,
+        "xPercent": 42.26736566186107,
+        "y": 347,
+        "isFixed": true,
+        "offsetX": 118.703125,
+        "offsetY": 23.5625,
+        "dirtySince": 1794389679731
+      },
+      "id": "c1c14257-f3bc-41c8-8194-e1ac19c7981b",
+      "state": "idle",
+      "comment": "生成中的状态增加依据文案：关闭编辑弹窗不影响生成",
+      "pageScope": "/prototypes/edit-product-dialog-v2",
+      "provider": null,
+      "requestId": null,
+      "sessionId": null,
+      "updatedAt": null,
+      "message": null,
+      "code": null
+    }
+  ],
   "images": []
 }

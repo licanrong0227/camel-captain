@@ -181,6 +181,7 @@ function placementsFor(productCode: string, index: number, storeAdIndex: number)
 }
 
 const AD_SCALE = 0.4;
+const AUTO_WORD_DEMO_ITEM = '2048176201';
 
 function dailyAdMetrics(
   productPrice: number,
@@ -230,6 +231,10 @@ function buildAdDataset() {
     days.forEach((day, dayIndex) => {
       placements.forEach((placement) => {
         const metrics = dailyAdMetrics(product.price, product.traffic, placement, day, dayIndex, anchor);
+        if (product.itemcode === AUTO_WORD_DEMO_ITEM && placement.adType === 'prodauto' && (day === '2026-10-20' || day === '2026-10-25')) {
+          metrics.orders = Math.max(1, metrics.orders);
+          metrics.gmv = round2(Math.max(metrics.gmv, product.price * 1.25 * metrics.orders));
+        }
         prodRows.push({
           date: day,
           storeId: product.storeId,
@@ -260,7 +265,9 @@ function buildAdDataset() {
             orderNo: `DH${day.replace(/-/g, '')}${String(orderSeq).padStart(4, '0')}`,
             orderItemcode: product.itemcode,
             orderProductName: product.name,
-            searchWord: placement.adType === 'shopauto' ? '' : product.keywords[Math.floor(splitRandom() * product.keywords.length)],
+            searchWord: placement.adType === 'shopauto' || (product.itemcode === AUTO_WORD_DEMO_ITEM && placement.adType === 'prodauto')
+              ? ''
+              : product.keywords[Math.floor(splitRandom() * product.keywords.length)],
             gmv: amount,
             labels: [],
             supplement: false,
@@ -315,7 +322,7 @@ function buildAdDataset() {
     });
   }
 
-  // 补单与其他标签订单：只参与剔除，不进入广告视图
+  // 无效单与其他标签订单：只参与剔除，不进入广告视图
   STORES.filter((store) => store.adEnabled).forEach((store, index) => {
     const product = PRODUCTS_BY_STORE[store.id][0];
     const labelSets: Array<{ date: string; gmv: number; labels: string[]; type: AdType; plan: string }> = [
@@ -346,7 +353,7 @@ function buildAdDataset() {
   return { adDaily, prodRows, orderRows, supplementOrders };
 }
 
-function buildItemDay(): ItemDayRow[] {
+function buildItemDay(adRows: ProdReportRow[]): ItemDayRow[] {
   const rows: ItemDayRow[] = [];
   const storeTotals = new Map<string, { qty: number; gmv: number; orders: number }>();
   buildStoreDailyCache().forEach((row) => {
@@ -356,6 +363,11 @@ function buildItemDay(): ItemDayRow[] {
     current.gmv = round2(current.gmv + row.gmv);
     current.orders += row.orders;
     storeTotals.set(key, current);
+  });
+  const adGmv = new Map<string, number>();
+  adRows.forEach((row) => {
+    const key = `${row.storeId}|${row.itemcode}|${row.date}`;
+    adGmv.set(key, round2((adGmv.get(key) ?? 0) + row.gmv));
   });
 
   STORES.forEach((store) => {
@@ -369,7 +381,21 @@ function buildItemDay(): ItemDayRow[] {
         return (product.adEnabled ? 1.8 : 1) * (0.7 + random() * 0.8) * (1 + index / 100);
       });
       const qtys = allocateInt(total.qty, weights);
-      const gmvs = allocateMoney(total.gmv, weights);
+      const baseGmvs = allocateMoney(total.gmv, weights);
+      const floors = products.map((product) => (adGmv.get(`${store.id}|${product.itemcode}|${day}`) ?? 0) * 1.15);
+      const boosted = baseGmvs.map((value, index) => Math.max(value, floors[index]));
+      const boostedSum = boosted.reduce((acc, value) => acc + value, 0);
+      let gmvs = boosted;
+      if (boostedSum > total.gmv) {
+        const excess = boostedSum - total.gmv;
+        const slack = boosted.map((value, index) => Math.max(0, value - floors[index]));
+        const slackSum = slack.reduce((acc, value) => acc + value, 0);
+        if (slackSum >= excess) {
+          gmvs = boosted.map((value, index) => round2(value - (slack[index] * excess) / slackSum));
+        } else {
+          gmvs = boosted.map((value) => round2(value * (total.gmv / boostedSum)));
+        }
+      }
       const orders = allocateInt(Math.min(total.orders, total.qty), qtys);
       products.forEach((product, index) => {
         if (qtys[index] <= 0) return;
@@ -416,7 +442,7 @@ export function getDataset(): Dataset {
       prodRows: ad.prodRows,
       orderRows: ad.orderRows,
       supplementOrders: ad.supplementOrders,
-      itemDay: buildItemDay(),
+      itemDay: buildItemDay(ad.prodRows),
     };
   }
   return dataset;
