@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>新增上新价配置弹窗</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    html, body {
+      box-sizing: border-box;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    #root {
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      height: 100%;
+      min-height: 100vh;
+      overflow: visible;
+    }
+    body.is-element-page #root {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+  <style>
+.napd-page{--brand-1: #FFEFE5;--brand-2: #FFD9BF;--brand-3: #FF9148;--brand-4: #FF7D29;--brand-5: #D25909;--info-4: #2881FF;--danger-4: #F44837;--success-4: #0BB861;--n1: #F7F8FA;--n2: #F2F3F5;--n3: #EBEEF5;--n4: #E5E6EB;--n5: #C0C5CF;--n6: #86909C;--n7: #4E5969;--n8: #1D2129;min-height:100vh;background:#fff;color:var(--n8);font:14px/1.5 -apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica,Arial,sans-serif}.napd-page button{font-family:inherit}.napd-reopen{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:inline-flex;align-items:center;height:32px;padding:0 16px;border:1px solid var(--brand-4);border-radius:4px;background:var(--brand-4);color:#fff;font-size:14px;cursor:pointer}.napd-reopen:hover{background:var(--brand-3);border-color:var(--brand-3)}.bcp-btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 15px;border:1px solid var(--n4);border-radius:4px;background:#fff;color:var(--n8);cursor:pointer;font-size:14px}.bcp-btn:hover{border-color:var(--brand-3);color:var(--brand-5)}.bcp-btn--primary{background:var(--brand-4);border-color:var(--brand-4);color:#fff}.bcp-btn--primary:hover{background:var(--brand-3);border-color:var(--brand-3);color:#fff}.bcp-btn--primary:active{background:var(--brand-5);border-color:var(--brand-5)}.bcp-link{border:none;background:none;padding:0 2px;color:var(--info-4);cursor:pointer;font-size:14px}.bcp-link:hover{color:#4894ff}.bcp-input{height:32px;padding:0 10px;border:1px solid var(--n4);border-radius:4px;background:#fff;color:var(--n8);font-size:14px;outline:none}.bcp-input::placeholder{color:var(--n5)}.bcp-input:hover{border-color:var(--n6)}.bcp-input:focus{border-color:var(--brand-4)}.bcp-textarea{height:auto;padding:6px 10px;resize:vertical;width:420px}.bcp-select{position:relative;display:inline-block;vertical-align:middle}.bcp-select__control{min-height:32px;padding:0 28px 0 10px;border:1px solid var(--n4);border-radius:4px;background:#fff;display:flex;align-items:center;cursor:pointer;position:relative;max-width:100%}.bcp-select__control:hover{border-color:var(--n6)}.bcp-select.is-open .bcp-select__control{border-color:var(--brand-4)}.bcp-select.is-disabled .bcp-select__control{background:var(--n1);cursor:not-allowed}.bcp-select__value{color:var(--n8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bcp-select__placeholder{color:var(--n5)}.bcp-select__caret{position:absolute;right:9px;top:50%;transform:translateY(-50%);color:var(--n5)}.bcp-select.is-open .bcp-select__caret{transform:translateY(-50%) rotate(180deg)}.bcp-select__tags{display:flex;flex-wrap:wrap;gap:4px;padding:3px 0}.bcp-tag{display:inline-flex;align-items:center;gap:4px;background:var(--n2);border-radius:3px;padding:1px 6px;font-size:12px;color:var(--n7)}.bcp-tag button{border:none;background:none;color:var(--n6);cursor:pointer;padding:0}.bcp-select__dropdown{position:absolute;top:calc(100% + 4px);left:0;z-index:30;min-width:100%;max-height:240px;overflow:auto;background:#fff;border:1px solid var(--n3);border-radius:4px;box-shadow:0 4px 12px #0000001a;padding:4px 0}.bcp-select__option{padding:7px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap}.bcp-select__option:hover{background:var(--n1)}.bcp-select__option.is-selected{color:var(--brand-5);font-weight:500}.bcp-select:has(.bcp-select__option--rich) .bcp-select__dropdown{min-width:460px}.bcp-select__option--rich{flex-direction:column;align-items:flex-start;gap:2px;white-space:normal;padding:8px 12px}.bcp-select__option--rich .bcp-select__option-label{color:var(--n8);font-weight:400}.bcp-select__option--rich.is-selected .bcp-select__option-label{color:var(--brand-5);font-weight:500}.bcp-select__option-desc{color:var(--n6);font-size:12px;line-height:1.5;word-break:break-all}.bcp-select__empty{padding:10px 12px;color:var(--n5)}.bcp-check{width:14px;height:14px;border:1px solid var(--n4);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:#fff}.bcp-check.is-on{background:var(--brand-4);border-color:var(--brand-4)}.bcp-table{width:100%;border-collapse:collapse}.bcp-table th{background:linear-gradient(90deg,#fff8f1,#ffefe5);color:var(--n8);font-weight:500;text-align:center;padding:11px 8px}.bcp-table td{padding:11px 8px;text-align:center;color:var(--n8);border-bottom:1px solid var(--n3)}.bcp-empty{color:var(--n5);padding:24px 0}.bcp-overlay{position:fixed;inset:0;z-index:1000;background:#0009;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:48px 16px}.bcp-dialog{background:#fff;border-radius:8px;max-width:calc(100vw - 32px);display:flex;flex-direction:column;box-shadow:0 8px 32px #0003}.bcp-dialog__header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--n3)}.bcp-dialog__title{font-size:16px;font-weight:600}.bcp-dialog__close{border:none;background:none;color:var(--n6);cursor:pointer;padding:4px;line-height:0}.bcp-dialog__close:hover{color:var(--n8)}.bcp-dialog__body{padding:8px 24px 20px}.bcp-dialog__footer{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid var(--n3)}.bcp-section-title{background:var(--n1);border-radius:4px;padding:8px 12px;margin:16px 0 14px;font-weight:500;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.bcp-section-title__extra{color:#70a917;font-size:12px;font-weight:400}.bcp-field{display:flex;align-items:flex-start;margin-bottom:14px}.bcp-field__label{width:90px;flex:none;text-align:right;padding-right:12px;color:var(--n7);line-height:32px}.bcp-field__label.is-required:before{content:"*";color:var(--danger-4);margin-right:4px}.bcp-field__content{flex:1;min-width:0}.bcp-check-row{display:flex;align-items:center;gap:24px;margin:0 0 12px 4px;flex-wrap:wrap}.bcp-check-row label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}.bcp-check-row input[type=checkbox],.bcp-check-row input[type=radio],.bcp-radios input{accent-color:var(--brand-4);width:15px;height:15px;cursor:pointer}.bcp-radios{display:inline-flex;align-items:center;gap:16px}.bcp-radios label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}.bcp-formula-line{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:6px}.bcp-unit{display:inline-flex;align-items:center;gap:4px}.bcp-formula-expr{color:var(--n7);font-size:12px;line-height:22px}.bcp-formula-expr__line{display:block;word-break:keep-all}.bcp-formula-expr__line .bcp-stepper{height:22px;margin:0 2px;vertical-align:middle}.bcp-formula-expr__line .bcp-stepper button{width:18px}.bcp-formula-expr__line .bcp-stepper input{font-size:12px}.bcp-cell-hint{margin-top:6px;color:var(--n6);font-size:12px;line-height:1.4}.bcp-cell-muted{color:var(--n5)}.bcp-extra-name{display:flex;align-items:center;gap:6px}.bcp-extra-remove{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;padding:0;flex:none;border:1px solid var(--danger-4);border-radius:50%;background:var(--danger-4);color:#fff;font-size:13px;line-height:1;cursor:pointer}.bcp-extra-remove:hover{border-color:#f66355;background:#f66355;color:#fff}.bcp-table-actions{margin-top:10px}.bcp-type-tips{margin:-2px 0 12px;padding-left:12px;color:var(--n7);font-size:12px;line-height:20px}.bcp-type-tips__icon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;margin-right:6px;vertical-align:-3px;border:1px solid var(--n5);border-radius:50%;font-size:9px;font-style:normal;font-weight:600;color:var(--n6);line-height:1}.bcp-table--inset{border:1px solid var(--n3);border-radius:4px;overflow:hidden;margin-bottom:8px;table-layout:fixed}.bcp-table--inset:has(.bcp-select){overflow:visible}.bcp-table--inset:has(.bcp-select) th:first-child{border-top-left-radius:4px}.bcp-table--inset:has(.bcp-select) th:last-child{border-top-right-radius:4px}.bcp-table--inset th{background:var(--n1);font-weight:500;padding:8px;font-size:13px;text-align:left}.bcp-table--inset td{padding:8px;font-size:13px;text-align:left}.bcp-stepper{display:inline-flex;align-items:center;border:1px solid var(--n4);border-radius:4px;overflow:hidden;background:#fff;height:30px}.bcp-stepper button{width:26px;height:100%;border:none;background:var(--n1);color:var(--n7);cursor:pointer}.bcp-stepper button:hover{color:var(--brand-5)}.bcp-stepper input{width:100%;min-width:0;border:none;outline:none;text-align:center;font-size:13px;color:var(--n8)}.bcp-rate-cell{display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap}.bcp-formula{display:flex;align-items:flex-start;gap:10px}.bcp-formula__prefix{line-height:32px;color:var(--n7);white-space:nowrap}.bcp-token-row{display:flex;flex-wrap:wrap;gap:8px 14px;margin:2px 0 0 102px}.bcp-token{border:none;background:none;color:var(--info-4);cursor:pointer;font-size:14px;padding:2px 0}.bcp-token:hover{text-decoration:underline}.bcp-confirm-text{padding:12px 4px 4px;color:var(--n7);font-size:14px;line-height:1.7}.bcp-preview-list{list-style:none;margin:8px 0;padding:0}.bcp-preview-list li{display:flex;gap:12px;padding:7px 0;border-bottom:1px dashed var(--n3)}.bcp-preview-list li span{flex:none;width:130px;color:var(--n6)}body>.bcp-toast{position:fixed;top:70px;left:50%;transform:translate(-50%) translateY(-8px);background:#fff;color:var(--n8);border:1px solid var(--n3);border-radius:4px;box-shadow:0 4px 12px #0000001f;padding:10px 18px;font-size:14px;z-index:3000;opacity:0;transition:opacity .25s,transform .25s}body>.bcp-toast.is-show{opacity:1;transform:translate(-50%) translateY(0)}
+
+  </style>
+</head>
+<body>
+
+  <script>
+    (function () {
+      var isComponent = false;
+      if (document.body && (isComponent || window.location.pathname.includes('/components/'))) {
+        document.body.classList.add('is-element-page');
+      }
+    })();
+  </script>
+
+  <div id="root"></div>
+
+  
+  <script src="./assets/react.production.min.js"></script>
+  <script src="./assets/react-dom.production.min.js"></script>
+  <script src="./assets/export-html-bootstrap.js"></script>
+
+  <script>
+    function waitForBootstrap(timeoutMs) {
+      timeoutMs = timeoutMs || 10000;
+      return new Promise(function (resolve, reject) {
+        var startedAt = Date.now();
+        function check() {
+          if (window.HtmlTemplateBootstrap) {
+            resolve(window.HtmlTemplateBootstrap);
+            return;
+          }
+          if (Date.now() - startedAt >= timeoutMs) {
+            reject(new Error('[Html Template] Bootstrap 初始化超时'));
+            return;
+          }
+          setTimeout(check, 10);
+        }
+        check();
+      });
+    }
+
+    function loadEntryScript(src) {
+      return new Promise(function (resolve, reject) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = false;
+        script.onload = function () { resolve(); };
+        script.onerror = function () { reject(new Error('[Html Template] 入口脚本加载失败: ' + src)); };
+        document.body.appendChild(script);
+      });
+    }
+
+    async function bootstrapAndRender() {
+      try {
+        var bootstrap = await waitForBootstrap();
+        var renderComponent = bootstrap.renderComponent;
+        window.React = bootstrap.React;
+        window.ReactDOM = bootstrap.ReactDOM;
+
+        await loadEntryScript('./index.js');
+        
+
+        var Component = window.UserComponent && (window.UserComponent.Component || window.UserComponent.default || window.UserComponent);
+        if (!Component) {
+          throw new Error('[Html Template] 入口脚本未暴露 UserComponent');
+        }
+
+        renderComponent(Component);
+      } catch (error) {
+        console.error('[Html Template] 页面初始化失败:', error);
+      }
+    }
+
+    bootstrapAndRender();
+  </script>
+
+</body>
+</html>
