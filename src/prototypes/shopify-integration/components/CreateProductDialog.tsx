@@ -110,21 +110,44 @@ const MENU: { id: SectionId; label: string; icon: string; required?: boolean }[]
 // 模拟从 shopify 同步回来的销售/发布渠道
 const PUBLISH_CHANNELS = ['Online Store', 'Point of Sale', 'Trustpilot', 'Google & YouTube'];
 
-const PRICE_COLUMNS = [
+type PriceBatchField = 'revenue' | 'stock' | 'weight' | 'sku' | 'purchasePrice';
+
+const PRICE_COLUMNS: {
+  key: string;
+  field?: PriceBatchField;
+  location?: boolean;
+}[] = [
   { key: '颜色' },
   { key: '自定义属性' },
-  { key: 'SKU编码', editable: true },
-  { key: '是否可售', editable: true },
-  { key: '库存', editable: true },
-  { key: '库存地点', editable: true, batch: true, sync: true },
-  { key: '重量', editable: true },
-  { key: '实际收入', editable: true },
+  { key: '实际收入', field: 'revenue' },
+  { key: '库存', field: 'stock' },
+  { key: '库存地点', location: true },
+  { key: '重量', field: 'weight' },
+  { key: 'SKU编码', field: 'sku' },
+  { key: '采集价/采购价', field: 'purchasePrice' },
 ];
-
-const SELLABLE_OPTIONS = ['可销售', '不可销售'];
 
 // 模拟接口返回的库存地点列表
 const INVENTORY_LOCATIONS = ['默认位置', '深圳仓', '广州仓', '义乌仓', '洛杉矶仓'];
+
+const SKU_COLOR = '1Brown';
+const SKU_CUSTOM = '28cm*16cm*40cm';
+
+const PRICE_BATCH_TITLES: Record<PriceBatchField, string> = {
+  revenue: '批量修改实际收入',
+  stock: '批量修改库存',
+  weight: '批量修改重量',
+  sku: '批量修改SKU编码',
+  purchasePrice: '批量修改采集价/采购价',
+};
+
+const SKU_CODE_OPS = ['自动生成', '加前缀', '加后缀'];
+const NUMBER_OPS = ['替换', '加', '减', '乘', '除', '清空'];
+const PRICE_TEMPLATES = [
+  { id: 'tpl-33', name: '测试模版33', multiplier: 1.33 },
+  { id: 'tpl-3', name: '测试模版3', multiplier: 1.3 },
+  { id: 'tpl-2', name: '测试模版2', multiplier: 1.2 },
+];
 
 const SPEC_TYPES = ['尺码（Size type）', '颜色（Color）'];
 
@@ -135,10 +158,12 @@ const TEMPLATE_OPTIONS = [
 ];
 
 function Ico({ src, className = '' }: { src: string; className?: string }) {
+  // 构建后图标会内联为 data URL，SVG 内的引号必须编码，否则 url(...) 整条声明非法
+  const maskUrl = `url("${src.replace(/"/g, '%22').replace(/'/g, '%27')}")`;
   return (
     <span
       className={`cpd-ico cpd-mask-icon ${className}`.trim()}
-      style={{ WebkitMaskImage: `url(${src})`, maskImage: `url(${src})` }}
+      style={{ WebkitMaskImage: maskUrl, maskImage: maskUrl }}
     />
   );
 }
@@ -361,17 +386,22 @@ function NumberInput({
   value,
   onChange,
   min = 0,
+  step = 1,
+  precision,
 }: {
   width?: number;
   block?: boolean;
   value: string;
   onChange: (next: string) => void;
   min?: number;
+  step?: number;
+  precision?: number;
 }) {
-  const step = (delta: number) => {
+  const bump = (direction: number) => {
     const current = parseFloat(value);
-    const next = (Number.isNaN(current) ? 0 : current) + delta;
-    onChange(String(Math.max(min, next)));
+    const base = Number.isNaN(current) ? 0 : current;
+    const next = Math.max(min, base + direction * step);
+    onChange(precision === undefined ? String(next) : next.toFixed(precision));
   };
   const current = parseFloat(value);
   const atMin = Number.isNaN(current) || current <= min;
@@ -380,11 +410,11 @@ function NumberInput({
     <span className={`cpd-number${block ? ' cpd-number--block' : ''}`} style={width ? { width } : undefined}>
       <span
         className={`cpd-number__btn cpd-number__btn--minus${atMin ? ' cpd-number__btn--disabled' : ''}`}
-        onClick={() => !atMin && step(-1)}
+        onClick={() => !atMin && bump(-1)}
       >
         <Ico src={icMinus} />
       </span>
-      <span className="cpd-number__btn cpd-number__btn--plus" onClick={() => step(1)}>
+      <span className="cpd-number__btn cpd-number__btn--plus" onClick={() => bump(1)}>
         <Ico src={icPlus} />
       </span>
       <input
@@ -580,6 +610,185 @@ function BatchInventoryLocationDialog({
   );
 }
 
+function createSkuCode() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let code = '';
+  for (let i = 0; i < 14; i += 1) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+type PriceBatchResult = {
+  skuCode: string;
+  stock: string;
+  weight: string;
+  revenue: string;
+  purchasePrice: string;
+};
+
+function PriceBatchDialog({
+  field,
+  color,
+  custom,
+  initial,
+  onClose,
+  onApply,
+  onToast,
+}: {
+  field: PriceBatchField;
+  color: string;
+  custom: string;
+  initial: PriceBatchResult;
+  onClose: () => void;
+  onApply: (next: PriceBatchResult) => void;
+  onToast: (message: string) => void;
+}) {
+  const [op, setOp] = useState(field === 'sku' ? SKU_CODE_OPS[0] : NUMBER_OPS[0]);
+  const [value, setValue] = useState('');
+  const [templateId, setTemplateId] = useState('');
+  const [colorPicked, setColorPicked] = useState(true);
+  const [customPicked, setCustomPicked] = useState(true);
+
+  const ops = field === 'sku' ? SKU_CODE_OPS : field === 'revenue' ? [...NUMBER_OPS, '价格模板'] : NUMBER_OPS;
+  const templateUrl = op === '价格模板';
+  const actionTitle = field === 'sku' ? '请选择' : templateUrl ? '请选择价格模板' : '请输入数值';
+
+  const handleConfirm = () => {
+    if (!colorPicked || !customPicked) {
+      onToast('请至少选择一个规格值');
+      return;
+    }
+    const next: PriceBatchResult = { ...initial };
+    if (field === 'sku') {
+      if (op === '自动生成') {
+        next.skuCode = createSkuCode();
+      } else {
+        const text = value.trim();
+        if (!text) {
+          onToast(op === '加前缀' ? '请输入前缀' : '请输入后缀');
+          return;
+        }
+        next.skuCode = op === '加前缀' ? text + initial.skuCode : initial.skuCode + text;
+      }
+    } else if (field === 'revenue' && templateUrl) {
+      const template = PRICE_TEMPLATES.find((item) => item.id === templateId);
+      const base = Number(initial.purchasePrice);
+      if (!template || !Number.isFinite(base) || base <= 0) {
+        onToast('未计算出有效价格，请检查采集价/采购价与价格模板');
+        return;
+      }
+      next.revenue = (base * template.multiplier).toFixed(2);
+    } else {
+      const key: 'stock' | 'weight' | 'revenue' | 'purchasePrice' =
+        field === 'stock' ? 'stock' : field === 'weight' ? 'weight' : field === 'revenue' ? 'revenue' : 'purchasePrice';
+      if (op === '清空') {
+        next[key] = '';
+      } else {
+        const raw = value.trim();
+        const pattern = key === 'stock' ? /^\d+$/ : /^\d+(\.\d{1,3})?$/;
+        if (!pattern.test(raw)) {
+          onToast(key === 'stock' ? '请输入有效的整数' : '请输入有效的数值');
+          return;
+        }
+        if (op === '除' && Number(raw) === 0) {
+          onToast('除数不能为0');
+          return;
+        }
+        const amount = Number(raw);
+        const current = Number(next[key]);
+        const base = Number.isFinite(current) ? current : 0;
+        let result = amount;
+        if (op === '加') result = base + amount;
+        if (op === '减') result = base - amount;
+        if (op === '乘') result = base * amount;
+        if (op === '除') result = base / amount;
+        result = Math.max(0, result);
+        next[key] = key === 'stock' ? String(Math.round(result)) : key === 'weight' ? result.toFixed(3) : result.toFixed(2);
+      }
+    }
+    onApply(next);
+    onClose();
+    onToast('已修改 1 个SKU');
+  };
+
+  return (
+    <div
+      className="cpd-batch"
+      role="dialog"
+      aria-modal="true"
+      aria-label={PRICE_BATCH_TITLES[field]}
+      onClick={(event) => event.target === event.currentTarget && onClose()}
+    >
+      <div className="cpd-batch__panel">
+        <div className="cpd-batch__header">
+          <h3 className="cpd-batch__title">{PRICE_BATCH_TITLES[field]}</h3>
+          <button type="button" className="cpd-batch__close" aria-label="关闭" onClick={onClose}>
+            <Ico src={icClose} />
+          </button>
+        </div>
+        <div className="cpd-batch__body">
+          <div className="cpd-batch__group">
+            <div className="cpd-batch__label">{actionTitle}</div>
+            <div className="cpd-batch__card">
+              <div className="cpd-batch__radios">
+                <RadioGroup options={ops} value={op} onChange={setOp} />
+              </div>
+              {templateUrl ? (
+                <Select
+                  value={PRICE_TEMPLATES.find((item) => item.id === templateId)?.name || ''}
+                  onChange={(next) => {
+                    const template = PRICE_TEMPLATES.find((item) => item.name === next);
+                    setTemplateId(template?.id || '');
+                  }}
+                  options={PRICE_TEMPLATES.map((item) => item.name)}
+                  block
+                  placeholder="请选择价格模板"
+                />
+              ) : op === '清空' || (field === 'sku' && op === '自动生成') ? null : (
+                <Text
+                  value={value}
+                  onChange={setValue}
+                  className="cpd-input--block"
+                  placeholder={
+                    field === 'sku'
+                      ? op === '加前缀'
+                        ? '请输入前缀'
+                        : '请输入后缀'
+                      : field === 'stock'
+                        ? '请输入数量'
+                        : '请输入数值'
+                  }
+                />
+              )}
+            </div>
+          </div>
+          <div className="cpd-batch__group">
+            <div className="cpd-batch__label">颜色</div>
+            <div className="cpd-batch__card">
+              <Checkbox label={color} checked={colorPicked} onChange={setColorPicked} />
+            </div>
+          </div>
+          <div className="cpd-batch__group">
+            <div className="cpd-batch__label">自定义属性</div>
+            <div className="cpd-batch__card">
+              <Checkbox label={custom} checked={customPicked} onChange={setCustomPicked} />
+            </div>
+          </div>
+        </div>
+        <div className="cpd-batch__footer">
+          <button type="button" className="cpd-footer__btn" onClick={onClose}>
+            取消
+          </button>
+          <button type="button" className="cpd-footer__btn cpd-footer__btn--primary" onClick={handleConfirm}>
+            确认修改
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function CreateProductDialog({ onClose, title: headerTitle = '创建新产品' }: { onClose: () => void; title?: string }) {
   const [tab, setTab] = useState<'basic' | 'detail'>('basic');
   const [active, setActive] = useState<SectionId>('shop');
@@ -614,13 +823,14 @@ export default function CreateProductDialog({ onClose, title: headerTitle = '创
 
   const [variant, setVariant] = useState({
     sku: '6a0ce1-1-856901637685',
-    sellable: '可销售',
     stock: '666',
     location: INVENTORY_LOCATIONS[0],
     weight: '0.05',
     revenue: '55.26',
+    purchasePrice: '',
   });
   const [batchOpen, setBatchOpen] = useState(false);
+  const [batchField, setBatchField] = useState<PriceBatchField | null>(null);
   const [toast, setToast] = useState('');
   const toastTimer = useRef<number | undefined>(undefined);
 
@@ -636,6 +846,10 @@ export default function CreateProductDialog({ onClose, title: headerTitle = '创
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
+      if (batchField) {
+        setBatchField(null);
+        return;
+      }
       if (batchOpen) {
         setBatchOpen(false);
         return;
@@ -644,7 +858,7 @@ export default function CreateProductDialog({ onClose, title: headerTitle = '创
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [onClose, batchOpen]);
+  }, [onClose, batchOpen, batchField]);
 
   const registerSection = useCallback(
     (id: SectionId) => (el: HTMLDivElement | null) => {
@@ -911,35 +1125,48 @@ export default function CreateProductDialog({ onClose, title: headerTitle = '创
                     <div className="cpd-sku-specs" />
                   </Section>
 
-                  <Section id="price" title="价格 USD" required innerRef={registerSection('price')} annotationId="cpd-sku-variant">
+                  <Section
+                    id="price"
+                    title="价格 USD"
+                    required
+                    innerRef={registerSection('price')}
+                    annotationId="cpd-sku-variant"
+                  >
                     <div className="cpd-vtable">
                       <div className="cpd-vtable__head">
                         <div className="cpd-vtable__cell">图片</div>
                         {PRICE_COLUMNS.map((column) => (
                           <div key={column.key} className="cpd-vtable__cell">
                             {column.key}
-                            {column.editable &&
-                              (column.batch ? (
+                            {column.field && (
+                              <button
+                                type="button"
+                                className="cpd-vtable__edit"
+                                aria-label={`批量修改${column.key}`}
+                                onClick={() => setBatchField(column.field!)}
+                              >
+                                <Ico src={icPencil} />
+                              </button>
+                            )}
+                            {column.location && (
+                              <>
                                 <button
                                   type="button"
                                   className="cpd-vtable__edit"
-                                  aria-label={`批量修改${column.key}`}
+                                  aria-label="批量修改库存地点"
                                   onClick={() => setBatchOpen(true)}
                                 >
                                   <Ico src={icPencil} />
                                 </button>
-                              ) : (
-                                <Ico src={icPencil} />
-                              ))}
-                            {column.sync && (
-                              <button
-                                type="button"
-                                className="cpd-vtable__edit"
-                                aria-label="同步库存地点"
-                                onClick={() => showToast('同步成功')}
-                              >
-                                <Ico src={icRefresh} />
-                              </button>
+                                <button
+                                  type="button"
+                                  className="cpd-vtable__edit"
+                                  aria-label="同步库存地点"
+                                  onClick={() => showToast('同步成功')}
+                                >
+                                  <Ico src={icRefresh} />
+                                </button>
+                              </>
                             )}
                           </div>
                         ))}
@@ -949,22 +1176,15 @@ export default function CreateProductDialog({ onClose, title: headerTitle = '创
                           <div className="cpd-vtable__cell">
                             <img className="cpd-vtable__thumb" src={thumbProduct} alt="商品图" />
                           </div>
-                          <div className="cpd-vtable__cell">1Brown</div>
-                          <div className="cpd-vtable__cell">28cm*16cm*40cm</div>
+                          <div className="cpd-vtable__cell">{SKU_COLOR}</div>
+                          <div className="cpd-vtable__cell">{SKU_CUSTOM}</div>
                           <div className="cpd-vtable__cell">
-                            <Text
-                              value={variant.sku}
-                              onChange={(next) => setVariantField('sku', next)}
-                              className="cpd-input--block"
-                            />
-                          </div>
-                          <div className="cpd-vtable__cell">
-                            <Select
-                              value={variant.sellable}
-                              onChange={(next) => setVariantField('sellable', next)}
-                              options={SELLABLE_OPTIONS}
+                            <NumberInput
                               block
-                              placeholder="请选择"
+                              step={0.01}
+                              precision={2}
+                              value={variant.revenue}
+                              onChange={(next) => setVariantField('revenue', next)}
                             />
                           </div>
                           <div className="cpd-vtable__cell">
@@ -986,15 +1206,26 @@ export default function CreateProductDialog({ onClose, title: headerTitle = '创
                           <div className="cpd-vtable__cell">
                             <NumberInput
                               block
+                              step={0.001}
+                              precision={3}
                               value={variant.weight}
                               onChange={(next) => setVariantField('weight', next)}
                             />
                           </div>
                           <div className="cpd-vtable__cell">
+                            <Text
+                              value={variant.sku}
+                              onChange={(next) => setVariantField('sku', next)}
+                              className="cpd-input--block"
+                            />
+                          </div>
+                          <div className="cpd-vtable__cell">
                             <NumberInput
                               block
-                              value={variant.revenue}
-                              onChange={(next) => setVariantField('revenue', next)}
+                              step={0.01}
+                              precision={2}
+                              value={variant.purchasePrice}
+                              onChange={(next) => setVariantField('purchasePrice', next)}
                             />
                           </div>
                         </div>
@@ -1219,12 +1450,39 @@ export default function CreateProductDialog({ onClose, title: headerTitle = '创
           {batchOpen && (
             <BatchInventoryLocationDialog
               locations={INVENTORY_LOCATIONS}
-              colorOptions={['1Brown']}
-              customOptions={['28cm*16cm*40cm']}
+              colorOptions={[SKU_COLOR]}
+              customOptions={[SKU_CUSTOM]}
               onClose={() => setBatchOpen(false)}
               onConfirm={(location) => {
                 setVariantField('location', location);
                 setBatchOpen(false);
+              }}
+            />
+          )}
+
+          {batchField && (
+            <PriceBatchDialog
+              field={batchField}
+              color={SKU_COLOR}
+              custom={SKU_CUSTOM}
+              initial={{
+                skuCode: variant.sku,
+                stock: variant.stock,
+                weight: variant.weight,
+                revenue: variant.revenue,
+                purchasePrice: variant.purchasePrice,
+              }}
+              onClose={() => setBatchField(null)}
+              onToast={showToast}
+              onApply={(next) => {
+                setVariant((prev) => ({
+                  ...prev,
+                  sku: next.skuCode,
+                  stock: next.stock,
+                  weight: next.weight,
+                  revenue: next.revenue,
+                  purchasePrice: next.purchasePrice,
+                }));
               }}
             />
           )}

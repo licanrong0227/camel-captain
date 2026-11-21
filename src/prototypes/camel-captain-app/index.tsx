@@ -5,10 +5,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './style.css';
 import { defineHashPageRoute, useHashPage } from '../../common/useHashPage';
-import { AnnotationViewer, type AnnotationSourceDocument, type AnnotationViewerApi } from '@axhub/annotation';
+import { AnnotationViewer } from '@axhub/annotation';
+import type { AnnotationDirectoryRouteNode, AnnotationSourceDocument } from '@axhub/annotation';
 import annotationSourceDocument from './annotation-source.json';
 import { AD_STORES } from './data/catalog';
-import { readAuth, writeAuth, clearAuth } from './data/profile';
+import { writeAuth, clearAuth } from './data/profile';
+import type { DialogRequest } from './dialog-route';
 import type { ExclusionConfig } from './data/types';
 import type { AdTrendView } from './data/adTrend';
 import { PhoneFrame } from './components/PhoneFrame';
@@ -36,7 +38,6 @@ const ROUTE = defineHashPageRoute(
   { defaultPageId: 'login' },
 );
 
-const PUBLIC_PAGES = ['login', 'register', 'forgot'];
 const TAB_PAGES: TabKey[] = ['home', 'ad-board', 'profile'];
 
 const DEFAULT_CONFIGS: ExclusionConfig[] = AD_STORES.map((store) => ({
@@ -48,7 +49,9 @@ const DEFAULT_CONFIGS: ExclusionConfig[] = AD_STORES.map((store) => ({
 
 export default function CamelCaptainApp() {
   const { page, setPage } = useHashPage(ROUTE);
-  const [auth, setAuth] = useState(() => readAuth());
+  const [dialogRequest, setDialogRequest] = useState<DialogRequest>({ dialog: '', token: 0 });
+  const dialogToken = useRef(0);
+  const dialogPageRef = useRef('');
   const [lastSync, setLastSync] = useState('2026-10-31 09:12');
   const [syncing, setSyncing] = useState(false);
   const [configs, setConfigs] = useState<ExclusionConfig[]>(DEFAULT_CONFIGS);
@@ -58,17 +61,30 @@ export default function CamelCaptainApp() {
   const [toast, setToast] = useState('');
   const syncTimer = useRef<number | null>(null);
   const toastTimer = useRef<number | null>(null);
-  const annotationApiRef = useRef<AnnotationViewerApi | null>(null);
 
   useEffect(() => () => {
     if (syncTimer.current) window.clearTimeout(syncTimer.current);
     if (toastTimer.current) window.clearTimeout(toastTimer.current);
   }, []);
 
+  // 目录跳转后再从页面内导航离开时，清掉挂起的弹层请求，避免回到页面时自动弹层
   useEffect(() => {
-    if (!auth && !PUBLIC_PAGES.includes(page)) setPage('login');
-    else if (auth && PUBLIC_PAGES.includes(page)) setPage('home');
-  }, [auth, page, setPage]);
+    if (dialogRequest.dialog && dialogPageRef.current !== page) {
+      dialogPageRef.current = '';
+      setDialogRequest({ dialog: '', token: 0 });
+    }
+  }, [page, dialogRequest.dialog]);
+
+  const handleDirectoryRoute = (node: AnnotationDirectoryRouteNode) => {
+    const raw = typeof node.route === 'string' ? node.route.trim() : '';
+    if (!raw) return;
+    const [pageId, dialogId = ''] = raw.split(':');
+    if (!/^[a-z0-9-]+$/u.test(pageId)) return;
+    dialogPageRef.current = pageId;
+    dialogToken.current += 1;
+    setPage(pageId);
+    setDialogRequest({ dialog: dialogId, token: dialogToken.current });
+  };
 
   const showToast = (message: string) => {
     setToast(message);
@@ -78,13 +94,13 @@ export default function CamelCaptainApp() {
 
   const handleLogin = (account: string) => {
     writeAuth(account);
-    setAuth(readAuth());
+    setDialogRequest({ dialog: '', token: 0 });
     setPage('home');
   };
 
   const handleLogout = () => {
     clearAuth();
-    setAuth(null);
+    setDialogRequest({ dialog: '', token: 0 });
     setPage('login');
   };
 
@@ -107,6 +123,8 @@ export default function CamelCaptainApp() {
         activeTab={activeTab}
         onTab={(next) => {
           if (next === 'ad-board') setAdBoardTab('deal');
+          dialogPageRef.current = '';
+          setDialogRequest({ dialog: '', token: 0 });
           setPage(next);
         }}
       >
@@ -120,6 +138,7 @@ export default function CamelCaptainApp() {
 
         {page === 'register' ? (
           <RegisterPage
+            dialogRequest={dialogRequest}
             onDone={() => setPage('login')}
             onBack={() => setPage('login')}
             onToast={showToast}
@@ -137,6 +156,7 @@ export default function CamelCaptainApp() {
         {page === 'home' ? (
           <HomePage
             avatar={userAvatar}
+            dialogRequest={dialogRequest}
             onProfile={() => setPage('profile')}
             exclusionEnabled={exclusionEnabled}
             onToggleExclusion={() => setExclusionEnabled((value) => !value)}
@@ -158,6 +178,7 @@ export default function CamelCaptainApp() {
 
         {page === 'ad-board' ? (
           <AdBoardPage
+            dialogRequest={dialogRequest}
             initialMetric={adMetric}
             initialTab={adBoardTab}
             exclusionEnabled={exclusionEnabled}
@@ -176,6 +197,7 @@ export default function CamelCaptainApp() {
         {page === 'profile' ? (
           <ProfilePage
             avatar={userAvatar}
+            dialogRequest={dialogRequest}
             onToast={showToast}
             onDistribution={() => setPage('distribution')}
             onLogout={handleLogout}
@@ -183,27 +205,19 @@ export default function CamelCaptainApp() {
         ) : null}
 
         {page === 'distribution' ? (
-          <DistributionPage onBack={() => setPage('profile')} />
+          <DistributionPage dialogRequest={dialogRequest} onBack={() => setPage('profile')} />
         ) : null}
       </PhoneFrame>
       {/* 无标注数据时也保留右侧工具栏，用于页面目录 */}
       <AnnotationViewer
         source={annotationSourceDocument as unknown as AnnotationSourceDocument}
         defaultVisible
-        onReady={(api) => {
-          annotationApiRef.current = api;
-        }}
         options={{
           currentPageId: page,
           toolbarEdge: 'right',
           showToolbar: true,
           emptyWhenNoData: true,
-          onDirectoryRoute: (node) => {
-            if (typeof node.route === 'string' && /^[a-z0-9-]+$/u.test(node.route)) {
-              window.location.hash = `page=${node.route}`;
-              annotationApiRef.current?.setDirectoryPanelOpen(false);
-            }
-          },
+          onDirectoryRoute: handleDirectoryRoute,
         }}
       />
       <Toast message={toast} />

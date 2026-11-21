@@ -2,8 +2,11 @@
  * @name 个人中心 - 会员中心（我的权益 / 优惠券）
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './style.css';
+import product1 from './assets/product-1.jpg';
+import product2 from './assets/product-2.jpg';
+import product3 from './assets/product-3.jpg';
 
 const LOGO_URL =
   'https://yfg-saas-test.oss-cn-shenzhen.aliyuncs.com/images/34/2026-08/fb37c061-e967-4584-94a6-5fc4e316ad15.png';
@@ -125,6 +128,27 @@ const HeadsetIcon = () => (
   </Svg>
 );
 
+const RefreshIcon = ({ size = 16 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="1.8">
+    <path d="M20.5 11a8.5 8.5 0 1 0-2.2 5.8" />
+    <path d="M20.5 5v6h-6" />
+  </Svg>
+);
+
+const SearchIcon = ({ size = 12 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="2">
+    <circle cx="11" cy="11" r="7" />
+    <path d="m20 20-3.5-3.5" />
+  </Svg>
+);
+
+const CalendarIcon = ({ size = 14 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="1.8">
+    <rect x="3.5" y="5" width="17" height="15.5" rx="2" />
+    <path d="M3.5 9.5h17M8 3v4M16 3v4" />
+  </Svg>
+);
+
 const CloseIcon = () => (
   <Svg size={16} viewBox="0 0 16 16" strokeWidth="1.6">
     <path d="m3.5 3.5 9 9M12.5 3.5l-9 9" />
@@ -161,7 +185,13 @@ const RIGHTS_GROUPS: RightsGroup[] = [
   {
     title: '订单',
     items: [
-      { type: 'usage', name: '订单数量', used: 129, total: 60100 },
+      {
+        type: 'usage',
+        name: '订单数量',
+        used: 129,
+        total: 60100,
+        expireBatches: [{ date: '2027-10-22', time: '2027-10-22 23:59:59', amount: 59971 }],
+      },
       { type: 'switch', name: '自动请款', on: true },
       { type: 'usage', name: '订单打标规则', used: 1, total: 50 },
       { type: 'metric', name: '订单保留期限', value: '0', unit: '月' },
@@ -398,6 +428,292 @@ const INITIAL_EXCHANGE: Coupon[] = [
   { id: 'e-3', value: '120', unit: '元', name: '算力专用', desc: '120元 · 无门槛 · 7天有效', points: '200', state: 'exchange' },
 ];
 
+/* ===== 分销中心 ===== */
+interface DistributionOrder {
+  img: string;
+  product: string;
+  code: string;
+  customer: string;
+  username: string;
+  orderNo: string;
+  qty: number;
+  amount: string;
+  status: string;
+  tone: 'done' | 'shipping' | 'canceled';
+}
+
+const DIST_ORDERS: DistributionOrder[] = [
+  {
+    img: product1,
+    product: '头层牛皮通勤单肩包',
+    code: 'NS-2026-001',
+    customer: '王小明',
+    username: '@wangxm',
+    orderNo: 'DP202611180001',
+    qty: 1,
+    amount: '299.00',
+    status: '已完成',
+    tone: 'done',
+  },
+  {
+    img: product2,
+    product: '轻便运动休闲鞋',
+    code: 'NS-2026-014',
+    customer: '李思思',
+    username: '@lisisi',
+    orderNo: 'DP202611170023',
+    qty: 2,
+    amount: '458.00',
+    status: '待发货',
+    tone: 'shipping',
+  },
+  {
+    img: product3,
+    product: '新款百搭斜挎包',
+    code: 'NS-2026-009',
+    customer: '陈晨',
+    username: '@chenchen',
+    orderNo: 'DP202611160015',
+    qty: 1,
+    amount: '168.00',
+    status: '已完成',
+    tone: 'done',
+  },
+  {
+    img: product1,
+    product: '头层牛皮通勤单肩包',
+    code: 'NS-2026-001',
+    customer: '赵敏',
+    username: '@zhaomin',
+    orderNo: 'DP202611150007',
+    qty: 1,
+    amount: '299.00',
+    status: '已取消',
+    tone: 'canceled',
+  },
+];
+
+interface DistributionCustomer {
+  name: string;
+  username: string;
+  phone: string;
+  email: string;
+  qq: string;
+  registered: string;
+  stores: string;
+  orders: string;
+  spend: string;
+  credits: string;
+  points: string;
+  coupons: string;
+  subAccounts: string;
+  memberLevel: string;
+  memberPeriod: string;
+}
+
+const DIST_CUSTOMERS: DistributionCustomer[] = [
+  {
+    name: '王小明',
+    username: 'wangxm',
+    phone: '138****6621',
+    email: 'wangxm@example.com',
+    qq: '10023456',
+    registered: '2026-08-18 10:24:03',
+    stores: '2 / 20',
+    orders: '86 / 6,000',
+    spend: '¥1,286.00',
+    credits: '320',
+    points: '1,200',
+    coupons: '3',
+    subAccounts: '1',
+    memberLevel: '至尊会员',
+    memberPeriod: '2026-10-22 至 2027-10-22',
+  },
+  {
+    name: '李思思',
+    username: 'lisisi',
+    phone: '139****0832',
+    email: 'lisisi@example.com',
+    qq: '8723411',
+    registered: '2026-09-02 15:08:41',
+    stores: '1 / 10',
+    orders: '42 / 3,000',
+    spend: '¥896.00',
+    credits: '120',
+    points: '560',
+    coupons: '2',
+    subAccounts: '0',
+    memberLevel: '金牌会员',
+    memberPeriod: '2026-09-02 至 2027-09-02',
+  },
+  {
+    name: '陈晨',
+    username: 'chenchen',
+    phone: '137****7719',
+    email: 'chenchen@example.com',
+    qq: '100998877',
+    registered: '2026-09-27 09:12:15',
+    stores: '1 / 10',
+    orders: '18 / 3,000',
+    spend: '¥368.00',
+    credits: '80',
+    points: '260',
+    coupons: '1',
+    subAccounts: '0',
+    memberLevel: '铜牌会员',
+    memberPeriod: '2026-09-27 至 2026-10-27',
+  },
+  {
+    name: '赵敏',
+    username: 'zhaomin',
+    phone: '136****5540',
+    email: 'zhaomin@example.com',
+    qq: '55667788',
+    registered: '2026-10-11 18:46:09',
+    stores: '1 / 10',
+    orders: '5 / 3,000',
+    spend: '¥168.00',
+    credits: '20',
+    points: '90',
+    coupons: '1',
+    subAccounts: '0',
+    memberLevel: '铜牌会员',
+    memberPeriod: '2026-10-11 至 2026-11-11',
+  },
+];
+
+interface DistCoupon {
+  id: string;
+  kind: 'cash' | 'feature';
+  value?: string;
+  unit?: string;
+  featureShort?: string;
+  featureQty?: string;
+  name: string;
+  desc: string;
+  expireDate: string;
+  inventory: number;
+  status: 'available' | 'expired' | 'exhausted';
+}
+
+const DIST_COUPONS: DistCoupon[] = [
+  {
+    id: 'd-1',
+    kind: 'cash',
+    value: '20',
+    unit: '元',
+    name: '满减券 · 全品类',
+    desc: '满200-20 · 满200可用',
+    expireDate: '2026-12-31 23:59:59',
+    inventory: 20,
+    status: 'available',
+  },
+  {
+    id: 'd-2',
+    kind: 'cash',
+    value: '8',
+    unit: '折',
+    name: '折扣券 · 全品类',
+    desc: '折扣券打8折 · 满1000可用',
+    expireDate: '2026-11-30 23:59:59',
+    inventory: 12,
+    status: 'available',
+  },
+  {
+    id: 'd-3',
+    kind: 'feature',
+    featureShort: '刊登',
+    featureQty: '5',
+    name: '刊登数量券',
+    desc: '新增 5 次刊登',
+    expireDate: '2026-12-19 23:59:59',
+    inventory: 8,
+    status: 'available',
+  },
+  {
+    id: 'd-4',
+    kind: 'cash',
+    value: '50',
+    unit: '元',
+    name: '无门槛券 · 全品类',
+    desc: '50元 · 无门槛',
+    expireDate: '2026-11-10 23:59:59',
+    inventory: 5,
+    status: 'expired',
+  },
+  {
+    id: 'd-5',
+    kind: 'feature',
+    featureShort: '循环刊登',
+    featureQty: '3',
+    name: '循环刊登次数券',
+    desc: '新增 3 次循环刊登',
+    expireDate: '2026-12-31 23:59:59',
+    inventory: 6,
+    status: 'available',
+  },
+];
+
+const daysUntilExpire = (date: string) => {
+  const target = new Date(date.replace(' ', 'T')).getTime();
+  const today = new Date(Date.UTC(2026, 10, 20)).getTime();
+  return Math.max(1, Math.ceil((target - today) / 86400000));
+};
+
+// 演示用的后台限领值，线上以后台返回为准
+const DEMO_RECIPIENT_LIMIT = 1;
+
+interface DistRecord {
+  id: string;
+  couponId: string;
+  time: string;
+  recipient: string;
+  used: boolean;
+}
+
+const DEMO_DIST_RECORDS: DistRecord[] = [
+  {
+    id: 'r-1',
+    couponId: 'd-2',
+    time: '2026-11-18 14:20:33',
+    recipient: 'self',
+    used: true,
+  },
+  {
+    id: 'r-2',
+    couponId: 'd-2',
+    time: '2026-11-17 10:05:12',
+    recipient: 'wangxm',
+    used: true,
+  },
+  {
+    id: 'r-3',
+    couponId: 'd-1',
+    time: '2026-11-16 09:30:21',
+    recipient: 'lisisi',
+    used: false,
+  },
+  {
+    id: 'r-4',
+    couponId: 'd-3',
+    time: '2026-11-15 16:12:44',
+    recipient: 'chenchen',
+    used: true,
+  },
+];
+
+const formatDateTime = (date: Date) => {
+  const pad = (value: number) => String(value).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(
+    date.getHours(),
+  )}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+};
+
+const recipientLabel = (key: string) =>
+  key === 'self' ? '本人' : DIST_CUSTOMERS.find((customer) => customer.username === key)?.name ?? key;
+
+const EMPTY_CUSTOMER_FILTER = { name: '', username: '', phone: '', from: '', to: '' };
+
 /* ===== 工具 ===== */
 const formatNumber = (value: number) => value.toLocaleString('en-US');
 const percentage = (used: number, total: number) => (total > 0 ? Math.round((used / total) * 100) : 0);
@@ -604,6 +920,30 @@ function CouponCard({
   );
 }
 
+function MiniPager({ total }: { total: number }) {
+  return (
+    <div className="mcx-pager">
+      <span>共 {total} 条</span>
+      <span className="mcx-pager-size-static">
+        10条/页
+        <ChevronDown />
+      </span>
+      <button type="button" className="mcx-pager-btn" disabled>
+        <ArrowLeft />
+      </button>
+      <span className="mcx-pager-num">1</span>
+      <button type="button" className="mcx-pager-btn" disabled>
+        <ArrowRight />
+      </button>
+      <span className="mcx-pager-jump">
+        前往
+        <input readOnly value="1" />
+        页
+      </span>
+    </div>
+  );
+}
+
 /* ===== 页面 ===== */
 type TabKey = 'rights' | 'package' | 'coupon';
 
@@ -621,12 +961,28 @@ export default function MemberCenter() {
   const [toast, setToast] = useState('');
   const [confirmCoupon, setConfirmCoupon] = useState<Coupon | null>(null);
   const [expireDetail, setExpireDetail] = useState<{ name: string; batches: Array<{ date: string; time?: string; amount: number }> } | null>(null);
+  const [page, setPage] = useState<'member' | 'distribution'>('member');
+  const [distTab, setDistTab] = useState<'dashboard' | 'customers' | 'coupons'>('dashboard');
+  const [distRefreshing, setDistRefreshing] = useState(false);
+  const [distCoupons, setDistCoupons] = useState(DIST_COUPONS);
+  const [distRecords, setDistRecords] = useState(DEMO_DIST_RECORDS);
+  const [dialogCouponIds, setDialogCouponIds] = useState<string[]>([]);
+  const [recordsCouponId, setRecordsCouponId] = useState<string | null>(null);
+  const [selectedDist, setSelectedDist] = useState<string[]>([]);
+  const [distributeOpen, setDistributeOpen] = useState(false);
+  const [recipientType, setRecipientType] = useState<'self' | 'customer'>('self');
+  const [recipientCustomers, setRecipientCustomers] = useState<string[]>([]);
+  const [customerForm, setCustomerForm] = useState(EMPTY_CUSTOMER_FILTER);
+  const [customerApplied, setCustomerApplied] = useState(EMPTY_CUSTOMER_FILTER);
   const [pageSize, setPageSize] = useState('10条/页');
   const [sizeOpen, setSizeOpen] = useState(false);
   const [jumpPage, setJumpPage] = useState('1');
   const [packageSubTab, setPackageSubTab] = useState<'plan' | 'single'>('plan');
   const cardRef = useRef<HTMLDivElement>(null);
+  const distCardRef = useRef<HTMLDivElement>(null);
+  const selectAllRef = useRef<HTMLInputElement>(null);
   const toastTimer = useRef<number>();
+  const refreshTimer = useRef<number>();
 
   useEffect(() => {
     if (!sizeOpen) return undefined;
@@ -635,7 +991,13 @@ export default function MemberCenter() {
     return () => document.removeEventListener('mousedown', close);
   }, [sizeOpen]);
 
-  useEffect(() => () => window.clearTimeout(toastTimer.current), []);
+  useEffect(
+    () => () => {
+      window.clearTimeout(toastTimer.current);
+      window.clearTimeout(refreshTimer.current);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!confirmCoupon) return undefined;
@@ -654,6 +1016,206 @@ export default function MemberCenter() {
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [expireDetail]);
+
+  const filteredCustomers = useMemo(() => {
+    const digits = (value: string) => value.replace(/\D/g, '');
+    return DIST_CUSTOMERS.filter((customer) => {
+      if (customerApplied.name && !customer.name.includes(customerApplied.name.trim())) return false;
+      if (customerApplied.username && !customer.username.includes(customerApplied.username.trim())) return false;
+      if (customerApplied.phone && !digits(customer.phone).includes(digits(customerApplied.phone))) return false;
+      const registered = customer.registered.slice(0, 10);
+      if (customerApplied.from && registered < customerApplied.from) return false;
+      if (customerApplied.to && registered > customerApplied.to) return false;
+      return true;
+    });
+  }, [customerApplied]);
+
+  const selectableDist = distCoupons.filter((coupon) => coupon.status === 'available' && coupon.inventory > 0);
+  const dialogCoupons = distCoupons.filter((coupon) => dialogCouponIds.includes(coupon.id));
+  const allDistSelected =
+    selectableDist.length > 0 && selectableDist.every((coupon) => selectedDist.includes(coupon.id));
+  const availableDistCoupons = distCoupons.filter((coupon) => coupon.status === 'available');
+  const availableDistInventory = availableDistCoupons.reduce((sum, coupon) => sum + coupon.inventory, 0);
+
+  useEffect(() => {
+    if (selectAllRef.current) {
+      selectAllRef.current.indeterminate = selectedDist.length > 0 && !allDistSelected;
+    }
+  }, [selectedDist, allDistSelected]);
+
+  useEffect(() => {
+    if (!distributeOpen) return undefined;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setDistributeOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [distributeOpen]);
+
+  const toggleDistCoupon = (id: string) => {
+    setSelectedDist((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
+  };
+
+  const toggleAllDist = () => {
+    setSelectedDist(allDistSelected ? [] : selectableDist.map((coupon) => coupon.id));
+  };
+
+  const distributionCount = (couponId: string, recipient: string) =>
+    distRecords.filter(
+      (record) => record.couponId === couponId && record.recipient === recipient,
+    ).length;
+
+  const selfAtLimit =
+    dialogCoupons.length > 0 &&
+    dialogCoupons.every(
+      (coupon) => distributionCount(coupon.id, 'self') >= DEMO_RECIPIENT_LIMIT,
+    );
+
+  const recordsCoupon = recordsCouponId
+    ? distCoupons.find((coupon) => coupon.id === recordsCouponId) ?? null
+    : null;
+  const currentRecords = recordsCouponId
+    ? distRecords.filter((record) => record.couponId === recordsCouponId)
+    : [];
+
+  useEffect(() => {
+    if (!recordsCouponId) return undefined;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setRecordsCouponId(null);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [recordsCouponId]);
+
+  const openDistribute = (ids: string[]) => {
+    if (!ids.length) return;
+    setDialogCouponIds(ids);
+    const selfBlocked = ids.every(
+      (id) => distributionCount(id, 'self') >= DEMO_RECIPIENT_LIMIT,
+    );
+    setRecipientType(selfBlocked ? 'customer' : 'self');
+    setRecipientCustomers([]);
+    setDistributeOpen(true);
+  };
+
+  const closeDistribute = () => {
+    setDistributeOpen(false);
+    setDialogCouponIds([]);
+    setRecipientCustomers([]);
+  };
+
+  const toggleRecipientCustomer = (username: string) => {
+    setRecipientCustomers((prev) =>
+      prev.includes(username) ? prev.filter((item) => item !== username) : [...prev, username],
+    );
+  };
+
+  const confirmDistribute = () => {
+    if (!dialogCoupons.length) return;
+    const recipientKeys = recipientType === 'self' ? ['self'] : recipientCustomers;
+    if (!recipientKeys.length) return;
+    const perCoupon: Array<{ coupon: DistCoupon; recipients: string[] }> = [];
+    dialogCoupons.forEach((coupon) => {
+      const eligible = recipientKeys.filter(
+        (key) => distributionCount(coupon.id, key) < DEMO_RECIPIENT_LIMIT,
+      );
+      if (eligible.length) perCoupon.push({ coupon, recipients: eligible });
+    });
+    if (!perCoupon.length) {
+      showToast('所选对象已达领取上限');
+      return;
+    }
+    const total = perCoupon.reduce((sum, entry) => sum + entry.recipients.length, 0);
+    setDistCoupons((prev) =>
+      prev.map((coupon) => {
+        const entry = perCoupon.find((item) => item.coupon.id === coupon.id);
+        if (!entry) return coupon;
+        const inventory = Math.max(0, coupon.inventory - entry.recipients.length);
+        return { ...coupon, inventory, status: inventory === 0 ? 'exhausted' : coupon.status };
+      }),
+    );
+    if (recipientType === 'self') {
+      const stamp = Date.now();
+      setMyCoupons((prev) => [
+        ...perCoupon.map(
+          ({ coupon }, index): Coupon => ({
+            id: `dist-${coupon.id}-${stamp}-${index}`,
+            kind: coupon.kind === 'feature' ? 'feature' : undefined,
+            value: coupon.value,
+            unit: coupon.unit,
+            featureShort: coupon.featureShort,
+            featureQty: coupon.featureQty,
+            useWithinDays: daysUntilExpire(coupon.expireDate),
+            name: coupon.name,
+            desc: `${coupon.desc} · ${coupon.expireDate.slice(0, 10)}失效`,
+            state: 'usable',
+          }),
+        ),
+        ...prev,
+      ]);
+    }
+    const stamp = Date.now();
+    const time = formatDateTime(new Date());
+    const newRecords: DistRecord[] = [];
+    perCoupon.forEach((entry, couponIndex) => {
+      entry.recipients.forEach((recipient, recipientIndex) => {
+        newRecords.push({
+          id: `rec-${stamp}-${couponIndex}-${recipientIndex}`,
+          couponId: entry.coupon.id,
+          time,
+          recipient,
+          used: false,
+        });
+      });
+    });
+    setDistRecords((prev) => [...newRecords, ...prev]);
+    showToast(`已分发 ${total} 张优惠券`);
+    setDistributeOpen(false);
+    setDialogCouponIds([]);
+    setSelectedDist([]);
+    setRecipientCustomers([]);
+    setRecipientType('self');
+  };
+
+  const switchPage = (next: 'member' | 'distribution') => {
+    setPage(next);
+    setExpireDetail(null);
+    setConfirmCoupon(null);
+    setDistributeOpen(false);
+    setSizeOpen(false);
+    if (next === 'member') {
+      if (cardRef.current) cardRef.current.scrollTop = 0;
+    } else if (distCardRef.current) {
+      distCardRef.current.scrollTop = 0;
+    }
+  };
+
+  const switchDistTab = (next: 'dashboard' | 'customers' | 'coupons') => {
+    setDistTab(next);
+    setDistributeOpen(false);
+    if (distCardRef.current) distCardRef.current.scrollTop = 0;
+  };
+
+  const applyCustomerFilters = (event: React.FormEvent) => {
+    event.preventDefault();
+    setCustomerApplied(customerForm);
+  };
+
+  const resetCustomerFilters = () => {
+    setCustomerForm(EMPTY_CUSTOMER_FILTER);
+    setCustomerApplied(EMPTY_CUSTOMER_FILTER);
+  };
+
+  const updateCustomerForm = (key: keyof typeof EMPTY_CUSTOMER_FILTER, value: string) => {
+    setCustomerForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const refreshDistribution = () => {
+    if (distRefreshing) return;
+    setDistRefreshing(true);
+    window.clearTimeout(refreshTimer.current);
+    refreshTimer.current = window.setTimeout(() => setDistRefreshing(false), 700);
+  };
 
   const showToast = (message: string) => {
     window.clearTimeout(toastTimer.current);
@@ -767,16 +1329,28 @@ export default function MemberCenter() {
         <div className="mcx-profile-layout">
           <aside className="mcx-menu-card">
             <ul className="mcx-menu">
-              {['基础资料', '会员中心', '订单中心', '发票管理', '分销中心'].map((item) => (
-                <li key={item} className={`mcx-menu-item ${item === '会员中心' ? 'is-active' : ''}`}>
-                  {item}
-                </li>
-              ))}
+              {['基础资料', '会员中心', '订单中心', '发票管理', '分销中心'].map((item) => {
+                const target =
+                  item === '会员中心' ? 'member' : item === '分销中心' ? 'distribution' : null;
+                return (
+                  <li
+                    key={item}
+                    className={`mcx-menu-item ${target === page ? 'is-active' : ''}`}
+                    onClick={target ? () => switchPage(target) : undefined}
+                  >
+                    {item}
+                  </li>
+                );
+              })}
             </ul>
           </aside>
 
           <div className="mcx-profile-content">
-            <div className="mcx-card" ref={cardRef}>
+            <div
+              className="mcx-card"
+              ref={cardRef}
+              style={{ display: page === 'member' ? 'block' : 'none' }}
+            >
               <div className="mcx-tabs-head" role="tablist">
                 {TABS.map((item) => {
                   const isStatic = item.key === 'package';
@@ -1023,6 +1597,392 @@ export default function MemberCenter() {
                 </div>
               )}
             </div>
+
+            <div
+              className="mcx-card"
+              ref={distCardRef}
+              style={{ display: page === 'distribution' ? 'block' : 'none' }}
+            >
+              <div className="mcx-tabs-head" role="tablist">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={distTab === 'dashboard'}
+                  className={`mcx-tab ${distTab === 'dashboard' ? 'is-active' : ''}`}
+                  onClick={() => switchDistTab('dashboard')}
+                >
+                  <span className="mcx-tab-label">数据看板</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={distTab === 'customers'}
+                  className={`mcx-tab ${distTab === 'customers' ? 'is-active' : ''}`}
+                  onClick={() => switchDistTab('customers')}
+                >
+                  <span className="mcx-tab-label">我的客户</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={distTab === 'coupons'}
+                  className={`mcx-tab ${distTab === 'coupons' ? 'is-active' : ''}`}
+                  onClick={() => switchDistTab('coupons')}
+                >
+                  <span className="mcx-tab-label">优惠券分发</span>
+                </button>
+              </div>
+
+              {distTab === 'dashboard' && (
+                <div className="mcx-dist-pane">
+                  <div className="mcx-board-head">
+                    <span className="mcx-board-title">本平台客户订单</span>
+                    <button
+                      type="button"
+                      className={`mcx-board-refresh ${distRefreshing ? 'is-spinning' : ''}`}
+                      aria-label="刷新"
+                      title="刷新"
+                      onClick={refreshDistribution}
+                    >
+                      <RefreshIcon size={16} />
+                    </button>
+                  </div>
+                  <div className="mcx-table-wrap">
+                    <table className="mcx-dist-table is-orders">
+                      <colgroup>
+                        <col style={{ width: '296px' }} />
+                        <col style={{ width: '270px' }} />
+                        <col style={{ width: '440px' }} />
+                        <col style={{ width: '90px' }} />
+                        <col style={{ width: '120px' }} />
+                        <col style={{ width: '110px' }} />
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th>商品</th>
+                          <th>客户</th>
+                          <th>订单编号</th>
+                          <th>数量</th>
+                          <th>实收金额</th>
+                          <th>订单状态</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {DIST_ORDERS.map((order) => (
+                          <tr key={order.orderNo}>
+                            <td>
+                              <div className="mcx-order-product">
+                                <img src={order.img} alt="" />
+                                <div className="mcx-order-product-info">
+                                  <div className="name" title={order.product}>
+                                    {order.product}
+                                  </div>
+                                  <div className="code">{order.code}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <div className="mcx-customer-cell">
+                                <span>{order.customer}</span>
+                                <em>{order.username}</em>
+                              </div>
+                            </td>
+                            <td>{order.orderNo}</td>
+                            <td>{order.qty}</td>
+                            <td className="mcx-amount">¥{order.amount}</td>
+                            <td>
+                              <span className={`mcx-order-status is-${order.tone}`}>{order.status}</span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <MiniPager total={DIST_ORDERS.length} />
+                </div>
+              )}
+
+              {distTab === 'customers' && (
+                <div className="mcx-dist-pane">
+                  <form className="mcx-dist-filter" onSubmit={applyCustomerFilters}>
+                    <label className="mcx-filter-field">
+                      <span className="mcx-filter-label">姓名</span>
+                      <input
+                        className="mcx-filter-input"
+                        placeholder="请输入"
+                        value={customerForm.name}
+                        onChange={(event) => updateCustomerForm('name', event.target.value)}
+                      />
+                    </label>
+                    <label className="mcx-filter-field">
+                      <span className="mcx-filter-label">用户名</span>
+                      <input
+                        className="mcx-filter-input"
+                        placeholder="请输入"
+                        value={customerForm.username}
+                        onChange={(event) => updateCustomerForm('username', event.target.value)}
+                      />
+                    </label>
+                    <label className="mcx-filter-field">
+                      <span className="mcx-filter-label">手机号</span>
+                      <input
+                        className="mcx-filter-input"
+                        placeholder="请输入"
+                        value={customerForm.phone}
+                        onChange={(event) => updateCustomerForm('phone', event.target.value)}
+                      />
+                    </label>
+                    <label className="mcx-filter-field">
+                      <span className="mcx-filter-label">注册时间</span>
+                      <span className="mcx-date-range">
+                        <CalendarIcon />
+                        <input
+                          placeholder="开始日期"
+                          value={customerForm.from}
+                          onChange={(event) => updateCustomerForm('from', event.target.value)}
+                        />
+                        <i>-</i>
+                        <input
+                          placeholder="结束日期"
+                          value={customerForm.to}
+                          onChange={(event) => updateCustomerForm('to', event.target.value)}
+                        />
+                      </span>
+                    </label>
+                    <div className="mcx-filter-actions">
+                      <button type="submit" className="mcx-filter-btn is-primary">
+                        <SearchIcon />
+                        查询
+                      </button>
+                      <button
+                        type="button"
+                        className="mcx-filter-btn is-ghost"
+                        onClick={resetCustomerFilters}
+                      >
+                        <RefreshIcon size={12} />
+                        重置
+                      </button>
+                    </div>
+                  </form>
+                  <div className="mcx-table-wrap">
+                    <table className="mcx-dist-table is-customers">
+                      <colgroup>
+                        {[90, 110, 120, 160, 110, 170, 110, 120, 110, 90, 80, 90, 90, 100, 180].map(
+                          (width, index) => (
+                            <col key={index} style={{ width: `${width}px` }} />
+                          ),
+                        )}
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          {[
+                            '姓名',
+                            '用户名',
+                            '手机号',
+                            '邮箱',
+                            'QQ',
+                            '注册时间',
+                            '店铺数/上限',
+                            '订单数/上限',
+                            '消费总金额',
+                            '算力余额',
+                            '积分',
+                            '优惠券',
+                            '子账号数',
+                            '会员类型',
+                            '会员周期',
+                          ].map((title) => (
+                            <th key={title}>{title}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredCustomers.length > 0 ? (
+                          filteredCustomers.map((customer) => (
+                            <tr key={customer.username}>
+                              <td>{customer.name}</td>
+                              <td>{customer.username}</td>
+                              <td>{customer.phone}</td>
+                              <td>{customer.email}</td>
+                              <td>{customer.qq}</td>
+                              <td>{customer.registered}</td>
+                              <td>{customer.stores}</td>
+                              <td>{customer.orders}</td>
+                              <td className="mcx-amount">{customer.spend}</td>
+                              <td>{customer.credits}</td>
+                              <td>{customer.points}</td>
+                              <td>{customer.coupons}</td>
+                              <td>{customer.subAccounts}</td>
+                              <td>{customer.memberLevel}</td>
+                              <td>{customer.memberPeriod}</td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan={15} className="mcx-table-empty">
+                              暂无数据
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                  <MiniPager total={filteredCustomers.length} />
+                </div>
+              )}
+
+              {distTab === 'coupons' && (
+                <div className="mcx-dist-pane">
+                  <div className="mcx-dist-coupon-head">
+                    <div className="mcx-dist-coupon-title-wrap">
+                      <span className="mcx-board-title">可分发优惠券</span>
+                      <span className="mcx-dist-coupon-sub">
+                        可分发 {availableDistCoupons.length} 种 · 共 {formatNumber(availableDistInventory)} 张
+                      </span>
+                    </div>
+                    <div className="mcx-dist-coupon-actions">
+                      {selectedDist.length > 0 ? (
+                        <span className="mcx-dist-selected-count">已选 {selectedDist.length} 张</span>
+                      ) : null}
+                      <button
+                        type="button"
+                        className="mcx-filter-btn is-primary"
+                        disabled={selectedDist.length === 0}
+                        onClick={() => openDistribute(selectedDist)}
+                      >
+                        分发
+                      </button>
+                    </div>
+                  </div>
+                  <div className="mcx-table-wrap">
+                    <table className="mcx-dist-table is-dist-coupons">
+                      <colgroup>
+                        <col style={{ width: '48px' }} />
+                        <col />
+                        <col style={{ width: '110px' }} />
+                        <col style={{ width: '190px' }} />
+                        <col style={{ width: '120px' }} />
+                        <col style={{ width: '100px' }} />
+                        <col style={{ width: '120px' }} />
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th>
+                            <input
+                              ref={selectAllRef}
+                              type="checkbox"
+                              className="mcx-check"
+                              checked={allDistSelected}
+                              disabled={selectableDist.length === 0}
+                              onChange={toggleAllDist}
+                              aria-label="全选优惠券"
+                            />
+                          </th>
+                          <th style={{ textAlign: 'left' }}>优惠券</th>
+                          <th>类型</th>
+                          <th>有效期</th>
+                          <th>可分发数量</th>
+                          <th>状态</th>
+                          <th>操作</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {distCoupons.map((coupon) => {
+                          const selectable = coupon.status === 'available' && coupon.inventory > 0;
+                          const checked = selectedDist.includes(coupon.id);
+                          return (
+                            <tr key={coupon.id} className={checked ? 'is-selected' : ''}>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  className="mcx-check"
+                                  checked={checked}
+                                  disabled={!selectable}
+                                  onChange={() => toggleDistCoupon(coupon.id)}
+                                  aria-label={`选择${coupon.name}`}
+                                />
+                              </td>
+                              <td>
+                                <div
+                                  className={`mcx-dist-coupon ${coupon.kind === 'feature' ? 'is-feature' : ''}`}
+                                >
+                                  <div className="mcx-dist-coupon-value">
+                                    {coupon.kind === 'feature' ? (
+                                      <>
+                                        <span className="label">{coupon.featureShort}</span>
+                                        <em>
+                                          +{coupon.featureQty}
+                                          <i>次</i>
+                                        </em>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <em>{coupon.value}</em>
+                                        <span>{coupon.unit}</span>
+                                      </>
+                                    )}
+                                  </div>
+                                  <div className="mcx-dist-coupon-info">
+                                    <div className="name" title={coupon.name}>
+                                      {coupon.name}
+                                    </div>
+                                    <div className="desc" title={coupon.desc}>
+                                      {coupon.desc}
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <span className={`mcx-coupon-kind ${coupon.kind}`}>
+                                  {coupon.kind === 'feature' ? '功能券' : '代金券'}
+                                </span>
+                              </td>
+                              <td>{coupon.expireDate}</td>
+                              <td>{coupon.inventory}</td>
+                              <td>
+                                <span className={`mcx-dist-status is-${coupon.status}`}>
+                                  {coupon.status === 'available'
+                                    ? '可分发'
+                                    : coupon.status === 'expired'
+                                      ? '已过期'
+                                      : '已发完'}
+                                </span>
+                              </td>
+                              <td>
+                                <div className="mcx-row-actions">
+                                  <button
+                                    type="button"
+                                    className="mcx-link"
+                                    disabled={!selectable}
+                                    title={
+                                      selectable
+                                        ? ''
+                                        : coupon.status === 'expired'
+                                          ? '已过期，无法分发'
+                                          : '已发完'
+                                    }
+                                    onClick={() => openDistribute([coupon.id])}
+                                  >
+                                    分发
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="mcx-link is-muted"
+                                    onClick={() => setRecordsCouponId(coupon.id)}
+                                  >
+                                    明细
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </main>
@@ -1070,6 +2030,209 @@ export default function MemberCenter() {
               </button>
               <button type="button" className="mcx-dialog-btn is-primary" onClick={redeemCoupon}>
                 确认兑换
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {distributeOpen ? (
+        <div
+          className="mcx-dialog-mask"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setDistributeOpen(false);
+          }}
+        >
+          <div
+            className="mcx-dialog mcx-distribute-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-label="分发优惠券"
+          >
+            <div className="mcx-dialog-head">
+              分发优惠券
+              <button
+                type="button"
+                className="mcx-dialog-close"
+                aria-label="关闭"
+                onClick={closeDistribute}
+              >
+                <CloseIcon />
+              </button>
+            </div>
+            <div className="mcx-dialog-body">
+              <div className="mcx-distribute-section">
+                <div className="mcx-distribute-label">已选优惠券</div>
+                <div className="mcx-distribute-chips">
+                  {dialogCoupons.map((coupon) => (
+                    <span
+                      key={coupon.id}
+                      className={`mcx-distribute-chip ${coupon.kind === 'feature' ? 'is-feature' : ''}`}
+                    >
+                      {coupon.kind === 'feature'
+                        ? `${coupon.featureShort} +${coupon.featureQty}次`
+                        : `${coupon.value}${coupon.unit}`}
+                      {' · '}
+                      {coupon.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="mcx-distribute-row">
+                <span className="mcx-distribute-label">分发对象</span>
+                <div className="mcx-recipient-segment">
+                  <button
+                    type="button"
+                    className={recipientType === 'self' ? 'is-active' : ''}
+                    disabled={selfAtLimit}
+                    title={selfAtLimit ? '本人已领取过所选优惠券' : ''}
+                    onClick={() => setRecipientType('self')}
+                  >
+                    本人
+                  </button>
+                  <button
+                    type="button"
+                    className={recipientType === 'customer' ? 'is-active' : ''}
+                    onClick={() => setRecipientType('customer')}
+                  >
+                    客户
+                  </button>
+                </div>
+              </div>
+              {selfAtLimit ? (
+                <div className="mcx-distribute-limit">
+                  本人已领取过所选优惠券，每张限领 xx 张，无法重复分发
+                </div>
+              ) : null}
+              {recipientType === 'customer' && (
+                <div className="mcx-distribute-row is-top">
+                  <span className="mcx-distribute-label">选择客户</span>
+                  <div className="mcx-recipient-picker">
+                    {DIST_CUSTOMERS.map((customer) => {
+                      const receivedAll = dialogCoupons.every(
+                        (coupon) =>
+                          distributionCount(coupon.id, customer.username) >=
+                          DEMO_RECIPIENT_LIMIT,
+                      );
+                      const receivedSome = dialogCoupons.some(
+                        (coupon) =>
+                          distributionCount(coupon.id, customer.username) >=
+                          DEMO_RECIPIENT_LIMIT,
+                      );
+                      return (
+                        <label
+                          key={customer.username}
+                          className={`mcx-recipient-option ${receivedAll ? 'is-disabled' : ''}`}
+                        >
+                          <input
+                            type="checkbox"
+                            className="mcx-check"
+                            checked={recipientCustomers.includes(customer.username)}
+                            disabled={receivedAll}
+                            onChange={() => toggleRecipientCustomer(customer.username)}
+                          />
+                          <span>{customer.name}</span>
+                          <em>{customer.username}</em>
+                          {receivedAll ? (
+                            <i className="mcx-recipient-flag">已领取</i>
+                          ) : receivedSome ? (
+                            <i className="mcx-recipient-flag is-partial">部分已领取</i>
+                          ) : null}
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              {recipientType === 'customer' && recipientCustomers.length === 0 ? (
+                <div className="mcx-distribute-error">请至少选择一位客户</div>
+              ) : null}
+              <p className="mcx-distribute-note">
+                每位对象每张券限领 xx 张，已达上限的组合会自动跳过；分发后不可撤回。
+              </p>
+            </div>
+            <div className="mcx-dialog-footer">
+              <button type="button" className="mcx-dialog-btn" onClick={closeDistribute}>
+                取消
+              </button>
+              <button
+                type="button"
+                className="mcx-dialog-btn is-primary"
+                disabled={recipientType === 'customer' ? recipientCustomers.length === 0 : selfAtLimit}
+                onClick={confirmDistribute}
+              >
+                确认分发
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {recordsCoupon ? (
+        <div
+          className="mcx-dialog-mask"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setRecordsCouponId(null);
+          }}
+        >
+          <div
+            className="mcx-dialog mcx-records-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-label="分发明细"
+          >
+            <div className="mcx-dialog-head">
+              分发明细
+              <button
+                type="button"
+                className="mcx-dialog-close"
+                aria-label="关闭"
+                onClick={() => setRecordsCouponId(null)}
+              >
+                <CloseIcon />
+              </button>
+            </div>
+            <div className="mcx-dialog-body">
+              <div className="mcx-records-summary">
+                <span className="mcx-records-coupon">
+                  {recordsCoupon.kind === 'feature'
+                    ? `${recordsCoupon.featureShort} +${recordsCoupon.featureQty}次`
+                    : `${recordsCoupon.value}${recordsCoupon.unit}`}
+                  {' · '}
+                  {recordsCoupon.name}
+                </span>
+                <span className="mcx-records-total">已分发 {currentRecords.length} 张</span>
+              </div>
+              {currentRecords.length > 0 ? (
+                <div className="mcx-records-table">
+                  <div className="mcx-records-head">
+                    <span>分发对象</span>
+                    <span>分发时间</span>
+                    <span>使用状态</span>
+                  </div>
+                  {currentRecords.map((record) => (
+                    <div key={record.id} className="mcx-records-row">
+                      <span>{recipientLabel(record.recipient)}</span>
+                      <span>{record.time}</span>
+                      <span
+                        className={`mcx-record-status ${record.used ? 'is-used' : 'is-unused'}`}
+                      >
+                        {record.used ? '已使用' : '未使用'}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="mcx-records-empty">暂无分发明细</div>
+              )}
+            </div>
+            <div className="mcx-dialog-footer">
+              <button
+                type="button"
+                className="mcx-dialog-btn"
+                onClick={() => setRecordsCouponId(null)}
+              >
+                关闭
               </button>
             </div>
           </div>

@@ -182,14 +182,6 @@ function IconClose({ size = 16, stroke = 1.8 }: IconProps) {
   );
 }
 
-function IconChevronDown({ size = 16, stroke = 1.8 }: IconProps) {
-  return (
-    <svg className="cp-icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round">
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
-
 function IconDownload({ size = 18, stroke = 1.7 }: IconProps) {
   return (
     <svg className="cp-icon" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round">
@@ -250,29 +242,12 @@ const row = (...flex: number[]): Row => ({
 });
 
 const OLD_LAYOUTS: Record<string, { key: string; rows: Row[] }[]> = {
-  '2': [
-    { key: '2-1', rows: [row(1), row(1)] },
-    { key: '2-2', rows: [row(1, 1)] },
-  ],
-  '3': [
-    { key: '3-1', rows: [row(1), row(1), row(1)] },
-    { key: '3-2', rows: [{ flex: 2, cells: [{ flex: 1 }, { flex: 1 }] }, row(1)] },
-  ],
-  '4': [
-    { key: '4-1', rows: [row(1, 1), row(1, 1)] },
-    { key: '4-2', rows: [row(1), row(1, 1, 1)] },
-  ],
-  '5': [
-    { key: '5-1', rows: [row(1, 1), row(1, 1, 1)] },
-    { key: '5-2', rows: [{ flex: 3, cells: [{ flex: 2 }, { flex: 1 }] }, row(1, 1, 1)] },
-  ],
   '7': [
     { key: '7-1', rows: [row(1, 1), row(1, 1, 1), row(1, 1)] },
     { key: '7-2', rows: [row(1), row(1, 1, 1), row(1, 1, 1)] },
     { key: '7-3', rows: [row(1, 1, 1), row(1, 1), row(1, 1)] },
   ],
   '8': [
-    { key: '8-1', rows: [row(1, 1, 1, 1), row(1, 1, 1, 1)] },
     { key: '8-2', rows: [row(1), row(1, 1, 1), row(1, 1, 1, 1)] },
     { key: '8-3', rows: [row(1, 1, 1), row(1, 1), row(1, 1, 1)] },
   ],
@@ -366,8 +341,6 @@ const TEMPLATES: Record<string, Template[]> = (() => {
 const TEMPLATE_GROUPS = Object.keys(TEMPLATES)
   .map(Number)
   .sort((a, b) => a - b);
-const MORE_GROUPS = TEMPLATE_GROUPS.filter((n) => n > 5);
-const QUICK_GROUPS = TEMPLATE_GROUPS.filter((n) => n <= 5);
 const DEFAULT_TEMPLATE_KEY = '9-1';
 
 const findTemplate = (key: string): Template => {
@@ -611,13 +584,10 @@ export default function CollageDialog({ open, onClose, mainCount = 5, mainLimit 
   const [confirmOpen, setConfirmOpen] = React.useState(false);
   const [activeKey, setActiveKey] = React.useState(DEFAULT_TEMPLATE_KEY);
   const [anchorCount, setAnchorCount] = React.useState(findTemplate(DEFAULT_TEMPLATE_KEY).count);
-  const [moreCount, setMoreCount] = React.useState(findTemplate(DEFAULT_TEMPLATE_KEY).count);
-  const [moreOpen, setMoreOpen] = React.useState(false);
   const [slots, setSlots] = React.useState<Slot[]>(() => emptySlots(findTemplate(DEFAULT_TEMPLATE_KEY).cells.length));
   const [samples, setSamples] = React.useState(SAMPLE_IMAGES);
   const [selected, setSelected] = React.useState<string[]>([]);
   const [seamless, setSeamless] = React.useState(false);
-  const moreRef = React.useRef<HTMLDivElement>(null);
   const sidebarRef = React.useRef<HTMLElement>(null);
   const headRef = React.useRef<HTMLDivElement>(null);
   const groupRefs = React.useRef<Record<number, HTMLDivElement | null>>({});
@@ -641,7 +611,6 @@ export default function CollageDialog({ open, onClose, mainCount = 5, mainLimit 
   const jumpToGroup = (n: number) => {
     setAnchorCount(n);
     anchorLockRef.current = true;
-    if (n > 5) setMoreCount(n);
     scrollToGroup(n, true);
   };
 
@@ -674,22 +643,6 @@ export default function CollageDialog({ open, onClose, mainCount = 5, mainLimit 
       bar.removeEventListener('pointerdown', unlock);
     };
   }, []);
-
-  React.useEffect(() => {
-    if (!moreOpen) return;
-    const onDocDown = (e: MouseEvent) => {
-      if (moreRef.current && !moreRef.current.contains(e.target as Node)) setMoreOpen(false);
-    };
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMoreOpen(false);
-    };
-    document.addEventListener('mousedown', onDocDown, true);
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('mousedown', onDocDown, true);
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [moreOpen]);
 
   if (!open) return null;
 
@@ -773,25 +726,6 @@ export default function CollageDialog({ open, onClose, mainCount = 5, mainLimit 
     });
   };
 
-  const randomSelect = () => {
-    const limit = Math.min(activeTemplate.cells.length, emptyCount);
-    if (limit <= 0 || samples.length === 0) return;
-    // 可选图少于模板格数时循环复用，保证导入后每个格子都有图
-    const picks: string[] = [];
-    while (picks.length < limit) {
-      const pool = [...samples];
-      for (let i = pool.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [pool[i], pool[j]] = [pool[j], pool[i]];
-      }
-      for (const item of pool) {
-        if (picks.length >= limit) break;
-        picks.push(item.id);
-      }
-    }
-    setSelected(picks);
-  };
-
   const importSelected = () => {
     if (!selected.length) return;
     const srcById = new Map(samples.map((s) => [s.id, s.src]));
@@ -821,7 +755,7 @@ export default function CollageDialog({ open, onClose, mainCount = 5, mainLimit 
           <div className="cp-sidebar__head" ref={headRef}>
             <h3 className="cp-sidebar__title">选择模板</h3>
             <div className="cp-counts">
-              {QUICK_GROUPS.map((n) => (
+              {TEMPLATE_GROUPS.map((n) => (
                 <button
                   className={anchorCount === n ? 'cp-count cp-count--active' : 'cp-count'}
                   key={n}
@@ -831,37 +765,6 @@ export default function CollageDialog({ open, onClose, mainCount = 5, mainLimit 
                   {n}
                 </button>
               ))}
-              <div className="cp-more" ref={moreRef}>
-                <button
-                  className={anchorCount > 5 ? 'cp-count cp-count--active' : 'cp-count'}
-                  type="button"
-                  aria-haspopup="menu"
-                  aria-expanded={moreOpen}
-                  onClick={() => setMoreOpen((v) => !v)}
-                >
-                  {anchorCount > 5 ? anchorCount : moreCount}
-                  <IconChevronDown size={14} />
-                </button>
-                {moreOpen && (
-                  <div className="cp-more__menu" role="menu">
-                    {MORE_GROUPS.map((n) => (
-                      <button
-                        key={n}
-                        type="button"
-                        role="menuitem"
-                        className={anchorCount === n ? 'is-active' : undefined}
-                        onClick={() => {
-                          jumpToGroup(n);
-                          setMoreOpen(false);
-                        }}
-                      >
-                        <span>{n} 张</span>
-                        {anchorCount === n && <IconCheck />}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
             </div>
           </div>
 
@@ -969,9 +872,6 @@ export default function CollageDialog({ open, onClose, mainCount = 5, mainLimit 
                 </span>
                 <span onClick={toggleSelectAll}>全选</span>
               </label>
-              <button className="cp-random" type="button" onClick={randomSelect}>
-                随机选图
-              </button>
             </div>
 
             {SAMPLE_SECTIONS.map((sec) => {

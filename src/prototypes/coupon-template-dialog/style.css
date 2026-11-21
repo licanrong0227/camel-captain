@@ -522,6 +522,10 @@
   margin-bottom: 18px;
 }
 
+.ctd-item.is-hidden {
+  display: none;
+}
+
 .ctd-label {
   width: 160px;
   flex: none;
@@ -773,13 +777,18 @@
 }
 
 .ctd-feature-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
 .ctd-feature-row > * {
-  flex: 1;
   min-width: 0;
+}
+
+.ctd-feature-row .ctd-input,
+.ctd-feature-row .ctd-select-trigger {
+  padding: 0 10px;
 }
 
 /* ===== 生效周期时间段 ===== */
@@ -860,6 +869,287 @@
   border-color: var(--ctd-warning-hover);
   background: var(--ctd-warning-hover);
   color: #fff;
+}
+
+/* ===== 手动发放：发放对象 ===== */
+.ctd-target-box {
+  border: 1px solid var(--ctd-border);
+  border-radius: 4px;
+}
+
+.ctd-issue-count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ctd-issue-count-text,
+.ctd-issue-count-unit {
+  color: var(--ctd-text);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.ctd-issue-count-input {
+  width: 120px;
+}
+
+.ctd-target-head {
+  display: flex;
+  height: 32px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--ctd-border);
+  background: #f8f8f9;
+}
+
+.ctd-target-count {
+  color: var(--ctd-text);
+  font-size: 13px;
+}
+
+.ctd-target-add {
+  height: 24px;
+  padding: 0 12px;
+  border: 1px solid var(--ctd-primary);
+  border-radius: 3px;
+  background: #fff;
+  color: var(--ctd-primary);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ctd-target-add:hover {
+  background: var(--ctd-primary-light);
+}
+
+.ctd-target-add:disabled {
+  border-color: var(--ctd-border);
+  background: #f5f7fa;
+  color: var(--ctd-placeholder);
+  cursor: not-allowed;
+}
+
+.ctd-target-list {
+  max-height: 150px;
+  margin: 0;
+  padding: 4px 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.ctd-target-item {
+  display: flex;
+  height: 30px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  color: var(--ctd-text);
+  font-size: 13px;
+}
+
+.ctd-target-item:hover {
+  background: #f5f7fa;
+}
+
+.ctd-target-id {
+  width: 70px;
+  flex: none;
+  color: var(--ctd-secondary);
+}
+
+.ctd-target-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ctd-target-user {
+  color: var(--ctd-secondary);
+}
+
+.ctd-target-remove {
+  margin-left: auto;
+  border: 0;
+  background: none;
+  color: var(--ctd-primary);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ctd-target-empty {
+  padding: 10px 12px;
+  color: var(--ctd-secondary);
+  font-size: 13px;
+}
+
+/* ===== 选择发放对象弹窗 ===== */
+.ctd-picker-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8vh 16px 40px;
+  background: rgba(0, 0, 0, 0.4);
+  overflow-y: auto;
+}
+
+.ctd-picker {
+  display: flex;
+  width: 880px;
+  max-width: 100%;
+  max-height: 88vh;
+  flex-direction: column;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.ctd-picker-head {
+  position: relative;
+  padding: 20px 20px 10px;
+}
+
+.ctd-picker-title {
+  margin: 0;
+  color: var(--ctd-title);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.ctd-picker-head .ctd-close {
+  top: 50%;
+}
+
+.ctd-picker-toolbar {
+  padding: 0 20px 12px;
+}
+
+.ctd-picker-toolbar .ctd-filter-input {
+  width: 280px;
+}
+
+.ctd-picker-body {
+  flex: 1;
+  min-height: 0;
+  padding: 0 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.ctd-picker-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.ctd-picker-table th,
+.ctd-picker-table td {
+  overflow: hidden;
+  padding: 8px 6px;
+  border: 1px solid #ebeef5;
+  color: var(--ctd-text);
+  font-size: 13px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ctd-picker-table th {
+  height: 40px;
+  background: #f8f8f9;
+  color: #515a6e;
+  font-weight: 500;
+}
+
+.ctd-picker-table td {
+  height: 44px;
+}
+
+.ctd-picker-table tbody tr {
+  cursor: pointer;
+}
+
+.ctd-picker-table tbody tr:hover td {
+  background: #f5f7fa;
+}
+
+.ctd-picker-table tbody tr.is-checked td {
+  background: var(--ctd-primary-light);
+}
+
+.ctd-checkbox {
+  position: relative;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--ctd-border);
+  border-radius: 2px;
+  background: #fff;
+  vertical-align: middle;
+}
+
+.ctd-checkbox.is-checked {
+  border-color: var(--ctd-primary);
+  background: var(--ctd-primary);
+}
+
+.ctd-checkbox.is-checked::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 1px;
+  width: 5px;
+  height: 8px;
+  border: 1.5px solid #fff;
+  border-top: 0;
+  border-left: 0;
+  transform: rotate(45deg);
+}
+
+.ctd-checkbox.is-indeterminate {
+  border-color: var(--ctd-primary);
+  background: var(--ctd-primary);
+}
+
+.ctd-checkbox.is-indeterminate::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 5.5px;
+  width: 8px;
+  height: 1.5px;
+  background: #fff;
+}
+
+.ctd-checkhead {
+  cursor: pointer;
+}
+
+.ctd-picker-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px 18px;
+  border-top: 1px solid #ebeef5;
+}
+
+.ctd-picker-count {
+  color: var(--ctd-text);
+  font-size: 13px;
+}
+
+.ctd-picker-actions {
+  display: flex;
+  gap: 10px;
 }
 
 /* ===== 新增成功提示 ===== */

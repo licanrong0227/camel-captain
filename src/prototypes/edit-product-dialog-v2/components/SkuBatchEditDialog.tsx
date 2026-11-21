@@ -25,6 +25,8 @@ export type SkuRow = {
   packageWeight: string;
   retailPrice: string;
   purchasePrice: string;
+  nsPid: string;
+  sPid: string;
 };
 
 export type SkuSpec = {

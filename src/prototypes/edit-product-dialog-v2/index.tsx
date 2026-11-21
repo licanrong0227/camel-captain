@@ -41,6 +41,7 @@ import ComplianceEntry from './components/ComplianceEntry';
 import ComplianceDialog from './components/ComplianceDialog';
 import SkuBatchEditDialog, { type SkuBatchField, type SkuRow } from './components/SkuBatchEditDialog';
 import SkuImageUpdateDialog from './components/SkuImageUpdateDialog';
+import SkuPidEditDialog from './components/SkuPidEditDialog';
 import SkuStockSplitDialog, {
   type StockBatchPatch,
   type StockSplitMap,
@@ -294,6 +295,8 @@ const INITIAL_SKU_ROWS: SkuRow[] = SKU_ROWS.map((item) => ({
   packageWeight: '0.050',
   retailPrice: '103.27',
   purchasePrice: '',
+  nsPid: '',
+  sPid: '',
 }));
 
 const INITIAL_SKU_SPLITS: StockSplitMap = Object.fromEntries(
@@ -439,6 +442,33 @@ function PriceSubmitButton({ onToast }: { onToast: (message: string) => void }) 
           )}
         </span>
       </button>
+    </span>
+  );
+}
+
+function SkuHeadTip({ text, label }: { text: string; label: string }) {
+  const [pos, setPos] = useState<{ right: number; bottom: number } | null>(null);
+  const ref = useRef<HTMLSpanElement>(null);
+  const show = () => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    setPos({ right: window.innerWidth - rect.right + 2, bottom: window.innerHeight - rect.top + 8 });
+  };
+  return (
+    <span
+      className="ep-sku-head__help"
+      role="img"
+      aria-label={label}
+      ref={ref}
+      onMouseEnter={show}
+      onMouseLeave={() => setPos(null)}
+    >
+      <HelpCircle size={12} />
+      {pos && (
+        <span className="ep-price-tip" role="tooltip" style={pos}>
+          {text}
+        </span>
+      )}
     </span>
   );
 }
@@ -749,6 +779,7 @@ export default function EditProductDialogV2() {
   const [toast, setToast] = useState<string | null>(null);
   const [skuRows, setSkuRows] = useState<SkuRow[]>(INITIAL_SKU_ROWS);
   const [batchField, setBatchField] = useState<SkuBatchField | null>(null);
+  const [pidOpen, setPidOpen] = useState(false);
   const [stockStatus, setStockStatus] = useState<StockStatus>('incoming');
   const [stockLocations, setStockLocations] = useState<StockLocation[]>([
     { id: 'loc-cn', country: '中国', leadTime: '4' },
@@ -2149,7 +2180,19 @@ export default function EditProductDialogV2() {
                           count={`SKU 数量 ${skuRows.length}`}
                           required
                           innerRef={setSectionRef('price')}
-                          extra={<PriceSubmitButton onToast={showToast} />}
+                          extra={
+                            <span className="ep-sku-head-actions">
+                              <button
+                                type="button"
+                                className="ep-btn ep-btn--default"
+                                onClick={() => setPidOpen(true)}
+                              >
+                                <Pencil size={12} />
+                                编辑Pid编码
+                              </button>
+                              <PriceSubmitButton onToast={showToast} />
+                            </span>
+                          }
                         >
                           <div className="ep-table-wrap">
                             <div className="ep-sku-table">
@@ -2160,19 +2203,26 @@ export default function EditProductDialogV2() {
                                 <button
                                   type="button"
                                   className="ep-sku-head__edit"
-                                  onClick={() => setBatchField('skuCode')}
-                                >
-                                  SKU编码
-                                  <Pencil size={12} />
-                                </button>
-                                <button
-                                  type="button"
-                                  className="ep-sku-head__edit"
                                   onClick={() => setBatchField('saleStatus')}
                                 >
                                   是否可售
                                   <Pencil size={12} />
                                 </button>
+                                <button
+                                  type="button"
+                                  className="ep-sku-head__edit"
+                                  onClick={() => setBatchField('retailPrice')}
+                                >
+                                  实际收入
+                                  <Pencil size={12} />
+                                </button>
+                                <span className="ep-sku-head__est">
+                                  买家价格
+                                  <SkuHeadTip
+                                    label="买家价格说明"
+                                    text="若与卖家后台有差异，以卖家后台为准"
+                                  />
+                                </span>
                                 <button
                                   type="button"
                                   className={allowOversell ? 'ep-sku-head__edit' : 'ep-sku-head__edit is-disabled'}
@@ -2198,9 +2248,9 @@ export default function EditProductDialogV2() {
                                 <button
                                   type="button"
                                   className="ep-sku-head__edit"
-                                  onClick={() => setBatchField('retailPrice')}
+                                  onClick={() => setBatchField('skuCode')}
                                 >
-                                  实际收入
+                                  SKU编码
                                   <Pencil size={12} />
                                 </button>
                                 <button
@@ -2221,17 +2271,23 @@ export default function EditProductDialogV2() {
                                   <span className="ep-sku-text">{row.color}</span>
                                   <span className="ep-sku-text">{row.option}</span>
                                   <span className="ep-sku-cell">
-                                    <input
-                                      className="ep-sku-input"
-                                      value={row.skuCode}
-                                      onChange={(event) => updateSku(row.row, { skuCode: event.target.value })}
-                                    />
-                                  </span>
-                                  <span className="ep-sku-cell">
                                     <SelectBox
                                       value={row.saleStatus === 1 ? '可销售' : '不可销售'}
                                       className="ep-sku-select"
                                     />
+                                  </span>
+                                  <span className="ep-sku-cell">
+                                    <Stepper
+                                      value={row.retailPrice}
+                                      step={0.01}
+                                      precision={2}
+                                      onChange={(next) => updateSku(row.row, { retailPrice: next })}
+                                    />
+                                  </span>
+                                  <span className="ep-sku-cell ep-sku-cell--readonly">
+                                    {Number.isFinite(Number(row.retailPrice))
+                                      ? Number(row.retailPrice).toFixed(2)
+                                      : '-'}
                                   </span>
                                   <span className="ep-sku-cell">
                                     <Stepper
@@ -2251,11 +2307,10 @@ export default function EditProductDialogV2() {
                                     />
                                   </span>
                                   <span className="ep-sku-cell">
-                                    <Stepper
-                                      value={row.retailPrice}
-                                      step={0.01}
-                                      precision={2}
-                                      onChange={(next) => updateSku(row.row, { retailPrice: next })}
+                                    <input
+                                      className="ep-sku-input"
+                                      value={row.skuCode}
+                                      onChange={(event) => updateSku(row.row, { skuCode: event.target.value })}
                                     />
                                   </span>
                                   <span className="ep-sku-cell">
@@ -2876,6 +2931,14 @@ export default function EditProductDialogV2() {
           rows={skuRows}
           specs={skuSpecs}
           onClose={() => setBatchField(null)}
+          onApply={setSkuRows}
+          onToast={showToast}
+        />
+      )}
+      {pidOpen && (
+        <SkuPidEditDialog
+          rows={skuRows}
+          onClose={() => setPidOpen(false)}
           onApply={setSkuRows}
           onToast={showToast}
         />

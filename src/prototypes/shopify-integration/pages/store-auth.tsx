@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import AddStoreDialog from '../components/AddStoreDialog';
+import type { DialogRequest } from '../dialog-route';
 import iconDhgate from '../assets/icon-dhgate.png';
 import iconPdd from '../assets/icon-pdd.png';
 import iconShopify from '../assets/icon-shopify.png';
@@ -102,8 +103,13 @@ function IconChevron({ dir = 'down' }: { dir?: 'down' | 'left' | 'right' }) {
   );
 }
 
-export default function StoreAuthPage() {
+export default function StoreAuthPage({ dialogRequest }: { dialogRequest?: DialogRequest }) {
   const [addStoreOpen, setAddStoreOpen] = useState(false);
+
+  useEffect(() => {
+    if (!dialogRequest) return;
+    setAddStoreOpen(dialogRequest.dialog === 'add-store');
+  }, [dialogRequest]);
 
   return (
     <>

@@ -15,6 +15,7 @@ import { LEVEL_COLORS, LEVEL_LIGHT_COLORS } from '../data/catalog';
 import { fmtAxis, fmtInt, fmtMoney, fmtMoneyAxis, fmtRoas } from '../data/format';
 import type { AdTrendView } from '../data/adTrend';
 import type { ExclusionConfig, StorePeriodKey } from '../data/types';
+import type { DialogRequest } from '../dialog-route';
 import homeJson from '../data/home.json';
 import { Chart, type ChartSeries } from '../components/Chart';
 import { LandscapeChart } from '../components/LandscapeChart';
@@ -101,6 +102,7 @@ const PERIOD_OPTIONS = [
 
 export function HomePage({
   avatar,
+  dialogRequest,
   onProfile,
   exclusionEnabled,
   onToggleExclusion,
@@ -112,6 +114,7 @@ export function HomePage({
   onOpenAd,
 }: {
   avatar: string;
+  dialogRequest: DialogRequest;
   onProfile: () => void;
   exclusionEnabled: boolean;
   onToggleExclusion: () => void;
@@ -206,8 +209,10 @@ export function HomePage({
   };
 
   useEffect(() => {
+    if (dialogRequest.dialog) return;
     const popup = DATA.announcements.find((item) => item.categoryName === '弹窗公告');
     if (popup) setPopupNotice(popup);
+    // 仅首次进入首页时自动弹出公告，指定了目录弹层时不抢层
   }, []);
 
   const kpis = useMemo(() => buildHomeKpis(exclusionEnabled, configs), [exclusionEnabled, configs]);
@@ -263,6 +268,64 @@ export function HomePage({
   const trafficRows = useMemo(() => storeTrafficRank(storeRankPeriod), [storeRankPeriod]);
   const levelRows = useMemo(() => levelRank(), []);
   const productRows = useMemo(() => productRank(productPeriod, productMetric), [productPeriod, productMetric]);
+
+  // 原型目录可直接定位到页面内的弹层，先收起其他弹层再打开目标层
+  useEffect(() => {
+    if (!dialogRequest.token) return;
+    const dialog = dialogRequest.dialog;
+    setAnnOpen(false);
+    setAnnDetail(null);
+    setPopupNotice(null);
+    setTrendSettingsOpen(false);
+    setLandscapeOpen(false);
+    setAlertKind(null);
+    setExclusionOpen(false);
+    setRankKind(null);
+    setSkuTarget(null);
+    setContactOpen(false);
+    if (!dialog) return;
+    switch (dialog) {
+      case 'notice': {
+        const popup = DATA.announcements.find((item) => item.categoryName === '弹窗公告') ?? DATA.announcements[0];
+        if (popup) setPopupNotice(popup);
+        break;
+      }
+      case 'announcements':
+        setAnnOpen(true);
+        break;
+      case 'announcement-detail':
+        setAnnDetail(DATA.announcements[0] ?? null);
+        break;
+      case 'trend-settings':
+        setTrendSettingsOpen(true);
+        break;
+      case 'landscape':
+        setLandscapeOpen(true);
+        break;
+      case 'alert-settings':
+        setAlertKind('order');
+        break;
+      case 'exclusion':
+        setExclusionOpen(true);
+        break;
+      case 'ranking-store':
+        setRankKind('sales');
+        break;
+      case 'ranking-product':
+        setRankKind('product');
+        break;
+      case 'sku': {
+        const first = productRows[0];
+        if (first) setSkuTarget({ itemcode: first.itemcode ?? '', name: first.name ?? '' });
+        break;
+      }
+      case 'contact':
+        setContactOpen(true);
+        break;
+      default:
+        break;
+    }
+  }, [dialogRequest]);
 
   const alerts: Array<{ title: string; desc: string; count: number; tone: string; icon: string; kind: AlertKind }> = [
     { title: '异常订单', desc: '平台异常未处理的订单', count: DATA.abnormal.abnormalOrderCount, tone: 'danger', icon: alertIcon1, kind: 'order' },

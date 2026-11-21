@@ -34,6 +34,7 @@ import {
 } from '../data/adTrend';
 import { fmtAxis, fmtInt, fmtMetric, fmtMoney, fmtMoneyAxis, fmtPct, fmtRoas } from '../data/format';
 import type { AdTrendPoint, ExclusionConfig } from '../data/types';
+import type { DialogRequest } from '../dialog-route';
 import { AdDetailSheet } from '../components/AdDetailSheet';
 import { BackToTop } from '../components/BackToTop';
 import { MetricHelp } from '../components/MetricHelp';
@@ -129,6 +130,7 @@ function validateRange(from: string, to: string) {
 }
 
 export function AdBoardPage({
+  dialogRequest,
   initialMetric,
   initialTab = 'deal',
   exclusionEnabled,
@@ -139,6 +141,7 @@ export function AdBoardPage({
   syncing,
   onSync,
 }: {
+  dialogRequest: DialogRequest;
   initialMetric: AdTrendView;
   initialTab?: string;
   exclusionEnabled: boolean;
@@ -348,6 +351,74 @@ export function AdBoardPage({
       };
     });
   }, [effectiveStoreIds, adRows, viewFilters.store.adType, from, to, exclusionEnabled, configs]);
+
+  // 原型目录可直接定位到本页弹层：先收起其他弹层，再按 route 打开目标层
+  useEffect(() => {
+    if (!dialogRequest.token) return;
+    const dialog = dialogRequest.dialog;
+    setStoreOpen(false);
+    setDateOpen(false);
+    setDatePicker(null);
+    setMetricOpen(false);
+    setSortOpen(false);
+    setExclusionOpen(false);
+    setCaliberOpen(false);
+    setCountryOpen(false);
+    setCompareSortOpen(false);
+    setStoreTrendTarget(null);
+    setStoreTrendLandscape(false);
+    setLandscapeOpen(false);
+    setDetailTarget(null);
+    if (!dialog) return;
+    const first = storeRows[0];
+    switch (dialog) {
+      case 'store-filter':
+        setStoreOpen(true);
+        break;
+      case 'date':
+        setDateOpen(true);
+        break;
+      case 'date-picker':
+        setDateOpen(true);
+        setDatePicker('from');
+        break;
+      case 'metric':
+        setMetricOpen(true);
+        break;
+      case 'compare-sort':
+        setCompareSortOpen(true);
+        break;
+      case 'sort':
+        setSortOpen(true);
+        break;
+      case 'caliber':
+        setCaliberOpen(true);
+        break;
+      case 'exclusion':
+        setExclusionOpen(true);
+        break;
+      case 'country':
+        setCountryOpen(true);
+        break;
+      case 'store-trend':
+        if (first) setStoreTrendTarget({ storeId: first.storeId, storeName: first.storeName });
+        break;
+      case 'store-trend-landscape':
+        if (first) {
+          setStoreTrendTarget({ storeId: first.storeId, storeName: first.storeName });
+          setStoreTrendLandscape(true);
+        }
+        break;
+      case 'landscape':
+        setLandscapeOpen(true);
+        break;
+      case 'ad-detail':
+        if (first) setDetailTarget({ view: 'store', row: first } as DetailTarget);
+        break;
+      default:
+        break;
+    }
+  }, [dialogRequest]);
 
   const itemRows = useMemo(() => buildItemRows(adsOf(viewFilters.item.adType)), [adRows, viewFilters.item.adType]);
   const planRows = useMemo(() => buildPlanRows(adsOf(viewFilters.plan.adType)), [adRows, viewFilters.plan.adType]);

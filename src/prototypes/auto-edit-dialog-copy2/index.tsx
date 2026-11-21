@@ -306,6 +306,31 @@ const sizeTplRows = [
   { id: 'size-3', name: 'clothes' },
 ];
 
+// ===== 商品价格 =====
+type PriceMode = 'unit' | 'formula' | 'auto_seller' | 'reverse_current' | 'custom' | 'pricing_strategy';
+type PricePickField = 'op' | 'decimals' | 'formulaDecimals' | 'template';
+
+const priceModes: { id: PriceMode; label: string; tip?: string }[] = [
+  { id: 'unit', label: '统一价格' },
+  { id: 'formula', label: '按当前价运算' },
+  { id: 'custom', label: '自定义公式' },
+  { id: 'pricing_strategy', label: '定价模板' },
+  // 按批注暂时注释，后续可恢复
+  // { id: 'auto_seller', label: '按折扣率计算', tip: '根据折扣率、佣金率自动计算卖家价格' },
+  // { id: 'reverse_current', label: '按买家价反算', tip: '以当前价作为买家价格反算卖家价格' },
+];
+const priceOpOptions = ['加', '减', '乘', '除'];
+const priceDecimalOptions = ['取整', '保留1位小数', '保留2位小数'];
+const pricingTemplateOptions = [
+  'Excel算价模板(新)',
+  'test买家运费',
+  '验收-渠道A',
+  '验收-线性A',
+  'test上新价模板',
+];
+const priceFormulaVars = ['%采集价%', '%当前价%', '%最高价%', '%最低价%'];
+const PRICE_TIER_MAX = 4;
+
 // ===== 类目选择（数据同线上敦煌类目树） =====
 type CategoryNode = { label: string; children?: CategoryNode[] };
 const catLeaf = (label: string): CategoryNode => ({ label });
@@ -588,10 +613,11 @@ const stockLeadTimeHintMixed = '有备货 1–4 个工作日、备货中 5–10 
 const MAX_MAIN_IMAGES = 8;
 
 type UploadedImage = { url: string; width: number; height: number };
-type MainImageMode = 'reorder' | 'replace' | 'delete' | 'append';
+type MainImageMode = 'reorder' | 'random' | 'replace' | 'delete' | 'append';
 
 const mainImageModes: { id: MainImageMode; label: string; hint: string }[] = [
   { id: 'reorder', label: '调换顺序', hint: '拖拽调整主图顺序，或由系统随机打乱顺序' },
+  { id: 'random', label: '随机排序', hint: '由系统随机打乱主图顺序' },
   { id: 'replace', label: '替换主图', hint: '' },
   { id: 'delete', label: '删除主图', hint: '删除指定位置的主图' },
   { id: 'append', label: '附加主图', hint: '上传新的图片附加到结尾，如果主图数量超过限制，则自动替换最后的主图（主图数量最高限制 8 张）' },
@@ -713,7 +739,7 @@ const imageTranslateModes = [
 ];
 
 // ===== 加水印：水印配置（功能沿用「批量美图」的加水印面板）=====
-type WatermarkType = 'text' | 'image';
+type WatermarkType = 'text' | 'store' | 'image';
 type WatermarkPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'tile';
 type WatermarkAngle = 'horizontal' | 'left' | 'right';
 
@@ -765,6 +791,118 @@ const wmAngles: { id: WatermarkAngle; label: string }[] = [
 // 图片水印模板的占位预览图（与「批量美图」一致）
 const wmLogoPreview =
   'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U4ZThlOCIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mm7TlvZPmo4DmmKPmlrA8L3RleHQ+PC9zdmc+';
+
+// 预览画布按 800x800 的成品图比例绘制，与「批量美图」的预览效果一致
+const WM_PREVIEW_SIZE = 800;
+const WM_STORE_TEXT = '店铺名称';
+
+const drawWmPreview = (
+  canvas: HTMLCanvasElement,
+  config: WatermarkConfig,
+  text: string,
+  image?: HTMLImageElement,
+) => {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const S = WM_PREVIEW_SIZE;
+  ctx.clearRect(0, 0, S, S);
+  ctx.fillStyle = '#e5e6eb';
+  ctx.fillRect(0, 0, S, S);
+  ctx.globalAlpha = config.opacity / 100;
+
+  const angleRad = config.angle === 'left' ? -Math.PI / 6 : config.angle === 'right' ? Math.PI / 6 : 0;
+  const pad = 24;
+
+  if (config.type !== 'image') {
+    ctx.fillStyle = '#303133';
+    ctx.font = `${config.fontSize}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    if (config.position === 'tile') {
+      const textWidth = ctx.measureText(text).width;
+      const stepX = textWidth + config.fontSize * 2.5;
+      const stepY = config.fontSize * 3;
+      ctx.save();
+      ctx.translate(S / 2, S / 2);
+      ctx.rotate(angleRad);
+      let rowIndex = 0;
+      for (let y = -S; y <= S; y += stepY) {
+        const offset = rowIndex % 2 === 0 ? 0 : stepX / 2;
+        for (let x = -S - stepX; x <= S; x += stepX) {
+          ctx.fillText(text, x + offset, y);
+        }
+        rowIndex += 1;
+      }
+      ctx.restore();
+    } else {
+      const right = config.position.endsWith('right');
+      const top = config.position.startsWith('top');
+      ctx.textAlign = right ? 'right' : 'left';
+      ctx.fillText(
+        text,
+        right ? S - pad : pad,
+        top ? pad + config.fontSize / 2 : S - pad - config.fontSize / 2,
+      );
+    }
+  } else if (image) {
+    const width = Math.max(1, config.imageSize * 2);
+    const height = width * ((image.height / image.width) || 1);
+    if (config.position === 'tile') {
+      ctx.save();
+      ctx.translate(S / 2, S / 2);
+      ctx.rotate(angleRad);
+      const stepX = width + 60;
+      const stepY = height + 60;
+      for (let y = -S; y <= S; y += stepY) {
+        for (let x = -S; x <= S; x += stepX) {
+          ctx.drawImage(image, x - width / 2, y - height / 2, width, height);
+        }
+      }
+      ctx.restore();
+    } else {
+      const x = config.position.endsWith('right') ? S - width - pad : pad;
+      const y = config.position.startsWith('top') ? pad : S - height - pad;
+      ctx.drawImage(image, x, y, width, height);
+    }
+  }
+
+  ctx.globalAlpha = 1;
+};
+
+function WmPreview({ config, text, onOpen }: {
+  config: WatermarkConfig;
+  text: string;
+  onOpen: (src: string) => void;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    if (config.type === 'image' && config.imagePreview) {
+      const image = new Image();
+      image.onload = () => drawWmPreview(canvas, config, text, image);
+      image.src = config.imagePreview;
+      if (image.complete) drawWmPreview(canvas, config, text, image);
+      return;
+    }
+    drawWmPreview(canvas, config, text);
+  }, [config, text]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="ae-wm-preview-canvas"
+      width={WM_PREVIEW_SIZE}
+      height={WM_PREVIEW_SIZE}
+      title="点击查看大图"
+      onClick={() => {
+        const canvas = canvasRef.current;
+        if (canvas) onOpen(canvas.toDataURL('image/png'));
+      }}
+    />
+  );
+}
 
 const UploadLineIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -924,6 +1062,7 @@ function WatermarkCard({ config, onConfigChange, templateId, onPickTemplate }: {
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [savedTip, setSavedTip] = useState('');
+  const [previewSrc, setPreviewSrc] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const selected = wmTemplates.find((t) => t.id === templateId);
 
@@ -974,7 +1113,7 @@ function WatermarkCard({ config, onConfigChange, templateId, onPickTemplate }: {
       <div className="ae-wm-row">
         <span className="ae-wm-label">水印类型</span>
         <div className="ae-radio-group">
-          {([['text', '文字水印'], ['image', '图片水印']] as const).map(([type, label]) => (
+          {([['text', '文字水印'], ['store', '店铺名称水印'], ['image', '图片水印']] as const).map(([type, label]) => (
             <label key={type} className="ae-radio">
               <input
                 type="radio"
@@ -989,7 +1128,7 @@ function WatermarkCard({ config, onConfigChange, templateId, onPickTemplate }: {
         </div>
       </div>
 
-      {config.type === 'text' ? (
+      {config.type !== 'image' ? (
         <>
           <div className="ae-wm-row">
             <label className="ae-wm-label">水印文字</label>
@@ -997,7 +1136,8 @@ function WatermarkCard({ config, onConfigChange, templateId, onPickTemplate }: {
               className="ae-wm-input"
               type="text"
               placeholder="请输入水印文字"
-              value={config.text}
+              value={config.type === 'store' ? WM_STORE_TEXT : config.text}
+              disabled={config.type === 'store'}
               onChange={(e) => onConfigChange({ text: e.target.value })}
             />
           </div>
@@ -1013,28 +1153,6 @@ function WatermarkCard({ config, onConfigChange, templateId, onPickTemplate }: {
                 onChange={(e) => onConfigChange({ fontSize: Number(e.target.value) })}
               />
               <span className="ae-wm-slider-value">{config.fontSize}</span>
-            </div>
-          </div>
-          <div className="ae-wm-row">
-            <label className="ae-wm-label">透明度</label>
-            <div className="ae-wm-slider-row">
-              <input
-                className="ae-wm-slider"
-                type="range"
-                min={20}
-                max={100}
-                value={config.opacity}
-                onChange={(e) => onConfigChange({ opacity: Number(e.target.value) })}
-              />
-              <span className="ae-wm-slider-value">{config.opacity}%</span>
-            </div>
-          </div>
-          <div className="ae-wm-row">
-            <span className="ae-wm-label">预览</span>
-            <div className="ae-wm-preview">
-              {config.text
-                ? <span style={{ fontSize: config.fontSize, opacity: config.opacity / 100 }}>{config.text}</span>
-                : <span className="ae-wm-preview-empty">未填写水印文字</span>}
             </div>
           </div>
         </>
@@ -1062,29 +1180,40 @@ function WatermarkCard({ config, onConfigChange, templateId, onPickTemplate }: {
               <span className="ae-wm-slider-value">{config.imageSize}%</span>
             </div>
           </div>
-          <div className="ae-wm-row">
-            <label className="ae-wm-label">透明度</label>
-            <div className="ae-wm-slider-row">
-              <input
-                className="ae-wm-slider"
-                type="range"
-                min={20}
-                max={100}
-                value={config.opacity}
-                onChange={(e) => onConfigChange({ opacity: Number(e.target.value) })}
-              />
-              <span className="ae-wm-slider-value">{config.opacity}%</span>
-            </div>
-          </div>
-          <div className="ae-wm-row">
-            <span className="ae-wm-label">预览</span>
-            <div className="ae-wm-preview">
-              {config.imagePreview
-                ? <img src={config.imagePreview} alt="" style={{ width: config.imageSize * 0.6, opacity: config.opacity / 100 }} />
-                : <span className="ae-wm-preview-empty">未上传图片</span>}
-            </div>
-          </div>
         </>
+      )}
+
+      <div className="ae-wm-row">
+        <label className="ae-wm-label">透明度</label>
+        <div className="ae-wm-slider-row">
+          <input
+            className="ae-wm-slider"
+            type="range"
+            min={20}
+            max={100}
+            value={config.opacity}
+            onChange={(e) => onConfigChange({ opacity: Number(e.target.value) })}
+          />
+          <span className="ae-wm-slider-value">{config.opacity}%</span>
+        </div>
+      </div>
+
+      <div className="ae-wm-row">
+        <span className="ae-wm-label">预览</span>
+        <WmPreview
+          config={config}
+          text={config.type === 'store' ? WM_STORE_TEXT : config.text.trim() || '预览文字'}
+          onOpen={setPreviewSrc}
+        />
+        {config.type === 'image' && !config.imagePreview && (
+          <span className="ae-wm-preview-empty">未上传图片</span>
+        )}
+      </div>
+
+      {previewSrc && (
+        <div className="ae-wm-preview-modal" onClick={() => setPreviewSrc(null)}>
+          <img src={previewSrc} alt="水印预览" />
+        </div>
       )}
 
       <div className="ae-wm-row">
@@ -1399,6 +1528,29 @@ export default function AutoEditDialog() {
   const [attrBasis, setAttrBasis] = useState('');
   const [attrChecked, setAttrChecked] = useState(false);
   const [brandValue, setBrandValue] = useState('');
+  // ===== 商品价格 =====
+  const [priceChecked, setPriceChecked] = useState<Record<string, boolean>>({});
+  const [priceMode, setPriceMode] = useState<PriceMode | ''>('');
+  const [priceUnitValue, setPriceUnitValue] = useState('');
+  const [priceOp, setPriceOp] = useState('');
+  const [priceOpValue, setPriceOpValue] = useState('');
+  const [priceDecimals, setPriceDecimals] = useState('');
+  const [priceFormula, setPriceFormula] = useState('');
+  const [priceFormulaDecimals, setPriceFormulaDecimals] = useState('');
+  const [priceTemplate, setPriceTemplate] = useState('');
+  const [priceShopDiscount, setPriceShopDiscount] = useState('');
+  const [priceCategoryCommission, setPriceCategoryCommission] = useState('');
+  const [priceTierMin, setPriceTierMin] = useState('');
+  const [priceTiers, setPriceTiers] = useState<{ id: number; min: string; discount: string }[]>([]);
+  const [pricePick, setPricePick] = useState<{
+    field: PricePickField;
+    left: number;
+    width: number;
+    maxHeight: number;
+    top?: number;
+    bottom?: number;
+  } | null>(null);
+  const pricePickTrigger = useRef<HTMLElement | null>(null);
   const [weight, setWeight] = useState('');
   const [titleOpsOn, setTitleOpsOn] = useState<string[]>([]);
   const [aiTitleKeywords, setAiTitleKeywords] = useState('');
@@ -1407,6 +1559,9 @@ export default function AutoEditDialog() {
   const [tagRemove, setTagRemove] = useState(false);
   const [mainImageChecked, setMainImageChecked] = useState(false);
   const [mainImageMode, setMainImageMode] = useState<MainImageMode | ''>('');
+  const [promoChecked, setPromoChecked] = useState(false);
+  const [promoMode, setPromoMode] = useState('');
+  const [removeSkuChecked, setRemoveSkuChecked] = useState(false);
   // 视频：上传 / 生成 / 删除；生成视频时下方展开配置卡片
   const [videoMode, setVideoMode] = useState<VideoMode | ''>('');
   const [videoExistMode, setVideoExistMode] = useState('');
@@ -1500,6 +1655,11 @@ export default function AutoEditDialog() {
   };
 
   const handleSubmit = () => {
+    // 按批注暂时注释，后续可恢复
+    // if (priceChecked.price && priceMode === 'auto_seller' && !priceShopDiscount.trim()) {
+    //   setToast('请填写店铺上新折扣率');
+    //   return;
+    // }
     if (basicChecked.video && videoMode === 'generate' && !videoExistMode) {
       setToast('请选择已有视频的商品处理方式');
       return;
@@ -1507,9 +1667,9 @@ export default function AutoEditDialog() {
     const watermarkOn = !!imageOpChecked['add-watermark'];
     const watermarkScopes = imageOpScopes['add-watermark'] ?? [];
     if (watermarkOn && watermarkScopes.length > 0) {
-      const incomplete = wmConfig.type === 'text' ? !wmConfig.text.trim() : !wmConfig.imageName;
+      const incomplete = wmConfig.type === 'image' ? !wmConfig.imageName : wmConfig.type === 'text' ? !wmConfig.text.trim() : false;
       if (incomplete) {
-        setToast(wmConfig.type === 'text' ? '请先输入水印文字后再提交' : '请先上传水印图片后再提交');
+        setToast(wmConfig.type === 'image' ? '请先上传水印图片后再提交' : '请先输入水印文字后再提交');
         return;
       }
     }
@@ -1805,6 +1965,22 @@ export default function AutoEditDialog() {
       return !prev;
     });
 
+  const selectMainImageMode = (mode: MainImageMode) => {
+    setMainImageMode(mode);
+    setMainImageChecked(true);
+  };
+
+  const togglePromo = () =>
+    setPromoChecked((prev) => {
+      if (prev) setPromoMode('');
+      return !prev;
+    });
+
+  const selectPromoMode = (mode: string) => {
+    setPromoMode(mode);
+    setPromoChecked(true);
+  };
+
   const shuffleOrder = () =>
     setSlotIds((prev) => {
       const next = [...prev];
@@ -2056,6 +2232,130 @@ export default function AutoEditDialog() {
       return String(value);
     });
   };
+
+  // ===== 商品价格：行勾选与价格区间 =====
+  const ensurePrice = (id: string) =>
+    setPriceChecked((prev) => (prev[id] ? prev : { ...prev, [id]: true }));
+
+  const togglePriceRow = (id: string) =>
+    setPriceChecked((prev) => {
+      const next = { ...prev, [id]: !prev[id] };
+      if (next[id]) return next;
+      if (id === 'price') {
+        setPriceMode('');
+        setPriceUnitValue('');
+        setPriceOp('');
+        setPriceOpValue('');
+        setPriceDecimals('');
+        setPriceFormula('');
+        setPriceFormulaDecimals('');
+        setPriceTemplate('');
+        setPriceShopDiscount('');
+        setPriceCategoryCommission('');
+      }
+      if (id === 'tier') {
+        setPriceTierMin('');
+        setPriceTiers([]);
+      }
+      return next;
+    });
+
+  const stepPriceTier = (id: number | 'base', delta: number) => {
+    const step = (value: string) => String(Math.max(0, Number(value || 0) + delta));
+    if (id === 'base') {
+      setPriceTierMin(step);
+      return;
+    }
+    setPriceTiers((prev) => prev.map((tier) => (tier.id === id ? { ...tier, min: step(tier.min) } : tier)));
+  };
+
+  const addPriceTier = () => {
+    if (priceTiers.length + 1 >= PRICE_TIER_MAX) {
+      setToast('最多只能添加4个价格区间');
+      return;
+    }
+    setPriceTiers((prev) => [...prev, { id: Date.now(), min: '', discount: '' }]);
+  };
+
+  const removePriceTier = (id: number) =>
+    setPriceTiers((prev) => prev.filter((tier) => tier.id !== id));
+
+  const placePricePick = (field: PricePickField, trigger: HTMLElement) => {
+    const rect = trigger.getBoundingClientRect();
+    const bounds = trigger.closest('.ae-content')?.getBoundingClientRect();
+    const spaceBelow = (bounds?.bottom ?? window.innerHeight) - rect.bottom;
+    const spaceAbove = rect.top - (bounds?.top ?? 0);
+    const openUp = spaceAbove >= 220 || spaceAbove > spaceBelow;
+    const maxHeight = Math.max(120, Math.min(240, (openUp ? spaceAbove : spaceBelow) - 8));
+    setPricePick({
+      field,
+      left: rect.left,
+      width: rect.width,
+      maxHeight,
+      ...(openUp ? { bottom: window.innerHeight - rect.top + 4 } : { top: rect.bottom + 4 }),
+    });
+  };
+
+  const togglePricePick = (field: PricePickField, trigger: HTMLElement) => {
+    if (pricePick?.field === field) {
+      setPricePick(null);
+      return;
+    }
+    pricePickTrigger.current = trigger;
+    placePricePick(field, trigger);
+  };
+
+  useEffect(() => {
+    if (!pricePick) return;
+    const onDown = (e: MouseEvent) => {
+      if (pricePickTrigger.current?.contains(e.target as Node)) return;
+      setPricePick(null);
+    };
+    const reposition = () => {
+      if (pricePickTrigger.current) placePricePick(pricePick.field, pricePickTrigger.current);
+    };
+    document.addEventListener('mousedown', onDown);
+    window.addEventListener('resize', reposition);
+    window.addEventListener('scroll', reposition, true);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      window.removeEventListener('resize', reposition);
+      window.removeEventListener('scroll', reposition, true);
+    };
+  }, [pricePick]);
+
+  const priceMenu = (field: PricePickField, options: string[], current: string, onPick: (value: string) => void) =>
+    pricePick?.field === field && (
+      <div
+        className="ae-wm-menu ae-wm-menu--fixed"
+        role="listbox"
+        style={{
+          left: pricePick.left,
+          width: pricePick.width,
+          maxHeight: pricePick.maxHeight,
+          top: pricePick.top,
+          bottom: pricePick.bottom,
+        }}
+      >
+        {options.map((option) => (
+          <div
+            key={option}
+            className={`ae-wm-menu-item${option === current ? ' is-active' : ''}`}
+            role="option"
+            aria-selected={option === current}
+            onClick={() => {
+              onPick(option);
+              setPricePick(null);
+            }}
+          >
+            {option}
+          </div>
+        ))}
+      </div>
+    );
+
+  const appendFormulaVar = (variable: string) =>
+    setPriceFormula((prev) => (prev ? `${prev} ${variable}` : variable));
 
   // 拖拽经过某个位置时立即换位，而不是松手才生效
   const handleDragEnter = (index: number) => {
@@ -2830,7 +3130,7 @@ export default function AutoEditDialog() {
             {activeMenu === 'image' && (
               <>
             {/* 主图 */}
-            <FormRow label="主图" checked={mainImageChecked} onCheck={toggleMainImage} flush disabled>
+            <FormRow label="主图" checked={mainImageChecked} onCheck={toggleMainImage} flush>
               <div className="ae-radio-group">
                 {mainImageModes.map((mode) => (
                   <div key={mode.id} className="ae-radio-slot">
@@ -2839,7 +3139,7 @@ export default function AutoEditDialog() {
                         type="radio"
                         name="mainImage"
                         checked={mainImageMode === mode.id}
-                        disabled
+                        onChange={() => selectMainImageMode(mode.id)}
                       />
                       <span className="ae-radio-mask" />
                       <span>{mode.label}</span>
@@ -2974,11 +3274,16 @@ export default function AutoEditDialog() {
             </FormRow>
 
             {/* 推广图 */}
-            <FormRow label="推广图" disabled>
+            <FormRow label="推广图" checked={promoChecked} onCheck={togglePromo}>
               <div className="ae-radio-group">
                 {['第一张', '随机一张', '上传一张图片'].map((opt) => (
                   <label key={opt} className="ae-radio">
-                    <input type="radio" name="promo" disabled checked={false} onChange={() => {}} />
+                    <input
+                      type="radio"
+                      name="promo"
+                      checked={promoMode === opt}
+                      onChange={() => selectPromoMode(opt)}
+                    />
                     <span className="ae-radio-mask" />
                     <span>{opt}</span>
                   </label>
@@ -2987,7 +3292,7 @@ export default function AutoEditDialog() {
             </FormRow>
 
             {/* 移除sku图片 */}
-            <FormRow label="移除sku图片" disabled>
+            <FormRow label="移除sku图片" checked={removeSkuChecked} onCheck={() => setRemoveSkuChecked((v) => !v)}>
               <span className="ae-hint">系统自动替换无需操作，请直接点击确认</span>
             </FormRow>
 
@@ -3689,6 +3994,373 @@ export default function AutoEditDialog() {
               </>
             )}
 
+            {activeMenu === 'price' && (
+              <>
+              {/* 价格 */}
+              <FormRow label="价格" checked={!!priceChecked.price} onCheck={() => togglePriceRow('price')}>
+                <div className="ae-radio-group ae-price-mode-group">
+                  {priceModes.map((mode) => (
+                    <label key={mode.id} className="ae-radio">
+                      <input
+                        type="radio"
+                        name="priceMode"
+                        checked={priceMode === mode.id}
+                        onChange={() => {
+                          ensurePrice('price');
+                          setPriceMode(mode.id);
+                        }}
+                      />
+                      <span className="ae-radio-mask" />
+                      <span>{mode.label}</span>
+                      {mode.tip && (
+                        <span
+                          className="ae-label-tip ae-label-tip--below"
+                          data-tip={mode.tip}
+                          role="img"
+                          aria-label={mode.tip}
+                          tabIndex={0}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }}
+                        >
+                          <span className="ae-label-tip-icon">?</span>
+                        </span>
+                      )}
+                    </label>
+                  ))}
+                </div>
+
+                {priceMode === 'unit' && (
+                  <div className="ae-price-line">
+                    <div className="ae-input-wrap">
+                      <input
+                        className="ae-input"
+                        type="text"
+                        inputMode="decimal"
+                        placeholder="请输入统一价格"
+                        value={priceUnitValue}
+                        onChange={(e) => setPriceUnitValue(e.target.value.replace(/[^\d.]/g, ''))}
+                      />
+                      <div className="ae-input-steps">
+                        <button className="ae-step" type="button" onClick={() => setPriceUnitValue((prev) => String(Math.max(0, Math.round((Number(prev || 0) + 1) * 100) / 100)))}>▲</button>
+                        <button className="ae-step" type="button" onClick={() => setPriceUnitValue((prev) => String(Math.max(0, Math.round((Number(prev || 0) - 1) * 100) / 100)))}>▼</button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {priceMode === 'formula' && (
+                  <div className="ae-price-line">
+                    <div className="ae-price-select-wrap">
+                      <button
+                        className="ae-wm-select"
+                        type="button"
+                        onClick={(e) => togglePricePick('op', e.currentTarget)}
+                      >
+                        <span className={priceOp ? '' : 'is-placeholder'}>{priceOp || '操作符'}</span>
+                        <ChevronDown />
+                      </button>
+                      {priceMenu('op', priceOpOptions, priceOp, setPriceOp)}
+                    </div>
+                    <div className="ae-input-wrap">
+                      <input
+                        className="ae-input"
+                        type="text"
+                        inputMode="decimal"
+                        placeholder="操作值"
+                        value={priceOpValue}
+                        onChange={(e) => setPriceOpValue(e.target.value.replace(/[^\d.]/g, ''))}
+                      />
+                      <div className="ae-input-steps">
+                        <button className="ae-step" type="button" onClick={() => setPriceOpValue((prev) => String(Math.max(0, Number(prev || 0) + 1)))}>▲</button>
+                        <button className="ae-step" type="button" onClick={() => setPriceOpValue((prev) => String(Math.max(0, Number(prev || 0) - 1)))}>▼</button>
+                      </div>
+                    </div>
+                    <div className="ae-price-select-wrap">
+                      <button
+                        className="ae-wm-select"
+                        type="button"
+                        onClick={(e) => togglePricePick('decimals', e.currentTarget)}
+                      >
+                        <span className={priceDecimals ? '' : 'is-placeholder'}>{priceDecimals || '保留小数'}</span>
+                        <ChevronDown />
+                      </button>
+                      {priceMenu('decimals', priceDecimalOptions, priceDecimals, setPriceDecimals)}
+                    </div>
+                  </div>
+                )}
+
+                {/* 按批注暂时注释，后续可恢复
+                {priceMode === 'auto_seller' && (
+                  <div className="ae-price-auto">
+                    <div className="ae-price-auto-fields">
+                      <div className="ae-price-auto-field">
+                        <span className="ae-price-auto-label">
+                          <span className="ae-price-required">*</span>店铺上新折扣率
+                        </span>
+                        <div className="ae-input-wrap">
+                          <input
+                            className="ae-input ae-price-auto-input ae-price-auto-input--step"
+                            type="text"
+                            inputMode="decimal"
+                            placeholder="请输入"
+                            value={priceShopDiscount}
+                            onChange={(e) => {
+                              ensurePrice('price');
+                              setPriceShopDiscount(e.target.value.replace(/[^\d.]/g, ''));
+                            }}
+                          />
+                          <div className="ae-input-steps">
+                            <button
+                              className="ae-step"
+                              type="button"
+                              onClick={() => setPriceShopDiscount((prev) => String(Math.max(0, Math.round((Number(prev || 0) + 0.01) * 100) / 100)))}
+                            >▲</button>
+                            <button
+                              className="ae-step"
+                              type="button"
+                              onClick={() => setPriceShopDiscount((prev) => String(Math.max(0, Math.round((Number(prev || 0) - 0.01) * 100) / 100)))}
+                            >▼</button>
+                          </div>
+                        </div>
+                        <span className="ae-price-auto-unit">（小数）</span>
+                      </div>
+                      <div className="ae-price-auto-field">
+                        <span className="ae-price-auto-label">类目佣金率</span>
+                        <div className="ae-input-wrap">
+                          <input
+                            className="ae-input ae-price-auto-input ae-price-auto-input--step"
+                            type="text"
+                            inputMode="decimal"
+                            placeholder="自动匹配"
+                            value={priceCategoryCommission}
+                            onChange={(e) => {
+                              ensurePrice('price');
+                              setPriceCategoryCommission(e.target.value.replace(/[^\d.]/g, ''));
+                            }}
+                          />
+                          <div className="ae-input-steps">
+                            <button
+                              className="ae-step"
+                              type="button"
+                              onClick={() => setPriceCategoryCommission((prev) => String(Math.max(0, Math.round((Number(prev || 0) + 0.01) * 100) / 100)))}
+                            >▲</button>
+                            <button
+                              className="ae-step"
+                              type="button"
+                              onClick={() => setPriceCategoryCommission((prev) => String(Math.max(0, Math.round((Number(prev || 0) - 0.01) * 100) / 100)))}
+                            >▼</button>
+                          </div>
+                        </div>
+                        <span className="ae-price-auto-unit">（小数）</span>
+                      </div>
+                    </div>
+                    <div className="ae-hint sub ae-price-hint-warn">类目佣金率未填写将在匹配类目后，根据类目自动获取，未获取类目佣金率时默认为0</div>
+                    <div className="ae-hint sub">计算方式：采集价格*(1-类目佣金率)/店铺折扣率</div>
+                  </div>
+                )}
+
+                {priceMode === 'reverse_current' && (
+                  <div className="ae-price-auto">
+                    <div className="ae-price-auto-fields">
+                      <div className="ae-price-auto-field">
+                        <span className="ae-price-auto-label">类目佣金率</span>
+                        <div className="ae-input-wrap">
+                          <input
+                            className="ae-input ae-price-auto-input ae-price-auto-input--step"
+                            type="text"
+                            inputMode="decimal"
+                            placeholder="自动匹配"
+                            value={priceCategoryCommission}
+                            onChange={(e) => {
+                              ensurePrice('price');
+                              setPriceCategoryCommission(e.target.value.replace(/[^\d.]/g, ''));
+                            }}
+                          />
+                          <div className="ae-input-steps">
+                            <button
+                              className="ae-step"
+                              type="button"
+                              onClick={() => setPriceCategoryCommission((prev) => String(Math.max(0, Math.round((Number(prev || 0) + 0.01) * 100) / 100)))}
+                            >▲</button>
+                            <button
+                              className="ae-step"
+                              type="button"
+                              onClick={() => setPriceCategoryCommission((prev) => String(Math.max(0, Math.round((Number(prev || 0) - 0.01) * 100) / 100)))}
+                            >▼</button>
+                          </div>
+                        </div>
+                        <span className="ae-price-auto-unit">（小数）</span>
+                      </div>
+                    </div>
+                    <div className="ae-hint sub ae-price-hint-warn">类目佣金率未填写将在匹配类目后，根据类目自动获取，未获取类目佣金率时默认为0</div>
+                    <div className="ae-hint sub">计算方式：当前价*(1-类目佣金率)</div>
+                  </div>
+                )}
+                */}
+
+                {priceMode === 'custom' && (
+                  <div className="ae-price-formula">
+                    <textarea
+                      className="ae-price-textarea"
+                      rows={3}
+                      placeholder="支持%cur_price% 表示当前价格"
+                      value={priceFormula}
+                      onChange={(e) => setPriceFormula(e.target.value)}
+                    />
+                    <div className="ae-price-line">
+                      <div className="ae-price-select-wrap">
+                        <button
+                          className="ae-wm-select"
+                          type="button"
+                          onClick={(e) => togglePricePick('formulaDecimals', e.currentTarget)}
+                        >
+                          <span className={priceFormulaDecimals ? '' : 'is-placeholder'}>{priceFormulaDecimals || '保留小数'}</span>
+                          <ChevronDown />
+                        </button>
+                        {priceMenu('formulaDecimals', priceDecimalOptions, priceFormulaDecimals, setPriceFormulaDecimals)}
+                      </div>
+                      <button
+                        className="ae-link-action"
+                        type="button"
+                        onClick={() => setToast(priceFormula.trim() ? '表达式验证通过' : '请输入公式')}
+                      >
+                        验证表达式
+                      </button>
+                    </div>
+                    <div className="ae-price-vars">
+                      <span className="ae-price-vars-label">公式变量:</span>
+                      {priceFormulaVars.map((variable) => (
+                        <button
+                          key={variable}
+                          className="ae-price-var"
+                          type="button"
+                          onClick={() => appendFormulaVar(variable)}
+                        >
+                          {variable}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {priceMode === 'pricing_strategy' && (
+                  <div className="ae-price-line">
+                    <div className="ae-price-select-wrap ae-price-select-wrap--full">
+                      <button
+                        className="ae-wm-select"
+                        type="button"
+                        onClick={(e) => togglePricePick('template', e.currentTarget)}
+                      >
+                        <span className={priceTemplate ? '' : 'is-placeholder'}>{priceTemplate || '请选择定价模板'}</span>
+                        <ChevronDown />
+                      </button>
+                      {priceMenu('template', pricingTemplateOptions, priceTemplate, setPriceTemplate)}
+                    </div>
+                  </div>
+                )}
+              </FormRow>
+
+              {/* 价格区间 */}
+              <FormRow label="价格区间" checked={!!priceChecked.tier} onCheck={() => togglePriceRow('tier')} last>
+                <div className="ae-price-tier-base">
+                  <div className="ae-input-wrap">
+                    <input
+                      className="ae-input"
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="请输入件数"
+                      value={priceTierMin}
+                      onChange={(e) => setPriceTierMin(e.target.value.replace(/[^\d]/g, ''))}
+                    />
+                    <div className="ae-input-steps">
+                      <button className="ae-step" type="button" onClick={() => stepPriceTier('base', 1)}>▲</button>
+                      <button className="ae-step" type="button" onClick={() => stepPriceTier('base', -1)}>▼</button>
+                    </div>
+                  </div>
+                  <div className="ae-price-tier-hint">
+                    <span className="ae-price-info">i</span>
+                    购买(件)以上时,为表格中填写的实际收入
+                  </div>
+                </div>
+
+                {priceTiers.map((tier) => (
+                  <div className="ae-price-tier-row" key={tier.id}>
+                    <div className="ae-price-tier-labels">
+                      <span>购买(件)以上时</span>
+                      <span>减免%</span>
+                    </div>
+                    <div className="ae-price-tier-controls">
+                      <div className="ae-input-wrap">
+                        <input
+                          className="ae-input"
+                          type="text"
+                          inputMode="numeric"
+                          placeholder="请输入件数"
+                          value={tier.min}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/[^\d]/g, '');
+                            setPriceTiers((prev) => prev.map((item) => (item.id === tier.id ? { ...item, min: value } : item)));
+                          }}
+                        />
+                        <div className="ae-input-steps">
+                          <button className="ae-step" type="button" onClick={() => stepPriceTier(tier.id, 1)}>▲</button>
+                          <button className="ae-step" type="button" onClick={() => stepPriceTier(tier.id, -1)}>▼</button>
+                        </div>
+                      </div>
+                      <div className="ae-input-wrap">
+                        <input
+                          className="ae-input"
+                          type="text"
+                          inputMode="numeric"
+                          placeholder="请输入减免%"
+                          value={tier.discount}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/[^\d]/g, '');
+                            setPriceTiers((prev) => prev.map((item) => (item.id === tier.id ? { ...item, discount: value } : item)));
+                          }}
+                        />
+                        <div className="ae-input-steps">
+                          <button
+                            className="ae-step"
+                            type="button"
+                            onClick={() => setPriceTiers((prev) => prev.map((item) => (item.id === tier.id ? { ...item, discount: String(Math.max(0, Number(item.discount || 0) + 1)) } : item)))}
+                          >▲</button>
+                          <button
+                            className="ae-step"
+                            type="button"
+                            onClick={() => setPriceTiers((prev) => prev.map((item) => (item.id === tier.id ? { ...item, discount: String(Math.max(0, Number(item.discount || 0) - 1)) } : item)))}
+                          >▼</button>
+                        </div>
+                      </div>
+                      <button
+                        className="ae-btn-primary ae-price-icon-btn"
+                        type="button"
+                        aria-label="删除价格区间"
+                        onClick={() => removePriceTier(tier.id)}
+                      >
+                        <TrashIcon />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+
+                <div className="ae-price-tier-actions">
+                  <button
+                    className="ae-btn-primary ae-price-icon-btn"
+                    type="button"
+                    aria-label="添加价格区间"
+                    onClick={addPriceTier}
+                  >
+                    <PlusIcon />
+                  </button>
+                  <span className="ae-price-tier-count">{priceTiers.length + 1}/{PRICE_TIER_MAX}</span>
+                </div>
+              </FormRow>
+              </>
+            )}
+
             {activeMenu === 'stock' && (
               <FormRow label="备货状态" checked={!!stockChecked.status} onCheck={toggleStockBlock} last flush annotationId="stock-row">
                 <div className="ae-stock-body">
@@ -3941,7 +4613,7 @@ export default function AutoEditDialog() {
               </FormRow>
             )}
 
-            {activeMenu !== 'basic' && activeMenu !== 'image' && activeMenu !== 'sku' && activeMenu !== 'attr' && activeMenu !== 'detail' && activeMenu !== 'service' && activeMenu !== 'stock' && (
+            {activeMenu !== 'basic' && activeMenu !== 'image' && activeMenu !== 'sku' && activeMenu !== 'attr' && activeMenu !== 'detail' && activeMenu !== 'service' && activeMenu !== 'stock' && activeMenu !== 'price' && (
               <div className="ae-empty">该栏目内容沿用线上已有配置</div>
             )}
           </div>

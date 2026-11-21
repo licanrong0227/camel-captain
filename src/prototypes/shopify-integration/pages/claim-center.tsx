@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import thumbBracelet from '../assets/thumb-bracelet.jpg';
 import thumbNecklace from '../assets/claim-necklace.jpg';
@@ -14,6 +14,7 @@ import icChevRight from '../assets/icons/chevron-right.svg';
 import icChevDown from '../assets/icons/chevron-down.svg';
 import ClaimProductDialog, { TOTAL_CLAIM_STORES } from '../components/ClaimProductDialog';
 import ClaimStoreDialog from '../components/ClaimStoreDialog';
+import type { DialogRequest } from '../dialog-route';
 
 interface ClaimRow {
   image: string;
@@ -330,10 +331,17 @@ function Footer({ onClaim }: { onClaim: () => void }) {
   );
 }
 
-export default function ClaimCenterPage() {
+export default function ClaimCenterPage({ dialogRequest }: { dialogRequest?: DialogRequest }) {
   const [rows, setRows] = useState<ClaimRow[]>(ROWS);
   const [storeRow, setStoreRow] = useState<number | null>(null);
   const [claimTarget, setClaimTarget] = useState<{ row: number; stores: string[] } | null>(null);
+
+  useEffect(() => {
+    if (!dialogRequest) return;
+    const dialog = dialogRequest.dialog;
+    setStoreRow(dialog === 'claim-store' ? 0 : null);
+    setClaimTarget(dialog === 'claim-product' ? { row: 0, stores: [] } : null);
+  }, [dialogRequest]);
 
   const openClaim = (row = -1) => setClaimTarget({ row, stores: [] });
 

@@ -15,7 +15,7 @@ import annotationSourceDocument from './annotation-source.json';
 
 type NavKey = 'whiteBg' | 'translate' | 'addWatermark' | 'watermark' | 'resize';
 type SourceKey = 'main' | 'offSite' | 'spec' | 'detail';
-type WatermarkType = 'text' | 'image';
+type WatermarkType = 'text' | 'store' | 'image';
 type WatermarkAngle = 'horizontal' | 'left' | 'right';
 type IconBackground = 'white' | 'transparent';
 
@@ -92,6 +92,8 @@ const SOURCE_IMAGES: Record<SourceKey, { src: string; width: number; height: num
     { src: bag5, width: 600, height: 800 },
   ],
 };
+
+const DEMO_STORE_NAME = '包包';
 
 const WATERMARK_TEMPLATES = [
   { id: 'tpl-1', name: '主图水印' },
@@ -343,7 +345,7 @@ const drawWatermarkPreview = (
   const angleRad = wm.angle === 'left' ? -Math.PI / 6 : wm.angle === 'right' ? Math.PI / 6 : 0;
   const pad = 24;
 
-  if (wm.type === 'text') {
+  if (wm.type !== 'image') {
     ctx.fillStyle = '#303133';
     ctx.font = `${wm.fontSize}px "PingFang SC", "Microsoft YaHei", sans-serif`;
     ctx.textBaseline = 'middle';
@@ -807,7 +809,8 @@ const BatchImageWhiteBg: React.FC = () => {
     void runProcess(collectEntries(), 'translate');
   };
 
-  const previewText = wm.text.trim() ? wm.text : '预览文字';
+  const previewText =
+    wm.type === 'store' ? DEMO_STORE_NAME : wm.text.trim() ? wm.text : '预览文字';
 
   return (
     <>
@@ -962,6 +965,15 @@ const BatchImageWhiteBg: React.FC = () => {
                             <label className="biw-radio">
                               <input
                                 type="radio"
+                                checked={wm.type === 'store'}
+                                onChange={() => setWm((prev) => ({ ...prev, type: 'store' }))}
+                              />
+                              <span className="biw-radio-dot" />
+                              <span>店铺名称水印</span>
+                            </label>
+                            <label className="biw-radio">
+                              <input
+                                type="radio"
                                 checked={wm.type === 'image'}
                                 onChange={() => setWm((prev) => ({ ...prev, type: 'image' }))}
                               />
@@ -971,7 +983,7 @@ const BatchImageWhiteBg: React.FC = () => {
                           </div>
                         </div>
 
-                        {wm.type === 'text' ? (
+                        {wm.type !== 'image' ? (
                           <>
                             <div className="biw-wm-row">
                               <span className="biw-wm-label">水印文字</span>
@@ -979,7 +991,8 @@ const BatchImageWhiteBg: React.FC = () => {
                                 className="biw-input"
                                 type="text"
                                 placeholder="请输入水印文字"
-                                value={wm.text}
+                                value={wm.type === 'store' ? DEMO_STORE_NAME : wm.text}
+                                disabled={wm.type === 'store'}
                                 onChange={(e) => setWm((prev) => ({ ...prev, text: e.target.value }))}
                               />
                             </div>

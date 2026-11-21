@@ -15,7 +15,7 @@
       {
         "type": "folder",
         "id": "directory-auth",
-        "title": "账号",
+        "title": "账号与注册",
         "defaultExpanded": true,
         "children": [
           {
@@ -25,10 +25,38 @@
             "route": "login"
           },
           {
-            "type": "route",
-            "id": "route-register",
+            "type": "folder",
+            "id": "directory-register",
             "title": "注册",
-            "route": "register"
+            "defaultExpanded": true,
+            "children": [
+              {
+                "type": "route",
+                "id": "route-register",
+                "title": "注册页",
+                "route": "register"
+              },
+              {
+                "type": "folder",
+                "id": "directory-register-dialogs",
+                "title": "弹窗",
+                "defaultExpanded": true,
+                "children": [
+                  {
+                    "type": "route",
+                    "id": "route-register-agreement",
+                    "title": "软件服务许可协议",
+                    "route": "register:agreement-service"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-register-privacy",
+                    "title": "隐私政策",
+                    "route": "register:agreement-privacy"
+                  }
+                ]
+              }
+            ]
           },
           {
             "type": "route",
@@ -45,16 +73,192 @@
         "defaultExpanded": true,
         "children": [
           {
-            "type": "route",
-            "id": "route-home",
+            "type": "folder",
+            "id": "directory-home",
             "title": "首页",
-            "route": "home"
+            "defaultExpanded": true,
+            "children": [
+              {
+                "type": "route",
+                "id": "route-home",
+                "title": "首页",
+                "route": "home"
+              },
+              {
+                "type": "folder",
+                "id": "directory-home-dialogs",
+                "title": "弹层",
+                "defaultExpanded": true,
+                "children": [
+                  {
+                    "type": "route",
+                    "id": "route-home-notice",
+                    "title": "公告弹窗",
+                    "route": "home:notice"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-home-announcements",
+                    "title": "公告中心",
+                    "route": "home:announcements"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-home-announcement-detail",
+                    "title": "公告详情",
+                    "route": "home:announcement-detail"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-home-trend-settings",
+                    "title": "趋势设置",
+                    "route": "home:trend-settings"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-home-landscape",
+                    "title": "横屏趋势",
+                    "route": "home:landscape"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-home-alert-settings",
+                    "title": "异常提醒设置",
+                    "route": "home:alert-settings"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-home-exclusion",
+                    "title": "剔除设置",
+                    "route": "home:exclusion"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-home-ranking-store",
+                    "title": "店铺榜单",
+                    "route": "home:ranking-store"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-home-ranking-product",
+                    "title": "商品榜单",
+                    "route": "home:ranking-product"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-home-sku",
+                    "title": "SKU 明细",
+                    "route": "home:sku"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-home-contact",
+                    "title": "联系我们",
+                    "route": "home:contact"
+                  }
+                ]
+              }
+            ]
           },
           {
-            "type": "route",
-            "id": "route-ad-board",
+            "type": "folder",
+            "id": "directory-ad-board",
             "title": "店铺看板",
-            "route": "ad-board"
+            "defaultExpanded": true,
+            "children": [
+              {
+                "type": "route",
+                "id": "route-ad-board",
+                "title": "店铺看板",
+                "route": "ad-board"
+              },
+              {
+                "type": "folder",
+                "id": "directory-ad-board-dialogs",
+                "title": "弹层",
+                "defaultExpanded": true,
+                "children": [
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-store-filter",
+                    "title": "店铺筛选",
+                    "route": "ad-board:store-filter"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-date",
+                    "title": "时间设置",
+                    "route": "ad-board:date"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-date-picker",
+                    "title": "日期选择器",
+                    "route": "ad-board:date-picker"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-metric",
+                    "title": "指标配置",
+                    "route": "ad-board:metric"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-compare-sort",
+                    "title": "排序（店铺对比）",
+                    "route": "ad-board:compare-sort"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-sort",
+                    "title": "排序（列表）",
+                    "route": "ad-board:sort"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-caliber",
+                    "title": "数据口径",
+                    "route": "ad-board:caliber"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-exclusion",
+                    "title": "剔除设置",
+                    "route": "ad-board:exclusion"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-country",
+                    "title": "国家筛选",
+                    "route": "ad-board:country"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-store-trend",
+                    "title": "店铺趋势",
+                    "route": "ad-board:store-trend"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-store-trend-landscape",
+                    "title": "店铺趋势（横屏）",
+                    "route": "ad-board:store-trend-landscape"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-landscape",
+                    "title": "横屏趋势",
+                    "route": "ad-board:landscape"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-ad-board-ad-detail",
+                    "title": "广告明细",
+                    "route": "ad-board:ad-detail"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -65,16 +269,84 @@
         "defaultExpanded": true,
         "children": [
           {
-            "type": "route",
-            "id": "route-profile",
+            "type": "folder",
+            "id": "directory-profile-page",
             "title": "我的",
-            "route": "profile"
+            "defaultExpanded": true,
+            "children": [
+              {
+                "type": "route",
+                "id": "route-profile",
+                "title": "我的",
+                "route": "profile"
+              },
+              {
+                "type": "folder",
+                "id": "directory-profile-dialogs",
+                "title": "弹层",
+                "defaultExpanded": true,
+                "children": [
+                  {
+                    "type": "route",
+                    "id": "route-profile-password",
+                    "title": "修改密码",
+                    "route": "profile:password"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-profile-contact",
+                    "title": "联系我们",
+                    "route": "profile:contact"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-profile-invite",
+                    "title": "推广链接",
+                    "route": "profile:invite"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-profile-logout",
+                    "title": "退出登录",
+                    "route": "profile:logout"
+                  }
+                ]
+              }
+            ]
           },
           {
-            "type": "route",
-            "id": "route-distribution",
+            "type": "folder",
+            "id": "directory-distribution",
             "title": "分销中心",
-            "route": "distribution"
+            "defaultExpanded": true,
+            "children": [
+              {
+                "type": "route",
+                "id": "route-distribution",
+                "title": "分销中心",
+                "route": "distribution"
+              },
+              {
+                "type": "folder",
+                "id": "directory-distribution-dialogs",
+                "title": "弹层",
+                "defaultExpanded": true,
+                "children": [
+                  {
+                    "type": "route",
+                    "id": "route-distribution-customer-detail",
+                    "title": "客户详情",
+                    "route": "distribution:customer-detail"
+                  },
+                  {
+                    "type": "route",
+                    "id": "route-distribution-reg-picker",
+                    "title": "注册时间选择",
+                    "route": "distribution:reg-picker"
+                  }
+                ]
+              }
+            ]
           }
         ]
       }

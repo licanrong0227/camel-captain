@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Check, ChevronLeft, Lock, ShieldCheck, User } from 'lucide-react';
 import { AuthField } from '../components/AuthField';
 import { Sheet } from '../components/Sheet';
+import type { DialogRequest } from '../dialog-route';
 
 const SERVICE_AGREEMENT = [
   ['一、服务说明', '骆驼队长智慧运营中台为跨境电商卖家提供商品、订单、物流、广告与数据看板等运营工具。注册并使用本服务，即表示你理解并同意本协议。'],
@@ -22,10 +23,12 @@ const PRIVACY_POLICY = [
 const STEPS = ['验证手机', '设置账号', '完成注册'];
 
 export function RegisterPage({
+  dialogRequest,
   onDone,
   onBack,
   onToast,
 }: {
+  dialogRequest: DialogRequest;
   onDone: () => void;
   onBack: () => void;
   onToast: (message: string) => void;
@@ -45,6 +48,12 @@ export function RegisterPage({
   useEffect(() => () => {
     if (timer.current) window.clearInterval(timer.current);
   }, []);
+
+  useEffect(() => {
+    if (!dialogRequest.token) return;
+    const dialog = dialogRequest.dialog;
+    setAgreement(dialog === 'agreement-service' ? 'service' : dialog === 'agreement-privacy' ? 'privacy' : null);
+  }, [dialogRequest]);
 
   const startCountdown = () => {
     if (!/^1\d{10}$/u.test(phone)) {

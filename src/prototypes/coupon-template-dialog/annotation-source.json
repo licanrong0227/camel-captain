@@ -2,7 +2,7 @@
   "documentVersion": 1,
   "format": "axhub-annotation-source",
   "presentation": {
-    "layerSelectors": [".ctd-mask"]
+    "layerSelectors": [".ctd-mask", ".ctd-picker-mask"]
   },
   "data": {
     "version": 2,
@@ -88,7 +88,7 @@
           "path": []
         },
         "aiPrompt": "",
-        "annotationText": "仅优惠券功能=功能券时显示。\n同一行两个控件：功能下拉（刊登数量 / 定时刊登数量 / 循环刊登次数）+ 数量输入。\n数量输入提示随所选功能变化；功能选项后续扩展时按下拉维护。",
+        "annotationText": "仅优惠券功能=功能券时显示。\n同一行两个控件：功能下拉（刊登数量 / 定时刊登数量 / 循环刊登次数 / 订单数量）+ 数量输入。\n数量输入提示随所选功能变化；功能选项后续扩展时按下拉维护。",
         "hasMarkdown": false,
         "color": "#F5222D",
         "images": [],
@@ -123,6 +123,40 @@
         },
         "aiPrompt": "",
         "annotationText": "位置调整：从「每户限额领取个数」下方移到「发放方式」下方。\n仅发放方式=下单返券时显示，其他发放方式不显示。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795100000000,
+        "updatedAt": 1795100000000
+      },
+      {
+        "id": "ann-dialog-manual",
+        "index": 8,
+        "title": "弹窗：手动发放对象",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"ann-dialog-manual\"]"],
+          "fingerprint": "div|data-annotation-id=ann-dialog-manual",
+          "path": []
+        },
+        "aiPrompt": "",
+        "annotationText": "仅发放方式=手动发放时显示。\n发放对象：单选租户 / 代理商，选择后才能添加明细；切换对象类型会清空已选明细。\n发放数量：填写每个租户 / 每个代理商发放的优惠券张数。\n发放对象明细：点击「添加」从租户列表（按所选用户类型过滤，支持按租户ID / 用户名 / 昵称 / 手机号搜索）多选，可逐个移除。\n审核列表的查看 / 审核需同步展示发放对象与明细。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795100000000,
+        "updatedAt": 1795100000000
+      },
+      {
+        "id": "ann-dialog-peruser",
+        "index": 9,
+        "title": "弹窗：每户限额领取个数（条件隐藏）",
+        "locator": {
+          "selectors": ["[data-annotation-id=\"ann-dialog-peruser\"]"],
+          "fingerprint": "div|data-annotation-id=ann-dialog-peruser",
+          "path": []
+        },
+        "aiPrompt": "",
+        "annotationText": "发放方式=手动发放且发放对象=租户时隐藏此项；其他发放方式或发放对象为代理商时正常显示。\n审核列表的查看 / 审核需按同一规则展示。",
         "hasMarkdown": false,
         "color": "#F5222D",
         "images": [],

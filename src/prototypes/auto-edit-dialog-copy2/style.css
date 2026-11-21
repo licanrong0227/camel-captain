@@ -1476,22 +1476,44 @@
   color: var(--ae-text-secondary);
 }
 
-.ae-wm-preview {
-  display: flex;
-  align-items: center;
-  min-width: 120px;
-  min-height: 44px;
-  font-size: 14px;
-  color: var(--ae-text-primary);
+.ae-wm-preview-canvas {
+  display: block;
+  width: 96px;
+  height: 96px;
+  border: 1px solid var(--ae-border);
+  border-radius: 4px;
+  background: #e5e6eb;
+  cursor: zoom-in;
 }
 
-.ae-wm-preview img {
+.ae-wm-preview-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  cursor: zoom-out;
+}
+
+.ae-wm-preview-modal img {
+  max-width: 76vw;
+  max-height: 82vh;
   object-fit: contain;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 
 .ae-wm-preview-empty {
   font-size: 13px;
   color: var(--ae-text-placeholder);
+}
+
+.ae-wm-input:disabled {
+  background: #f5f7fa;
+  color: #909399;
+  cursor: not-allowed;
 }
 
 .ae-wm-file {
@@ -3309,4 +3331,243 @@
 .acd-btn--primary:hover {
   background: var(--ae-primary-hover);
   border-color: var(--ae-primary-hover);
+}
+
+/* ===== 商品价格 ===== */
+.ae-price-line {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.ae-price-select-wrap {
+  position: relative;
+  width: 160px;
+}
+
+.ae-price-select-wrap--full {
+  width: 100%;
+}
+
+.ae-price-select-wrap .ae-wm-select {
+  width: 100%;
+  height: 34px;
+}
+
+.ae-price-select-wrap .ae-wm-select .is-placeholder {
+  color: var(--ae-text-placeholder);
+}
+
+.ae-price-formula {
+  margin-top: 14px;
+}
+
+.ae-price-textarea {
+  width: 100%;
+  min-height: 76px;
+  padding: 8px 12px;
+  border: 1px solid var(--ae-border);
+  border-radius: var(--ae-radius-sm);
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--ae-text-primary);
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.ae-price-textarea::placeholder {
+  color: var(--ae-text-placeholder);
+}
+
+.ae-price-textarea:focus {
+  border-color: var(--ae-primary);
+}
+
+.ae-price-vars {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.ae-price-vars-label {
+  font-size: 14px;
+  color: var(--ae-text-primary);
+}
+
+.ae-price-var {
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-family: inherit;
+  color: #2c7bfc;
+  cursor: pointer;
+}
+
+.ae-price-var:hover {
+  opacity: 0.8;
+}
+
+.ae-price-tier-base {
+  margin-bottom: 10px;
+}
+
+.ae-price-tier-hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #909399;
+}
+
+.ae-price-info {
+  width: 12px;
+  height: 12px;
+  border: 1px solid #909399;
+  border-radius: 50%;
+  font-size: 9px;
+  line-height: 10px;
+  text-align: center;
+  font-style: normal;
+  flex-shrink: 0;
+}
+
+.ae-price-tier-row {
+  margin-bottom: 10px;
+}
+
+.ae-price-tier-labels {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #606266;
+}
+
+.ae-price-tier-labels span {
+  width: 160px;
+}
+
+.ae-price-tier-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ae-price-tier-controls .ae-input {
+  width: 160px;
+}
+
+.ae-price-icon-btn {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ae-price-tier-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ae-price-tier-count {
+  font-size: 14px;
+  color: var(--ae-text-primary);
+}
+
+.ae-price-tier-base .ae-input {
+  width: 160px;
+}
+
+/* 自动计算卖家价格 / 当前价反算卖家价格 */
+.ae-price-auto {
+  margin-top: 14px;
+}
+
+.ae-price-auto-fields {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.ae-price-auto-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ae-price-auto-label {
+  font-size: 14px;
+  color: var(--ae-text-primary);
+  white-space: nowrap;
+}
+
+.ae-price-auto-input {
+  width: 160px;
+  padding-right: 12px;
+}
+
+.ae-price-auto-unit {
+  font-size: 14px;
+  color: var(--ae-text-secondary);
+}
+
+.ae-price-required {
+  color: #f5222d;
+  margin-right: 2px;
+}
+
+.ae-price-hint-warn {
+  color: #ff781f;
+}
+
+.ae-price-auto-input--step {
+  padding-right: 36px;
+}
+
+/* 价格模式：问号悬停提示（向下展开，避免被内容区顶部裁切） */
+.ae-row:has(.ae-price-mode-group) {
+  overflow: visible;
+}
+
+.ae-price-mode-group .ae-label-tip {
+  margin-left: -3px;
+}
+
+.ae-label-tip--below::after {
+  bottom: auto;
+  top: calc(100% + 8px);
+  left: auto;
+  right: -8px;
+  transform: none;
+  z-index: 30;
+}
+
+.ae-label-tip--below::before {
+  bottom: auto;
+  top: calc(100% - 2px);
+  left: auto;
+  right: 3px;
+  transform: none;
+  border-top-color: transparent;
+  border-bottom-color: #303133;
+  z-index: 30;
+}
+
+.ae-label-tip--below:hover {
+  z-index: 30;
+}
+
+.ae-row:has(.ae-price-mode-group) .ae-row-label {
+  border-top-left-radius: var(--ae-radius);
+  border-bottom-left-radius: var(--ae-radius);
 }

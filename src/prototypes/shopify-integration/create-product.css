@@ -1018,14 +1018,24 @@
   margin-top: 16px;
   border: 1px solid #ebeef5;
   border-radius: 2px;
-  min-width: 1180px;
-  overflow: hidden;
-  --cpd-vtable-cols: 60px 110fr 220fr 340fr 200fr 265fr 210fr 265fr 265fr;
+  overflow-x: auto;
+  overflow-y: hidden;
+  --cpd-vtable-cols: 60px 90fr 170fr 200fr 200fr 170fr 200fr 280fr 200fr;
+}
+
+.cpd-vtable::-webkit-scrollbar {
+  height: 8px;
+}
+
+.cpd-vtable::-webkit-scrollbar-thumb {
+  background: rgba(144, 147, 153, 0.3);
+  border-radius: 4px;
 }
 
 .cpd-vtable__head {
   display: grid;
   grid-template-columns: var(--cpd-vtable-cols);
+  min-width: 1280px;
   height: 40px;
   background: #f5f7fa;
   align-items: center;
@@ -1034,6 +1044,7 @@
 .cpd-vtable__row {
   display: grid;
   grid-template-columns: var(--cpd-vtable-cols);
+  min-width: 1280px;
   min-height: 64px;
   align-items: center;
   border-top: 1px solid #ebeef5;
@@ -1343,6 +1354,19 @@
   flex: none;
   padding: 10px 20px 22px;
   text-align: center;
+}
+
+.cpd-batch__radios .cpd-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  margin-bottom: 12px;
+  line-height: 20px;
+}
+
+.cpd-batch__radios .cpd-radio {
+  margin-right: 0;
+  white-space: nowrap;
 }
 
 /* ---------- 轻提示 ---------- */

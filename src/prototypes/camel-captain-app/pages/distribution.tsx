@@ -12,6 +12,7 @@ import { DateWheelPicker } from '../components/DateWheelPicker';
 import { EmptyState } from '../components/EmptyState';
 import { Segmented } from '../components/Segmented';
 import { Sheet } from '../components/Sheet';
+import type { DialogRequest } from '../dialog-route';
 
 const REG_MIN = '2026-06-01';
 const REG_MAX = '2026-11-30';
@@ -37,7 +38,13 @@ function OrderIcon({ type }: { type: DistributionOrder['type'] }) {
   return <Store size={20} />;
 }
 
-export function DistributionPage({ onBack }: { onBack: () => void }) {
+export function DistributionPage({
+  dialogRequest,
+  onBack,
+}: {
+  dialogRequest: DialogRequest;
+  onBack: () => void;
+}) {
   const [tab, setTab] = useState<'board' | 'customers'>('board');
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
@@ -52,6 +59,20 @@ export function DistributionPage({ onBack }: { onBack: () => void }) {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: 0 });
   }, [tab]);
+
+  useEffect(() => {
+    if (!dialogRequest.token) return;
+    const dialog = dialogRequest.dialog;
+    setDetail(null);
+    setRegPicker(null);
+    if (!dialog) return;
+    if (dialog === 'customer-detail') setDetail(DISTRIBUTION_CUSTOMERS[0] ?? null);
+    else if (dialog === 'reg-picker') {
+      setTab('customers');
+      setMoreOpen(true);
+      setRegPicker('from');
+    }
+  }, [dialogRequest]);
 
   const customers = useMemo(
     () => DISTRIBUTION_CUSTOMERS.filter((row) => {

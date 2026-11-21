@@ -13,6 +13,392 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
 type SegmentState = { pre: string; start: string; suf: string };
 type UploadedImage = { id: string; url: string; name: string; width: number; height: number };
 
+type WatermarkType = 'text' | 'image' | 'shopName';
+type IconBackground = 'white' | 'transparent';
+type WatermarkTemplate = { id: string; name: string };
+
+interface WatermarkState {
+  templateId: string;
+  type: WatermarkType;
+  text: string;
+  fontSize: number;
+  opacity: number;
+  imageUrl: string;
+  size: number;
+  iconBg: IconBackground;
+}
+
+const WATERMARK_TEMPLATES: WatermarkTemplate[] = [
+  { id: 'tpl-1', name: '主图水印' },
+  { id: 'tpl-2', name: '店铺水印' },
+  { id: 'tpl-3', name: '浅色水印' },
+];
+
+const BUILTIN_ICON_FILES = import.meta.glob('./assets/builtin-icons/*.png', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+}) as Record<string, string>;
+
+const BUILTIN_ICON_CATEGORIES = [
+  { zh: '快速送达', en: 'Fast Delivery' },
+  { zh: '热卖爆款', en: 'Best Seller' },
+  { zh: '超值特价', en: 'Super Price' },
+  { zh: '热销', en: 'Hot Sale' },
+  { zh: '新品上市', en: 'New Arrival' },
+  { zh: '24 小时', en: '24 Hours' },
+  { zh: '热门', en: 'Hot!' },
+  { zh: '赠鞋带、赠袜、吊牌', en: 'Extra Laces + Free Socks + TAG' },
+  { zh: '含鞋盒', en: 'With Box' },
+  { zh: '袜子', en: 'Sock' },
+  { zh: '24 小时发货', en: '24 Hours Shipping' },
+  { zh: '优质品质', en: 'Best Quality' },
+  { zh: '吊牌', en: 'Tag' },
+];
+
+const BUILTIN_ICONS = BUILTIN_ICON_CATEGORIES.map((category, catIndex) => {
+  const prefix = `c${String(catIndex + 1).padStart(2, '0')}-`;
+  const items = Object.keys(BUILTIN_ICON_FILES)
+    .filter((path) => path.includes(`/${prefix}`))
+    .sort()
+    .map((path) => {
+      const fileName = path.split('/').pop() as string;
+      return { id: fileName.replace('.png', ''), src: BUILTIN_ICON_FILES[path] };
+    });
+  return { key: prefix.slice(0, 3), zh: category.zh, en: category.en, name: category.zh, items };
+}).filter((cat) => cat.items.length > 0);
+
+const WATERMARK_CANVAS_SIZE = 800;
+
+const transparentIconCache = new Map<string, HTMLCanvasElement>();
+
+const createTransparentIcon = (image: HTMLImageElement, key: string): HTMLCanvasElement => {
+  const cached = transparentIconCache.get(key);
+  if (cached) return cached;
+  const canvas = document.createElement('canvas');
+  canvas.width = image.naturalWidth;
+  canvas.height = image.naturalHeight;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return canvas;
+  ctx.drawImage(image, 0, 0);
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const pixels = imageData.data;
+  const { width, height } = canvas;
+  const visited = new Uint8Array(width * height);
+  const queue: number[] = [];
+  const enqueue = (x: number, y: number) => {
+    if (x < 0 || y < 0 || x >= width || y >= height) return;
+    const index = y * width + x;
+    if (visited[index]) return;
+    visited[index] = 1;
+    const offset = index * 4;
+    if (pixels[offset] > 235 && pixels[offset + 1] > 235 && pixels[offset + 2] > 235) {
+      queue.push(index);
+    }
+  };
+  for (let x = 0; x < width; x += 1) {
+    enqueue(x, 0);
+    enqueue(x, height - 1);
+  }
+  for (let y = 0; y < height; y += 1) {
+    enqueue(0, y);
+    enqueue(width - 1, y);
+  }
+  while (queue.length) {
+    const index = queue.pop() as number;
+    pixels[index * 4 + 3] = 0;
+    const x = index % width;
+    const y = (index - x) / width;
+    enqueue(x - 1, y);
+    enqueue(x + 1, y);
+    enqueue(x, y - 1);
+    enqueue(x, y + 1);
+  }
+  ctx.putImageData(imageData, 0, 0);
+  transparentIconCache.set(key, canvas);
+  return canvas;
+};
+
+const drawWatermarkPreview = (
+  canvas: HTMLCanvasElement,
+  wm: WatermarkState,
+  text: string,
+  image?: HTMLImageElement | HTMLCanvasElement,
+) => {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const S = WATERMARK_CANVAS_SIZE;
+  ctx.clearRect(0, 0, S, S);
+  ctx.fillStyle = '#e5e6eb';
+  ctx.fillRect(0, 0, S, S);
+  ctx.globalAlpha = wm.opacity / 100;
+
+  const pad = 24;
+
+  if (wm.type !== 'image') {
+    ctx.fillStyle = '#303133';
+    ctx.font = `${wm.fontSize}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    ctx.fillText(text, pad, pad + wm.fontSize / 2);
+  } else if (image) {
+    const width = Math.max(1, wm.size * 2);
+    const height = width * ((image.height / image.width) || 1);
+    if (wm.iconBg === 'white') {
+      const radius = Math.min(width, height) * 0.08;
+      ctx.beginPath();
+      ctx.moveTo(pad + radius, pad);
+      ctx.arcTo(pad + width, pad, pad + width, pad + height, radius);
+      ctx.arcTo(pad + width, pad + height, pad, pad + height, radius);
+      ctx.arcTo(pad, pad + height, pad, pad, radius);
+      ctx.arcTo(pad, pad, pad + width, pad, radius);
+      ctx.closePath();
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+    }
+    ctx.drawImage(image, pad, pad, width, height);
+  }
+
+  ctx.globalAlpha = 1;
+};
+
+const WatermarkThumb = ({ wm, text, onOpen }: {
+  wm: WatermarkState;
+  text: string;
+  onOpen: (dataUrl: string) => void;
+}) => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    if (wm.type === 'image' && wm.imageUrl) {
+      const image = new Image();
+      const render = () => {
+        const source = wm.iconBg === 'transparent' ? createTransparentIcon(image, wm.imageUrl) : image;
+        drawWatermarkPreview(canvas, wm, text, source);
+      };
+      image.onload = render;
+      image.src = wm.imageUrl;
+      if (image.complete) render();
+      return;
+    }
+    drawWatermarkPreview(canvas, wm, text);
+  }, [wm, text]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="up-wm__thumb"
+      width={WATERMARK_CANVAS_SIZE}
+      height={WATERMARK_CANVAS_SIZE}
+      title="点击查看大图"
+      onClick={() => {
+        const canvas = canvasRef.current;
+        if (canvas) onOpen(canvas.toDataURL('image/png'));
+      }}
+    />
+  );
+};
+
+const WatermarkSlider = ({ value, min, max, onChange, ariaLabel }: {
+  value: number;
+  min: number;
+  max: number;
+  onChange: (next: number) => void;
+  ariaLabel: string;
+}) => (
+  <input
+    className="up-wm__slider"
+    type="range"
+    min={min}
+    max={max}
+    value={value}
+    aria-label={ariaLabel}
+    style={{ '--up-percent': `${((value - min) / (max - min)) * 100}%` } as React.CSSProperties}
+    onChange={(e) => onChange(Number(e.target.value))}
+  />
+);
+
+const SelectCheckIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
+const UploadIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+    <polyline points="17 8 12 3 7 8" />
+    <line x1="12" y1="3" x2="12" y2="15" />
+  </svg>
+);
+
+const GridIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="7" height="7" rx="1.5" />
+    <rect x="14" y="3" width="7" height="7" rx="1.5" />
+    <rect x="3" y="14" width="7" height="7" rx="1.5" />
+    <rect x="14" y="14" width="7" height="7" rx="1.5" />
+  </svg>
+);
+
+const WatermarkTemplateSelect = ({ value, templates, onChange }: {
+  value: string;
+  templates: WatermarkTemplate[];
+  onChange: (id: string) => void;
+}) => {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDocDown = (e: MouseEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('mousedown', onDocDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDocDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  const current = templates.find((t) => t.id === value);
+
+  return (
+    <div className="up-wm__select" ref={rootRef}>
+      <button
+        type="button"
+        className={`up-wm__select-trigger${open ? ' is-open' : ''}`}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span className={current ? '' : 'is-placeholder'}>{current ? current.name : '请选择'}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c0c4cc" strokeWidth="2" strokeLinecap="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+      {open ? (
+        <div className="up-wm__select-menu" role="listbox">
+          {templates.length === 0 ? (
+            <div className="up-wm__select-empty">暂无模板</div>
+          ) : templates.map((tpl) => (
+            <button
+              key={tpl.id}
+              type="button"
+              role="option"
+              aria-selected={tpl.id === value}
+              className={`up-wm__select-option${tpl.id === value ? ' is-selected' : ''}`}
+              onClick={() => { onChange(tpl.id); setOpen(false); }}
+            >
+              <span>{tpl.name}</span>
+              {tpl.id === value ? <SelectCheckIcon /> : null}
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+const WatermarkPanel = ({ wm, templates, onChange, onManageTemplates, onOpenIcons, onChooseImage, onPreview }: {
+  wm: WatermarkState;
+  templates: WatermarkTemplate[];
+  onChange: (patch: Partial<WatermarkState>) => void;
+  onManageTemplates: () => void;
+  onOpenIcons: () => void;
+  onChooseImage: () => void;
+  onPreview: (src: string) => void;
+}) => (
+  <div className="up-wm" data-annotation-id="watermark-config">
+    <div className="up-wm__row">
+      <span className="up-wm__label">水印模板</span>
+      <WatermarkTemplateSelect value={wm.templateId} templates={templates} onChange={(templateId) => onChange({ templateId })} />
+      <button type="button" className="up-wm__link" onClick={onManageTemplates}>创建模板</button>
+      <button type="button" className="up-wm__link" onClick={onManageTemplates}>管理模板</button>
+    </div>
+    <div className="up-wm__row">
+      <span className="up-wm__label">水印类型</span>
+      <div className="up-radio-group">
+        <Radio checked={wm.type === 'text'} label="文字水印" onChange={() => onChange({ type: 'text' })} />
+        <Radio checked={wm.type === 'shopName'} label="店铺名称水印" onChange={() => onChange({ type: 'shopName' })} />
+        {/* 图片水印、图标暂隐藏，后续可能恢复 */}
+      </div>
+    </div>
+
+    {wm.type !== 'image' ? (
+      <>
+        <div className="up-wm__row">
+          <span className="up-wm__label">水印文字</span>
+          <input
+            type="text"
+            className="up-input up-wm__text"
+            placeholder="请输入水印文字"
+            value={wm.type === 'shopName' ? '店铺名称' : wm.text}
+            disabled={wm.type === 'shopName'}
+            onChange={(e) => onChange({ text: e.target.value })}
+          />
+        </div>
+        <div className="up-wm__row">
+          <span className="up-wm__label">字号</span>
+          <WatermarkSlider value={wm.fontSize} min={12} max={72} ariaLabel="水印字号" onChange={(fontSize) => onChange({ fontSize })} />
+          <span className="up-wm__value">{wm.fontSize}</span>
+        </div>
+      </>
+    ) : (
+      <>
+        <div className="up-wm__row">
+          <span className="up-wm__label">图片上传</span>
+          <button type="button" className="up-wm__upload" onClick={onChooseImage}>
+            <UploadIcon />
+            点击上传图片
+          </button>
+          <button type="button" className="up-wm__upload up-wm__upload--plain" onClick={onOpenIcons}>
+            <GridIcon />
+            内置图标
+          </button>
+        </div>
+        <div className="up-wm__row">
+          <span className="up-wm__label">大小</span>
+          <WatermarkSlider value={wm.size} min={10} max={200} ariaLabel="水印大小" onChange={(size) => onChange({ size })} />
+          <span className="up-wm__value">{wm.size}%</span>
+        </div>
+      </>
+    )}
+
+    <div className="up-wm__row">
+      <span className="up-wm__label">透明度</span>
+      <WatermarkSlider value={wm.opacity} min={0} max={100} ariaLabel="水印透明度" onChange={(opacity) => onChange({ opacity })} />
+      <span className="up-wm__value">{wm.opacity}%</span>
+    </div>
+
+    <div className="up-wm__row">
+      <span className="up-wm__label">水印位置</span>
+      <span className="up-wm__static">随机</span>
+    </div>
+
+    <div className="up-wm__row">
+      <span className="up-wm__label">水印角度</span>
+      <span className="up-wm__static">随机</span>
+    </div>
+
+    <div className="up-wm__row up-wm__row--preview">
+      <span className="up-wm__label">预览</span>
+      <WatermarkThumb
+        wm={wm}
+        text={wm.type === 'shopName' ? '店铺名称' : wm.text.trim() || '预览文字'}
+        onOpen={onPreview}
+      />
+      {wm.type === 'image' && !wm.imageUrl ? <span className="up-wm__preview-empty">未上传图片</span> : null}
+    </div>
+
+    <p className="up-hint up-wm__note">每次刊登时，水印位置和角度会随机调整</p>
+  </div>
+);
+
 const Switch = ({ checked, disabled = false, onChange, ariaLabel }: {
   checked: boolean;
   disabled?: boolean;
@@ -411,13 +797,36 @@ const UpdatePublishDialog = () => {
   const [backupIncrement, setBackupIncrement] = useState<IncrementValue>(defaultIncrement);
 
   const [imageOn, setImageOn] = useState(false);
-  const [imageMode, setImageMode] = useState<'shuffle' | 'sku' | 'backup'>('shuffle');
+  const [imageMode, setImageMode] = useState<'shuffle' | 'sku' | 'backup' | 'watermark'>('shuffle');
   const [backupImageStrategy, setBackupImageStrategy] = useState<'shuffle'>('shuffle');
   const [backupImages, setBackupImages] = useState<UploadedImage[]>([
     { id: 'sample-1', url: mainSample1, name: '示例图片', width: 1024, height: 1024 },
   ]);
   const uploadFileInputRef = useRef<HTMLInputElement | null>(null);
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+
+  const [wm, setWm] = useState<WatermarkState>({
+    templateId: '',
+    type: 'text',
+    text: '',
+    fontSize: 24,
+    opacity: 80,
+    imageUrl: '',
+    size: 100,
+    iconBg: 'white',
+  });
+  const [wmTemplates, setWmTemplates] = useState<WatermarkTemplate[]>(WATERMARK_TEMPLATES);
+  const wmImageInputRef = useRef<HTMLInputElement | null>(null);
+  const [wmPreviewSrc, setWmPreviewSrc] = useState<string | null>(null);
+  const [iconPickerOpen, setIconPickerOpen] = useState(false);
+  const [iconCategory, setIconCategory] = useState(BUILTIN_ICONS[0]?.key ?? '');
+  const [iconDraft, setIconDraft] = useState('');
+  const [iconBgDraft, setIconBgDraft] = useState<IconBackground>('white');
+  const [templatesOpen, setTemplatesOpen] = useState(false);
+  const [templateDraft, setTemplateDraft] = useState('');
+  const [templateSelection, setTemplateSelection] = useState('');
+  const [templateError, setTemplateError] = useState('');
+  const builtinCategory = BUILTIN_ICONS.find((cat) => cat.key === iconCategory) ?? BUILTIN_ICONS[0];
 
   const [dailyLimitMode, setDailyLimitMode] = useState<'stop' | 'nextDay'>('stop');
   const [nextDayTime, setNextDayTime] = useState('');
@@ -448,6 +857,62 @@ const UpdatePublishDialog = () => {
     });
   };
 
+  const patchWatermark = (patch: Partial<WatermarkState>) => {
+    setWm((prev) => ({ ...prev, ...patch }));
+    setStrategyError('');
+  };
+
+  const handleWatermarkImage = (files: FileList | null) => {
+    const file = files?.[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    patchWatermark({ imageUrl: URL.createObjectURL(file) });
+  };
+
+  const openIconPicker = () => {
+    const matched = BUILTIN_ICONS.find((cat) => cat.items.some((item) => item.src === wm.imageUrl));
+    setIconCategory(matched ? matched.key : BUILTIN_ICONS[0]?.key ?? '');
+    setIconDraft(matched ? wm.imageUrl : '');
+    setIconBgDraft(wm.iconBg);
+    setIconPickerOpen(true);
+  };
+
+  const confirmBuiltinIcon = () => {
+    if (!iconDraft) return;
+    patchWatermark({ imageUrl: iconDraft, iconBg: iconBgDraft });
+    setIconPickerOpen(false);
+  };
+
+  const openTemplateDialog = () => {
+    setTemplateDraft('');
+    setTemplateSelection(wm.templateId);
+    setTemplateError('');
+    setTemplatesOpen(true);
+  };
+
+  const addTemplate = () => {
+    const name = templateDraft.trim();
+    if (!name) {
+      setTemplateError('请输入模板名称');
+      return;
+    }
+    const tpl = { id: `tpl-${Date.now()}`, name };
+    setWmTemplates((list) => [...list, tpl]);
+    setTemplateSelection(tpl.id);
+    setTemplateDraft('');
+    setTemplateError('');
+  };
+
+  const removeTemplate = (id: string) => {
+    setWmTemplates((list) => list.filter((tpl) => tpl.id !== id));
+    setTemplateSelection((prev) => (prev === id ? '' : prev));
+    setWm((prev) => (prev.templateId === id ? { ...prev, templateId: '' } : prev));
+  };
+
+  const confirmTemplates = () => {
+    patchWatermark({ templateId: templateSelection });
+    setTemplatesOpen(false);
+  };
+
   const handleConfirm = () => {
     if (loopOn && !titleOn && !imageOn) {
       setStrategyError('请至少启用一项自动刊登策略（标题策略 / 主图策略）');
@@ -460,6 +925,16 @@ const UpdatePublishDialog = () => {
         || (titleMode === 'backup' && backupTitleStrategy === 'increment' && incrementHasEmptyStart(backupIncrement)))) {
       setStrategyError('增量起始值不能为空');
       return;
+    }
+    if (imageOn && imageMode === 'watermark') {
+      if (wm.type === 'text' && !wm.text.trim()) {
+        setStrategyError('请输入水印文字');
+        return;
+      }
+      if (wm.type === 'image' && !wm.imageUrl) {
+        setStrategyError('请先上传水印图片');
+        return;
+      }
     }
     setVisible(false);
   };
@@ -589,8 +1064,31 @@ const UpdatePublishDialog = () => {
                         <Radio checked={imageMode === 'shuffle'} label="随机打乱" onChange={() => setImageMode('shuffle')} />
                         <Radio checked={imageMode === 'sku'} label="取SKU图替换首图" onChange={() => setImageMode('sku')} />
                         <Radio checked={imageMode === 'backup'} label="备选首图" onChange={() => setImageMode('backup')} />
+                        <Radio checked={imageMode === 'watermark'} label="固定首图+随机文字水印" onChange={() => setImageMode('watermark')} />
                       </div>
-                      {imageMode !== 'shuffle' ? (
+
+                      {imageMode === 'watermark' ? (
+                        <div className="up-wm-option" data-annotation-id="image-watermark">
+                          <WatermarkPanel
+                            wm={wm}
+                            templates={wmTemplates}
+                            onChange={patchWatermark}
+                            onManageTemplates={openTemplateDialog}
+                            onOpenIcons={openIconPicker}
+                            onChooseImage={() => wmImageInputRef.current?.click()}
+                            onPreview={setWmPreviewSrc}
+                          />
+                          <input
+                            ref={wmImageInputRef}
+                            type="file"
+                            accept="image/*"
+                            hidden
+                            onChange={(e) => { handleWatermarkImage(e.target.files); e.target.value = ''; }}
+                          />
+                        </div>
+                      ) : null}
+
+                      {imageMode !== 'shuffle' && imageMode !== 'watermark' ? (
                         <>
                         {imageMode === 'backup' ? (
                         <div className="up-upload-wrap" data-annotation-id="backup-images">
@@ -705,6 +1203,118 @@ const UpdatePublishDialog = () => {
                   <button type="button" className="up-btn up-btn--primary" onClick={() => setUploadDialogOpen(false)}>确认</button>
                 </div>
               </div>
+            </div>
+          ) : null}
+
+          {templatesOpen ? (
+            <div className="up-wm-layer">
+              <div className="up-wm-modal" role="dialog" aria-modal="true" aria-label="水印模板">
+                <div className="up-wm-modal__header">
+                  <span className="up-wm-modal__title">水印模板</span>
+                  <button type="button" className="up-wm-modal__close" aria-label="关闭" onClick={() => setTemplatesOpen(false)}>×</button>
+                </div>
+                <div className="up-wm-modal__body">
+                  <div className="up-wm-tpl__list">
+                    {wmTemplates.length === 0 ? (
+                      <p className="up-hint">暂无模板，可在下方输入名称新建</p>
+                    ) : wmTemplates.map((tpl) => (
+                      <div className={`up-wm-tpl__row${templateSelection === tpl.id ? ' is-selected' : ''}`} key={tpl.id}>
+                        <Radio
+                          checked={templateSelection === tpl.id}
+                          label={tpl.name}
+                          onChange={() => setTemplateSelection(tpl.id)}
+                        />
+                        <button
+                          type="button"
+                          className="up-backup__remove"
+                          aria-label={`删除模板${tpl.name}`}
+                          onClick={() => removeTemplate(tpl.id)}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="up-wm-tpl__add">
+                    <input
+                      type="text"
+                      className="up-input"
+                      placeholder="请输入模板名称"
+                      value={templateDraft}
+                      onChange={(e) => { setTemplateDraft(e.target.value); setTemplateError(''); }}
+                    />
+                    <button type="button" className="up-backup__add" onClick={addTemplate}>+ 新建模板</button>
+                  </div>
+                  {templateError ? <p className="up-wm__error">{templateError}</p> : null}
+                </div>
+                <div className="up-wm-modal__footer">
+                  <button type="button" className="up-btn up-btn--plain" onClick={() => setTemplatesOpen(false)}>取消</button>
+                  <button type="button" className="up-btn up-btn--primary" onClick={confirmTemplates}>确定</button>
+                </div>
+              </div>
+            </div>
+          ) : null}
+
+          {iconPickerOpen ? (
+            <div className="up-wm-layer">
+              <div className="up-wm-modal up-wm-modal--icons" role="dialog" aria-modal="true" aria-label="内置图标">
+                <div className="up-wm-modal__header">
+                  <span className="up-wm-modal__title">内置图标</span>
+                  <button type="button" className="up-wm-modal__close" aria-label="关闭" onClick={() => setIconPickerOpen(false)}>×</button>
+                </div>
+                <div className="up-wm-icons">
+                  <div className="up-wm-icons__cats">
+                    {BUILTIN_ICONS.map((cat) => (
+                      <button
+                        key={cat.key}
+                        type="button"
+                        className={`up-wm-icons__cat${cat.key === builtinCategory?.key ? ' is-active' : ''}`}
+                        title={`${cat.zh}（${cat.en}）`}
+                        onClick={() => setIconCategory(cat.key)}
+                      >
+                        <span className="up-wm-icons__cat-zh">{cat.zh}</span>
+                        <span className="up-wm-icons__cat-en">{cat.en}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="up-wm-icons__grid">
+                    {builtinCategory?.items.map((icon) => (
+                      <button
+                        key={icon.id}
+                        type="button"
+                        className={`up-wm-icons__item${iconDraft === icon.src ? ' is-checked' : ''}`}
+                        onClick={() => setIconDraft(icon.src)}
+                      >
+                        <img src={icon.src} alt="" />
+                        {iconDraft === icon.src ? (
+                          <span className="up-wm-icons__check">
+                            <SelectCheckIcon />
+                          </span>
+                        ) : null}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="up-wm-icons__footer">
+                  <div className="up-wm-icons__bg">
+                    <span className="up-wm-icons__bg-label">图标背景</span>
+                    <div className="up-radio-group">
+                      <Radio checked={iconBgDraft === 'white'} label="白色" onChange={() => setIconBgDraft('white')} />
+                      <Radio checked={iconBgDraft === 'transparent'} label="透明" onChange={() => setIconBgDraft('transparent')} />
+                    </div>
+                  </div>
+                  <div className="up-wm-icons__actions">
+                    <button type="button" className="up-btn up-btn--plain" onClick={() => setIconPickerOpen(false)}>取消</button>
+                    <button type="button" className="up-btn up-btn--primary" disabled={!iconDraft} onClick={confirmBuiltinIcon}>确定</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : null}
+
+          {wmPreviewSrc ? (
+            <div className="up-wm-preview" onClick={() => setWmPreviewSrc(null)}>
+              <img src={wmPreviewSrc} alt="水印预览" />
             </div>
           ) : null}
         </div>

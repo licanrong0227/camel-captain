@@ -10,7 +10,7 @@ import annotationSourceDocument from './annotation-source.json';
 import logoImage from './assets/logo.jpg';
 import avatarImage from './assets/avatar.jpg';
 
-type SelectKey = 'couponFunction' | 'featureType' | 'couponType' | 'productScope' | 'issueType';
+type SelectKey = 'couponFunction' | 'featureType' | 'couponType' | 'productScope' | 'issueType' | 'targetType';
 type PageSelectKey = 'filterFunc' | 'filterType' | 'filterStatus' | 'pageSize';
 type FormKey =
   | 'name'
@@ -41,12 +41,23 @@ interface FormState {
   totalLimit: string;
   validDays: string;
   issueType: string;
+  targetType: string;
+  issueCount: string;
   cycle: 'long' | 'period';
   limitMode: 'unlimited' | 'limited';
   perUserCount: string;
   points: string;
   amountThreshold: string;
   remark: string;
+}
+
+interface TenantRow {
+  id: string;
+  user: string;
+  nick: string;
+  phone: string;
+  type: string;
+  reg: string;
 }
 
 interface CouponRow {
@@ -73,15 +84,30 @@ interface CouponRow {
 }
 
 const COUPON_FUNCTIONS = ['代金券', '功能券'];
-const FEATURE_TYPES = ['刊登数量', '定时刊登数量', '循环刊登次数'];
+const FEATURE_TYPES = ['刊登数量', '定时刊登数量', '循环刊登次数', '订单数量'];
 const FEATURE_PLACEHOLDERS: Record<string, string> = {
   刊登数量: '请输入刊登数量',
   定时刊登数量: '请输入定时刊登数量',
   循环刊登次数: '请输入循环刊登次数',
+  订单数量: '请输入订单数量',
 };
 const COUPON_TYPES = ['固定金额减免', '折扣比例'];
 const PRODUCT_SCOPES = ['全品类', 'AI算力', '会员', '店铺'];
-const ISSUE_TYPES = ['用户主动领取', '新用户注册自动发', '活动兑换', '下单返券', '后台手动发放'];
+const ISSUE_TYPES = ['用户主动领取', '新用户注册自动发', '活动兑换', '下单返券', '手动发放'];
+const TARGET_TYPES = ['租户', '代理商'];
+
+const TENANT_ROWS: TenantRow[] = [
+  { id: 'LT10001', user: 'xiongzhilin', nick: '熊志林1', phone: '13037349811', type: '代理商', reg: '2025-12-19 10:44:36' },
+  { id: 'LT10002', user: 'xiongzhilin1', nick: '', phone: '15017936684', type: '租户', reg: '2025-12-19 11:52:15' },
+  { id: 'LT10003', user: 'xiongzhilin2', nick: '', phone: '15017936684', type: '租户', reg: '2025-12-19 15:59:37' },
+  { id: 'LT10004', user: 'xiongzhilin8', nick: '', phone: '15017936684', type: '租户', reg: '2025-12-25 18:00:45' },
+  { id: 'LT10005', user: 'xiongzhilin9', nick: '', phone: '15017936684', type: '租户', reg: '2025-12-25 18:01:19' },
+  { id: 'LT10006', user: 'huangkan', nick: '', phone: '13476561244', type: '租户', reg: '2025-12-25 18:18:49' },
+  { id: 'LT10007', user: 'huangkan1', nick: '', phone: '13476561244', type: '租户', reg: '2025-12-26 11:47:48' },
+  { id: 'LT10008', user: 'admin', nick: '', phone: '15017936684', type: '代理商', reg: '2025-12-27 17:39:37' },
+  { id: 'LT10009', user: 'lixg', nick: '', phone: '15017936684', type: '租户', reg: '2025-12-30 17:01:56' },
+  { id: 'LT10010', user: 'xiongzhilin10', nick: '', phone: '15017936684', type: '租户', reg: '2026-01-17 17:02:55' },
+];
 const STATUS_OPTIONS = ['未开始', '发放中', '已领完', '已下架', '已过期'];
 const PAGE_SIZE_OPTIONS = ['10条/页', '20条/页', '30条/页', '50条/页'];
 
@@ -97,6 +123,8 @@ const INITIAL_FORM: FormState = {
   totalLimit: '',
   validDays: '',
   issueType: ISSUE_TYPES[0],
+  targetType: '',
+  issueCount: '1',
   cycle: 'long',
   limitMode: 'limited',
   perUserCount: '1',
@@ -132,7 +160,7 @@ const COUPON_ROWS: CouponRow[] = [
     total: '100',
     issued: '0',
     days: '30',
-    issue: '后台手动发放',
+    issue: '手动发放',
     validity: '长期',
     perUser: '1',
     threshold: '-',
@@ -152,7 +180,7 @@ const COUPON_ROWS: CouponRow[] = [
     total: '10',
     issued: '0',
     days: '10',
-    issue: '后台手动发放',
+    issue: '手动发放',
     validity: '长期',
     perUser: '1',
     threshold: '无',
@@ -592,7 +620,7 @@ const COUPON_ROWS: CouponRow[] = [
     total: '1000',
     issued: '1',
     days: '7',
-    issue: '后台手动发放',
+    issue: '手动发放',
     validity: '长期',
     perUser: '1',
     threshold: '无',
@@ -816,6 +844,10 @@ export default function CouponTemplatePage() {
   const [errors, setErrors] = useState<Partial<Record<FormKey, string>>>({});
   const [openSelect, setOpenSelect] = useState<SelectKey | PageSelectKey | null>(null);
   const [toast, setToast] = useState(false);
+  const [targets, setTargets] = useState<TenantRow[]>([]);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [pickerSearch, setPickerSearch] = useState('');
+  const [pickerSelected, setPickerSelected] = useState<string[]>([]);
 
   const [filterInputs, setFilterInputs] = useState({ code: '', name: '', func: '', type: '', status: '' });
   const [applied, setApplied] = useState({ code: '', name: '', func: '', type: '', status: '' });
@@ -856,7 +888,9 @@ export default function CouponTemplatePage() {
     if (!open) return undefined;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
-      if (openSelect) {
+      if (pickerOpen) {
+        setPickerOpen(false);
+      } else if (openSelect) {
         setOpenSelect(null);
       } else {
         setOpen(false);
@@ -864,7 +898,7 @@ export default function CouponTemplatePage() {
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [open, openSelect]);
+  }, [open, openSelect, pickerOpen]);
 
   useEffect(() => {
     if (!openSelect) return undefined;
@@ -889,7 +923,46 @@ export default function CouponTemplatePage() {
     setForm(INITIAL_FORM);
     setErrors({});
     setOpenSelect(null);
+    setTargets([]);
+    setPickerOpen(false);
+    setPickerSearch('');
+    setPickerSelected([]);
     setOpen(true);
+  };
+
+  const openPicker = () => {
+    setPickerSelected(targets.map((target) => target.id));
+    setPickerSearch('');
+    setPickerOpen(true);
+  };
+
+  const togglePicker = (id: string) => {
+    setPickerSelected((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
+  };
+
+  const confirmPicker = () => {
+    setTargets(TENANT_ROWS.filter((row) => pickerSelected.includes(row.id)));
+    setPickerOpen(false);
+  };
+
+  const pickerRows = TENANT_ROWS.filter((row) => {
+    if (row.type !== form.targetType) return false;
+    const keyword = pickerSearch.trim();
+    if (!keyword) return true;
+    return [row.id, row.user, row.nick, row.phone].some((value) => value.includes(keyword));
+  });
+
+  const pickerAllChecked =
+    pickerRows.length > 0 && pickerRows.every((row) => pickerSelected.includes(row.id));
+  const pickerPartialChecked =
+    !pickerAllChecked && pickerRows.some((row) => pickerSelected.includes(row.id));
+
+  const togglePickerAll = () => {
+    if (pickerAllChecked) {
+      setPickerSelected((prev) => prev.filter((id) => !pickerRows.some((row) => row.id === id)));
+    } else {
+      setPickerSelected((prev) => [...new Set([...prev, ...pickerRows.map((row) => row.id)])]);
+    }
   };
 
   const query = () => {
@@ -1419,6 +1492,88 @@ export default function CouponTemplatePage() {
                   </div>
                 </div>
 
+                {form.issueType === '手动发放' && (
+                  <>
+                    <div className="ctd-item" data-annotation-id="ann-dialog-manual">
+                      <label className="ctd-label">发放对象</label>
+                      <div className="ctd-content">
+                        <Select
+                          value={form.targetType}
+                          options={TARGET_TYPES}
+                          placeholder="请选择"
+                          open={openSelect === 'targetType'}
+                          onToggle={() => toggleSelect('targetType')}
+                          onSelect={(value) => {
+                            update('targetType', value);
+                            setTargets([]);
+                            setOpenSelect(null);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="ctd-item">
+                      <label className="ctd-label">发放数量</label>
+                      <div className="ctd-content">
+                        <div className="ctd-issue-count">
+                          <span className="ctd-issue-count-text">每个{form.targetType || '租户'}</span>
+                          <input
+                            className="ctd-input ctd-issue-count-input"
+                            type="text"
+                            inputMode="numeric"
+                            value={form.issueCount}
+                            onChange={(event) => update('issueCount', numeric(event.target.value, false))}
+                          />
+                          <span className="ctd-issue-count-unit">张</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="ctd-item">
+                      <label className="ctd-label">发放对象明细</label>
+                      <div className="ctd-content">
+                        <div className="ctd-target-box">
+                          <div className="ctd-target-head">
+                            <span className="ctd-target-count">
+                              已选 {targets.length} 个{form.targetType || ''}
+                            </span>
+                            <button
+                              type="button"
+                              className="ctd-target-add"
+                              disabled={!form.targetType}
+                              onClick={openPicker}
+                            >
+                              添加
+                            </button>
+                          </div>
+                          {targets.length > 0 ? (
+                            <ul className="ctd-target-list">
+                              {targets.map((target) => (
+                                <li key={target.id} className="ctd-target-item">
+                                  <span className="ctd-target-id">{target.id}</span>
+                                  <span className="ctd-target-name">{target.nick || target.user}</span>
+                                  <span className="ctd-target-user">{target.user}</span>
+                                  <button
+                                    type="button"
+                                    className="ctd-target-remove"
+                                    onClick={() =>
+                                      setTargets((prev) => prev.filter((item) => item.id !== target.id))
+                                    }
+                                  >
+                                    移除
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <div className="ctd-target-empty">
+                              {form.targetType ? `暂未添加${form.targetType}，请点击「添加」选择` : '请先选择发放对象'}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
                 {form.issueType === '活动兑换' && (
                   <div className="ctd-item" data-annotation-id="ann-dialog-points">
                     <label className="ctd-label">积分兑换值</label>
@@ -1475,7 +1630,12 @@ export default function CouponTemplatePage() {
                   </div>
                 </div>
 
-                <div className="ctd-item ctd-item--radio">
+                <div
+                  className={`ctd-item ctd-item--radio${
+                    form.issueType === '手动发放' && form.targetType === '租户' ? ' is-hidden' : ''
+                  }`}
+                  data-annotation-id="ann-dialog-peruser"
+                >
                   <label className="ctd-label">每户限额领取个数</label>
                   <div className="ctd-content">
                     <RadioGroup
@@ -1520,6 +1680,99 @@ export default function CouponTemplatePage() {
               <button type="button" className="ctd-btn ctd-btn--warning" onClick={submit}>
                 提交审核
               </button>
+            </footer>
+          </div>
+        </div>
+      )}
+
+      {open && pickerOpen && (
+        <div className="ctd-picker-mask">
+          <div className="ctd-picker" role="dialog" aria-modal="true" aria-label={`选择${form.targetType}`}>
+            <header className="ctd-picker-head">
+              <h3 className="ctd-picker-title">选择{form.targetType}</h3>
+              <button type="button" className="ctd-close" aria-label="关闭" onClick={() => setPickerOpen(false)}>
+                <CloseIcon />
+              </button>
+            </header>
+            <div className="ctd-picker-toolbar">
+              <input
+                className="ctd-filter-input"
+                type="text"
+                value={pickerSearch}
+                placeholder="请输入租户ID / 用户名 / 昵称 / 手机号"
+                onChange={(event) => setPickerSearch(event.target.value)}
+              />
+            </div>
+            <div className="ctd-picker-body">
+              <table className="ctd-picker-table">
+                <colgroup>
+                  <col style={{ width: '5%' }} />
+                  <col style={{ width: '14%' }} />
+                  <col style={{ width: '19%' }} />
+                  <col style={{ width: '14%' }} />
+                  <col style={{ width: '17%' }} />
+                  <col style={{ width: '12%' }} />
+                  <col style={{ width: '19%' }} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th className="ctd-checkhead" title="全选" onClick={togglePickerAll}>
+                      <span
+                        className={`ctd-checkbox${pickerAllChecked ? ' is-checked' : ''}${
+                          pickerPartialChecked ? ' is-indeterminate' : ''
+                        }`}
+                        aria-hidden="true"
+                      />
+                    </th>
+                    <th>租户ID</th>
+                    <th>用户名</th>
+                    <th>昵称</th>
+                    <th>手机号</th>
+                    <th>用户类型</th>
+                    <th>注册时间</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pickerRows.map((row) => {
+                    const checked = pickerSelected.includes(row.id);
+                    return (
+                      <tr
+                        key={row.id}
+                        className={checked ? 'is-checked' : ''}
+                        onClick={() => togglePicker(row.id)}
+                      >
+                        <td>
+                          <span className={`ctd-checkbox${checked ? ' is-checked' : ''}`} aria-hidden="true" />
+                        </td>
+                        <td>{row.id}</td>
+                        <td>{row.user}</td>
+                        <td>{row.nick || '-'}</td>
+                        <td>{row.phone}</td>
+                        <td>{row.type}</td>
+                        <td>{row.reg}</td>
+                      </tr>
+                    );
+                  })}
+                  {pickerRows.length === 0 && (
+                    <tr>
+                      <td className="ctd-empty" colSpan={7}>
+                        暂无数据
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <footer className="ctd-picker-foot">
+              <span className="ctd-picker-count">已选 {pickerSelected.length} 个</span>
+              <div className="ctd-picker-actions">
+                <button type="button" className="ctd-btn" onClick={() => setPickerOpen(false)}>
+                  取消
+                </button>
+                <button type="button" className="ctd-btn ctd-btn--warning" onClick={confirmPicker}>
+                  确定
+                </button>
+              </div>
             </footer>
           </div>
         </div>

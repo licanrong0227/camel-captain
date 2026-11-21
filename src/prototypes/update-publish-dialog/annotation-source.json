@@ -185,9 +185,29 @@
         "images": [],
         "createdAt": 1792060262629,
         "updatedAt": 1792060271521
+      },
+      {
+        "id": "image-watermark",
+        "index": 9,
+        "title": "固定首图+随机文字水印",
+        "pageId": "update-publish-dialog",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"image-watermark\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=image-watermark",
+          "path": []
+        },
+        "aiPrompt": "根据固定首图+随机文字水印的标注，说明它作为第四个主图方式的规则、可见配置与校验。",
+        "annotationText": "与随机打乱、取SKU图替换首图、备选首图并列的第四个主图方式，选中后才展开水印配置，切到其它方式会收起但已填内容保留。水印类型有文字水印和店铺名称水印（图片水印、图标已隐藏）：选店铺名称水印时文字固定为「店铺名称」且不能编辑。位置和角度不可手选，始终随机；预览固定按左上角、水平方向展示，配置底部注明「每次刊登时，水印位置和角度会随机调整」，不再提供平铺。文字水印没填文字时点「确定」会被拦下。",
+        "hasMarkdown": false,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795141766960,
+        "updatedAt": 1795167238174
       }
     ],
-    "updatedAt": 1792060262629
+    "updatedAt": 1795167238174
   },
   "markdownMap": {},
   "assetMap": {},

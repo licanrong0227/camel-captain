@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import OrderDetailDialog, { type OrderDetailData } from '../components/OrderDetailDialog';
 import SyncOrderDialog from '../components/SyncOrderDialog';
+import type { DialogRequest } from '../dialog-route';
 import dhBadge from '../assets/dh-badge.png';
 import iconDhgate from '../assets/icon-dhgate.png';
 import iconShopify from '../assets/icon-shopify.png';
@@ -809,7 +810,7 @@ function Dropdown({
   );
 }
 
-export default function MyOrdersPage() {
+export default function MyOrdersPage({ dialogRequest }: { dialogRequest?: DialogRequest }) {
   const [platform, setPlatform] = useState('');
   const [store, setStore] = useState('');
   const [detail, setDetail] = useState<OrderDetailData | null>(null);
@@ -819,6 +820,15 @@ export default function MyOrdersPage() {
   const [directShipOrderNo, setDirectShipOrderNo] = useState<string | null>(null);
   const [syncOpen, setSyncOpen] = useState(false);
   const [syncToast, setSyncToast] = useState('');
+
+  useEffect(() => {
+    if (!dialogRequest) return;
+    const dialog = dialogRequest.dialog;
+    setDetail(dialog === 'order-detail' ? toOrderDetail(ROWS[0]) : null);
+    setAssignOrderNo(dialog === 'assign-tracking' ? ROWS[0].orderNo : null);
+    setDirectShipOrderNo(dialog === 'direct-ship' ? ROWS[0].orderNo : null);
+    setSyncOpen(dialog === 'sync-order');
+  }, [dialogRequest]);
 
   useEffect(() => {
     if (!syncToast) return undefined;

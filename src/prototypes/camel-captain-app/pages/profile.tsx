@@ -1,19 +1,22 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Check, ChevronRight, Headset, KeyRound, Link2, LogOut, Users } from 'lucide-react';
 import { PROFILE, PROFILE_FIELDS } from '../data/profile';
 import { fmtInt } from '../data/format';
 import { AuthField } from '../components/AuthField';
 import { Sheet } from '../components/Sheet';
 import { copyText } from '../components/clipboard';
+import type { DialogRequest } from '../dialog-route';
 import wecomQr from '../assets/wecom-qr.png';
 
 export function ProfilePage({
   avatar,
+  dialogRequest,
   onToast,
   onDistribution,
   onLogout,
 }: {
   avatar: string;
+  dialogRequest: DialogRequest;
   onToast: (message: string) => void;
   onDistribution: () => void;
   onLogout: () => void;
@@ -22,6 +25,16 @@ export function ProfilePage({
   const [contactOpen, setContactOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
+
+  useEffect(() => {
+    if (!dialogRequest.token) return;
+    const dialog = dialogRequest.dialog;
+    setPasswordOpen(dialog === 'password');
+    setContactOpen(dialog === 'contact');
+    setInviteOpen(dialog === 'invite');
+    setLogoutOpen(dialog === 'logout');
+  }, [dialogRequest]);
+
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');

@@ -817,6 +817,12 @@
   border-color: #ff781f;
 }
 
+.biw-input:disabled {
+  background: #f5f7fa;
+  color: #909399;
+  cursor: not-allowed;
+}
+
 .biw-slider {
   -webkit-appearance: none;
   appearance: none;

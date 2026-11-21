@@ -12,12 +12,13 @@ import './style.css';
 
 const pad2 = (n: number) => String(n).padStart(2, '0');
 
-type TaskTabKey = 'claim' | 'batch-edit' | 'batch-image' | 'publish' | 'clone' | 'product-sync' | 'order-sync' | 'export';
+type TaskTabKey = 'claim' | 'batch-edit' | 'batch-image' | 'video-upload' | 'publish' | 'clone' | 'product-sync' | 'order-sync' | 'export';
 
 const TASK_TABS: Array<{ key: TaskTabKey; label: string }> = [
   { key: 'claim', label: '认领' },
   { key: 'batch-edit', label: '批量编辑' },
   { key: 'batch-image', label: '批量美图' },
+  { key: 'video-upload', label: '视频上传' },
   { key: 'publish', label: '刊登' },
   { key: 'clone', label: '克隆' },
   { key: 'product-sync', label: '商品同步' },
@@ -173,12 +174,15 @@ const PUBLISH_RECORDS: PublishRecord[] = [
 type TaskKind = 'claim' | 'batch-edit' | 'clone';
 type TaskResult = 'success' | 'fail' | 'pending';
 type TaskFailure = { item?: string; reason: string };
-type TaskShopResult = { shop: string; result: TaskResult; failures?: TaskFailure[] };
+type ClonePublishResult = '待刊登' | '刊登中' | '刊登成功' | '刊登失败';
+type ClonePublish = { result: ClonePublishResult; reason?: string };
+type TaskShopResult = { shop: string; result: TaskResult; failures?: TaskFailure[]; publish?: ClonePublish };
 type TaskProduct = {
   key: ProductKey;
   result: TaskResult;
   failures?: TaskFailure[];
   shopResults?: TaskShopResult[];
+  publish?: ClonePublish;
 };
 type TaskRecord = {
   id: string;
@@ -189,22 +193,29 @@ type TaskRecord = {
   claimMode?: '仅认领' | '认领并发布';
   editItems?: string[];
   cloneMode?: '克隆到原店铺' | '克隆到目标店铺';
+  cloneWay?: '克隆' | '克隆并刊登';
   cloneConfig?: string[];
   products: TaskProduct[];
 };
 
-const taskProduct = (key: ProductKey, result: TaskResult, failures?: TaskFailure[]): TaskProduct => ({ key, result, failures });
+const taskProduct = (key: ProductKey, result: TaskResult, failures?: TaskFailure[], publish?: ClonePublish): TaskProduct => ({ key, result, failures, publish });
 
 /** 多店铺任务：逐店铺给结果，商品结果取最差的一项（失败 > 处理中 > 成功） */
 const multiProduct = (
   key: ProductKey,
   shops: string[],
   defaultResult: TaskResult,
-  exceptions: Record<string, { result: TaskResult; failures?: TaskFailure[] }> = {},
+  exceptions: Record<string, { result: TaskResult; failures?: TaskFailure[]; publish?: ClonePublish }> = {},
+  defaultPublish?: ClonePublish,
 ): TaskProduct => {
   const shopResults = shops.map((shop) => {
     const exception = exceptions[shop];
-    return { shop, result: exception?.result ?? defaultResult, failures: exception?.failures };
+    return {
+      shop,
+      result: exception?.result ?? defaultResult,
+      failures: exception?.failures,
+      publish: exception ? exception.publish : defaultPublish,
+    };
   });
   const result: TaskResult = shopResults.some((item) => item.result === 'fail')
     ? 'fail'
@@ -391,13 +402,13 @@ const BATCH_EDIT_TASKS: TaskRecord[] = [
 const CLONE_TASKS: TaskRecord[] = [
   {
     id: 'clone-1', kind: 'clone', time: '2026-11-11 10:35:44',
-    shops: ['sneakerhub8'], cloneMode: '克隆到目标店铺', cloneConfig: ['主图顺序随机打乱', 'AI 重新生成标题'],
+    shops: ['sneakerhub8'], cloneMode: '克隆到目标店铺', cloneWay: '克隆并刊登', cloneConfig: ['主图顺序随机打乱', 'AI 重新生成标题'],
     products: [
-      taskProduct('dress', 'success'),
-      taskProduct('kidsCanvas', 'success'),
-      taskProduct('blackBackpack', 'success'),
-      taskProduct('jacket', 'success'),
-      taskProduct('tote', 'success'),
+      taskProduct('dress', 'success', undefined, { result: '刊登成功' }),
+      taskProduct('kidsCanvas', 'success', undefined, { result: '刊登成功' }),
+      taskProduct('blackBackpack', 'success', undefined, { result: '刊登失败', reason: '刊登失败：店铺商品数已达上限' }),
+      taskProduct('jacket', 'success', undefined, { result: '刊登中' }),
+      taskProduct('tote', 'success', undefined, { result: '待刊登' }),
       taskProduct('shoulderBag', 'fail', [{ reason: '店铺[sneakerhub8]：商品数已达上限' }]),
       taskProduct('kidsSneaker', 'pending'),
       taskProduct('travelBackpack', 'pending'),
@@ -408,7 +419,7 @@ const CLONE_TASKS: TaskRecord[] = [
   {
     id: 'clone-2', kind: 'clone', time: '2026-11-10 14:08:19',
     finishTime: '2026-11-10 14:09:46',
-    shops: ['klyto'], cloneMode: '克隆到原店铺', cloneConfig: ['主图顺序随机打乱'],
+    shops: ['klyto'], cloneMode: '克隆到原店铺', cloneWay: '克隆', cloneConfig: ['主图顺序随机打乱'],
     products: [
       taskProduct('dress', 'fail', [{ reason: '目标店铺已存在相同商品（父SKU 20261110000046）' }]),
       taskProduct('leatherHandbag', 'fail', [{ reason: '主图处理失败：源图下载超时' }]),
@@ -420,7 +431,7 @@ const CLONE_TASKS: TaskRecord[] = [
   {
     id: 'clone-3', kind: 'clone', time: '2026-11-09 09:20:06',
     finishTime: '2026-11-09 09:21:30',
-    shops: ['clothes'], cloneMode: '克隆到目标店铺', cloneConfig: ['AI 重新生成标题'],
+    shops: ['clothes'], cloneMode: '克隆到目标店铺', cloneWay: '克隆', cloneConfig: ['AI 重新生成标题'],
     products: [
       taskProduct('dress', 'success'),
       taskProduct('kidsCanvas', 'success'),
@@ -431,13 +442,13 @@ const CLONE_TASKS: TaskRecord[] = [
   {
     id: 'clone-4', kind: 'clone', time: '2026-11-08 20:11:55',
     finishTime: '2026-11-08 20:13:07',
-    shops: ['klyto', 'sneakerhub8'], cloneMode: '克隆到目标店铺', cloneConfig: [],
+    shops: ['klyto', 'sneakerhub8'], cloneMode: '克隆到目标店铺', cloneWay: '克隆并刊登', cloneConfig: [],
     products: [
-      multiProduct('jacket', ['klyto', 'sneakerhub8'], 'success'),
-      multiProduct('tote', ['klyto', 'sneakerhub8'], 'success'),
+      multiProduct('jacket', ['klyto', 'sneakerhub8'], 'success', {}, { result: '刊登成功' }),
+      multiProduct('tote', ['klyto', 'sneakerhub8'], 'success', {}, { result: '刊登成功' }),
       multiProduct('runningShoes', ['klyto', 'sneakerhub8'], 'success', {
         sneakerhub8: { result: 'fail', failures: [{ reason: '店铺[sneakerhub8]：主图不足 5 张' }] },
-      }),
+      }, { result: '刊登成功' }),
     ],
   },
 ];
@@ -717,8 +728,79 @@ const IMAGE_TASKS: ImageTaskRecord[] = [
   },
 ];
 
-const imageTaskStats = (record: ImageTaskRecord) => {
-  const done = record.success + record.failed;
+type VideoUploadStatus = '上传中' | '上传成功' | '上传失败';
+type VideoTaskRecord = {
+  id: string;
+  time: string;
+  productKey: ProductKey;
+  videoName: string;
+  videoIntroduction: string;
+  duration: string;
+  status: VideoUploadStatus;
+  completedTime?: string;
+  reason?: string;
+};
+
+const VIDEO_TASKS: VideoTaskRecord[] = [
+  {
+    id: 'video-1', time: '2026-11-21 14:32:10', productKey: 'leatherHandbag',
+    videoName: 'leather-handbag-main.mp4', videoIntroduction: '真皮手提包开合、容量与上身效果展示',
+    duration: '00:12', status: '上传中',
+  },
+  {
+    id: 'video-2', time: '2026-11-21 14:20:05', productKey: 'shoulderBag',
+    videoName: 'shoulder-bag-01.mp4', videoIntroduction: '单肩包背法演示与细节展示',
+    duration: '00:08', status: '上传成功', completedTime: '2026-11-21 14:20:38',
+  },
+  {
+    id: 'video-3', time: '2026-11-21 14:20:05', productKey: 'tote',
+    videoName: 'tote-style.mp4', videoIntroduction: '托特包通勤搭配与容量展示',
+    duration: '00:15', status: '上传成功', completedTime: '2026-11-21 14:21:02',
+  },
+  {
+    id: 'video-4', time: '2026-11-21 14:20:05', productKey: 'travelBackpack',
+    videoName: 'travel-backpack-product-video-final-v2.mp4', videoIntroduction: '旅行背包防水测试与收纳演示',
+    duration: '00:10', status: '上传失败', completedTime: '2026-11-21 14:20:47',
+    reason: '视频名称超过 30 个字符，请修改后重新上传',
+  },
+  {
+    id: 'video-5', time: '2026-11-20 18:06:42', productKey: 'blackBackpack',
+    videoName: 'backpack-detail.mp4', videoIntroduction: '双肩包正面、侧面与背带细节',
+    duration: '00:09', status: '上传成功', completedTime: '2026-11-20 18:07:10',
+  },
+  {
+    id: 'video-6', time: '2026-11-20 17:55:19', productKey: 'chainBag',
+    videoName: 'chain-bag-02.mp4', videoIntroduction: '链条小方包链条与五金细节',
+    duration: '00:14', status: '上传失败', completedTime: '2026-11-20 17:55:52',
+    reason: '视频 URL 无法下载，请检查文件地址后重试',
+  },
+  {
+    id: 'video-7', time: '2026-11-20 11:12:08', productKey: 'dress',
+    videoName: 'dress-summer.mp4', videoIntroduction: '碎花连衣裙版型与面料展示',
+    duration: '00:11', status: '上传失败', completedTime: '2026-11-20 11:13:20',
+    reason: '视频转码失败，请上传标准 MP4 文件后重试',
+  },
+  {
+    id: 'video-8', time: '2026-11-19 16:40:33', productKey: 'runningShoes',
+    videoName: 'running-shoes-01.mp4', videoIntroduction: '跑步鞋上脚与鞋底缓震展示',
+    duration: '00:07', status: '上传失败', completedTime: '2026-11-19 16:41:05',
+    reason: '视频内容审核未通过，请修改后重新上传',
+  },
+  {
+    id: 'video-9', time: '2026-11-19 10:25:47', productKey: 'kidsSneaker',
+    videoName: 'kids-sneaker-main.mp4', videoIntroduction: '儿童运动鞋穿脱与尺码展示',
+    duration: '00:13', status: '上传成功', completedTime: '2026-11-19 10:26:20',
+  },
+];
+
+const videoDurationSeconds = (duration: string) => {
+  const [minutes, seconds] = duration.split(':').map(Number);
+  return minutes * 60 + seconds;
+};
+
+const formatVideoTime = (seconds: number) => `${pad2(Math.floor(seconds / 60))}:${pad2(Math.floor(seconds % 60))}`;
+
+const imageTaskStats = (record: ImageTaskRecord) => {  const done = record.success + record.failed;
   const pending = record.imageCount - done;
   const percent = record.imageCount ? Math.round((done / record.imageCount) * 100) : 0;
   const status: '执行中' | '部分失败' | '已完成' = pending > 0 ? '执行中' : record.failed > 0 ? '部分失败' : '已完成';
@@ -740,7 +822,13 @@ const taskShops = (record: TaskRecord) => record.shops ?? [];
 const shopSummary = (shops: string[]) =>
   shops.length > 2 ? `${shops[0]} 等 ${shops.length} 个店铺` : shops.join('、');
 
-type TaskDetailRow = { product: TaskProduct; shop?: string; result: TaskResult; failures?: TaskFailure[] };
+type TaskDetailRow = {
+  product: TaskProduct;
+  shop?: string;
+  result: TaskResult;
+  failures?: TaskFailure[];
+  publish?: ClonePublish;
+};
 
 const taskDetailRows = (record: TaskRecord): TaskDetailRow[] => record.products.flatMap((product) => {
   if (product.shopResults?.length) {
@@ -749,9 +837,10 @@ const taskDetailRows = (record: TaskRecord): TaskDetailRow[] => record.products.
       shop: item.shop,
       result: item.result,
       failures: item.failures,
+      publish: item.publish,
     }));
   }
-  return [{ product, result: product.result, failures: product.failures }];
+  return [{ product, result: product.result, failures: product.failures, publish: product.publish }];
 });
 
 const currentTagClass = (status: ProductCurrentStatus) => {
@@ -1024,11 +1113,13 @@ const TaskPanel = ({ kind, records, onNavigate }: { kind: TaskKind; records: Tas
   const [endDate, setEndDate] = useState('');
   const [statusFilter, setStatusFilter] = useState('全部');
   const [resultFilter, setResultFilter] = useState('全部');
+  const [publishFilter, setPublishFilter] = useState<'全部' | ClonePublishResult>('全部');
   const [detailPage, setDetailPage] = useState(1);
   const [copyFeedback, setCopyFeedback] = useState<{ count: number; failed: boolean } | null>(null);
 
   useEffect(() => {
     setResultFilter('全部');
+    setPublishFilter('全部');
     setDetailPage(1);
   }, [activeId]);
 
@@ -1064,6 +1155,7 @@ const TaskPanel = ({ kind, records, onNavigate }: { kind: TaskKind; records: Tas
           const target = resultFilter === '成功' ? 'success' : resultFilter === '失败' ? 'fail' : 'pending';
           if (row.result !== target) return false;
         }
+        if (kind === 'clone' && publishFilter !== '全部' && row.publish?.result !== publishFilter) return false;
         return true;
       })
     : [];
@@ -1072,10 +1164,11 @@ const TaskPanel = ({ kind, records, onNavigate }: { kind: TaskKind; records: Tas
   const detailCurrentPage = Math.min(detailPage, detailTotalPages);
   const pagedDetailRows = detailRows.slice((detailCurrentPage - 1) * detailPageSize, detailCurrentPage * detailPageSize);
 
-  useEffect(() => { setDetailPage(1); }, [resultFilter]);
+  useEffect(() => { setDetailPage(1); }, [resultFilter, publishFilter]);
 
   const resetDetailFilters = () => {
     setResultFilter('全部');
+    setPublishFilter('全部');
     setDetailPage(1);
   };
 
@@ -1133,6 +1226,21 @@ const TaskPanel = ({ kind, records, onNavigate }: { kind: TaskKind; records: Tas
     );
   };
 
+  const renderPublish = (publish?: ClonePublish) => {
+    if (!publish) return '-';
+    if (publish.result === '刊登成功') return <span className="tm-task-tag is-success">刊登成功</span>;
+    if (publish.result === '刊登失败') return <span className="tm-task-tag is-fail">刊登失败</span>;
+    if (publish.result === '刊登中') {
+      return (
+        <span className="tm-task-tag is-pending is-loading">
+          <Spinner size={12} />
+          刊登中
+        </span>
+      );
+    }
+    return <span className="tm-task-chip">待刊登</span>;
+  };
+
   if (active && counts) {
     return (
       <div className="tm-task-detail">
@@ -1178,9 +1286,25 @@ const TaskPanel = ({ kind, records, onNavigate }: { kind: TaskKind; records: Tas
         </div>
         <div className="tm-record-query tm-record-query--detail">
           <div className="tm-record-query__field">
-            <span className="tm-record-query__label">结果</span>
-            <FilterSelect value={resultFilter} options={resultOptions} onChange={setResultFilter} ariaLabel="结果" />
+            <span className="tm-record-query__label">{kind === 'clone' ? '克隆结果' : '结果'}</span>
+            <FilterSelect
+              value={resultFilter}
+              options={resultOptions}
+              onChange={setResultFilter}
+              ariaLabel={kind === 'clone' ? '克隆结果' : '结果'}
+            />
           </div>
+          {kind === 'clone' ? (
+            <div className="tm-record-query__field">
+              <span className="tm-record-query__label">刊登结果</span>
+              <FilterSelect
+                value={publishFilter}
+                options={['全部', '待刊登', '刊登中', '刊登成功', '刊登失败'] as const}
+                onChange={setPublishFilter}
+                ariaLabel="刊登结果"
+              />
+            </div>
+          ) : null}
           <button type="button" className="tm-record-query__reset" onClick={resetDetailFilters}>重置</button>
         </div>
         <div className={`tm-records tm-records--detail tm-task-table tm-task-table--${kind}`}>
@@ -1188,7 +1312,9 @@ const TaskPanel = ({ kind, records, onNavigate }: { kind: TaskKind; records: Tas
             <span>商品信息</span>
             {kind !== 'batch-edit' ? <span>{scopeLabel}</span> : null}
             <span>{resultPrefix}结果</span>
-            <span>失败原因</span>
+            <span>{kind === 'clone' ? '克隆失败原因' : '失败原因'}</span>
+            {kind === 'clone' ? <span>刊登结果</span> : null}
+            {kind === 'clone' ? <span>刊登失败原因</span> : null}
           </div>
           {pagedDetailRows.length === 0 ? (
             <div className="tm-records__empty">暂无数据</div>
@@ -1216,6 +1342,12 @@ const TaskPanel = ({ kind, records, onNavigate }: { kind: TaskKind; records: Tas
                     </span>
                   )) : '-'}
                 </span>
+                {kind === 'clone' ? <span>{renderPublish(row.publish)}</span> : null}
+                {kind === 'clone' ? (
+                  <span className={`tm-publish-reason${row.publish?.reason ? ' is-fail' : ''}`} title={row.publish?.reason}>
+                    {row.publish?.reason ?? '-'}
+                  </span>
+                ) : null}
               </div>
             );
           })}
@@ -1277,10 +1409,11 @@ const TaskPanel = ({ kind, records, onNavigate }: { kind: TaskKind; records: Tas
         </div>
         <button type="button" className="tm-record-query__reset" onClick={resetListFilters}>重置</button>
       </div>
-      <div className={`tm-records tm-task-list${kind === 'batch-edit' ? ' tm-task-list--plain' : ''}`}>
+      <div className={`tm-records tm-task-list${kind === 'batch-edit' ? ' tm-task-list--plain' : ''}${kind === 'clone' ? ' tm-task-list--clone' : ''}`}>
         <div className="tm-task-row tm-task-row--head">
           <span>发起时间</span>
           {kind !== 'batch-edit' ? <span>{scopeLabel}</span> : null}
+          {kind === 'clone' ? <span>克隆方式</span> : null}
           <span className="tm-records__cell--num">商品数</span>
           <span>进度</span>
           <span className="tm-records__cell--num">成功数量</span>
@@ -1330,6 +1463,7 @@ const TaskPanel = ({ kind, records, onNavigate }: { kind: TaskKind; records: Tas
                   </span>
                 </span>
               ) : null}
+              {kind === 'clone' ? <span>{record.cloneWay ?? '-'}</span> : null}
               <span className="tm-records__cell--num">{recordCounts.total} 个</span>
               <span className="tm-task-progress">
                 <span className="tm-task-progress__bar">
@@ -1828,6 +1962,319 @@ const ImageTaskPanel = ({ records }: { records: ImageTaskRecord[] }) => {
   );
 };
 
+const VideoTaskPanel = ({ records }: { records: VideoTaskRecord[] }) => {
+  const [page, setPage] = useState(1);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'全部' | VideoUploadStatus>('全部');
+  const [keyword, setKeyword] = useState('');
+  const [retryRecords, setRetryRecords] = useState<VideoTaskRecord[]>([]);
+  const [retriedIds, setRetriedIds] = useState<string[]>([]);
+
+  const allRecords = [...retryRecords, ...records];
+
+  const filteredRecords = allRecords.filter((record) => {
+    const date = record.time.slice(0, 10);
+    if (startDate && date < startDate) return false;
+    if (endDate && date > endDate) return false;
+    if (statusFilter !== '全部' && record.status !== statusFilter) return false;
+    const query = keyword.trim().toLowerCase();
+    if (query) {
+      const info = PRODUCT_CATALOG[record.productKey];
+      if (!info.id.toLowerCase().includes(query) && !info.title.toLowerCase().includes(query)) return false;
+    }
+    return true;
+  });
+
+  const pageSize = 5;
+  const totalPages = Math.max(1, Math.ceil(filteredRecords.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  const pagedRecords = filteredRecords.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  useEffect(() => { setPage(1); }, [startDate, endDate, statusFilter, keyword]);
+
+  const resetFilters = () => {
+    setStartDate('');
+    setEndDate('');
+    setStatusFilter('全部');
+    setKeyword('');
+    setPage(1);
+  };
+
+  const retryTask = (record: VideoTaskRecord) => {
+    if (retriedIds.includes(record.id)) return;
+    const now = new Date();
+    const time = `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())} ${pad2(now.getHours())}:${pad2(now.getMinutes())}:${pad2(now.getSeconds())}`;
+    setRetryRecords((prev) => [{
+      id: `video-retry-${record.id}-${now.getTime()}`,
+      time,
+      productKey: record.productKey,
+      videoName: record.videoName,
+      videoIntroduction: record.videoIntroduction,
+      duration: record.duration,
+      status: '上传中',
+    }, ...prev]);
+    setRetriedIds((prev) => [...prev, record.id]);
+    setPage(1);
+  };
+
+  const renderStatus = (status: VideoUploadStatus) => {
+    const className = status === '上传中' ? 'is-running is-loading' : status === '上传成功' ? 'is-success' : 'is-fail';
+    return (
+      <span className={`tm-task-tag ${className}`}>
+        {status === '上传中' ? <Spinner size={12} /> : null}
+        {status}
+      </span>
+    );
+  };
+
+  return (
+    <>
+      <div className="tm-record-query">
+        <div className="tm-record-query__field">
+          <span className="tm-record-query__label">时间</span>
+          <DatePicker value={startDate} onChange={setStartDate} placeholder="开始日期" />
+          <span className="tm-record-query__sep">至</span>
+          <DatePicker value={endDate} onChange={setEndDate} placeholder="结束日期" />
+        </div>
+        <div className="tm-record-query__field">
+          <span className="tm-record-query__label">状态</span>
+          <FilterSelect
+            value={statusFilter}
+            options={['全部', '上传中', '上传成功', '上传失败'] as const}
+            onChange={setStatusFilter}
+            ariaLabel="上传状态"
+          />
+        </div>
+        <div className="tm-record-query__field">
+          <span className="tm-record-query__label">商品</span>
+          <input
+            className="tm-video-search"
+            value={keyword}
+            onChange={(event) => setKeyword(event.target.value)}
+            placeholder="商品编号/标题"
+            aria-label="商品编号或标题"
+          />
+        </div>
+        <button type="button" className="tm-record-query__reset" onClick={resetFilters}>重置</button>
+      </div>
+      <div className="tm-records tm-task-list tm-video-list">
+        <div className="tm-task-row tm-task-row--head">
+          <span>发起时间</span>
+          <span>商品信息</span>
+          <span>状态/完成时间</span>
+          <span>失败原因</span>
+          <span className="tm-video-action-head">操作</span>
+        </div>
+        {pagedRecords.length === 0 ? (
+          <div className="tm-records__empty">暂无数据</div>
+        ) : pagedRecords.map((record) => {
+          const info = PRODUCT_CATALOG[record.productKey];
+          const playable = record.status === '上传成功';
+          return (
+            <div className="tm-task-row" key={record.id}>
+              <span className="tm-records__time">{record.time}</span>
+              <span className="tm-product-cell">
+                <img className="tm-product-cell__img" src={info.image} alt={info.title} />
+                <span className="tm-product-cell__main">
+                  <span className="tm-product-cell__title" title={info.title}>{info.title}</span>
+                  <span className="tm-product-cell__id">{info.id}</span>
+                </span>
+              </span>
+              <span className="tm-task-status-cell">
+                {renderStatus(record.status)}
+                {record.completedTime ? (
+                  <span className="tm-task-status-cell__time">{record.completedTime}</span>
+                ) : null}
+              </span>
+              <span className={`tm-video-reason${record.reason ? ' is-fail' : ''}`} title={record.reason ?? ''}>
+                {record.reason ?? '-'}
+              </span>
+              <span className="tm-video-action-cell">
+                {playable ? (
+                  <span className="tm-video-action">查看视频</span>
+                ) : record.status === '上传失败' ? (
+                  retriedIds.includes(record.id) ? (
+                    <span className="tm-video-action is-done">已重试</span>
+                  ) : (
+                    <button
+                      type="button"
+                      className="tm-video-action tm-video-action--clickable"
+                      onClick={() => retryTask(record)}
+                    >
+                      重试
+                    </button>
+                  )
+                ) : '-'}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+      <div className="tm-record-pager">
+        <span className="tm-record-pager__total">共 {filteredRecords.length} 条</span>
+        <div className="tm-record-pager__pages">
+          <button
+            type="button"
+            className="tm-record-pager__btn"
+            disabled={currentPage === 1}
+            aria-label="上一页"
+            onClick={() => setPage(currentPage - 1)}
+          >
+            ‹
+          </button>
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+            <button
+              type="button"
+              key={pageNumber}
+              className={`tm-record-pager__btn${pageNumber === currentPage ? ' is-active' : ''}`}
+              onClick={() => setPage(pageNumber)}
+            >
+              {pageNumber}
+            </button>
+          ))}
+          <button
+            type="button"
+            className="tm-record-pager__btn"
+            disabled={currentPage === totalPages}
+            aria-label="下一页"
+            onClick={() => setPage(currentPage + 1)}
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const VideoPreviewPage = ({ record }: { record: VideoTaskRecord }) => {
+  const info = PRODUCT_CATALOG[record.productKey];
+  const duration = videoDurationSeconds(record.duration);
+  const playable = record.status === '上传成功';
+  const [playing, setPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!playing || !playable) return;
+    const timer = window.setInterval(() => {
+      setProgress((value) => (value + 0.01 >= 1 ? 0 : value + 0.01));
+    }, 100);
+    return () => window.clearInterval(timer);
+  }, [playing, playable]);
+
+  const togglePlay = () => {
+    if (!playable) return;
+    setPlaying((value) => !value);
+  };
+
+  const seek = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!playable || !trackRef.current) return;
+    const rect = trackRef.current.getBoundingClientRect();
+    const ratio = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+    setProgress(ratio);
+  };
+
+  const elapsed = Math.round(progress * duration);
+  const backUrl = `${window.location.origin}${window.location.pathname}?tmTab=video-upload`;
+  const statusClass = record.status === '上传中' ? 'is-running is-loading' : playable ? 'is-success' : 'is-fail';
+
+  return (
+    <div className="tm-video-page">
+      <header className="tm-video-page__header">
+        <a className="tm-video-page__back" href={backUrl}>← 返回任务管理器</a>
+        <span className="tm-video-page__title">商品短视频</span>
+        <span className="tm-video-page__spacer" aria-hidden="true" />
+      </header>
+      <main className="tm-video-page__main">
+        <section className="tm-video-player" aria-label="视频播放器">
+          <div
+            className={`tm-video-player__stage${playable ? ' is-playable' : ''}`}
+            onClick={togglePlay}
+            role={playable ? 'button' : undefined}
+            aria-label={playable ? (playing ? '暂停视频' : '播放视频') : undefined}
+            tabIndex={playable ? 0 : undefined}
+            onKeyDown={(event) => {
+              if (playable && (event.key === 'Enter' || event.key === ' ')) {
+                event.preventDefault();
+                togglePlay();
+              }
+            }}
+          >
+            <img
+              src={info.image}
+              alt={info.title}
+              style={{ transform: `scale(${1 + progress * 0.14})` }}
+            />
+            {!playable ? (
+              <span className="tm-video-player__unavailable">
+                <span>视频未上传成功，暂不可播放</span>
+                {record.reason ? <span className="tm-video-player__unavailable-reason">{record.reason}</span> : null}
+              </span>
+            ) : null}
+            {playable && !playing ? (
+              <span className="tm-video-player__center" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+              </span>
+            ) : null}
+          </div>
+          <div className="tm-video-player__controls">
+            <button
+              type="button"
+              className="tm-video-player__btn"
+              aria-label={playing ? '暂停' : '播放'}
+              onClick={togglePlay}
+              disabled={!playable}
+            >
+              {playing ? (
+                <svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor" /></svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+              )}
+            </button>
+            <span className="tm-video-player__time">{formatVideoTime(elapsed)}</span>
+            <div className="tm-video-player__track" ref={trackRef} onClick={seek} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)}>
+              <span style={{ width: `${progress * 100}%` }} />
+            </div>
+            <span className="tm-video-player__time">{record.duration}</span>
+          </div>
+        </section>
+        <section className="tm-video-page__info">
+          <div className="tm-video-page__product">
+            <img className="tm-video-page__cover" src={info.image} alt={info.title} />
+            <div className="tm-video-page__product-main">
+              <h1 className="tm-video-page__product-title">{info.title}</h1>
+              <span className="tm-video-page__product-meta">商品编号 {info.id}</span>
+              <span className="tm-video-page__product-meta">店铺 {info.shopName}（{info.shopAlias}）</span>
+            </div>
+          </div>
+          <div className="tm-video-page__status">
+            <span className={`tm-task-tag ${statusClass}`}>
+              {record.status === '上传中' ? <Spinner size={12} /> : null}
+              {record.status}
+            </span>
+          </div>
+          <dl className="tm-video-page__meta">
+            <dt>视频名称</dt>
+            <dd>{record.videoName}</dd>
+            <dt>视频简介</dt>
+            <dd>{record.videoIntroduction}</dd>
+            <dt>上传时间</dt>
+            <dd>{record.time}</dd>
+          </dl>
+          {record.reason ? (
+            <div className="tm-video-page__reason">
+              <span className="tm-video-page__reason-label">失败原因</span>
+              <span>{record.reason}</span>
+            </div>
+          ) : null}
+        </section>
+      </main>
+    </div>
+  );
+};
+
 const ExportPanel = () => {
   const [records, setRecords] = useState<ExportRecord[]>(EXPORT_RECORDS);
   const [page, setPage] = useState(1);
@@ -2001,7 +2448,10 @@ const ExportPanel = () => {
 
 const TaskManagerDialog = () => {
   const [visible, setVisible] = useState(true);
-  const [activeTab, setActiveTab] = useState<TaskTabKey>('publish');
+  const [activeTab, setActiveTab] = useState<TaskTabKey>(() => {
+    const tab = new URLSearchParams(window.location.search).get('tmTab');
+    return TASK_TABS.some((item) => item.key === tab) ? (tab as TaskTabKey) : 'claim';
+  });
   const bodyRef = useRef<HTMLDivElement | null>(null);
 
   const [activeRecordId, setActiveRecordId] = useState<string | null>(null);
@@ -2128,6 +2578,8 @@ const TaskManagerDialog = () => {
                 <ExportPanel />
               ) : activeTab === 'batch-image' ? (
                 <ImageTaskPanel records={IMAGE_TASKS} />
+              ) : activeTab === 'video-upload' ? (
+                <VideoTaskPanel records={VIDEO_TASKS} />
               ) : activeTab === 'product-sync' || activeTab === 'order-sync' ? (
                 <SyncTaskPanel
                   key={activeTab}
@@ -2427,4 +2879,10 @@ const TaskManagerDialog = () => {
   );
 };
 
-export default TaskManagerDialog;
+const TaskManagerApp = () => {
+  const [videoId] = useState(() => new URLSearchParams(window.location.search).get('tmVideo'));
+  const previewRecord = videoId ? VIDEO_TASKS.find((record) => record.id === videoId) : undefined;
+  return previewRecord ? <VideoPreviewPage record={previewRecord} /> : <TaskManagerDialog />;
+};
+
+export default TaskManagerApp;

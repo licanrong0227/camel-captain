@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import CreateProductDialog from '../components/CreateProductDialog';
 import AiCloneDialog from '../components/AiCloneDialog';
 import SyncOnlineDialog from '../components/SyncOnlineDialog';
+import type { DialogRequest } from '../dialog-route';
 
 import thumbSneaker from '../assets/thumb-sneaker.jpg';
 import thumbBracelet from '../assets/thumb-bracelet.jpg';
@@ -609,7 +610,7 @@ function ScrollFloat() {
   );
 }
 
-export default function MyProductsPage() {
+export default function MyProductsPage({ dialogRequest }: { dialogRequest?: DialogRequest }) {
   const [platformId, setPlatformId] = useState('shopify');
   const [store, setStore] = useState('');
   const [createOpen, setCreateOpen] = useState(false);
@@ -617,6 +618,15 @@ export default function MyProductsPage() {
   const [cloneCount, setCloneCount] = useState<number | null>(null);
   const [syncOpen, setSyncOpen] = useState(false);
   const [toast, setToast] = useState('');
+
+  useEffect(() => {
+    if (!dialogRequest) return;
+    const dialog = dialogRequest.dialog;
+    setCreateTitle(dialog === 'edit-product' ? '编辑产品' : '创建新产品');
+    setCreateOpen(dialog === 'create-product' || dialog === 'edit-product');
+    setCloneCount(dialog === 'ai-clone' ? 1 : null);
+    setSyncOpen(dialog === 'sync-online');
+  }, [dialogRequest]);
 
   useEffect(() => {
     if (!toast) return undefined;
