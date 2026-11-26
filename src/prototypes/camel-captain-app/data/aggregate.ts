@@ -633,9 +633,10 @@ function buildBuckets(dates: string[], mode: 'day' | 'week' | 'month'): Bucket[]
   return buckets;
 }
 
-function dailyStoreTotals(): Map<string, { gmv: number; qty: number }> {
+function dailyStoreTotals(storeIds?: Set<number>): Map<string, { gmv: number; qty: number }> {
   const map = new Map<string, { gmv: number; qty: number }>();
   getDataset().storeDaily.forEach((row) => {
+    if (storeIds && !storeIds.has(row.storeId)) return;
     const current = map.get(row.date) ?? { gmv: 0, qty: 0 };
     current.gmv = round2(current.gmv + row.gmv);
     current.qty += row.qty;
@@ -644,9 +645,10 @@ function dailyStoreTotals(): Map<string, { gmv: number; qty: number }> {
   return map;
 }
 
-function dailyAdTotals(): Map<string, AdDailyRow> {
+function dailyAdTotals(storeIds?: Set<number>): Map<string, AdDailyRow> {
   const map = new Map<string, AdDailyRow>();
   getDataset().adDaily.forEach((row) => {
+    if (storeIds && !storeIds.has(row.storeId)) return;
     const current = map.get(row.date) ?? { storeId: 0, date: row.date, adCost: 0, adGmv: 0, imp: 0, click: 0, orders: 0 };
     current.adCost = round2(current.adCost + row.adCost);
     current.adGmv = round2(current.adGmv + row.adGmv);
@@ -662,13 +664,15 @@ export function buildHomeTrend(
   period: HomeTrendPeriod,
   exclusionEnabled: boolean,
   configs: ExclusionConfig[],
+  filterStoreIds: number[] = [],
 ): HomeTrendPoint[] {
   const days = PERIOD_DAYS[period];
   const from = addDays(REPORT_TO, -(days - 1));
   const dates = eachDay(from, REPORT_TO);
-  const storeTotals = dailyStoreTotals();
-  const adTotals = dailyAdTotals();
-  const storeIds = STORES.map((store) => store.id);
+  const storeIds = filterStoreIds.length > 0 ? filterStoreIds : STORES.map((store) => store.id);
+  const idSet = new Set(storeIds);
+  const storeTotals = dailyStoreTotals(idSet);
+  const adTotals = dailyAdTotals(idSet);
   const exclusion = resolveExclusions(configs, exclusionEnabled, from, REPORT_TO, storeIds);
 
   const buckets = buildBuckets(dates, PERIOD_BUCKET[period]);
@@ -733,7 +737,7 @@ export interface RankRow {
   storeId?: number;
   storeName?: string;
   storeAlias?: string;
-  catePubName?: string;
+  catePubNames?: string[];
   itemcode?: string;
   name?: string;
   thumb?: string;
@@ -779,7 +783,7 @@ export function storeSalesRank(
     storeId: store.id,
     storeName: store.name,
     storeAlias: store.alias,
-    catePubName: store.catePubName,
+    catePubNames: store.catePubNames,
     qty: totals.get(store.id)?.qty ?? 0,
     orders: totals.get(store.id)?.orders ?? 0,
     value: Math.max(0, round2((totals.get(store.id)?.gmv ?? 0) - (excluded.get(store.id) ?? 0))),
@@ -808,7 +812,7 @@ export function storeTrafficRank(period: StorePeriodKey): RankRow[] {
       storeId: store.id,
       storeName: store.name,
       storeAlias: store.alias,
-      catePubName: store.catePubName,
+      catePubNames: store.catePubNames,
       uv,
       uvValue: uv > 0 ? round2((total?.gmv ?? 0) / uv) : null,
       value: total?.pv ?? 0,
@@ -826,7 +830,7 @@ export function levelRank(): RankRow[] {
     storeId: store.id,
     storeName: store.name,
     storeAlias: store.alias,
-    catePubName: store.catePubName,
+    catePubNames: store.catePubNames,
     level: store.level,
     score: store.score,
     value: store.score,

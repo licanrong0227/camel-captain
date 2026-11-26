@@ -48,6 +48,11 @@ const PRINT_SIZE_OPTIONS = [
   { value: '100*150', label: '100*150' },
 ];
 
+const ORDER_GOODS_OPTIONS = [
+  { value: 'collapse', label: '自动折叠' },
+  { value: 'expand', label: '自动展开' },
+];
+
 const TRANSLATIONS: Record<string, string> = {
   Hello: 'Hello',
   你好: 'Hello',
@@ -164,8 +169,7 @@ function Row({
 export default function OrderConfigDialog() {
   const [open, setOpen] = useState(true);
   const [tab, setTab] = useState<TabKey>('list');
-  const [shipWarning, setShipWarning] = useState(true);
-  const [purchaseWarning, setPurchaseWarning] = useState(true);
+  const [orderGoods, setOrderGoods] = useState('collapse');
   const [waybill, setWaybill] = useState('unlimited');
   const [platform, setPlatform] = useState('unlimited');
   const [printSize, setPrintSize] = useState('100*150');
@@ -230,8 +234,6 @@ export default function OrderConfigDialog() {
 
   const handleReopen = () => {
     setTab('list');
-    setShipWarning(true);
-    setPurchaseWarning(true);
     setWaybill('unlimited');
     setPlatform('unlimited');
     setPrintSize('100*150');
@@ -297,18 +299,14 @@ export default function OrderConfigDialog() {
                 <div className="ocd-main">
                   <div className="ocd-content">
                     {tab === 'list' && (
-                      <>
-                        <Row label="发货预警">
-                          <Switch checked={shipWarning} label="发货预警" onChange={() => setShipWarning((v) => !v)} />
-                        </Row>
-                        <Row label="采购预警">
-                          <Switch
-                            checked={purchaseWarning}
-                            label="采购预警"
-                            onChange={() => setPurchaseWarning((v) => !v)}
-                          />
-                        </Row>
-                      </>
+                      <Row label="订单商品信息">
+                        <RadioGroup
+                          name="订单商品信息"
+                          value={orderGoods}
+                          options={ORDER_GOODS_OPTIONS}
+                          onChange={setOrderGoods}
+                        />
+                      </Row>
                     )}
 
                     {tab === 'waybill' && (

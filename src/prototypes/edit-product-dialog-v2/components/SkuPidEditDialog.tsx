@@ -52,7 +52,7 @@ export default function SkuPidEditDialog({
             <div className="spid-table">
               <div className="spid-head-row">
                 <span>图片</span>
-                <span>颜色（Color）</span>
+                <span>Color（颜色）</span>
                 <span>Options</span>
                 <span>制造商产品识别码(nsPid)</span>
                 <span>国际标准商品编码(sPid)</span>

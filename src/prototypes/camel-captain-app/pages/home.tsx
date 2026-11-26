@@ -29,6 +29,7 @@ import { AlertSettingsSheet, type AlertKind } from '../components/AlertSettingsS
 import { ExclusionSheet } from '../components/ExclusionSheet';
 import { RankingSheet, type RankKind } from '../components/RankingSheet';
 import { SkuSheet } from '../components/SkuSheet';
+import { StoreFilterSheet } from '../components/StoreFilterSheet';
 import { Sheet } from '../components/Sheet';
 import logo from '../assets/logo.png';
 import metricIcon from '../assets/metric-icon.png';
@@ -129,6 +130,8 @@ export function HomePage({
   const [trendPeriod, setTrendPeriod] = useState<HomeTrendPeriod>('m1');
   const [trendMetric, setTrendMetric] = useState<'sales' | 'qty' | 'adCost' | 'adGmv' | 'roas'>('sales');
   const [trendSettingsOpen, setTrendSettingsOpen] = useState(false);
+  const [trendStoreIds, setTrendStoreIds] = useState<number[]>([]);
+  const [trendStoreOpen, setTrendStoreOpen] = useState(false);
   const [landscapeOpen, setLandscapeOpen] = useState(false);
   const [landscapeHidden, setLandscapeHidden] = useState<string[]>([]);
   const [storeRankTab, setStoreRankTab] = useState<'sales' | 'traffic' | 'level'>('sales');
@@ -142,6 +145,7 @@ export function HomePage({
   const [alertKind, setAlertKind] = useState<AlertKind | null>(null);
   const [exclusionOpen, setExclusionOpen] = useState(false);
   const [rankKind, setRankKind] = useState<RankKind | null>(null);
+  const [rankCateOpen, setRankCateOpen] = useState(false);
   const [skuTarget, setSkuTarget] = useState<{ itemcode: string; name: string } | null>(null);
   const [contactOpen, setContactOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -217,8 +221,8 @@ export function HomePage({
 
   const kpis = useMemo(() => buildHomeKpis(exclusionEnabled, configs), [exclusionEnabled, configs]);
   const points = useMemo(
-    () => buildHomeTrend(trendPeriod, exclusionEnabled, configs),
-    [trendPeriod, exclusionEnabled, configs],
+    () => buildHomeTrend(trendPeriod, exclusionEnabled, configs, trendStoreIds),
+    [trendPeriod, exclusionEnabled, configs, trendStoreIds],
   );
 
   useEffect(() => {
@@ -277,10 +281,12 @@ export function HomePage({
     setAnnDetail(null);
     setPopupNotice(null);
     setTrendSettingsOpen(false);
+    setTrendStoreOpen(false);
     setLandscapeOpen(false);
     setAlertKind(null);
     setExclusionOpen(false);
     setRankKind(null);
+    setRankCateOpen(false);
     setSkuTarget(null);
     setContactOpen(false);
     if (!dialog) return;
@@ -313,6 +319,10 @@ export function HomePage({
         break;
       case 'ranking-product':
         setRankKind('product');
+        break;
+      case 'ranking-cate':
+        setRankKind('level');
+        setRankCateOpen(true);
         break;
       case 'sku': {
         const first = productRows[0];
@@ -522,6 +532,14 @@ export function HomePage({
                 {metric.label}
               </button>
             ))}
+            <button
+              type="button"
+              className={`cc-filter-chip cc-trend-store-chip${trendStoreIds.length ? ' is-active' : ''}`}
+              onClick={() => setTrendStoreOpen(true)}
+            >
+              店铺 <strong>{trendStoreIds.length ? trendStoreIds.length : '全部'}</strong>
+              <ChevronDown size={13} />
+            </button>
           </div>
           <Chart
             labels={points.map((point) => point.label)}
@@ -708,10 +726,20 @@ export function HomePage({
         onClose={() => setAlertKind(null)}
       />
       <ExclusionSheet open={exclusionOpen} configs={configs} onSave={onSaveConfigs} onClose={() => setExclusionOpen(false)} />
+      <StoreFilterSheet
+        open={trendStoreOpen}
+        selected={trendStoreIds}
+        onChange={setTrendStoreIds}
+        onClose={() => setTrendStoreOpen(false)}
+      />
       <RankingSheet
         open={rankKind !== null}
         kind={rankKind ?? 'sales'}
-        onClose={() => setRankKind(null)}
+        initialCate={rankCateOpen}
+        onClose={() => {
+          setRankKind(null);
+          setRankCateOpen(false);
+        }}
         exclusionEnabled={exclusionEnabled}
         configs={configs}
         onOpenSku={(row) => {

@@ -3,8 +3,10 @@
  */
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   BarChart3,
+  Check,
   ChevronsLeft,
   ChevronsRight,
   ChevronDown,
@@ -41,6 +43,9 @@ import ComplianceEntry from './components/ComplianceEntry';
 import ComplianceDialog from './components/ComplianceDialog';
 import SkuBatchEditDialog, { type SkuBatchField, type SkuRow } from './components/SkuBatchEditDialog';
 import SkuImageUpdateDialog from './components/SkuImageUpdateDialog';
+import SystemSpecValueDialog, { type SystemSpecOption } from './components/SystemSpecValueDialog';
+import SpecValueEditDialog from './components/SpecValueEditDialog';
+import BatchAddSpecValueDialog, { INITIAL_SPEC_TEMPLATES, type SpecTemplate } from './components/BatchAddSpecValueDialog';
 import SkuPidEditDialog from './components/SkuPidEditDialog';
 import SkuStockSplitDialog, {
   type StockBatchPatch,
@@ -205,30 +210,133 @@ const SHORT_TEXTS = [
   'Should you have any questions or issues, our team is ready to help promptly to ensure your satisfaction.',
 ];
 
+type AttrOption = { en: string; cn?: string };
+
 const ATTRIBUTES: {
   label: string;
   required?: boolean;
   value: string;
   kind?: 'select' | 'input' | 'tag';
-  extra?: 'custom' | 'all' | 'both';
+  options: AttrOption[];
 }[] = [
-  { label: '国产品牌 Chinese Brand', value: '无品牌' },
-  { label: '操作系统 Operation System', required: true, value: 'Android' },
-  { label: 'CPU CPU', value: '八核' },
-  { label: 'RAM RAM', value: '3GB' },
-  { label: 'ROM ROM', value: '64GB' },
-  { label: '屏幕尺寸 Display Size', value: '1.8' },
-  { label: '屏幕分辨率 Display Resolution', value: '800x480', extra: 'custom' },
-  { label: '摄像头像素 Camera Pixels', value: '没有摄像头', extra: 'custom' },
-  { label: '功能 Feature', value: 'USB OTG', kind: 'tag', extra: 'all' },
-  { label: '电池容量(毫安) Battery(mAh)', required: true, value: '11111', kind: 'input' },
-  { label: '视频拍摄画质 Recording Definition', value: '1080I', extra: 'custom' },
-  { label: '网络 Network', value: 'GSM1800', kind: 'tag', extra: 'both' },
-  { label: '语言 Language', value: '印度语', kind: 'tag', extra: 'all' },
-  { label: '电视模式 TV Standard', value: '模拟电视' },
-  { label: '最大插卡容量 Memory Card up to', value: '16G', extra: 'custom' },
-  { label: '支持的SIM卡 Sim Card', value: 'SIM卡', kind: 'tag', extra: 'all' },
-  { label: '外观样式 Design', value: '直板手机', extra: 'custom' },
+  {
+    label: 'Chinese Brand 国产品牌',
+    value: 'No Brand',
+    options: [
+      { en: 'No Brand', cn: '无品牌' },
+      { en: 'Huawei', cn: '华为' },
+      { en: 'Xiaomi', cn: '小米' },
+      { en: 'OPPO' },
+      { en: 'vivo' },
+      { en: 'HONOR', cn: '荣耀' },
+      { en: 'Transsion', cn: '传音' },
+    ],
+  },
+  {
+    label: 'Operation System 操作系统',
+    required: true,
+    value: 'Android',
+    options: [
+      { en: 'Android' },
+      { en: 'iOS' },
+      { en: 'HarmonyOS', cn: '鸿蒙' },
+      { en: 'Other', cn: '其他' },
+    ],
+  },
+  {
+    label: 'CPU CPU',
+    value: 'Octa-core',
+    options: [
+      { en: 'Quad-core', cn: '四核' },
+      { en: 'Octa-core', cn: '八核' },
+      { en: 'Deca-core', cn: '十核' },
+    ],
+  },
+  { label: 'RAM RAM', value: '3GB', options: [{ en: '2GB' }, { en: '3GB' }, { en: '4GB' }, { en: '6GB' }, { en: '8GB' }, { en: '12GB' }] },
+  { label: 'ROM ROM', value: '64GB', options: [{ en: '16GB' }, { en: '32GB' }, { en: '64GB' }, { en: '128GB' }, { en: '256GB' }, { en: '512GB' }] },
+  { label: 'Display Size 屏幕尺寸', value: '1.8', options: [{ en: '1.8' }, { en: '4.7' }, { en: '5.5' }, { en: '6.1' }, { en: '6.7' }] },
+  {
+    label: 'Display Resolution 屏幕分辨率',
+    value: '800x480',
+    options: [{ en: '800x480' }, { en: '1280x720' }, { en: '1920x1080' }, { en: '2340x1080' }],
+  },
+  {
+    label: 'Camera Pixels 摄像头像素',
+    value: 'No Camera',
+    options: [
+      { en: 'No Camera', cn: '没有摄像头' },
+      { en: '5MP', cn: '500万' },
+      { en: '13MP', cn: '1300万' },
+      { en: '48MP', cn: '4800万' },
+      { en: '64MP', cn: '6400万' },
+    ],
+  },
+  {
+    label: 'Feature 功能',
+    value: 'USB OTG',
+    kind: 'tag',
+    options: [
+      { en: 'USB OTG' },
+      { en: 'Bluetooth', cn: '蓝牙' },
+      { en: 'Wi-Fi', cn: '无线网络' },
+      { en: 'NFC', cn: '近场通信' },
+      { en: 'Fingerprint', cn: '指纹识别' },
+      { en: 'Face Unlock', cn: '人脸识别' },
+    ],
+  },
+  { label: 'Battery(mAh) 电池容量(毫安)', required: true, value: '11111', kind: 'input', options: [] },
+  {
+    label: 'Recording Definition 视频拍摄画质',
+    value: '1080I',
+    options: [{ en: '480P' }, { en: '720P' }, { en: '1080I' }, { en: '1080P' }, { en: '4K' }],
+  },
+  { label: 'Network 网络', value: 'GSM1800', kind: 'tag', options: [{ en: 'GSM900' }, { en: 'GSM1800' }, { en: 'WCDMA' }, { en: 'LTE' }, { en: '5G' }] },
+  {
+    label: 'Language 语言',
+    value: 'Hindi',
+    kind: 'tag',
+    options: [
+      { en: 'English', cn: '英语' },
+      { en: 'Hindi', cn: '印度语' },
+      { en: 'Arabic', cn: '阿拉伯语' },
+      { en: 'Spanish', cn: '西班牙语' },
+      { en: 'French', cn: '法语' },
+    ],
+  },
+  {
+    label: 'TV Standard 电视模式',
+    value: 'Analog TV',
+    options: [
+      { en: 'Analog TV', cn: '模拟电视' },
+      { en: 'Digital TV', cn: '数字电视' },
+      { en: 'Not Supported', cn: '不支持' },
+    ],
+  },
+  {
+    label: 'Memory Card up to 最大插卡容量',
+    value: '16G',
+    options: [{ en: '16G' }, { en: '32G' }, { en: '64G' }, { en: '128G' }, { en: 'Not Supported', cn: '不支持' }],
+  },
+  {
+    label: 'Sim Card 支持的SIM卡',
+    value: 'SIM Card',
+    kind: 'tag',
+    options: [
+      { en: 'SIM Card', cn: 'SIM卡' },
+      { en: 'Micro SIM', cn: '小卡' },
+      { en: 'Nano SIM', cn: '微型卡' },
+      { en: 'eSIM', cn: '电子卡' },
+    ],
+  },
+  {
+    label: 'Design 外观样式',
+    value: 'Bar Phone',
+    options: [
+      { en: 'Bar Phone', cn: '直板手机' },
+      { en: 'Flip Phone', cn: '翻盖手机' },
+      { en: 'Slider Phone', cn: '滑盖手机' },
+    ],
+  },
 ];
 
 const COLOR_VALUES = [
@@ -242,6 +350,27 @@ const COLOR_VALUES = [
   { name: 'Purple', img: spec8 },
   { name: 'Green', img: spec9 },
   { name: 'Beige', img: promo1 },
+];
+
+const SYSTEM_COLOR_OPTIONS: SystemSpecOption[] = [
+  { cn: '黑色', name: 'Black', hex: '#000000' },
+  { cn: '白色', name: 'White', hex: '#ffffff' },
+  { cn: '红色', name: 'Red', hex: '#f5222d' },
+  { cn: '粉色', name: 'Pink', hex: '#f78fb3' },
+  { cn: '橙色', name: 'Orange', hex: '#fa8c16' },
+  { cn: '黄色', name: 'Yellow', hex: '#fadb14' },
+  { cn: '绿色', name: 'Green', hex: '#52c41a' },
+  { cn: '蓝色', name: 'Blue', hex: '#1677ff' },
+  { cn: '紫色', name: 'Purple', hex: '#722ed1' },
+  { cn: '灰色', name: 'Grey', hex: '#8c8c8c' },
+  { cn: '金色', name: 'Gold', hex: '#d4af37' },
+  { cn: '银色', name: 'Silver', hex: '#c0c4cc' },
+  { cn: '米色', name: 'Beige', hex: '#f5e6c8' },
+  { cn: '棕色', name: 'Brown', hex: '#8b5a2b' },
+  { cn: '藏青色', name: 'Navy', hex: '#1f2d5a' },
+  { cn: '卡其色', name: 'Khaki', hex: '#c3b091' },
+  { cn: '透明', name: 'Transparent', hex: '', swatch: 'transparent' },
+  { cn: '多色', name: 'Multicolor', hex: '', swatch: 'multicolor' },
 ];
 
 const OPTION_VALUES = [
@@ -489,6 +618,258 @@ function SelectBox({
       <span className={value ? 'ep-select__value' : 'ep-select__ph'}>{value || placeholder}</span>
       <ChevronDown size={12} className="ep-select__caret" />
     </span>
+  );
+}
+
+function AttrSelect({
+  options,
+  values,
+  multi,
+  onChange,
+}: {
+  options: AttrOption[];
+  values: string[];
+  multi?: boolean;
+  onChange: (next: string[]) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [rect, setRect] = useState<{ left: number; top: number; width: number; above: boolean } | null>(null);
+  const triggerRef = useRef<HTMLSpanElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  const optionEns = useMemo(() => options.map((option) => option.en), [options]);
+  const allEntries = useMemo<AttrOption[]>(
+    () => [...options, ...values.filter((value) => !optionEns.includes(value)).map((value) => ({ en: value }))],
+    [options, optionEns, values],
+  );
+  const keyword = query.trim();
+  const keywordLower = keyword.toLowerCase();
+  const hasChinese = /[一-龥]/.test(keyword);
+  const filtered = allEntries.filter(
+    (entry) =>
+      !keywordLower ||
+      entry.en.toLowerCase().includes(keywordLower) ||
+      (entry.cn || '').toLowerCase().includes(keywordLower),
+  );
+  const canCreate =
+    keyword.length > 0 && !hasChinese && !allEntries.some((entry) => entry.en.toLowerCase() === keywordLower);
+  const hasCustom = values.some((value) => !optionEns.includes(value));
+  const allSelected =
+    !hasCustom && optionEns.length > 0 && optionEns.every((option) => values.includes(option));
+
+  const syncRect = () => {
+    const el = triggerRef.current;
+    if (!el) return;
+    const box = el.getBoundingClientRect();
+    const width = Math.max(box.width, 220);
+    const above = box.bottom + 280 > window.innerHeight && box.top > 280;
+    setRect({
+      left: Math.min(box.left, window.innerWidth - width - 12),
+      top: above ? box.top - 6 : box.bottom + 6,
+      width,
+      above,
+    });
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    syncRect();
+    const onScroll = () => syncRect();
+    const scrollers: HTMLElement[] = [];
+    let node = triggerRef.current?.parentElement ?? null;
+    while (node) {
+      const overflowY = getComputedStyle(node).overflowY;
+      if (overflowY === 'auto' || overflowY === 'scroll') scrollers.push(node);
+      node = node.parentElement;
+    }
+    scrollers.push(document.documentElement);
+    scrollers.forEach((el) => el.addEventListener('scroll', onScroll, { passive: true }));
+    window.addEventListener('resize', onScroll);
+    const onDocDown = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (triggerRef.current?.contains(target)) return;
+      if (panelRef.current?.contains(target)) return;
+      setOpen(false);
+    };
+    document.addEventListener('mousedown', onDocDown, true);
+    const focusTimer = window.setTimeout(() => searchRef.current?.focus(), 0);
+    return () => {
+      scrollers.forEach((el) => el.removeEventListener('scroll', onScroll));
+      window.removeEventListener('resize', onScroll);
+      document.removeEventListener('mousedown', onDocDown, true);
+      window.clearTimeout(focusTimer);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) setQuery('');
+  }, [open]);
+
+  const pick = (value: string) => {
+    if (multi) {
+      if (hasCustom) {
+        onChange([value]);
+      } else {
+        onChange(values.includes(value) ? values.filter((item) => item !== value) : [...values, value]);
+      }
+      setQuery('');
+      searchRef.current?.focus();
+      return;
+    }
+    onChange([value]);
+    setOpen(false);
+  };
+
+  const toggleAll = () => {
+    onChange(allSelected ? [] : [...optionEns]);
+    setQuery('');
+    searchRef.current?.focus();
+  };
+
+  const create = () => {
+    if (!keyword || hasChinese) return;
+    if (multi) {
+      const customs = values.filter((value) => !optionEns.includes(value));
+      if (!customs.includes(keyword)) onChange([...customs, keyword]);
+      setQuery('');
+      searchRef.current?.focus();
+      return;
+    }
+    onChange([keyword]);
+    setOpen(false);
+  };
+
+  const onSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (canCreate) create();
+      else if (filtered.length > 0) pick(filtered[0].en);
+      return;
+    }
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setOpen(false);
+    }
+  };
+
+  return (
+    <>
+      <span
+        ref={triggerRef}
+        className={`ep-select ep-attr-select${multi ? ' ep-select--tag' : ''}${open ? ' is-open' : ''}`}
+        role="button"
+        tabIndex={0}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((prev) => !prev)}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            setOpen(true);
+          }
+        }}
+      >
+        {values.length === 0 && <span className="ep-select__ph">请选择</span>}
+        {!multi && values[0] && (
+          <>
+            <span className="ep-select__value">{values[0]}</span>
+            {!optionEns.includes(values[0]) && <span className="ep-attr-badge">自定义</span>}
+          </>
+        )}
+        {multi &&
+          values.map((value) => (
+            <span
+              key={value}
+              className={optionEns.includes(value) ? 'ep-tag' : 'ep-tag ep-tag--custom'}
+              title={optionEns.includes(value) ? undefined : '自定义'}
+            >
+              {value}
+              <X
+                size={10}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onChange(values.filter((item) => item !== value));
+                }}
+              />
+            </span>
+          ))}
+        <ChevronDown size={12} className="ep-select__caret" />
+      </span>
+
+      {open &&
+        rect &&
+        createPortal(
+          <div
+            className="ep-attr-panel"
+            ref={panelRef}
+            role="listbox"
+            aria-label="选择属性值"
+            style={{
+              left: rect.left,
+              top: rect.top,
+              width: rect.width,
+              transform: rect.above ? 'translateY(-100%)' : undefined,
+            }}
+          >
+            <input
+              ref={searchRef}
+              className="ep-attr-panel__search"
+              placeholder="输入或选择"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onKeyDown={onSearchKeyDown}
+            />
+            <div className="ep-attr-panel__list">
+              {multi && !keyword && (
+                <span
+                  className={allSelected ? 'ep-attr-opt ep-attr-opt--all is-active' : 'ep-attr-opt ep-attr-opt--all'}
+                  role="option"
+                  aria-selected={allSelected}
+                  onClick={toggleAll}
+                >
+                  <span className="ep-attr-opt__text">全选</span>
+                  {allSelected && <Check size={12} className="ep-attr-opt__tick" />}
+                </span>
+              )}
+              {filtered.map((entry) => {
+                const active = values.includes(entry.en);
+                const custom = !optionEns.includes(entry.en);
+                return (
+                  <span
+                    key={entry.en}
+                    className={active ? 'ep-attr-opt is-active' : 'ep-attr-opt'}
+                    role="option"
+                    aria-selected={active}
+                    onClick={() => pick(entry.en)}
+                  >
+                    <span className="ep-attr-opt__text">
+                      <span className="ep-attr-opt__en">{entry.en}</span>
+                      {entry.cn && <span className="ep-attr-opt__cn">{entry.cn}</span>}
+                    </span>
+                    {custom && <span className="ep-attr-badge">自定义</span>}
+                    {active && <Check size={12} className="ep-attr-opt__tick" />}
+                  </span>
+                );
+              })}
+              {keyword && hasChinese && filtered.length === 0 && (
+                <span className="ep-attr-opt ep-attr-opt--error">不能包含中文</span>
+              )}
+              {canCreate && (
+                <span className="ep-attr-opt ep-attr-opt--create" onClick={create}>
+                  创建「{keyword}」
+                  <span className="ep-attr-badge">自定义</span>
+                </span>
+              )}
+              {filtered.length === 0 && !canCreate && !(keyword && hasChinese) && (
+                <span className="ep-attr-empty">暂无匹配项</span>
+              )}
+            </div>
+          </div>,
+          document.body,
+        )}
+    </>
   );
 }
 
@@ -758,15 +1139,6 @@ function MiniSelect({
   );
 }
 
-function TagValue({ value }: { value: string }) {
-  return (
-    <span className="ep-tag">
-      {value}
-      <X size={10} />
-    </span>
-  );
-}
-
 export default function EditProductDialogV2() {
   const [visible, setVisible] = useState(true);
   const [products, setProducts] = useState(NAV_PRODUCTS);
@@ -787,6 +1159,10 @@ export default function EditProductDialogV2() {
   const [productLeadTime, setProductLeadTime] = useState('7');
   const [stockCut, setStockCut] = useState(1);
   const [maxSaleQty, setMaxSaleQty] = useState('1000');
+  const [customWeight, setCustomWeight] = useState(false);
+  const [weightBaseQty, setWeightBaseQty] = useState('');
+  const [weightStepQty, setWeightStepQty] = useState('');
+  const [weightStepWeight, setWeightStepWeight] = useState('');
   const [priceTiers, setPriceTiers] = useState<PriceTier[]>([{ id: 'tier-1', qty: '1', discount: '' }]);
   const [customEnabled, setCustomEnabled] = useState(false);
   const [customTypes, setCustomTypes] = useState<string[]>([]);
@@ -805,9 +1181,30 @@ export default function EditProductDialogV2() {
   const [specPicked, setSpecPicked] = useState<Record<SpecKey, string[]>>({ color: [], option: [] });
   const [specImages, setSpecImages] = useState<SpecImages>(INITIAL_SPEC_IMAGES);
   const [imageDialogKey, setImageDialogKey] = useState<SpecKey | null>(null);
+  const [systemValueDialogKey, setSystemValueDialogKey] = useState<SpecKey | null>(null);
+  const [specValueNames, setSpecValueNames] = useState<Record<SpecKey, string[]>>(() => ({
+    color: COLOR_VALUES.map((item) => item.name),
+    option: OPTION_VALUES.map((item) => item.name),
+  }));
+  const [batchAddKey, setBatchAddKey] = useState<SpecKey | null>(null);
+  const [specTemplates, setSpecTemplates] = useState<SpecTemplate[]>(INITIAL_SPEC_TEMPLATES);
+  const [specValueEditor, setSpecValueEditor] = useState<{
+    key: SpecKey;
+    index: number;
+    text: string;
+    error: string | null;
+  } | null>(null);
   const [relateOpen, setRelateOpen] = useState(false);
   const [relatedTpl, setRelatedTpl] = useState<{ id: string; name: string } | null>(null);
   const [addMenuKey, setAddMenuKey] = useState<SpecKey | null>(null);
+  const [attrValues, setAttrValues] = useState<Record<string, string[]>>(() =>
+    Object.fromEntries(
+      ATTRIBUTES.filter((attr) => attr.kind !== 'input').map((attr) => [attr.label, [attr.value]]),
+    ),
+  );
+  const [attrInputValues, setAttrInputValues] = useState<Record<string, string>>(() =>
+    Object.fromEntries(ATTRIBUTES.filter((attr) => attr.kind === 'input').map((attr) => [attr.label, attr.value])),
+  );
   const [tagEditor, setTagEditor] = useState<{ key: SpecKey; name: string } | null>(null);
   const specTags = productTags[selectedId] ?? EMPTY_SPEC_TAGS;
   const [complianceOpen, setComplianceOpen] = useState(false);
@@ -1027,18 +1424,18 @@ export default function EditProductDialogV2() {
     () => [
       {
         key: 'color' as const,
-        name: '颜色（Color）',
-        values: COLOR_VALUES.map((item) => item.name),
+        name: 'Color（颜色）',
+        values: specValueNames.color,
         tags: specTags.color,
       },
       {
         key: 'option' as const,
         name: 'Options',
-        values: OPTION_VALUES.map((item) => item.name),
+        values: specValueNames.option,
         tags: specTags.option,
       },
     ],
-    [specTags],
+    [specTags, specValueNames],
   );
 
   const updateProductTags = (
@@ -1097,7 +1494,121 @@ export default function EditProductDialogV2() {
     }));
   };
 
-  const specValueList = (key: SpecKey) => (key === 'color' ? COLOR_VALUES : OPTION_VALUES);
+  const specValueList = (key: SpecKey) => specValueNames[key].map((name) => ({ name }));
+
+  const isSystemSpecValue = (key: SpecKey, name: string) =>
+    key === 'color' && SYSTEM_COLOR_OPTIONS.some((option) => option.name === name);
+
+  const openSpecValueEditor = (key: SpecKey, index: number) => {
+    setSpecValueEditor({ key, index, text: specValueNames[key][index], error: null });
+  };
+
+  const confirmSpecValueEdit = () => {
+    if (!specValueEditor) return;
+    const { key, index } = specValueEditor;
+    const prev = specValueNames[key][index];
+    const rawValue = specValueEditor.text.trim();
+    if (!rawValue) {
+      setSpecValueEditor({ ...specValueEditor, error: '请输入规格值' });
+      return;
+    }
+    if (/[一-龥]/.test(rawValue)) {
+      setSpecValueEditor({ ...specValueEditor, error: '不能包含中文字符' });
+      return;
+    }
+    const systemMatch =
+      key === 'color'
+        ? SYSTEM_COLOR_OPTIONS.find((option) => option.name.toLowerCase() === rawValue.toLowerCase())
+        : undefined;
+    const value = systemMatch ? systemMatch.name : rawValue;
+    const duplicated = (Object.keys(specValueNames) as SpecKey[]).some((specKey) =>
+      specValueNames[specKey].some(
+        (name, itemIndex) =>
+          !(specKey === key && itemIndex === index) && name.trim().toLowerCase() === value.toLowerCase(),
+      ),
+    );
+    if (duplicated) {
+      setSpecValueEditor({ ...specValueEditor, error: '规格值已存在' });
+      return;
+    }
+
+    const base = specValueNames[key].map((name, itemIndex) => (itemIndex === index ? value : name));
+    const systemOrder = key === 'color' ? SYSTEM_COLOR_OPTIONS.map((option) => option.name) : [];
+    const ordered = systemOrder.includes(value)
+      ? [...base].sort((a, b) => {
+          const ai = systemOrder.indexOf(a);
+          const bi = systemOrder.indexOf(b);
+          if (ai >= 0 && bi >= 0) return ai - bi;
+          if (ai >= 0) return -1;
+          if (bi >= 0) return 1;
+          return 0;
+        })
+      : [...base.filter((_, itemIndex) => itemIndex !== index), value];
+
+    if (prev !== value) {
+      setSpecImages((images) => {
+        const current = images[key] ?? {};
+        if (!(prev in current)) return images;
+        const next = { ...current };
+        next[value] = next[prev];
+        delete next[prev];
+        return { ...images, [key]: next };
+      });
+      setSpecPicked((picks) => ({
+        ...picks,
+        [key]: picks[key].map((name) => (name === prev ? value : name)),
+      }));
+    }
+    setSpecValueNames((map) => ({ ...map, [key]: ordered }));
+    setSpecValueEditor(null);
+  };
+
+  const addBatchSpecValues = (key: SpecKey, items: { name: string; image?: string }[]) => {
+    const systemOrder = key === 'color' ? SYSTEM_COLOR_OPTIONS : [];
+    const taken = new Set(
+      (Object.keys(specValueNames) as SpecKey[])
+        .flatMap((specKey) => specValueNames[specKey])
+        .map((name) => name.trim().toLowerCase()),
+    );
+    const accepted: { name: string; image?: string }[] = [];
+    items.forEach((item) => {
+      const name =
+        systemOrder.find((option) => option.name.toLowerCase() === item.name.trim().toLowerCase())?.name ??
+        item.name.trim();
+      const lower = name.toLowerCase();
+      if (!name || taken.has(lower)) return;
+      taken.add(lower);
+      accepted.push({ name, image: item.image });
+    });
+    setBatchAddKey(null);
+    if (accepted.length === 0) {
+      showToast('输入的规格值已全部存在');
+      return;
+    }
+    const imagePatch: Record<string, string> = {};
+    accepted.forEach((item) => {
+      if (item.image) imagePatch[item.name] = item.image;
+    });
+    if (Object.keys(imagePatch).length > 0) {
+      setSpecImages((images) => ({ ...images, [key]: { ...(images[key] ?? {}), ...imagePatch } }));
+    }
+    const next = accepted.map((item) => item.name);
+    setSpecValueNames((map) => {
+      const systemNames = specOrderOf(key);
+      const merged = [...map[key], ...next];
+      const ordered = [...merged].sort((a, b) => {
+        const ai = systemNames.indexOf(a);
+        const bi = systemNames.indexOf(b);
+        if (ai >= 0 && bi >= 0) return ai - bi;
+        if (ai >= 0) return -1;
+        if (bi >= 0) return 1;
+        return 0;
+      });
+      return { ...map, [key]: ordered };
+    });
+  };
+
+  const specOrderOf = (key: SpecKey) => (key === 'color' ? SYSTEM_COLOR_OPTIONS.map((option) => option.name) : []);
 
   const specHasImages = (key: SpecKey) =>
     specValueList(key).some((item) => Boolean(specImages[key][item.name]));
@@ -1110,7 +1621,7 @@ export default function EditProductDialogV2() {
       ...list,
       [key]: Object.fromEntries(values.map((item) => [item.name, null])),
     }));
-    showToast(`已清空「${key === 'color' ? '颜色（Color）' : 'Options'}」${remaining} 个规格值图片`);
+    showToast(`已清空「${key === 'color' ? 'Color（颜色）' : 'Options'}」${remaining} 个规格值图片`);
   };
 
   const openImageDialog = (key: SpecKey) => {
@@ -1157,6 +1668,10 @@ export default function EditProductDialogV2() {
         )}
         <span className="ep-spec-tag-actions">
           {picked.length > 0 && <span className="ep-spec-picked">已选 {picked.length} 个</span>}
+          <button type="button" className="ep-order" title="调整规格值顺序">
+            <GripVertical size={13} />
+            调整顺序
+          </button>
           <button
             type="button"
             className="ep-spec-img-clear"
@@ -1215,22 +1730,24 @@ export default function EditProductDialogV2() {
         <>
           <span className="ep-add-menu-catcher" onClick={() => setAddMenuKey(null)} />
           <div className="ep-add-menu" role="menu">
+            {key === 'color' && (
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => {
+                  setAddMenuKey(null);
+                  setSystemValueDialogKey('color');
+                }}
+              >
+                添加系统规格值
+              </button>
+            )}
             <button
               type="button"
               role="menuitem"
               onClick={() => {
                 setAddMenuKey(null);
-                showToast('「选择规格属性」暂未还原');
-              }}
-            >
-              选择规格属性
-            </button>
-            <button
-              type="button"
-              role="menuitem"
-              onClick={() => {
-                setAddMenuKey(null);
-                showToast('「批量添加规格属性」暂未还原');
+                setBatchAddKey(key);
               }}
             >
               批量添加规格属性
@@ -1878,26 +2395,34 @@ export default function EditProductDialogV2() {
                                   {attr.required && <Req />}
                                   {attr.label}
                                 </span>
-                                <span className="ep-attr-control">
-                                  {attr.kind === 'input' ? (
-                                    <input className="ep-input ep-input--attr" defaultValue={attr.value} />
-                                  ) : attr.kind === 'tag' ? (
-                                    <span className="ep-select ep-select--tag">
-                                      <TagValue value={attr.value} />
-                                      <ChevronDown size={12} className="ep-select__caret" />
-                                    </span>
-                                  ) : (
-                                    <SelectBox value={attr.value} />
-                                  )}
+                                <span className="ep-attr-field">
+                                  <span className="ep-attr-control">
+                                    {attr.kind === 'input' ? (
+                                      <>
+                                        <input
+                                          className="ep-input ep-input--attr"
+                                          value={attrInputValues[attr.label] ?? ''}
+                                          onChange={(event) =>
+                                            setAttrInputValues((map) => ({ ...map, [attr.label]: event.target.value }))
+                                          }
+                                          aria-label={attr.label}
+                                        />
+                                        {/[一-龥]/.test(attrInputValues[attr.label] ?? '') && (
+                                          <span className="ep-attr-hint-error">不能包含中文字符</span>
+                                        )}
+                                      </>
+                                    ) : (
+                                      <AttrSelect
+                                        options={attr.options}
+                                        values={attrValues[attr.label] ?? []}
+                                        multi={attr.kind === 'tag'}
+                                        onChange={(next) =>
+                                          setAttrValues((map) => ({ ...map, [attr.label]: next }))
+                                        }
+                                      />
+                                    )}
+                                  </span>
                                 </span>
-                                {attr.extra === 'custom' && <Checkbox label="自定义" />}
-                                {attr.extra === 'all' && <Checkbox label="全选" />}
-                                {attr.extra === 'both' && (
-                                  <>
-                                    <Checkbox label="全选" />
-                                    <Checkbox label="自定义" />
-                                  </>
-                                )}
                               </div>
                             ))}
                           </div>
@@ -2065,25 +2590,25 @@ export default function EditProductDialogV2() {
                             <div className="ep-spec-name">
                               <span className="ep-field__label">规格名称</span>
                               <span className="ep-input-wrap ep-input-wrap--spec">
-                                <input className="ep-input ep-input--disabled" defaultValue="颜色（Color）" disabled />
+                                <input className="ep-input ep-input--disabled" defaultValue="Color（颜色）" disabled />
                               </span>
                               <span className="ep-switch-wrap">
                                 <span className="ep-switch is-on" />
                                 图片模式
                               </span>
-                              <button type="button" className="ep-order">
-                                <GripVertical size={14} />
-                                调整顺序
-                              </button>
                             </div>
                             {renderSpecTags('color')}
                             <div className="ep-spec-cards">
                               {renderAddCard('color')}
-                              {COLOR_VALUES.map((color) => {
+                              {specValueList('color').map((color, index) => {
                                 const picked = specPicked.color.includes(color.name);
                                 const image = specImages.color[color.name];
+                                const system = isSystemSpecValue('color', color.name);
                                 return (
-                                  <div className={picked ? 'ep-spec-card is-picked' : 'ep-spec-card'} key={color.name}>
+                                  <div
+                                    className={`ep-spec-card${picked ? ' is-picked' : ''}${system ? ' is-system' : ' is-custom'}`}
+                                    key={index}
+                                  >
                                     <div className="ep-spec-card__top">
                                       <label className="ep-spec-pick">
                                         <input
@@ -2094,8 +2619,22 @@ export default function EditProductDialogV2() {
                                         />
                                         <span className="ep-spec-pick__box" />
                                       </label>
-                                      <input className="ep-spec-input" defaultValue={color.name} disabled />
-                                      <Pencil size={12} className="ep-spec-icon" />
+                                      <span className="ep-spec-value-text" title={color.name}>
+                                        <span className="ep-spec-value-text__en">{color.name}</span>
+                                        {SYSTEM_COLOR_OPTIONS.find((option) => option.name === color.name)?.cn && (
+                                          <span className="ep-spec-value-text__cn">
+                                            {SYSTEM_COLOR_OPTIONS.find((option) => option.name === color.name)?.cn}
+                                          </span>
+                                        )}
+                                      </span>
+                                      <button
+                                        type="button"
+                                        className="ep-spec-edit-btn"
+                                        aria-label={`编辑规格值 ${color.name}`}
+                                        onClick={() => openSpecValueEditor('color', index)}
+                                      >
+                                        <Pencil size={12} />
+                                      </button>
                                       <GripVertical size={13} className="ep-spec-icon" />
                                     </div>
                                     <div className="ep-spec-card__body">
@@ -2110,7 +2649,12 @@ export default function EditProductDialogV2() {
                                         <Upload size={14} />
                                       </button>
                                     </div>
-                                    <div className="ep-spec-card__size">尺寸: {image ? '1600*1600' : '-'}</div>
+                                    <div className="ep-spec-card__foot">
+                                      <span className={system ? 'ep-spec-badge is-system' : 'ep-spec-badge is-custom'}>
+                                        {system ? '系统' : '自定义'}
+                                      </span>
+                                      <span className="ep-spec-card__size">尺寸: {image ? '1600*1600' : '-'}</span>
+                                    </div>
                                   </div>
                                 );
                               })}
@@ -2128,19 +2672,19 @@ export default function EditProductDialogV2() {
                                 <span className="ep-switch is-on" />
                                 图片模式
                               </span>
-                              <button type="button" className="ep-order">
-                                <GripVertical size={14} />
-                                调整顺序
-                              </button>
                             </div>
                             {renderSpecTags('option')}
                             <div className="ep-spec-cards">
                               {renderAddCard('option')}
-                              {OPTION_VALUES.map((option) => {
+                              {specValueList('option').map((option, index) => {
                                 const picked = specPicked.option.includes(option.name);
                                 const image = specImages.option[option.name];
+                                const system = isSystemSpecValue('option', option.name);
                                 return (
-                                  <div className={picked ? 'ep-spec-card is-picked' : 'ep-spec-card'} key={option.name}>
+                                  <div
+                                    className={`ep-spec-card${picked ? ' is-picked' : ''}${system ? ' is-system' : ' is-custom'}`}
+                                    key={index}
+                                  >
                                     <div className="ep-spec-card__top">
                                       <label className="ep-spec-pick">
                                         <input
@@ -2151,8 +2695,17 @@ export default function EditProductDialogV2() {
                                         />
                                         <span className="ep-spec-pick__box" />
                                       </label>
-                                      <input className="ep-spec-input" defaultValue={option.name} />
-                                      <span className="ep-spec-count">9/40</span>
+                                      <span className="ep-spec-value-text" title={option.name}>
+                                        {option.name}
+                                      </span>
+                                      <button
+                                        type="button"
+                                        className="ep-spec-edit-btn"
+                                        aria-label={`编辑规格值 ${option.name}`}
+                                        onClick={() => openSpecValueEditor('option', index)}
+                                      >
+                                        <Pencil size={12} />
+                                      </button>
                                       <GripVertical size={13} className="ep-spec-icon" />
                                     </div>
                                     <div className="ep-spec-card__body">
@@ -2167,7 +2720,12 @@ export default function EditProductDialogV2() {
                                         <Upload size={14} />
                                       </button>
                                     </div>
-                                    <div className="ep-spec-card__size">尺寸: {image ? '524*283' : '-'}</div>
+                                    <div className="ep-spec-card__foot">
+                                      <span className={system ? 'ep-spec-badge is-system' : 'ep-spec-badge is-custom'}>
+                                        {system ? '系统' : '自定义'}
+                                      </span>
+                                      <span className="ep-spec-card__size">尺寸: {image ? '524*283' : '-'}</span>
+                                    </div>
                                   </div>
                                 );
                               })}
@@ -2198,7 +2756,7 @@ export default function EditProductDialogV2() {
                             <div className="ep-sku-table">
                               <div className="ep-sku-head">
                                 <span>图片</span>
-                                <span>颜色（Color）</span>
+                                <span>Color（颜色）</span>
                                 <span>Options</span>
                                 <button
                                   type="button"
@@ -2750,8 +3308,57 @@ export default function EditProductDialogV2() {
                               <div className="ep-weight-line">
                                 <Stepper />
                                 <span className="ep-unit">公斤/件</span>
-                                <Checkbox label="自定义重量" />
                               </div>
+                            </div>
+                            <div className="ep-weight-tier" data-annotation-id="weight-tier-config">
+                              <div className="ep-weight-tier__head">
+                                <span className="ep-weight-tier__title">阶梯重量</span>
+                                <span className="ep-weight-tier__actions">
+                                  <span data-annotation-id="weight-custom-toggle">
+                                    <Switch
+                                      checked={customWeight}
+                                      onChange={() => setCustomWeight((prev) => !prev)}
+                                      label="自定义重量"
+                                    />
+                                  </span>
+                                </span>
+                              </div>
+                              {customWeight && (
+                                <>
+                                  <div className="ep-weight-tier__row">
+                                    <span className="ep-weight-tier__label">
+                                      <Req />
+                                      基本数量
+                                    </span>
+                                    <Stepper value={weightBaseQty} onChange={setWeightBaseQty} unit="件" />
+                                  </div>
+                                  <div className="ep-weight-tier__row">
+                                    <span className="ep-weight-tier__label">
+                                      <Req />
+                                      阶梯数量
+                                    </span>
+                                    <Stepper value={weightStepQty} onChange={setWeightStepQty} unit="件" />
+                                  </div>
+                                  <div className="ep-weight-tier__row">
+                                    <span className="ep-weight-tier__label">
+                                      <Req />
+                                      阶梯重量
+                                    </span>
+                                    <Stepper
+                                      value={weightStepWeight}
+                                      onChange={setWeightStepWeight}
+                                      step={0.01}
+                                      precision={2}
+                                      unit="公斤"
+                                    />
+                                  </div>
+                                  {weightBaseQty && weightStepQty && weightStepWeight ? (
+                                    <div className="ep-weight-tier__hint">
+                                      {`超过 ${weightBaseQty} 件后，每满 ${weightStepQty} 件加 ${weightStepWeight} 公斤`}
+                                    </div>
+                                  ) : null}
+                                </>
+                              )}
                             </div>
                             <span className="ep-field__label">包装尺寸</span>
                             <div className="ep-size-line">
@@ -2914,6 +3521,39 @@ export default function EditProductDialogV2() {
           </div>
         </div>
       </div>
+      {batchAddKey && (
+        <BatchAddSpecValueDialog
+          templates={specTemplates}
+          onTemplatesChange={setSpecTemplates}
+          onClose={() => setBatchAddKey(null)}
+          onConfirm={(items) => addBatchSpecValues(batchAddKey, items)}
+        />
+      )}
+      {specValueEditor && (
+        <SpecValueEditDialog
+          value={specValueEditor.text}
+          error={specValueEditor.error}
+          onChange={(text) =>
+            setSpecValueEditor((prev) => (prev ? { ...prev, text, error: null } : prev))
+          }
+          onClear={() => setSpecValueEditor((prev) => (prev ? { ...prev, text: '' } : prev))}
+          onClose={() => setSpecValueEditor(null)}
+          onConfirm={confirmSpecValueEdit}
+        />
+      )}
+      {systemValueDialogKey && (
+        <SystemSpecValueDialog
+          specName="Color（颜色）"
+          options={SYSTEM_COLOR_OPTIONS}
+          existing={specValueList(systemValueDialogKey).map((item) => item.name)}
+          onClose={() => setSystemValueDialogKey(null)}
+          onConfirm={(names) => {
+            setSpecValueNames((map) => ({ ...map, color: [...map.color, ...names] }));
+            setSystemValueDialogKey(null);
+          }}
+          onToast={showToast}
+        />
+      )}
       {imageDialogKey && (
         <SkuImageUpdateDialog
           values={specValueList(imageDialogKey).map((item) => ({

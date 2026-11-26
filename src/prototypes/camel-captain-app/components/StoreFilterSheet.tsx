@@ -34,15 +34,17 @@ export function StoreFilterSheet({
     [],
   );
 
+  const text = keyword.trim().toLowerCase();
   const filteredGroups = groups
-    .map((group) => ({
-      ...group,
-      stores: group.stores.filter((store) => {
-        const text = keyword.trim().toLowerCase();
-        if (!text) return true;
-        return store.name.toLowerCase().includes(text) || store.alias.toLowerCase().includes(text);
-      }),
-    }))
+    .map((group) => {
+      if (!text || group.name.toLowerCase().includes(text)) return group;
+      return {
+        ...group,
+        stores: group.stores.filter((store) => (
+          store.name.toLowerCase().includes(text) || store.alias.toLowerCase().includes(text)
+        )),
+      };
+    })
     .filter((group) => group.stores.length > 0);
 
   const isChecked = (id: number) => selectedSet.has(id);
@@ -86,7 +88,7 @@ export function StoreFilterSheet({
         <Search size={15} />
         <input
           className="cc-input"
-          placeholder="搜索店铺名称 / 别名"
+          placeholder="搜索店铺 / 分组"
           value={keyword}
           onChange={(event) => setKeyword(event.target.value)}
         />
@@ -129,6 +131,9 @@ export function StoreFilterSheet({
             </div>
           );
         })}
+        {filteredGroups.length === 0 ? (
+          <div className="cc-select-empty">没有匹配的店铺或分组</div>
+        ) : null}
       </div>
     </Sheet>
   );

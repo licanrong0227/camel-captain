@@ -2,10 +2,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { X } from 'lucide-react';
 import { levelRank, productRank, storeSalesRank, storeTrafficRank, type ProductRankMetric, type RankRow } from '../data/aggregate';
 import { LEVEL_COLORS, LEVEL_LIGHT_COLORS } from '../data/catalog';
-import { fmtInt, fmtMoney } from '../data/format';
+import { fmtCateList, fmtInt, fmtMoney } from '../data/format';
 import type { ExclusionConfig, StorePeriodKey } from '../data/types';
 import { ProductSkuDialog } from './ProductSkuDialog';
 import { Segmented } from './Segmented';
+import { Tooltip } from './Tooltip';
 
 const PERIODS: Record<'sales' | 'traffic' | 'product' | 'level', Array<{ key: StorePeriodKey; label: string }>> = {
   sales: [{ key: 'week', label: '近1周' }, { key: 'month', label: '近1月' }, { key: 'months3', label: '近3月' }],
@@ -200,7 +201,14 @@ export function RankingDialog({
                         {row.storeAlias ? <em title={row.storeAlias}>{row.storeAlias}</em> : null}
                       </span>
                     </span>
-                    <span className="hd-rank-col-cate">{row.catePubName}</span>
+                    <span className="hd-rank-col-cate">
+                      <Tooltip
+                        className="hd-cate-anchor"
+                        content={`经营类目：${(row.catePubNames ?? []).filter(Boolean).join('、') || '-'}`}
+                      >
+                        {fmtCateList(row.catePubNames)}
+                      </Tooltip>
+                    </span>
                     <span className="hd-rank-col-level">{levelChip(row)}</span>
                     <span className="hd-rank-col-value">{valueText(row)}</span>
                   </>

@@ -7,7 +7,7 @@ export interface StoreInfo {
   id: number;
   name: string;
   alias: string;
-  catePubName: string;
+  catePubNames: string[];
   groupId: number;
   adEnabled: boolean;
   openDate: string;

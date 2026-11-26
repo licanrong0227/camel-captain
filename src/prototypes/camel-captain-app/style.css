@@ -2328,6 +2328,10 @@ body {
   overflow: visible;
 }
 
+.cc-trend-store-chip {
+  margin-left: auto;
+}
+
 .cc-seg--tabs + .cc-trend-metric-row {
   margin-top: 8px;
 }
@@ -2632,6 +2636,46 @@ body {
   font-size: 9px;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.cc-cate-btn {
+  display: inline;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cc-cate-chevron {
+  margin-left: 1px;
+  vertical-align: -1px;
+}
+
+.cc-cate-sheet-store {
+  margin-bottom: 12px;
+  color: var(--cc-text-3);
+  font-size: 11px;
+}
+
+.cc-cate-sheet-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cc-cate-sheet-tag {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #fff3ea;
+  color: var(--cc-primary-5);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .cc-rank-value {

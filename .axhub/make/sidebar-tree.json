@@ -1,7 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-19T07:29:52.528Z",
+  "updatedAt": "2026-11-26T06:52:15.449Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-sub-account-management",
+      "kind": "item",
+      "title": "sub account management",
+      "itemKey": "prototypes/sub-account-management"
+    },
     {
       "id": "folder-1792977929149-qn5xzy",
       "kind": "folder",
@@ -303,6 +309,18 @@
               "kind": "item",
               "title": "个人中心 - 会员中心（我的权益 / 优惠券）",
               "itemKey": "prototypes/member-center"
+            },
+            {
+              "id": "item:prototypes:new-arrival-price-dialog",
+              "kind": "item",
+              "title": "新增上新价配置弹窗",
+              "itemKey": "prototypes/new-arrival-price-dialog"
+            },
+            {
+              "id": "item:prototypes:product-collection",
+              "kind": "item",
+              "title": "商品采集",
+              "itemKey": "prototypes/product-collection"
             }
           ]
         },
@@ -334,6 +352,18 @@
               "kind": "item",
               "title": "优惠券模板列表",
               "itemKey": "prototypes/coupon-template-dialog"
+            },
+            {
+              "id": "item:prototypes:reference-pricing-template",
+              "kind": "item",
+              "title": "参考定价模板",
+              "itemKey": "prototypes/reference-pricing-template"
+            },
+            {
+              "id": "item:prototypes:prompt-management",
+              "kind": "item",
+              "title": "提示词管理 - Admin管理系统",
+              "itemKey": "prototypes/prompt-management"
             }
           ]
         },

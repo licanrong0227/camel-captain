@@ -22,11 +22,11 @@ const THUMBS = [
 ];
 
 const REAL_STORES: StoreInfo[] = [
-  { id: 152, name: '包包', alias: 'bag', catePubName: '箱包', groupId: 22, adEnabled: true, openDate: '2026-01-01', weight: 1, unitPrice: 56, level: 5, score: 4.62 },
-  { id: 153, name: '鞋子', alias: 'shoes', catePubName: '鞋靴', groupId: 22, adEnabled: true, openDate: '2026-01-01', weight: 0.9, unitPrice: 42, level: 3, score: 3.85 },
-  { id: 155, name: 'clothes', alias: '服装测试', catePubName: '服饰', groupId: 23, adEnabled: true, openDate: '2026-01-01', weight: 0.72, unitPrice: 32, level: 3, score: 3.42 },
-  { id: 161, name: 'sneakerhub8', alias: '运营测试-张诗淇专用', catePubName: '鞋靴', groupId: 23, adEnabled: true, openDate: '2026-01-01', weight: 0.82, unitPrice: 40, level: 2, score: 2.86 },
-  { id: 1957, name: 'echvolt', alias: 'echvolt', catePubName: '消费电子', groupId: 24, adEnabled: true, openDate: '2026-01-01', weight: 0.66, unitPrice: 48, level: 2, score: 2.64 },
+  { id: 152, name: '包包', alias: 'bag', catePubNames: ['箱包', '鞋靴'], groupId: 22, adEnabled: true, openDate: '2026-01-01', weight: 1, unitPrice: 56, level: 5, score: 4.62 },
+  { id: 153, name: '鞋子', alias: 'shoes', catePubNames: ['鞋靴'], groupId: 22, adEnabled: true, openDate: '2026-01-01', weight: 0.9, unitPrice: 42, level: 3, score: 3.85 },
+  { id: 155, name: 'clothes', alias: '服装测试', catePubNames: ['服饰', '箱包', '鞋靴'], groupId: 23, adEnabled: true, openDate: '2026-01-01', weight: 0.72, unitPrice: 32, level: 3, score: 3.42 },
+  { id: 161, name: 'sneakerhub8', alias: '运营测试-张诗淇专用', catePubNames: ['鞋靴', '运动装备'], groupId: 23, adEnabled: true, openDate: '2026-01-01', weight: 0.82, unitPrice: 40, level: 2, score: 2.86 },
+  { id: 1957, name: 'echvolt', alias: 'echvolt', catePubNames: ['消费电子', '数码配件'], groupId: 24, adEnabled: true, openDate: '2026-01-01', weight: 0.66, unitPrice: 48, level: 2, score: 2.64 },
 ];
 
 const GENERATED: Array<[number, string, string, number, number]> = [
@@ -56,31 +56,31 @@ const GENERATED: Array<[number, string, string, number, number]> = [
   [324, '全球购', 'global2', 25, 0.38],
 ];
 
-const CATE_BY_ALIAS: Record<string, string> = {
-  women: '女装',
-  shoes2: '鞋靴',
-  outdoor: '户外用品',
-  home: '家居',
-  digital: '数码',
-  beauty: '美妆个护',
-  baby: '母婴',
-  jewelry: '饰品',
-  sport: '运动装备',
-  pet: '宠物用品',
-  office: '办公文具',
-  auto: '汽车用品',
-  tools: '五金工具',
-  kitchen: '厨房电器',
-  lighting: '灯饰照明',
-  toys: '玩具模型',
-  garden: '园艺花艺',
-  underwear: '内衣家居服',
-  watch: '手表眼镜',
-  luggage: '箱包',
-  music: '乐器音响',
-  industrial: '工业耗材',
-  global: '综合',
-  global2: '综合',
+const CATE_BY_ALIAS: Record<string, string[]> = {
+  women: ['女装'],
+  shoes2: ['鞋靴'],
+  outdoor: ['户外用品', '运动装备'],
+  home: ['家居'],
+  digital: ['数码', '消费电子'],
+  beauty: ['美妆个护'],
+  baby: ['母婴'],
+  jewelry: ['饰品'],
+  sport: ['运动装备'],
+  pet: ['宠物用品'],
+  office: ['办公文具'],
+  auto: ['汽车用品'],
+  tools: ['五金工具'],
+  kitchen: ['厨房电器', '家居'],
+  lighting: ['灯饰照明'],
+  toys: ['玩具模型'],
+  garden: ['园艺花艺'],
+  underwear: ['内衣家居服', '服饰'],
+  watch: ['手表眼镜', '饰品'],
+  luggage: ['箱包', '旅行用品'],
+  music: ['乐器音响'],
+  industrial: ['工业耗材'],
+  global: ['综合'],
+  global2: ['综合', '女装'],
 };
 
 export const STORES: StoreInfo[] = [
@@ -89,7 +89,7 @@ export const STORES: StoreInfo[] = [
     id,
     name: `骆驼队长·${name}`,
     alias,
-    catePubName: CATE_BY_ALIAS[alias] ?? '综合',
+    catePubNames: CATE_BY_ALIAS[alias] ?? ['综合'],
     groupId,
     adEnabled: false,
     openDate: '2026-01-01',
@@ -98,7 +98,7 @@ export const STORES: StoreInfo[] = [
     level: weight >= 0.4 ? 4 : weight >= 0.33 ? 3 : weight >= 0.26 ? 2 : weight >= 0.2 ? 1 : 0,
     score: Math.min(4.9, Math.round((1.2 + weight * 7 + (groupId % 3) * 0.12) * 100) / 100),
   })),
-  { id: 1960, name: '骆驼队长·新店测试', alias: 'new-store', catePubName: '综合', groupId: 25, adEnabled: false, openDate: '2026-09-20', weight: 0.3, unitPrice: 38, level: 0, score: 1.18 },
+  { id: 1960, name: '骆驼队长·新店测试', alias: 'new-store', catePubNames: ['综合'], groupId: 25, adEnabled: false, openDate: '2026-09-20', weight: 0.3, unitPrice: 38, level: 0, score: 1.18 },
 ];
 
 export const LEVEL_COLORS = ['#94A3B8', '#3B82F6', '#F59E0B', '#10B981', '#8B5CF6', '#EC4899'];

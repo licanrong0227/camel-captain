@@ -235,6 +235,82 @@ const PRICING: PriceRow[] = [
   { name: '抠图', cost: '1', note: '无' },
 ];
 
+const CONSUME_USAGES = [
+  '图片抠图',
+  '转白底',
+  '消除笔',
+  '去水印',
+  '去水印Pro',
+  'AI标题生成',
+  'AI短描生成',
+  'AI关键词生成',
+  '图片翻译',
+  '图片翻译Pro',
+  'AI视频生成',
+  '合规检测',
+];
+
+const isProUsage = (usage: string) => usage.endsWith('Pro');
+const baseUsage = (usage: string) => usage.replace(/Pro$/, '');
+
+type ConsumeRow = {
+  id: number;
+  time: string;
+  productId: string;
+  itemCode: string;
+  usage: string;
+  cost: number;
+  note: string;
+};
+
+const PRODUCT_NAMES: Record<string, string> = {
+  '307158462': '女士真皮单肩包',
+  '307158470': '男士商务双肩包',
+  '307158481': '旅行拉杆箱 20 寸',
+  '307158493': '儿童卡通书包',
+  '307158502': '户外运动胸包',
+  '307158515': '女士手提托特包',
+};
+
+const CONSUME_LOGS: ConsumeRow[] = [
+  { id: 536, time: '2026-09-02 14:34:30', productId: '307158462', itemCode: '204817563219', usage: '图片抠图', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 535, time: '2026-09-02 14:34:18', productId: '307158481', itemCode: '204817563221', usage: '图片抠图', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 534, time: '2026-09-02 14:29:57', productId: '307158462', itemCode: '204817563219', usage: '转白底', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 533, time: '2026-09-02 14:15:43', productId: '307158470', itemCode: '204817563220', usage: '消除笔', cost: 3, note: '编辑产品 · 消除笔 1 张' },
+  { id: 532, time: '2026-09-02 14:14:39', productId: '307158470', itemCode: '204817563220', usage: '消除笔', cost: 3, note: '编辑产品 · 消除笔 1 张' },
+  { id: 531, time: '2026-09-02 14:11:26', productId: '307158515', itemCode: '204817563231', usage: '消除笔', cost: 3, note: '编辑产品 · 消除笔 1 张' },
+  { id: 530, time: '2026-09-02 13:58:02', productId: '307158481', itemCode: '204817563221', usage: '消除笔', cost: 3, note: '编辑产品 · 消除笔 1 张' },
+  { id: 529, time: '2026-09-02 13:47:15', productId: '307158493', itemCode: '204817563228', usage: '图片抠图', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 528, time: '2026-09-02 13:32:48', productId: '307158470', itemCode: '204817563220', usage: '转白底', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 527, time: '2026-09-02 11:26:09', productId: '307158462', itemCode: '204817563219', usage: '消除笔', cost: 3, note: '编辑产品 · 消除笔 1 张' },
+  { id: 526, time: '2026-09-02 10:21:55', productId: '307158502', itemCode: '204817563229', usage: '图片抠图', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 525, time: '2026-09-02 09:48:31', productId: '307158493', itemCode: '204817563228', usage: '消除笔', cost: 3, note: '编辑产品 · 消除笔 1 张' },
+  { id: 524, time: '2026-09-02 09:35:12', productId: '307158515', itemCode: '204817563231', usage: '转白底', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 523, time: '2026-09-01 18:22:07', productId: '307158470', itemCode: '204817563220', usage: '图片抠图', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 522, time: '2026-09-01 16:05:42', productId: '307158462', itemCode: '204817563219', usage: '转白底', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 521, time: '2026-09-01 15:12:19', productId: '307158462', itemCode: '204817563219', usage: 'AI标题生成', cost: 1, note: '编辑产品 · 生成 1 条标题' },
+  { id: 520, time: '2026-09-01 11:48:53', productId: '307158493', itemCode: '204817563228', usage: '图片翻译', cost: 2, note: '批量美图 · 翻译 1 张' },
+  { id: 519, time: '2026-09-01 10:26:30', productId: '307158493', itemCode: '204817563228', usage: '图片翻译Pro', cost: 2, note: '批量美图 · 翻译 1 张' },
+  { id: 518, time: '2026-09-01 09:52:11', productId: '307158470', itemCode: '204817563220', usage: 'AI关键词生成', cost: 0.5, note: '编辑产品 · 生成 1 组关键词' },
+  { id: 517, time: '2026-08-31 17:40:08', productId: '307158481', itemCode: '204817563221', usage: '消除笔', cost: 3, note: '编辑产品 · 消除笔 1 张' },
+  { id: 516, time: '2026-08-31 16:18:44', productId: '307158481', itemCode: '204817563221', usage: '消除笔', cost: 3, note: '编辑产品 · 消除笔 1 张' },
+  { id: 515, time: '2026-08-31 14:33:57', productId: '307158502', itemCode: '204817563229', usage: '去水印', cost: 3, note: '批量美图 · 处理 1 张' },
+  { id: 514, time: '2026-08-31 11:09:26', productId: '307158462', itemCode: '204817563219', usage: 'AI短描生成', cost: 1, note: '编辑产品 · 生成 1 条短描' },
+  { id: 513, time: '2026-08-31 10:15:39', productId: '307158515', itemCode: '204817563231', usage: '转白底', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 512, time: '2026-08-30 18:05:12', productId: '307158470', itemCode: '204817563220', usage: '图片抠图', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 511, time: '2026-08-30 16:47:20', productId: '307158493', itemCode: '204817563228', usage: '图片翻译Pro', cost: 2, note: '批量美图 · 翻译 1 张' },
+  { id: 510, time: '2026-08-30 15:22:58', productId: '307158502', itemCode: '204817563229', usage: '去水印Pro', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 509, time: '2026-08-30 11:31:07', productId: '307158481', itemCode: '204817563221', usage: 'AI标题生成', cost: 1, note: '编辑产品 · 生成 1 条标题' },
+  { id: 508, time: '2026-08-30 09:44:35', productId: '307158481', itemCode: '204817563221', usage: '转白底', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 507, time: '2026-08-29 17:12:46', productId: '307158462', itemCode: '204817563219', usage: 'AI视频生成', cost: 6, note: 'AI视频弹窗 · 生成 1 个视频' },
+  { id: 506, time: '2026-08-29 15:03:29', productId: '307158470', itemCode: '204817563220', usage: '合规检测', cost: 1, note: '合规检测 · 检测 1 张图片' },
+  { id: 505, time: '2026-08-29 11:56:14', productId: '307158515', itemCode: '204817563231', usage: '图片抠图', cost: 1, note: '批量美图 · 处理 1 张' },
+  { id: 504, time: '2026-08-28 17:38:51', productId: '307158515', itemCode: '204817563231', usage: 'AI标题生成', cost: 1, note: '编辑产品 · 生成 1 条标题' },
+  { id: 503, time: '2026-08-28 16:38:51', productId: '307158502', itemCode: '204817563229', usage: '图片翻译', cost: 2, note: '批量美图 · 翻译 1 张' },
+  { id: 502, time: '2026-08-28 10:20:05', productId: '307158462', itemCode: '204817563219', usage: 'AI关键词生成', cost: 0.5, note: '编辑产品 · 生成 1 组关键词' },
+  { id: 501, time: '2026-08-27 15:41:33', productId: '307158502', itemCode: '204817563229', usage: 'AI短描生成', cost: 1, note: '编辑产品 · 生成 1 条短描' },
+];
+
 const fmtNum = (n: number) => n.toFixed(2);
 const fmtChange = (n: number) => (n > 0 ? `+${n.toFixed(2)}` : n.toFixed(2));
 
@@ -288,6 +364,7 @@ export default function PersonalCenterPage() {
   const [confirmPwd, setConfirmPwd] = useState('');
 
   const [detailOpen, setDetailOpen] = useState(false);
+  const [dlTab, setDlTab] = useState<'flow' | 'consume'>('flow');
   const [dlModule, setDlModule] = useState('');
   const [dlStartDate, setDlStartDate] = useState('');
   const [dlEndDate, setDlEndDate] = useState('');
@@ -299,30 +376,47 @@ export default function PersonalCenterPage() {
   const [dlSizeOpen, setDlSizeOpen] = useState(false);
   const [dlPriceOpen, setDlPriceOpen] = useState(false);
 
+  const [clStartDate, setClStartDate] = useState('');
+  const [clEndDate, setClEndDate] = useState('');
+  const [clKeyword, setClKeyword] = useState('');
+  const [clUsage, setClUsage] = useState('');
+  const [clQuery, setClQuery] = useState({ start: '', end: '', keyword: '', usage: '' });
+  const [clPage, setClPage] = useState(1);
+  const [clPageSize, setClPageSize] = useState(10);
+  const [clGoto, setClGoto] = useState('');
+  const [clUsageOpen, setClUsageOpen] = useState(false);
+  const [clSizeOpen, setClSizeOpen] = useState(false);
+
   const dlModuleRef = useRef<HTMLDivElement>(null);
   const dlSizeRef = useRef<HTMLDivElement>(null);
+  const clUsageRef = useRef<HTMLDivElement>(null);
+  const clSizeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!detailOpen) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         if (dlPriceOpen) setDlPriceOpen(false);
+        else if (clUsageOpen) setClUsageOpen(false);
+        else if (clSizeOpen) setClSizeOpen(false);
         else setDetailOpen(false);
       }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [detailOpen, dlPriceOpen]);
+  }, [detailOpen, dlPriceOpen, clUsageOpen, clSizeOpen]);
 
   useEffect(() => {
-    if (!dlModuleOpen && !dlSizeOpen) return;
+    if (!dlModuleOpen && !dlSizeOpen && !clUsageOpen && !clSizeOpen) return;
     const handler = (e: MouseEvent) => {
       if (dlModuleOpen && dlModuleRef.current && !dlModuleRef.current.contains(e.target as Node)) setDlModuleOpen(false);
       if (dlSizeOpen && dlSizeRef.current && !dlSizeRef.current.contains(e.target as Node)) setDlSizeOpen(false);
+      if (clUsageOpen && clUsageRef.current && !clUsageRef.current.contains(e.target as Node)) setClUsageOpen(false);
+      if (clSizeOpen && clSizeRef.current && !clSizeRef.current.contains(e.target as Node)) setClSizeOpen(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
-  }, [dlModuleOpen, dlSizeOpen]);
+  }, [dlModuleOpen, dlSizeOpen, clUsageOpen, clSizeOpen]);
 
   const dlFiltered = useMemo(
     () =>
@@ -339,6 +433,46 @@ export default function PersonalCenterPage() {
   const dlCurrent = Math.min(dlPage, dlPageCount);
   const dlRows = dlFiltered.slice((dlCurrent - 1) * dlPageSize, dlCurrent * dlPageSize);
   const dlPageNumbers = Array.from({ length: dlPageCount }, (_, i) => i + 1);
+
+  const clFiltered = useMemo(() => {
+    const kw = clQuery.keyword.trim().toLowerCase();
+    return CONSUME_LOGS.filter(
+      (row) =>
+        (!clQuery.start || row.time.slice(0, 10) >= clQuery.start) &&
+        (!clQuery.end || row.time.slice(0, 10) <= clQuery.end) &&
+        (!clQuery.usage || row.usage === clQuery.usage) &&
+        (!kw || (PRODUCT_NAMES[row.productId] ?? '').toLowerCase().includes(kw) || row.itemCode.toLowerCase().includes(kw) || row.productId.toLowerCase().includes(kw))
+    );
+  }, [clQuery]);
+
+  const clUsageStats = useMemo(() => {
+    const map = new Map<string, { usage: string; count: number; cost: number }>();
+    clFiltered.forEach((row) => {
+      const item = map.get(row.usage) ?? { usage: row.usage, count: 0, cost: 0 };
+      item.count += 1;
+      item.cost += row.cost;
+      map.set(row.usage, item);
+    });
+    const list = Array.from(map.values());
+    const groupCost = new Map<string, number>();
+    list.forEach((item) => {
+      const base = baseUsage(item.usage);
+      groupCost.set(base, (groupCost.get(base) ?? 0) + item.cost);
+    });
+    return list.sort((a, b) => {
+      const groupDiff = (groupCost.get(baseUsage(b.usage)) ?? 0) - (groupCost.get(baseUsage(a.usage)) ?? 0);
+      if (groupDiff !== 0) return groupDiff;
+      if (baseUsage(a.usage) === baseUsage(b.usage)) {
+        return Number(isProUsage(a.usage)) - Number(isProUsage(b.usage));
+      }
+      return b.cost - a.cost || b.count - a.count;
+    });
+  }, [clFiltered]);
+
+  const clPageCount = Math.max(1, Math.ceil(clFiltered.length / clPageSize));
+  const clCurrent = Math.min(clPage, clPageCount);
+  const clRows = clFiltered.slice((clCurrent - 1) * clPageSize, clCurrent * clPageSize);
+  const clPageNumbers = Array.from({ length: clPageCount }, (_, i) => i + 1);
 
   const onDlSearch = () => {
     setDlQuery({ module: dlModule, start: dlStartDate, end: dlEndDate });
@@ -359,8 +493,34 @@ export default function PersonalCenterPage() {
     setDlGoto('');
   };
 
+  const onClSearch = () => {
+    setClQuery({
+      start: clStartDate,
+      end: clEndDate,
+      keyword: clKeyword.trim(),
+      usage: clUsage,
+    });
+    setClPage(1);
+  };
+
+  const onClReset = () => {
+    setClStartDate('');
+    setClEndDate('');
+    setClKeyword('');
+    setClUsage('');
+    setClQuery({ start: '', end: '', keyword: '', usage: '' });
+    setClPage(1);
+  };
+
+  const onClGoto = () => {
+    const n = parseInt(clGoto, 10);
+    if (!Number.isNaN(n)) setClPage(Math.min(Math.max(n, 1), clPageCount));
+    setClGoto('');
+  };
+
   const openDetail = () => {
     setDetailOpen(true);
+    setDlTab('flow');
     setDlModule('');
     setDlStartDate('');
     setDlEndDate('');
@@ -369,6 +529,16 @@ export default function PersonalCenterPage() {
     setDlPageSize(10);
     setDlGoto('');
     setDlPriceOpen(false);
+    setClStartDate('');
+    setClEndDate('');
+    setClKeyword('');
+    setClUsage('');
+    setClQuery({ start: '', end: '', keyword: '', usage: '' });
+    setClPage(1);
+    setClPageSize(10);
+    setClGoto('');
+    setClUsageOpen(false);
+    setClSizeOpen(false);
   };
 
   return (
@@ -569,11 +739,27 @@ export default function PersonalCenterPage() {
                 <div className="pcp-modal" onClick={(e) => e.stopPropagation()}>
                   <div className="pcp-modal-header">
                     <span className="pcp-modal-title">算力明细</span>
+                    <div className="pcp-dl-tabs">
+                      <div
+                        className={'pcp-dl-tab' + (dlTab === 'flow' ? ' is-active' : '')}
+                        onClick={() => setDlTab('flow')}
+                      >
+                        变动明细
+                      </div>
+                      <div
+                        className={'pcp-dl-tab' + (dlTab === 'consume' ? ' is-active' : '')}
+                        onClick={() => setDlTab('consume')}
+                      >
+                        消费日志
+                      </div>
+                    </div>
                     <button className="pcp-modal-close" onClick={() => setDetailOpen(false)}>
                       <CloseIcon size={16} />
                     </button>
                   </div>
                   <div className="pcp-modal-body">
+                    {dlTab === 'flow' ? (
+                      <>
                     {/* 统计概览 */}
                     <div className="pcp-dl-stats">
                       {STATS.map((s) => (
@@ -746,6 +932,214 @@ export default function PersonalCenterPage() {
                         页
                       </span>
                     </div>
+                      </>
+                    ) : (
+                      <>
+                        {/* 用途统计 */}
+                        <div className="pcp-cl-usage">
+                          <div className="pcp-cl-usage-head">
+                            用途统计
+                            <span>消耗算力 · 次数</span>
+                          </div>
+                          <div className="pcp-cl-metrics">
+                            {clUsageStats.length === 0 ? (
+                              <span className="pcp-cl-usage-empty">暂无数据</span>
+                            ) : (
+                              clUsageStats.map((item) => (
+                                <div className="pcp-cl-metric" key={item.usage}>
+                                  <span className="pcp-cl-metric-label" title={item.usage}>
+                                    <span className="pcp-cl-metric-name">{baseUsage(item.usage)}</span>
+                                    {isProUsage(item.usage) && <span className="pcp-cl-pro">PRO</span>}
+                                  </span>
+                                  <div className="pcp-cl-metric-row">
+                                    <b>{fmtNum(item.cost)}</b>
+                                    <span>{item.count} 次</span>
+                                  </div>
+                                </div>
+                              ))
+                            )}
+                          </div>
+                        </div>
+
+                        {/* 筛选区 */}
+                        <div className="pcp-dl-filter">
+                          <span className="pcp-dl-label">消费时间</span>
+                          <div className="pcp-dl-date-range">
+                            <span className="pcp-dl-date-icon"><ModalClockIcon /></span>
+                            <span className={`pcp-dl-date-half${clStartDate ? ' set' : ''}`}>{clStartDate || '开始日期'}</span>
+                            <span className="pcp-dl-date-to">至</span>
+                            <span className={`pcp-dl-date-half${clEndDate ? ' set' : ''}`}>{clEndDate || '结束日期'}</span>
+                            <input
+                              className="pcp-dl-date-input start"
+                              type="date"
+                              value={clStartDate}
+                              onChange={(e) => setClStartDate(e.target.value)}
+                            />
+                            <input
+                              className="pcp-dl-date-input end"
+                              type="date"
+                              value={clEndDate}
+                              onChange={(e) => setClEndDate(e.target.value)}
+                            />
+                          </div>
+
+                          <span className="pcp-dl-label">商品</span>
+                          <input
+                            className="pcp-cl-input"
+                            placeholder="商品名称 / 商品编号"
+                            value={clKeyword}
+                            onChange={(e) => setClKeyword(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && onClSearch()}
+                          />
+
+                          <span className="pcp-dl-label">用途</span>
+                          <div className="pcp-dl-select-wrap" ref={clUsageRef}>
+                            <div
+                              className={`pcp-dl-select${clUsage ? ' has' : ''}${clUsageOpen ? ' open' : ''}`}
+                              onClick={() => setClUsageOpen((v) => !v)}
+                            >
+                              <span>{clUsage || '全部用途'}</span>
+                              <span className="pcp-dl-select-arrow"><ModalChevronDown /></span>
+                            </div>
+                            {clUsageOpen && (
+                              <div className="pcp-dl-dropdown pcp-cl-usage-dropdown">
+                                <div
+                                  className={`pcp-dl-option${clUsage === '' ? ' active' : ''}`}
+                                  onClick={() => {
+                                    setClUsage('');
+                                    setClUsageOpen(false);
+                                  }}
+                                >
+                                  全部用途
+                                </div>
+                                {CONSUME_USAGES.map((opt) => (
+                                  <div
+                                    key={opt}
+                                    className={`pcp-dl-option${clUsage === opt ? ' active' : ''}`}
+                                    onClick={() => {
+                                      setClUsage(opt);
+                                      setClUsageOpen(false);
+                                    }}
+                                  >
+                                    {opt}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          <button className="pcp-dl-btn pcp-dl-btn-primary" onClick={onClSearch}>
+                            <ModalSearchIcon />
+                            搜索
+                          </button>
+                          <button className="pcp-dl-btn pcp-dl-btn-plain" onClick={onClReset}>
+                            <ModalResetIcon />
+                            重置
+                          </button>
+                        </div>
+
+                        {/* 表格 */}
+                        <table className="pcp-dl-table">
+                          <colgroup>
+                            <col style={{ width: '158px' }} />
+                            <col style={{ width: '130px' }} />
+                            <col style={{ width: '118px' }} />
+                            <col style={{ width: '118px' }} />
+                            <col style={{ width: '88px' }} />
+                            <col />
+                          </colgroup>
+                          <thead>
+                            <tr>
+                              <th>消费时间</th>
+                              <th>商品名称</th>
+                              <th>商品编号</th>
+                              <th>用途</th>
+                              <th className="pcp-cl-num">消耗算力</th>
+                              <th>说明</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {clRows.length === 0 ? (
+                              <tr>
+                                <td className="pcp-dl-empty" colSpan={6}>暂无数据</td>
+                              </tr>
+                            ) : (
+                              clRows.map((row) => (
+                                <tr key={row.id}>
+                                  <td className="pcp-cl-time">{row.time}</td>
+                                  <td className="pcp-cl-name" title={PRODUCT_NAMES[row.productId]}>{PRODUCT_NAMES[row.productId] ?? '-'}</td>
+                                  <td>{row.itemCode}</td>
+                                  <td className="pcp-cl-usage-cell">{row.usage}</td>
+                                  <td className="pcp-cl-num pcp-cl-cost">{fmtNum(row.cost)}</td>
+                                  <td className="pcp-cl-note" title={row.note}>{row.note}</td>
+                                </tr>
+                              ))
+                            )}
+                          </tbody>
+                        </table>
+
+                        {/* 分页 */}
+                        <div className="pcp-dl-pager">
+                          <span>共 {clFiltered.length} 条</span>
+                          <div className="pcp-dl-size-select" ref={clSizeRef}>
+                            <div
+                              className={`pcp-dl-select${clSizeOpen ? ' open' : ''}`}
+                              style={{ width: '96px', height: '30px', fontSize: '14px' }}
+                              onClick={() => setClSizeOpen((v) => !v)}
+                            >
+                              <span>{PAGE_SIZES[(clPageSize === 10 ? 0 : clPageSize === 20 ? 1 : 2)]}</span>
+                              <span className="pcp-dl-select-arrow"><ModalChevronDown size={12} /></span>
+                            </div>
+                            {clSizeOpen && (
+                              <div className="pcp-dl-dropdown">
+                                {PAGE_SIZES.map((size, idx) => (
+                                  <div
+                                    key={size}
+                                    className={`pcp-dl-option${clPageSize === (idx === 0 ? 10 : idx === 1 ? 20 : 50) ? ' active' : ''}`}
+                                    onClick={() => {
+                                      setClPageSize(idx === 0 ? 10 : idx === 1 ? 20 : 50);
+                                      setClSizeOpen(false);
+                                      setClPage(1);
+                                    }}
+                                  >
+                                    {size}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="pcp-dl-page-group">
+                            <button className="pcp-dl-page-btn arrow" disabled={clCurrent <= 1} onClick={() => setClPage(clCurrent - 1)}>
+                              <ModalArrowLeft />
+                            </button>
+                            {clPageNumbers.map((n) => (
+                              <button
+                                key={n}
+                                className={`pcp-dl-page-btn${n === clCurrent ? ' active' : ''}`}
+                                onClick={() => setClPage(n)}
+                              >
+                                {n}
+                              </button>
+                            ))}
+                            <button className="pcp-dl-page-btn arrow" disabled={clCurrent >= clPageCount} onClick={() => setClPage(clCurrent + 1)}>
+                              <ModalArrowRight />
+                            </button>
+                          </div>
+
+                          <span className="pcp-dl-goto">
+                            前往
+                            <input
+                              value={clGoto}
+                              onChange={(e) => setClGoto(e.target.value.replace(/\D/g, ''))}
+                              onKeyDown={(e) => e.key === 'Enter' && onClGoto()}
+                              onBlur={onClGoto}
+                            />
+                            页
+                          </span>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

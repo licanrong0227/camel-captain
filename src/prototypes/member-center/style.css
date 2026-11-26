@@ -2170,3 +2170,746 @@
     display: none;
   }
 }
+
+/* ============ 基础资料 ============ */
+.mcx-profile-page {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  height: 100%;
+  min-height: 0;
+}
+
+.mcx-pcard {
+  flex: 1 1 calc(50% - 12px);
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+.mcx-pcard--form {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 32px;
+}
+
+/* 注销账号入口：弱化的文字入口 */
+.mcx-paccount-cancel {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 24px 0 0;
+  color: #c0c4cc;
+  font-size: 12px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.mcx-paccount-cancel:hover {
+  color: #909399;
+  text-decoration: underline;
+}
+
+/* --- 左侧个人信息卡 --- */
+.mcx-phero {
+  padding-bottom: 28px;
+}
+
+.mcx-phero-bg {
+  height: 100px;
+  background: linear-gradient(135deg, #ffd666, #faad14 50%, #d48806);
+}
+
+.mcx-phero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -50px;
+  padding: 0 24px;
+}
+
+.mcx-pavatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border: 4px solid #fff;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 32%, #ffa14d, #ff781f 60%, #f26a12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+.mcx-pavatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mcx-pavatar-letter {
+  color: #fff;
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
+}
+
+.mcx-pavatar-mask {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.15;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.mcx-pavatar:hover .mcx-pavatar-mask {
+  opacity: 1;
+}
+
+.mcx-pname {
+  margin: 14px 0 8px;
+  color: var(--mcx-title);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.mcx-pmember {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 100%;
+  padding: 6px 14px;
+  border: 1px solid var(--mcx-gold);
+  border-radius: 12px;
+  background: #fff7e6;
+  line-height: 1.15;
+}
+
+.mcx-pmember-name {
+  color: var(--mcx-gold-dark);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mcx-pmember-expire {
+  color: var(--mcx-secondary);
+  font-size: 12px;
+}
+
+.mcx-pmember-id {
+  color: var(--mcx-gold-dark);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 邀请码 */
+.mcx-pinvite {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 70px;
+  margin: 0 20px 20px;
+  padding: 14px 16px;
+  border: 1px solid #ffe7ba;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #fffbf0, #fff7e6);
+}
+
+.mcx-pinvite-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.mcx-pinvite-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--mcx-gold);
+  color: #fff;
+}
+
+.mcx-pinvite-text {
+  min-width: 0;
+}
+
+.mcx-pinvite-label {
+  margin-bottom: 2px;
+  color: var(--mcx-secondary);
+  font-size: 12px;
+  line-height: 1.15;
+}
+
+.mcx-pinvite-code {
+  color: var(--mcx-gold-dark);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+/* 信息宫格 */
+.mcx-pinfo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 0 20px 24px;
+}
+
+.mcx-pinfo-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.mcx-pinfo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.mcx-pinfo-icon.is-blue {
+  background: #409eff;
+}
+
+.mcx-pinfo-icon.is-green {
+  background: #67c23a;
+}
+
+.mcx-pinfo-icon.is-orange {
+  background: #e6a23c;
+}
+
+.mcx-pinfo-icon.is-red {
+  background: #f56c6c;
+}
+
+.mcx-pinfo-icon.is-gray {
+  background: #909399;
+}
+
+.mcx-pinfo-icon.is-purple {
+  background: #b37feb;
+}
+
+.mcx-pinfo-icon.is-teal {
+  background: #36cfc9;
+}
+
+.mcx-pinfo-icon.is-amber {
+  background: #fa8c16;
+}
+
+.mcx-pinfo-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mcx-pinfo-label {
+  margin-bottom: 4px;
+  color: var(--mcx-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.mcx-pinfo-value {
+  overflow: hidden;
+  color: var(--mcx-title);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.15;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* --- 通用按钮 --- */
+.mcx-pbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: none;
+  height: 32px;
+  padding: 0 24px;
+  border: 1px solid #dcdfe6;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--mcx-text);
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.mcx-pbtn:hover {
+  border-color: #ffd591;
+  color: var(--mcx-gold-dark);
+}
+
+.mcx-pbtn--primary {
+  border-color: var(--mcx-gold);
+  background: var(--mcx-gold);
+  color: #fff;
+}
+
+.mcx-pbtn--primary:hover {
+  border-color: #ffc042;
+  background: #ffc042;
+  color: #fff;
+}
+
+.mcx-pbtn--sm {
+  height: 32px;
+  padding: 0 15px;
+  border-radius: 8px;
+}
+
+.mcx-pbtn--mini {
+  height: 28px;
+  padding: 0 15px;
+  border-radius: 8px;
+}
+
+/* --- 右侧表单卡 --- */
+.mcx-ptabs {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  border-bottom: 1px solid var(--mcx-border);
+}
+
+.mcx-ptab {
+  position: relative;
+  height: 48px;
+  padding: 0 20px 0 0;
+  color: var(--mcx-text);
+  font-size: 15px;
+  line-height: 48px;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.mcx-ptab:hover {
+  color: var(--mcx-gold-dark);
+}
+
+.mcx-ptab.is-active {
+  color: var(--mcx-gold-dark);
+  font-weight: 600;
+}
+
+.mcx-ptab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 60px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--mcx-gold);
+}
+
+.mcx-pform {
+  padding-top: 23px;
+}
+
+.mcx-pform-item {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.mcx-pform-label {
+  flex: 0 0 100px;
+  padding-right: 12px;
+  color: var(--mcx-text);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 36px;
+  text-align: right;
+}
+
+.mcx-pform-label.is-required::before {
+  content: "*";
+  margin-right: 4px;
+  color: #f56c6c;
+}
+
+.mcx-pinput {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 36px;
+}
+
+.mcx-pinput-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  display: flex;
+  transform: translateY(-50%);
+  color: var(--mcx-placeholder);
+  pointer-events: none;
+}
+
+.mcx-pinput-el {
+  width: 100%;
+  height: 36px;
+  padding: 0 15px 0 30px;
+  border: 1px solid #dfe4ed;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--mcx-title);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 36px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.mcx-pinput-el::placeholder {
+  color: var(--mcx-placeholder);
+}
+
+.mcx-pinput-el:focus {
+  border-color: var(--mcx-gold);
+}
+
+.mcx-pinput.is-disabled .mcx-pinput-el {
+  border-color: #dfe4ed;
+  background: #f5f7fa;
+  color: #909399;
+  cursor: not-allowed;
+}
+
+.mcx-pinput.is-error .mcx-pinput-el {
+  border-color: #f56c6c;
+}
+
+.mcx-pform-error {
+  flex: 0 0 100%;
+  margin-top: 6px;
+  padding-left: 100px;
+  color: #f56c6c;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.mcx-pform-divider {
+  margin: 36px 0 15px;
+  border-top: 1px solid var(--mcx-border);
+}
+
+.mcx-pform-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 100px;
+}
+
+.mcx-pform-actions .mcx-pbtn {
+  height: 32px;
+  padding: 0 24px;
+  border-radius: 6px;
+}
+
+@media (max-width: 1100px) {
+  .mcx-profile-page {
+    gap: 16px;
+  }
+
+  .mcx-pcard--form {
+    padding: 20px;
+  }
+
+  .mcx-pform-label {
+    flex-basis: 88px;
+  }
+
+  .mcx-pform-error {
+    padding-left: 0;
+  }
+
+  .mcx-pform-actions {
+    padding-left: 0;
+  }
+
+  .mcx-pinfo-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mcx-pmember {
+    width: 100%;
+    gap: 4px;
+    padding: 6px 8px;
+  }
+
+  .mcx-pinvite {
+    flex-wrap: wrap;
+    row-gap: 8px;
+    height: auto;
+    padding: 12px 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mcx-profile-page {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .mcx-pcard {
+    flex: none;
+    overflow: visible;
+  }
+
+  .mcx-pcard--form {
+    padding: 16px;
+  }
+
+  .mcx-pform-actions {
+    padding-left: 0;
+  }
+
+  .mcx-pinfo-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ============ 注销账号弹窗 ============ */
+.mcx-cancel-dialog {
+  width: 480px;
+}
+
+.mcx-cancel-warn {
+  padding: 12px 14px;
+  border: 1px solid #ffccc7;
+  border-radius: 8px;
+  background: #fff1f0;
+  color: #cf1322;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.mcx-cancel-warn strong {
+  font-weight: 600;
+}
+
+.mcx-cancel-warn ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+.mcx-cancel-ack {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 14px;
+  color: var(--mcx-text);
+  font-size: 13px;
+  line-height: 1.6;
+  cursor: pointer;
+}
+
+.mcx-cancel-ack input {
+  flex: none;
+  margin: 3px 0 0;
+  accent-color: #f5222d;
+  cursor: pointer;
+}
+
+.mcx-cancel-count {
+  margin: 12px 0 0;
+  color: var(--mcx-secondary);
+  font-size: 13px;
+}
+
+.mcx-cancel-count strong {
+  color: #f5222d;
+  font-weight: 600;
+}
+
+.mcx-cancel-form {
+  margin-top: 18px;
+}
+
+.mcx-cancel-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.mcx-cancel-label {
+  flex: 0 0 84px;
+  padding-right: 12px;
+  color: var(--mcx-text);
+  font-size: 14px;
+  line-height: 36px;
+  text-align: right;
+}
+
+.mcx-cancel-label.is-required::before {
+  content: "*";
+  margin-right: 4px;
+  color: #f5222d;
+}
+
+.mcx-cancel-code {
+  display: flex;
+  flex: 1 1 0;
+  gap: 8px;
+  min-width: 0;
+}
+
+.mcx-cancel-phone {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 0;
+  height: 36px;
+  color: var(--mcx-title);
+  font-size: 14px;
+}
+
+.mcx-cancel-phone svg {
+  flex: none;
+  color: var(--mcx-placeholder);
+}
+
+.mcx-cancel-code-btn {
+  flex: none;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--mcx-gold);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--mcx-gold-dark);
+  font-size: 13px;
+  white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.mcx-cancel-code-btn:hover:not(:disabled) {
+  border-color: #ffc042;
+  background: #fff7e6;
+}
+
+.mcx-cancel-code-btn:disabled {
+  border-color: #e4e7ed;
+  background: #f5f7fa;
+  color: var(--mcx-placeholder);
+  cursor: not-allowed;
+}
+
+.mcx-cancel-row.is-error .mcx-pinput-el {
+  border-color: #f5222d;
+}
+
+.mcx-cancel-error {
+  flex: 0 0 100%;
+  margin-top: 6px;
+  padding-left: 84px;
+  color: #f5222d;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.mcx-dialog-btn.is-danger {
+  border-color: #f5222d;
+  background: #f5222d;
+  color: #fff;
+}
+
+.mcx-dialog-btn.is-danger:hover:not(:disabled) {
+  border-color: #ff4d4f;
+  background: #ff4d4f;
+  color: #fff;
+}
+
+.mcx-dialog-btn.is-danger:disabled {
+  border-color: #ffa39e;
+  background: #ffa39e;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.mcx-dialog-btn.is-danger-ghost {
+  border-color: #f5222d;
+  background: #fff;
+  color: #f5222d;
+}
+
+.mcx-dialog-btn.is-danger-ghost:hover:not(:disabled) {
+  border-color: #ff4d4f;
+  background: #fff1f0;
+  color: #ff4d4f;
+}
+
+.mcx-dialog-btn.is-danger-ghost:disabled {
+  border-color: #ffccc7;
+  background: #fff;
+  color: #ffa39e;
+  cursor: not-allowed;
+}
+
+.mcx-cancel-success {
+  padding: 12px 0 8px;
+  text-align: center;
+}
+
+.mcx-cancel-success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #f6ffed;
+  color: #52c41a;
+}
+
+.mcx-cancel-success-title {
+  margin-top: 12px;
+  color: var(--mcx-title);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.mcx-cancel-success p {
+  margin: 6px 0 0;
+  color: var(--mcx-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+}

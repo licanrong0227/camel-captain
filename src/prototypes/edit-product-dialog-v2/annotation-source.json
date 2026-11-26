@@ -12,7 +12,7 @@
     "version": 2,
     "prototypeName": "edit-product-dialog-v2",
     "pageId": "edit-product-dialog-v2",
-    "updatedAt": 1794987239333,
+    "updatedAt": 1795398671398,
     "nodes": [
       {
         "id": "ai-video-entry",
@@ -705,6 +705,46 @@
         "images": [],
         "createdAt": 1794972260427,
         "updatedAt": 1794972260427
+      },
+      {
+        "id": "weight-custom-toggle",
+        "index": 25,
+        "title": "阶梯重量开关",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"weight-custom-toggle\"]"
+          ],
+          "fingerprint": "span|data-annotation-id=weight-custom-toggle",
+          "path": []
+        },
+        "aiPrompt": "说明阶梯重量卡片右上角开关默认关闭，打开后展开配置并提交 itemWeigthRange，关闭后隐藏配置并传 null。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795398671398,
+        "updatedAt": 1795398671398
+      },
+      {
+        "id": "weight-tier-config",
+        "index": 26,
+        "title": "阶梯重量参数与接口",
+        "pageId": "edit-product-dialog-v2",
+        "locator": {
+          "selectors": [
+            "[data-annotation-id=\"weight-tier-config\"]"
+          ],
+          "fingerprint": "div|data-annotation-id=weight-tier-config",
+          "path": []
+        },
+        "aiPrompt": "说明阶梯重量三个字段的含义、总重口径，以及发布、修改、查询分别对应的敦煌接口。",
+        "annotationText": "",
+        "hasMarkdown": true,
+        "color": "#F5222D",
+        "images": [],
+        "createdAt": 1795398671398,
+        "updatedAt": 1795398671398
       }
     ]
   },
@@ -732,7 +772,9 @@
     "product-inventory": "**接口字段**：`itemInventory.inventoryQty` + `itemSkuInvenList[].skuInventoryQty`。\n\n- 可售库存 = 可售 SKU 的 `itemSkuList[].inventory` 之和，提交为 `inventoryQty`；下架 SKU 不计入。\n- 备货库存 = 各备货地 `skuInventoryQty` 之和，只用于发货分配，不要求与可售库存相等。\n- 允许超卖开启：可售与备货可以不一致；可售 > 备货时提示超出部分需自行备货/调拨，不拦截保存；可售 < 备货时提示备货多于可售。\n- 允许超卖关闭：二次确认后可售库存锁定为各仓备货合计，SKU 库存不可编辑；备货数量变化时自动重算。\n- 直接修改上方 SKU 库存只改可售数量，不会改动分仓备货数量。",
     "sku-split": "**接口字段**：`itemSkuInvenList[]`。\n\n- 每条 = `skuMD5` + `inventoryLocation` + `skuInventoryQty` + `saleStatus`。\n- 分仓数量是仓内实物备货，独立于 SKU 可售库存（`itemSkuList[].inventory`），不要求两者相等。\n- 可售 SKU 的备货合计只用于超卖/积压提示，不影响保存。\n- 某仓停售只改该条的 `saleStatus`，不影响其他仓；某 SKU 只在部分仓有货时，其余仓填 0 或不提交。\n- 各备货地列头可点开批量修改，按颜色 / Options 范围对该仓备货数量做替换 / 加 / 减 / 乘 / 除 / 清空。",
     "stock-leadtime": "**接口字段**：`itemSaleSetting.leadingTime`（产品级）+ `invenLocationList[].leadingTime`（仓级）。\n\n- 产品级必填，作为兜底；仓级优先，未配置时取产品级。\n- 有备货 1–4 个工作日（海外仓 ≤3）；备货中 5–10 个工作日；待备货按类目：非定制 1–10、定制类目 1–45、指定类目最多 90 个工作日。\n- 单位是工作日，不是自然日；超出范围时保存会被校验拦截。",
-    "price-tiers": "**接口字段**：`itemWholesaleRangeList[]`。\n\n- 每档提交 `startQty` + `discount`；`discount` 是小数，减免 5% 提交 0.05（即 95 折），不是 5。\n- 首档只填起批数量，单价取价格表里的实际收入；第 2 档起填减免比例。\n- 最多 4 档；购买数量必须逐档递增，否则保存被拦截。"
+    "price-tiers": "**接口字段**：`itemWholesaleRangeList[]`。\n\n- 每档提交 `startQty` + `discount`；`discount` 是小数，减免 5% 提交 0.05（即 95 折），不是 5。\n- 首档只填起批数量，单价取价格表里的实际收入；第 2 档起填减免比例。\n- 最多 4 档；购买数量必须逐档递增，否则保存被拦截。",
+    "weight-custom-toggle": "**开关口径**\n\n- 开关位于「阶梯重量」卡片右上角，默认关闭；打开后显示下方配置项，按购买件数启用阶梯重量；关闭后隐藏配置，提交时传 `itemWeigthRange: null`，按「包装后重量 × 件数」计运费。\n- 启用阶梯重量后，系统忽略体积重。\n- 修改产品时传 null 即取消商品上已保存的阶梯重量。",
+    "weight-tier-config": "**接口字段**：`itemPackage.itemWeigthRange`（对象，注意官方拼写 Weigth）\n\n- 开关在卡片右上角，默认关闭；打开后才提交 itemWeigthRange，关闭时隐藏配置并传 null。\n- `baseQt` Long 基本数量（必填，无默认值）\n- `stepQt` Long 阶梯数量（必填，无默认值）\n- `stepWeight` Double 阶梯重量（必填，无默认值），单位公斤\n- 总重口径：购买件数不超过基本数量时按「包装后重量」；超出后每满一个阶梯数量加一次阶梯重量。\n- 配置块底部提示按当前参数动态显示；三项都填写后才出现，修改参数即时更新。\n- 发布产品：`dh.item.add$2.0`，与 `itemPackage.grossWeight` 同层提交；新建/发布商品时走此接口。\n- 修改产品：`dh.item.update$2.0`，同一路径提交，`itemPackage` 需整包回传；编辑已有商品保存时走此接口。\n- 查询回显：`dh.item.get$2.0` 响应同路径返回，未配置为 null。\n- 文档描述写“数组”，实际 fieldType=1、官方示例为单个对象；按对象提交，多档是否支持待联调。\n- [dh.item.add$2.0 文档](https://open.dhgate.com/docs/api/detail/b76de42cf5324b0095ed4d091074af2a)\n- [dh.item.update$2.0 文档](https://open.dhgate.com/docs/api/detail/1c0242c91a8148b9b2245718a09d06ee)\n- [dh.item.get$2.0 文档](https://open.dhgate.com/docs/api/detail/f2b4cc755bd44fbc8e7ba0e7b3e45080)"
   },
   "assetMap": {}
 }

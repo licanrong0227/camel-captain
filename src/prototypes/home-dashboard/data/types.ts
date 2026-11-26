@@ -7,7 +7,7 @@ export interface StoreInfo {
   id: number;
   name: string;
   alias: string;
-  catePubName: string;
+  catePubNames: string[];
   groupId: number;
   adEnabled: boolean;
   openDate: string;
@@ -212,6 +212,20 @@ export interface AdFilters {
   adType: '' | AdType;
   from: string;
   to: string;
+}
+
+export type PunishmentSource = '平台处罚' | '品牌投诉' | '其他第三方投诉';
+
+/** 处罚记录：punish.list.get 为主表，brand.list.get 的 thirdType 落成来源 */
+export interface PunishmentRecord {
+  punishId: string;
+  source: PunishmentSource;
+  punishTypeName: string;
+  punishReason: string;
+  createDateStr: string;
+  punishEndTimeStr: string;
+  punishStatus: 1 | 2;
+  punishStatusName: string;
 }
 
 export interface ExclusionConfig {

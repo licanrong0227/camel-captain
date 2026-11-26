@@ -1330,6 +1330,45 @@ function ProcNumber({ value, onChange, placeholder, min = 1 }: {
   );
 }
 
+// ===== 阶梯重量：数字步进器 =====
+function WeightTierStepper({
+  value,
+  onChange,
+  unit,
+  step = 1,
+  precision,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  unit?: string;
+  step?: number;
+  precision?: number;
+}) {
+  const bump = (direction: number) => {
+    const base = Number(value);
+    const next = Math.max(0, (Number.isFinite(base) ? base : 0) + direction * step);
+    onChange(precision === undefined ? String(next) : next.toFixed(precision));
+  };
+  return (
+    <span className="ae-tier-stepper-line">
+      <span className="ae-tier-stepper">
+        <button type="button" className="ae-tier-stepper-btn" aria-label="减少" onClick={() => bump(-1)}>
+          −
+        </button>
+        <input
+          className="ae-tier-stepper-input"
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+        />
+        <button type="button" className="ae-tier-stepper-btn" aria-label="增加" onClick={() => bump(1)}>
+          +
+        </button>
+      </span>
+      {unit && <span className="ae-tier-stepper-unit">{unit}</span>}
+    </span>
+  );
+}
+
 // ===== 详情页面：富文本编辑器外壳 =====
 function RichEditor({ placeholder, height = 200 }: { placeholder: string; height?: number }) {
   return (
@@ -1552,6 +1591,11 @@ export default function AutoEditDialog() {
   } | null>(null);
   const pricePickTrigger = useRef<HTMLElement | null>(null);
   const [weight, setWeight] = useState('');
+  const [weightTierChecked, setWeightTierChecked] = useState(false);
+  const [weightTierEnabled, setWeightTierEnabled] = useState(false);
+  const [weightBaseQty, setWeightBaseQty] = useState('');
+  const [weightStepQty, setWeightStepQty] = useState('');
+  const [weightStepWeight, setWeightStepWeight] = useState('');
   const [titleOpsOn, setTitleOpsOn] = useState<string[]>([]);
   const [aiTitleKeywords, setAiTitleKeywords] = useState('');
   const [aiFeatureKeywords, setAiFeatureKeywords] = useState('');
@@ -2196,7 +2240,14 @@ export default function AutoEditDialog() {
         setAiFeatureKeywords('');
       }
       if (id === 'category') setAttrBasis('');
-      if (id === 'weight') setWeight('');
+      if (id === 'weight') {
+        setWeight('');
+        setWeightTierChecked(false);
+        setWeightTierEnabled(false);
+        setWeightBaseQty('');
+        setWeightStepQty('');
+        setWeightStepWeight('');
+      }
       if (id === 'title') {
         setTitleOpsOn([]);
         setAiTitleKeywords('');
@@ -3053,6 +3104,106 @@ export default function AutoEditDialog() {
                   <button className="ae-step" type="button" onClick={() => stepWeight(1)}>▲</button>
                   <button className="ae-step" type="button" onClick={() => stepWeight(-1)}>▼</button>
                 </div>
+              </div>
+              <div className="ae-weight-tier" data-annotation-id="basic-weight-tier-config">
+                <div className="ae-weight-tier-head">
+                  <label className="ae-checkbox" data-annotation-id="basic-weight-tier-toggle">
+                    <input
+                      type="checkbox"
+                      checked={weightTierChecked}
+                      onChange={() => {
+                        const next = !weightTierChecked;
+                        if (next) ensureBasic('weight');
+                        setWeightTierChecked(next);
+                      }}
+                    />
+                    <span className="ae-checkbox-mask" />
+                    <span className="ae-weight-tier-title">阶梯重量</span>
+                  </label>
+                  {weightTierChecked && (
+                    <div className="ae-radio-group ae-weight-tier-mode">
+                      <label className="ae-radio">
+                        <input
+                          type="radio"
+                          name="weightTierMode"
+                          checked={!weightTierEnabled}
+                          onChange={() => {
+                            ensureBasic('weight');
+                            setWeightTierEnabled(false);
+                          }}
+                        />
+                        <span className="ae-radio-mask" />
+                        <span>关闭</span>
+                      </label>
+                      <label className="ae-radio">
+                        <input
+                          type="radio"
+                          name="weightTierMode"
+                          checked={weightTierEnabled}
+                          onChange={() => {
+                            ensureBasic('weight');
+                            setWeightTierEnabled(true);
+                          }}
+                        />
+                        <span className="ae-radio-mask" />
+                        <span>打开</span>
+                      </label>
+                    </div>
+                  )}
+                </div>
+                {weightTierChecked && weightTierEnabled && (
+                  <>
+                    <div className="ae-weight-tier-row">
+                      <span className="ae-weight-tier-label">
+                        <span className="ae-weight-req">*</span>
+                        基本数量
+                      </span>
+                      <WeightTierStepper
+                        value={weightBaseQty}
+                        onChange={(value) => {
+                          ensureBasic('weight');
+                          setWeightBaseQty(value);
+                        }}
+                        unit="件"
+                      />
+                    </div>
+                    <div className="ae-weight-tier-row">
+                      <span className="ae-weight-tier-label">
+                        <span className="ae-weight-req">*</span>
+                        阶梯数量
+                      </span>
+                      <WeightTierStepper
+                        value={weightStepQty}
+                        onChange={(value) => {
+                          ensureBasic('weight');
+                          setWeightStepQty(value);
+                        }}
+                        unit="件"
+                      />
+                    </div>
+                    <div className="ae-weight-tier-row">
+                      <span className="ae-weight-tier-label">
+                        <span className="ae-weight-req">*</span>
+                        阶梯重量
+                      </span>
+                      <WeightTierStepper
+                        value={weightStepWeight}
+                        onChange={(value) => {
+                          ensureBasic('weight');
+                          setWeightStepWeight(value);
+                        }}
+                        step={0.01}
+                        precision={2}
+                        unit="公斤"
+                      />
+                    </div>
+                    {weightBaseQty && weightStepQty && weightStepWeight ? (
+                      <div className="ae-weight-tier-hint">
+                        {`超过 ${weightBaseQty} 件后，每满 ${weightStepQty} 件加 ${weightStepWeight} 公斤`}
+                      </div>
+                    ) : null}
+                  </>
+                )}
               </div>
             </FormRow>
 

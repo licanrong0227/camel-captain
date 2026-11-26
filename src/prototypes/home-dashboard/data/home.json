@@ -2746,5 +2746,50 @@
       "categoryName": "公告",
       "date": "09-24"
     }
-  ]
+  ],
+  "punishments": {
+    "date": "2026-10-31",
+    "records": [
+      {
+        "punishId": "10026575",
+        "source": "平台处罚",
+        "punishTypeName": "红牌",
+        "punishReason": "单月考核不合格",
+        "createDateStr": "2026-10-31",
+        "punishEndTimeStr": "2026-11-30",
+        "punishStatus": 1,
+        "punishStatusName": "处罚中"
+      },
+      {
+        "punishId": "10026588",
+        "source": "平台处罚",
+        "punishTypeName": "黄牌",
+        "punishReason": "商品描述与实物不符",
+        "createDateStr": "2026-10-31",
+        "punishEndTimeStr": "2026-11-15",
+        "punishStatus": 1,
+        "punishStatusName": "处罚中"
+      },
+      {
+        "punishId": "10026542",
+        "source": "品牌投诉",
+        "punishTypeName": "品牌侵权",
+        "punishReason": "涉嫌侵犯品牌知识产权",
+        "createDateStr": "2026-10-31",
+        "punishEndTimeStr": "2026-11-10",
+        "punishStatus": 1,
+        "punishStatusName": "处罚中"
+      },
+      {
+        "punishId": "10026498",
+        "source": "其他第三方投诉",
+        "punishTypeName": "违规刊登",
+        "punishReason": "图片盗用第三方素材",
+        "createDateStr": "2026-10-31",
+        "punishEndTimeStr": "2026-10-31",
+        "punishStatus": 2,
+        "punishStatusName": "已解除"
+      }
+    ]
+  }
 }

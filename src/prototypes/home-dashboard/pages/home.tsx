@@ -12,16 +12,12 @@ import {
   type ProductRankMetric,
   type RankRow,
 } from '../data/aggregate';
-import { LEVEL_COLORS, LEVEL_LIGHT_COLORS } from '../data/catalog';
-import { fmtAxis, fmtInt, fmtMoney, fmtMoneyAxis, fmtRoas } from '../data/format';
-import type { ExclusionConfig, StorePeriodKey } from '../data/types';
+import { LEVEL_COLORS, LEVEL_LIGHT_COLORS, STORES, STORE_GROUPS } from '../data/catalog';
+import { fmtAxis, fmtCateList, fmtInt, fmtMoney, fmtMoneyAxis, fmtRoas } from '../data/format';
+import type { ExclusionConfig, PunishmentRecord, StorePeriodKey } from '../data/types';
 import homeJson from '../data/home.json';
 import bgDeco from '../assets/bg-deco.png';
 import metricIcon from '../assets/metric-icon.png';
-import alertIcon1 from '../assets/alert-1.png';
-import alertIcon2 from '../assets/alert-2.png';
-import alertIcon3 from '../assets/alert-3.png';
-import alertIcon4 from '../assets/alert-4.png';
 import rank1 from '../assets/rank-1.png';
 import rank2 from '../assets/rank-2.png';
 import rank3 from '../assets/rank-3.png';
@@ -31,10 +27,13 @@ import promo3 from '../assets/promo-3.png';
 import { Chart, type ChartSeries } from '../components/Chart';
 import { ExclusionDialog } from '../components/ExclusionDialog';
 import { MetricHelp } from '../components/MetricHelp';
+import { PunishmentDialog } from '../components/PunishmentDialog';
 import { RankingDialog } from '../components/RankingDialog';
 import { Segmented } from '../components/Segmented';
 import { Select } from '../components/Select';
+import { StoreCascader } from '../components/StoreCascader';
 import { SyncActions } from '../components/SyncActions';
+import { Tooltip } from '../components/Tooltip';
 
 type Announcement = { id: number; title: string; categoryName: string; date: string };
 
@@ -46,6 +45,10 @@ const DATA = homeJson as unknown as {
     abnormalLogisticsCount: number;
   };
   announcements: Announcement[];
+  punishments: {
+    date: string;
+    records: PunishmentRecord[];
+  };
 };
 
 const PROMOS = [
@@ -394,8 +397,13 @@ function LevelRankList({ rows }: { rows: RankRow[] }) {
                 <strong title={row.storeName}>{row.storeName}</strong>
                 {row.storeAlias ? <em title={row.storeAlias}>{row.storeAlias}</em> : null}
               </span>
-              <span className="hd-store-cate" title={row.catePubName} data-annotation-id={row.rank === 1 ? 'hd-store-cate' : undefined}>
-                {row.catePubName}
+              <span className="hd-store-cate" data-annotation-id={row.rank === 1 ? 'hd-store-cate' : undefined}>
+                <Tooltip
+                  className="hd-cate-anchor"
+                  content={`经营类目：${(row.catePubNames ?? []).filter(Boolean).join('、') || '-'}`}
+                >
+                  {fmtCateList(row.catePubNames)}
+                </Tooltip>
               </span>
               <span
                 className="hd-level-chip"
@@ -440,6 +448,7 @@ export function HomePage({
 }) {
   const [trendView, setTrendView] = useState<'store' | 'ad'>('store');
   const [trendPeriod, setTrendPeriod] = useState<HomeTrendPeriod>('m1');
+  const [trendStoreIds, setTrendStoreIds] = useState<number[]>([]);
   const [hiddenSeries, setHiddenSeries] = useState<string[]>([]);
   const [salesPeriod, setSalesPeriod] = useState<StorePeriodKey>('week');
   const [trafficPeriod, setTrafficPeriod] = useState<StorePeriodKey>('week');
@@ -449,6 +458,7 @@ export function HomePage({
   const [productMetric, setProductMetric] = useState<ProductRankMetric>('qty');
   const [announcementOpen, setAnnouncementOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState<AlertType | null>(null);
+  const [punishOpen, setPunishOpen] = useState(false);
   const [exclusionOpen, setExclusionOpen] = useState(false);
   const [promoIndex, setPromoIndex] = useState(1);
 
@@ -463,8 +473,22 @@ export function HomePage({
     setHiddenSeries([]);
   }, [trendView]);
 
+  const trendStoreGroups = useMemo(
+    () => STORE_GROUPS
+      .map((group) => ({
+        id: String(group.id),
+        label: group.name,
+        stores: STORES.filter((store) => group.storeIds.includes(store.id)).map((store) => ({ id: store.id, label: store.name })),
+      }))
+      .filter((group) => group.stores.length > 0),
+    [],
+  );
+
   const kpis = useMemo(() => buildHomeKpis(exclusionEnabled, configs), [exclusionEnabled, configs]);
-  const points = useMemo(() => buildHomeTrend(trendPeriod, exclusionEnabled, configs), [trendPeriod, exclusionEnabled, configs]);
+  const points = useMemo(
+    () => buildHomeTrend(trendPeriod, exclusionEnabled, configs, trendStoreIds),
+    [trendPeriod, exclusionEnabled, configs, trendStoreIds],
+  );
   const salesRows = useMemo(() => storeSalesRank(salesPeriod, exclusionEnabled, configs), [salesPeriod, exclusionEnabled, configs]);
   const trafficRows = useMemo(() => storeTrafficRank(trafficPeriod), [trafficPeriod]);
   const productRows = useMemo(() => productRank(productPeriod, productMetric), [productPeriod, productMetric]);
@@ -472,11 +496,11 @@ export function HomePage({
   const announcements = useMemo(() => DATA.announcements.slice(0, 10), []);
 
   const abnormal = DATA.abnormal;
-  const alerts: Array<{ key: AlertType; title: string; count: number; desc: string; tone: string; icon: string }> = [
-    { key: 'order', title: '异常订单', count: abnormal.abnormalOrderCount, desc: '平台异常未处理的订单', tone: 'danger', icon: alertIcon1 },
-    { key: 'delivery', title: '异常发货', count: abnormal.abnormalDeliveryCount, desc: '承诺发货截止时间的订单', tone: 'purple', icon: alertIcon2 },
-    { key: 'onnet', title: '异常上网', count: abnormal.abnormalOnNetCount, desc: '有发货但无上网记录的订单', tone: 'green', icon: alertIcon3 },
-    { key: 'logistics', title: '异常物流', count: abnormal.abnormalLogisticsCount, desc: '物流还未显示录入的订单', tone: 'orange', icon: alertIcon4 },
+  const alerts: Array<{ key: AlertType; title: string; count: number; desc: string; tone: string }> = [
+    { key: 'order', title: '异常订单', count: abnormal.abnormalOrderCount, desc: '平台异常未处理的订单', tone: 'danger' },
+    { key: 'delivery', title: '异常发货', count: abnormal.abnormalDeliveryCount, desc: '承诺发货截止时间的订单', tone: 'purple' },
+    { key: 'onnet', title: '异常上网', count: abnormal.abnormalOnNetCount, desc: '有发货但无上网记录的订单', tone: 'green' },
+    { key: 'logistics', title: '异常物流', count: abnormal.abnormalLogisticsCount, desc: '物流还未显示录入的订单', tone: 'orange' },
   ];
 
   const rankDialogPeriod = rankDialog === 'traffic' ? trafficPeriod : rankDialog === 'product' ? productPeriod : rankDialog === 'level' ? 'month' : salesPeriod;
@@ -556,7 +580,6 @@ export function HomePage({
             <div className="hd-alerts-row">
               {alerts.map((alert) => (
                 <div className={`hd-glass hd-alert-card ${alert.tone}`} key={alert.title}>
-                  <img className="hd-alert-icon" src={alert.icon} alt="" />
                   <div className="hd-alert-body">
                     <div className="hd-alert-top">
                       <span className="hd-alert-title">{alert.title}</span>
@@ -569,6 +592,17 @@ export function HomePage({
                   </div>
                 </div>
               ))}
+              <div className="hd-glass hd-alert-card blue is-link" onClick={() => setPunishOpen(true)}>
+                <div className="hd-alert-body">
+                  <div className="hd-alert-top">
+                    <span className="hd-alert-title">平台处罚</span>
+                    <span className="hd-alert-count">{DATA.punishments.records.length} 条 <i>›</i></span>
+                  </div>
+                  <div className="hd-alert-bottom">
+                    <span className="hd-alert-desc">平台处罚及第三方投诉</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="hd-glass hd-trend-card">
@@ -576,6 +610,13 @@ export function HomePage({
                 <div className="hd-card-title">经营趋势</div>
                 <Segmented value={trendView} options={TREND_VIEWS} onChange={setTrendView} />
                 <div className="hd-trend-tools-right">
+                  <StoreCascader
+                    groups={trendStoreGroups}
+                    value={trendStoreIds}
+                    allLabel="全部店铺（店群）"
+                    width={250}
+                    onChange={setTrendStoreIds}
+                  />
                   <Segmented value={trendPeriod} options={TREND_PERIODS} onChange={setTrendPeriod} />
                   <Segmented
                     value={exclusionEnabled ? 'exclude' : 'raw'}
@@ -735,6 +776,13 @@ export function HomePage({
       ) : null}
       {announcementOpen ? <AnnouncementDialog announcements={DATA.announcements} onClose={() => setAnnouncementOpen(false)} /> : null}
       {alertOpen ? <AlertSettingsDialog type={alertOpen} onClose={() => setAlertOpen(null)} /> : null}
+      {punishOpen ? (
+        <PunishmentDialog
+          records={DATA.punishments.records}
+          date={DATA.punishments.date}
+          onClose={() => setPunishOpen(false)}
+        />
+      ) : null}
       {exclusionOpen ? (
         <ExclusionDialog
           configs={configs}

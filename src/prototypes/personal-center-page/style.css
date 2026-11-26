@@ -657,20 +657,25 @@
 
 .pcp-modal-header {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 24px;
+    height: 56px;
+    padding: 0 20px;
     border-bottom: 1px solid var(--pcp-border-light);
     flex-shrink: 0;
 }
 
 .pcp-modal-title {
+    align-self: center;
     font-size: 16px;
     font-weight: 600;
     color: var(--pcp-text-primary);
 }
 
 .pcp-modal-close {
+    align-self: center;
+    margin-left: auto;
     width: 28px;
     height: 28px;
     display: flex;
@@ -935,6 +940,190 @@
 }
 
 .pcp-dl-price-table td:nth-child(3) {
+    color: var(--pcp-text-secondary);
+}
+
+/* ===== 算力明细弹窗内页签 ===== */
+.pcp-dl-tabs {
+    display: flex;
+    gap: 24px;
+    align-self: stretch;
+}
+
+.pcp-dl-tab {
+    display: flex;
+    align-items: center;
+    padding: 0 2px;
+    font-size: 14px;
+    color: var(--pcp-text-regular);
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    transition: color 0.2s;
+}
+
+.pcp-dl-tab:hover {
+    color: var(--pcp-primary);
+}
+
+.pcp-dl-tab.is-active {
+    color: var(--pcp-primary);
+    font-weight: 600;
+}
+
+.pcp-dl-tab.is-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--pcp-primary);
+}
+
+/* ===== 消费日志 ===== */
+.pcp-cl-usage {
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: var(--pcp-bg-cell);
+    border-radius: var(--pcp-radius-md);
+}
+
+.pcp-cl-usage-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--pcp-text-regular);
+}
+
+.pcp-cl-usage-head span {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--pcp-text-secondary);
+}
+
+.pcp-cl-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.pcp-cl-usage-empty {
+    font-size: 12px;
+    color: var(--pcp-text-secondary);
+}
+
+.pcp-cl-metric {
+    min-width: 0;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid var(--pcp-border-light);
+    border-radius: var(--pcp-radius-md);
+}
+
+.pcp-cl-metric-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: var(--pcp-text-secondary);
+}
+
+.pcp-cl-metric-name {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pcp-cl-pro {
+    flex: 0 0 auto;
+    padding: 0 4px;
+    border-radius: 3px;
+    background: var(--pcp-primary);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 14px;
+    letter-spacing: 0.3px;
+    color: #fff;
+}
+
+.pcp-cl-metric-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.pcp-cl-metric-row b {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--pcp-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.pcp-cl-metric-row span {
+    font-size: 12px;
+    color: var(--pcp-text-secondary);
+    white-space: nowrap;
+}
+
+.pcp-cl-input {
+    width: 170px;
+    height: 32px;
+    padding: 0 10px;
+    background: #fff;
+    border: 1px solid var(--pcp-border-base);
+    border-radius: var(--pcp-radius-sm);
+    font-size: 13px;
+    color: var(--pcp-text-primary);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.pcp-cl-input::placeholder {
+    color: var(--pcp-text-placeholder);
+}
+
+.pcp-cl-input:focus {
+    border-color: var(--pcp-primary);
+}
+
+.pcp-cl-usage-dropdown {
+    max-height: 264px;
+    overflow-y: auto;
+}
+
+.pcp-cl-num {
+    text-align: right;
+}
+
+.pcp-cl-time {
+    white-space: nowrap;
+}
+
+.pcp-cl-name,
+.pcp-cl-usage-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pcp-cl-cost {
+    font-weight: 500;
+    color: var(--pcp-text-primary);
+}
+
+.pcp-cl-note {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     color: var(--pcp-text-secondary);
 }
 

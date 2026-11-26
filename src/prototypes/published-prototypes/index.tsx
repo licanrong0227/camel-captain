@@ -2,18 +2,121 @@
  * @name 原型发布地址
  */
 
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import './style.css';
 
 interface PublishedPrototype {
   name: string;
   id: string;
   summary: string[];
-  firstPublished: string;
+  createdAt: string;
+  updatedAt: string;
   url: string;
 }
 
+type SortKey = 'createdAt' | 'updatedAt';
+type SortDir = 'asc' | 'desc';
+
 const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
+  {
+    name: '新增上新价配置弹窗',
+    id: 'new-arrival-price-dialog',
+    summary: [
+      '还原后台「基础配置 → 上新价模板」的「新增上新价配置」弹窗（1100px）：基础信息、成本配置、活动折扣、费率配置、其他、自定义成本与定价公式配置',
+      '基础信息含模版名称、公共 / 专属类型与参考模板；参考模板取自后台「参考定价模板」，选中后自动填入公式并勾选对应参数，切换模板需确认并清除已配置数据',
+      '采购成本支持采集价 / 固定价 / 采集价折扣三种计价；国际物流成本可选渠道定价（产品重量或包装后重量 × 渠道单价 + 挂号费）或固定成本',
+      'RMB 成本按实时汇率或固定汇率换算 USD；固定价 + USD 时汇率列显示「-」',
+      '店铺折扣、平台活动折扣损耗、平台佣金率、提现手续费率、利润率、买家运费按分组勾选后在表格内配置',
+      '自定义成本可增删，支持固定成本（USD / RMB）与百分比两种公式；定价公式只能插入已勾选字段，提供配置预览与直接 / 预览提交',
+    ],
+    createdAt: '2026-11-21T10:24:45.555Z',
+    updatedAt: '2026-11-21T10:24:45.555Z',
+    url: 'https://licanrong0227.github.io/camel-captain/new-arrival-price-dialog/',
+  },
+  {
+    name: '参考定价模板',
+    id: 'reference-pricing-template',
+    summary: [
+      '还原后台「运营 → 定价 → 参考定价模板」：后台外壳与运营菜单浮层（帮助中心 / 公告 / 会员报表 / 定价），面包屑定位',
+      '模板列表按名称搜索，展示使用参数、定价公式（上新价 = …）与更新时间，并统计模板数量',
+      '新增 / 编辑模板时勾选参数后点击插入 #参数# 公式，参数覆盖采购成本、国内 / 国际物流成本、折扣、佣金、提现费率、利润率与买家运费',
+      '校验勾选参数与公式引用必须一致：未使用、未勾选、无法识别的参数与公式语法错误均就地提示；名称必填且不可重名',
+      '行内支持编辑、复制、删除（二次确认）',
+    ],
+    createdAt: '2026-11-21T10:24:35.741Z',
+    updatedAt: '2026-11-21T10:24:35.741Z',
+    url: 'https://licanrong0227.github.io/camel-captain/reference-pricing-template/',
+  },
+  {
+    name: '我的商品 - 全部商品',
+    id: 'my-products',
+    summary: [
+      '还原「商品 → 商品管理 → 我的商品」全部商品列表：顶部导航、商品采集 / 认领中心 / 我的商品页签，以及悬浮客服与滚动按钮',
+      '左侧状态分组统计（发布管理 / 销售状态 / 审核与风险 / 其他）带计数；两行筛选含产品编号、双击批量搜索、价格区间、采集平台、刊登 / 认领 / 修改时间、标签、店铺与线上分组',
+      '工具栏含搜索、重置、创建新产品、排序，右侧导出、导入货源、同步线上与列设置',
+      '商品行展示图片、标题与类目店铺、产品编号、售价、线上分组、标签、时间 / 版本与来源；行内展开编辑、更新发布、更新价格、标签、删除、AI 一键克隆与上下架',
+      '勾选后底部显示已选数量与批量编辑 / 批量更新发布 / 批量标签 / 批量删除 / 批量 AI 克隆；批量编辑中的商品带遮罩标记',
+      '分页含总数、每页条数与跳页；列表为静态演示数据',
+    ],
+    createdAt: '2026-11-21T09:15:38.686Z',
+    updatedAt: '2026-11-21T09:15:38.686Z',
+    url: 'https://licanrong0227.github.io/camel-captain/my-products/',
+  },
+  {
+    name: '个人中心 - 会员中心（我的权益 / 优惠券）',
+    id: 'member-center',
+    summary: [
+      '个人中心新增「会员中心」：我的权益 / 会员套餐 / 优惠券三个页签，左侧另有基础资料、订单中心、发票管理与分销中心入口',
+      '我的权益：会员状态与到期日、开通记录，通用 / 订单 / 产品等分组展示权益用量、开关与到期批次，到期明细可查看',
+      '会员套餐：选择 → 支付 → 完成三步，会员套餐 / 单独购买子页签与会员估算入口',
+      '优惠券：我的优惠券、可领取、兑换三类；功能券蓝色区分，兑换需确认，已使用 / 已过期状态可查',
+      '分销中心：数据看板、我的客户与优惠券分发；分发明细按人拆条并显示使用状态，每人限领数量取后台配置',
+    ],
+    createdAt: '2026-11-19T08:22:27.107Z',
+    updatedAt: '2026-11-20T09:07:10.847Z',
+    url: 'https://licanrong0227.github.io/camel-captain/member-center/',
+  },
+  {
+    name: '优惠券模板列表',
+    id: 'coupon-template-dialog',
+    summary: [
+      '还原后台优惠券模板列表：26 条演示数据、20 列，可按优惠券功能（代金券 / 功能券）筛选并分页',
+      '「新增模板」弹窗按代金券 / 功能券切换字段显隐：功能券隐藏面额类字段，代金券需选适用产品',
+      '发放方式选「手动发放」时需选择发放对象并添加明细，选择器支持全选',
+      '行内可查看与编辑模板，页面含 8 条红标注说明（与审核列表同步口径）',
+    ],
+    createdAt: '2026-11-19T08:21:07.402Z',
+    updatedAt: '2026-11-20T09:32:08.385Z',
+    url: 'https://licanrong0227.github.io/camel-captain/coupon-template-dialog/',
+  },
+  {
+    name: '主图拼图',
+    id: 'main-image-collage',
+    summary: [
+      '把「编辑产品弹窗-主图拼图」提取为独立原型页，进入即打开态：灰遮罩 + 1280×780 弹窗居中，关闭后可重新打开',
+      '左栏模板按 7 / 8 / 9 / 11 / 20 / 23 张分组平铺，顶部数字条只是锚点：点击滚动定位、手动滚动时高亮跟随',
+      '点模板缩略图按矩形分块重建 1:1 画布（605×605）；底栏「无缝拼贴」开关默认关闭，关闭时 10px 缝隙、打开后无缝',
+      '右栏可选图片分主图 / 站外推广图 / SKU 图 / 详情图四类，各类独立全选并保留全局全选',
+      '格子支持上传、拖入、滚轮缩放与拖拽平移、格子间换位与删除；底栏清空、导出、上传到主图（达上限确认替换）',
+      '保留「上传图片」二级弹窗与「上传并替换」确认框',
+    ],
+    createdAt: '2026-11-19T07:39:25.078Z',
+    updatedAt: '2026-11-20T09:46:37.758Z',
+    url: 'https://licanrong0227.github.io/camel-captain/main-image-collage/',
+  },
+  {
+    name: '购买会员弹窗',
+    id: 'member-purchase-dialog',
+    summary: [
+      '还原「购买 金牌会员」弹窗（560px），灰遮罩上视口居中，关闭后可重新打开',
+      '1 年 / 1 月 / 2 年 / 3 年四个周期单选，分别带 8.5 折 / 8 折 / 7.5 折标签与价格',
+      '升级购买时按当前会员剩余价值抵扣，展示实付金额、划线原价与抵扣金额',
+      '「下单」后短暂 loading，成功关闭弹窗并轻提示「下单成功」',
+    ],
+    createdAt: '2026-11-19T03:42:32.220Z',
+    updatedAt: '2026-11-19T03:42:32.220Z',
+    url: 'https://licanrong0227.github.io/camel-captain/member-purchase-dialog/',
+  },
   {
     name: '骆驼队长 App（移动端）',
     id: 'camel-captain-app',
@@ -25,7 +128,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '趋势卡可横屏查看：整页切为横屏，经营趋势保留页签并铺开多曲线；长列表底部显示「已经到底了」，首页与数据页滚动后出现返回顶部',
       '我的：真实资料、邀请码与推广链接、算力 / 积分资产、修改密码与退出登录；分销中心含数据看板（8 条客户订单）与我的客户（6 个客户、更多筛选）',
     ],
-    firstPublished: '2026-11-17T10:27:18.292Z',
+    createdAt: '2026-11-17T10:27:18.292Z',
+    updatedAt: '2026-11-20T01:54:06.734Z',
     url: 'https://licanrong0227.github.io/camel-captain/camel-captain-app/',
   },
   {
@@ -39,7 +143,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '商品同步 / 订单同步按店铺单层展示、不显示进度；店铺名后感叹号悬停查看同步配置，订单同步的指定订单可在行内展开订单卡片',
       '导出页签展示我的商品、我的订单、认领中心、采购单跟踪、订单明细报表、国际物流轨迹六类导出记录：导出成功可直接下载 CSV，导出中下载置灰，导出失败可重新导出',
     ],
-    firstPublished: '2026-11-12T03:25:22.442Z',
+    createdAt: '2026-11-12T03:25:22.442Z',
+    updatedAt: '2026-11-21T06:50:51.717Z',
     url: 'https://licanrong0227.github.io/camel-captain/task-manager-dialog/',
   },
   {
@@ -53,7 +158,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '同步中显示 12 辐条 loading 与「同步中（成功同步 N 条数据）」，完成后显示同步结果与同步时间，失败显示「同步失败」',
       '店铺行展示店铺名与别称，列表底部显示共 N 条，支持每页条数切换与跳页',
     ],
-    firstPublished: '2026-11-06T09:24:25.366Z',
+    createdAt: '2026-11-06T09:24:25.366Z',
+    updatedAt: '2026-11-09T01:42:34.541Z',
     url: 'https://licanrong0227.github.io/camel-captain/my-products-sync-online-dialog/',
   },
   {
@@ -67,7 +173,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '广告页签：广告消耗 / 广告 GMV / 整店 GMV / 广告 GMV 占比 / 投产比 5 张卡，可切「剔除补单 / 原始数据」；下方店铺 / 商品 / 计划 / 成单词四视图带行内趋势缩略图，整行打开抽屉，各视图独立查询条件与 7 列固定列宽',
       '商品 / 店铺 / 计划 / 成单词抽屉按各自口径出指标卡与单指标走势，含计划拆分与成单词明细；自动广告成交显示「无搜索词（自动广告）」；数据为本地确定性 mock，不接真实接口',
     ],
-    firstPublished: '2026-11-06T08:00:21.222Z',
+    createdAt: '2026-11-06T08:00:21.222Z',
+    updatedAt: '2026-11-17T10:06:41.930Z',
     url: 'https://licanrong0227.github.io/camel-captain/home-dashboard/',
   },
   {
@@ -81,7 +188,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '分页支持 10 / 20 / 50 条每页与跳页；无数据时显示「所选条件下暂无有销量的商品」',
       '演示数据 18 个商品按 30 天序列生成，切换时间后列表、汇总卡与排序同步重算；旧客户报表页面已删除，旧链接回到商品报表',
     ],
-    firstPublished: '2026-11-05T08:29:15.847Z',
+    createdAt: '2026-11-05T08:29:15.847Z',
+    updatedAt: '2026-11-05T08:29:15.847Z',
     url: 'https://licanrong0227.github.io/camel-captain/ops-report-center/',
   },
   {
@@ -95,7 +203,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '校验：定时发布未选时间、循环刊登未启用任何策略、增量起始值为空时阻止提交并就地提示；备选首图可上传 / 删除并显示分辨率',
       '「直接认领」「自动编辑」提交后轻提示并保持弹窗打开，关闭后可通过占位入口重新打开并保留选择',
     ],
-    firstPublished: '2026-11-05T06:14:11.552Z',
+    createdAt: '2026-11-05T06:14:11.552Z',
+    updatedAt: '2026-11-13T03:20:55.367Z',
     url: 'https://licanrong0227.github.io/camel-captain/claim-product-dialog/',
   },
   {
@@ -109,7 +218,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '嵌套「NS-PID 生成规则」弹窗：单条通用规则 + 可排序段块（工厂 / 类目 / 年份 / 流水 / 自定义）、前置分隔符、实时生成预览与格式校验',
       '流水号支持自增 / 字段截取 / 随机数，自定义段支持变量与常量；类目缩写码在第二层树形弹窗配置，可选通用码或逐级向上继承',
     ],
-    firstPublished: '2026-11-04T12:27:20.157Z',
+    createdAt: '2026-11-04T12:27:20.157Z',
+    updatedAt: '2026-11-10T02:40:23.174Z',
     url: 'https://licanrong0227.github.io/camel-captain/order-config-dialog/',
   },
   {
@@ -123,7 +233,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '申报信息：默认优先 Pid 码（商品信息 / 渠道信息）、制造商产品识别码 nsPid、国际标准商品编码 sPid',
       '确定保存并轻提示「渠道设置已保存」，取消、右上角 × 与点遮罩均可关闭',
     ],
-    firstPublished: '2026-11-03T07:10:58.225Z',
+    createdAt: '2026-11-03T07:10:58.225Z',
+    updatedAt: '2026-11-03T09:44:30.096Z',
     url: 'https://licanrong0227.github.io/camel-captain/channel-settings-dialog/',
   },
   {
@@ -137,7 +248,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '详情逐商品展示商品信息、刊登平台、刊登店铺、循环状态、循环次数（已发起 / 总次数）、发布结果与最新状态；循环状态带问号说明，支持按循环状态、发布结果、最新状态筛选与分页',
       '未开循环的记录，循环状态与循环次数显示「-」；最新状态用标签着色区分已上架、审核未通过、内容违规、侵权违规、品牌商投诉等结果',
     ],
-    firstPublished: '2026-11-02T11:31:55.367Z',
+    createdAt: '2026-11-02T11:31:55.367Z',
+    updatedAt: '2026-11-11T02:20:56.995Z',
     url: 'https://licanrong0227.github.io/camel-captain/update-publish-dialog-copy/',
   },
   {
@@ -151,7 +263,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '广告页签点击店铺行展开该店商品广告数据：商品广告趋势图、广告消耗、广告 GMV、链接产出 GMV、广告 GMV 占比、ROAS，可排序并按当前排序导出；点商品趋势图看单商品广告弹窗，同一时间只展开一个店铺',
       '店铺数据趋势图与广告数据趋势图分别打开弹窗；演示数据取自骆驼队长测试环境 2026-10-28 快照，echvolt 成交页签补 mock 序列',
     ],
-    firstPublished: '2026-10-30T10:25:30.284Z',
+    createdAt: '2026-10-30T10:25:30.284Z',
+    updatedAt: '2026-10-31T02:41:49.862Z',
     url: 'https://licanrong0227.github.io/camel-captain/shop-dashboard/',
   },
   {
@@ -165,7 +278,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '每行右侧「编辑商品信息」描边按钮，悬停/按下有反馈，本轮不跳转',
       '右上角 × 与底部「确定」保留样式，不接关闭逻辑',
     ],
-    firstPublished: '2026-10-29T08:41:36.061Z',
+    createdAt: '2026-10-29T08:41:36.061Z',
+    updatedAt: '2026-10-29T08:42:16.835Z',
     url: 'https://licanrong0227.github.io/camel-captain/claim-exception-dialog/',
   },
   {
@@ -181,7 +295,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       'AI标题 / AI关键词 / AI短描生成：生成中 12 辐条 loading 并置灰，标题与短描可先在下拉浮窗指定包含关键词；AI生成视频弹窗按主图 / 推广图 / SKU 图 / 详情图分组多选参考图（最多 9 张），可选时长与比例，演示生成中、失败、重新生成与停止生成',
       '商品合规检测入口在页脚右侧，结果弹窗 6 项逐条给出原因、原文 / 原图（不带位置与序号）与建议；每项提供「漏报」，违规 / 疑似条目底部提供「结果不准」负面反馈，卡片内可切历史轮次与单项重检，历史轮次只读；标注面板可切换演示场景与状态',
     ],
-    firstPublished: '2026-10-28T09:41:14.247Z',
+    createdAt: '2026-10-28T09:41:14.247Z',
+    updatedAt: '2026-11-23T02:17:37.645Z',
     url: 'https://licanrong0227.github.io/camel-captain/edit-product-dialog-v2/',
   },
   {
@@ -195,7 +310,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '明细区带异常图例：ROAS < 1 且花费 > 0 标红、有花费无订单打「零转化」；点商品行打开右侧抽屉看按天走势与计划拆分',
       '数据只读本地库、同步按钮手动补同步；指标以商品报表为准，成单词按订单号与商品去重后合计，日期区间上限 31 天',
     ],
-    firstPublished: '2026-10-28T07:30:25.521Z',
+    createdAt: '2026-10-28T07:30:25.521Z',
+    updatedAt: '2026-10-28T07:30:25.521Z',
     url: 'https://licanrong0227.github.io/camel-captain/dhgate-ad-report/',
   },
   {
@@ -209,7 +325,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '底部按方式切换统计「已选店铺 x 个 / 已选商品 x 条」，未选店铺时提交给出提示',
       '「克隆」「直接上架」分别提交并轻提示目标店铺数与已启用配置',
     ],
-    firstPublished: '2026-10-20T06:25:03.629Z',
+    createdAt: '2026-10-20T06:25:03.629Z',
+    updatedAt: '2026-11-10T07:20:56.083Z',
     url: 'https://licanrong0227.github.io/camel-captain/ai-clone-dialog/',
   },
   {
@@ -223,7 +340,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '结果按文中出现顺序排列，每条显示章节名和关键词前后 6 字上下文，点击定位并居中',
       '正文所有命中浅红底标红、锁定项实心橙底白字；重开抽屉清空状态，无结果显示缺省提示',
     ],
-    firstPublished: '2026-10-21T06:43:31.138Z',
+    createdAt: '2026-10-21T06:43:31.138Z',
+    updatedAt: '2026-10-22T06:06:55.521Z',
     url: 'https://licanrong0227.github.io/camel-captain/help-center-full-text-search/',
   },
   {
@@ -237,7 +355,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '「新增产品」只按剩余展示位取前 N 个已有产品编号的产品，「修改产品」只替换不新增',
       '全局统一叫法，界面中的「产品ID」改为「产品编号」',
     ],
-    firstPublished: '2026-10-21T06:09:15.772Z',
+    createdAt: '2026-10-21T06:09:15.772Z',
+    updatedAt: '2026-10-29T08:40:30.058Z',
     url: 'https://licanrong0227.github.io/camel-captain/my-products-batch-related-template/',
   },
   {
@@ -251,7 +370,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '通用「上传图片」弹窗：本地/URL/引用三种来源，支持拖拽和 Ctrl+V',
       '底部「取消 / 提交认领」操作',
     ],
-    firstPublished: '2026-09-28T06:17:00.349Z',
+    createdAt: '2026-09-28T06:17:00.349Z',
+    updatedAt: '2026-10-17T08:27:58.320Z',
     url: 'https://licanrong0227.github.io/camel-captain/auto-edit-dialog/',
   },
   {
@@ -265,7 +385,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '「开始处理」触发处理提示；未配置水印时给出错误提示',
       '底部「取消 / 确定」关闭弹窗',
     ],
-    firstPublished: '2026-09-18T11:21:21.561Z',
+    createdAt: '2026-09-18T11:21:21.561Z',
+    updatedAt: '2026-09-22T11:24:00.628Z',
     url: 'https://licanrong0227.github.io/camel-captain/batch-image/',
   },
   {
@@ -278,7 +399,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '「有已处理未保存的图片」气泡提示',
       '退出时弹出确认框：保存并退出 / 直接退出',
     ],
-    firstPublished: '2026-10-13T08:35:35.884Z',
+    createdAt: '2026-10-13T08:35:35.884Z',
+    updatedAt: '2026-10-17T06:36:00.305Z',
     url: 'https://licanrong0227.github.io/camel-captain/batch-image-white-bg/',
   },
   {
@@ -292,7 +414,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '点赞/点踩反馈，顶栏「重新检测」「重新采集」弹窗',
       '规则说明页展示各质检项检测对象与状态图例',
     ],
-    firstPublished: '2026-10-14T02:53:45.002Z',
+    createdAt: '2026-10-14T02:53:45.002Z',
+    updatedAt: '2026-10-17T08:07:44.140Z',
     url: 'https://licanrong0227.github.io/camel-captain/dhgate-compliance-check/',
   },
   {
@@ -305,7 +428,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '详情模板：下拉套用并整体替换正文、创建模板（名称必填）、管理模板（删除二次确认）',
       '操作轻提示；「保存」提示后关闭，重开保留选中与状态改动',
     ],
-    firstPublished: '2026-09-28T09:37:02.330Z',
+    createdAt: '2026-09-28T09:37:02.330Z',
+    updatedAt: '2026-09-29T03:47:48.281Z',
     url: 'https://licanrong0227.github.io/camel-captain/edit-product-dialog/',
   },
   {
@@ -319,7 +443,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '可选图片复选框多选（以空格数为上限）并按顺序导入',
       '底栏清空 / 导出 / 上传到主图（达上限时确认替换末位主图）',
     ],
-    firstPublished: '2026-10-13T11:04:04.889Z',
+    createdAt: '2026-10-13T11:04:04.889Z',
+    updatedAt: '2026-10-17T06:43:22.403Z',
     url: 'https://licanrong0227.github.io/camel-captain/edit-product-dialog-media/',
   },
   {
@@ -332,7 +457,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '节点启用/禁用父子联动',
       '选中叶节点显示富文本编辑器编写文档，父节点显示空态提示',
     ],
-    firstPublished: '2026-09-17T08:45:30.571Z',
+    createdAt: '2026-09-17T08:45:30.571Z',
+    updatedAt: '2026-09-17T08:45:30.571Z',
     url: 'https://licanrong0227.github.io/camel-captain/help-center-admin-copy/',
   },
   {
@@ -345,7 +471,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '锚点同步 URL，支持一键展开/折叠全部分组',
       '正文含操作步骤、注意事项、视频占位、字段说明表格、常见问题等章节',
     ],
-    firstPublished: '2026-09-17T08:46:07.445Z',
+    createdAt: '2026-09-17T08:46:07.445Z',
+    updatedAt: '2026-09-29T10:16:10.549Z',
     url: 'https://licanrong0227.github.io/camel-captain/help-center-copy/',
   },
   {
@@ -359,7 +486,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '自动翻译开关、50+ 目标语言选择、翻译与发送按钮',
       '右侧买家信息/订单信息面板，悬浮客服入口',
     ],
-    firstPublished: '2026-09-18T08:48:47.850Z',
+    createdAt: '2026-09-18T08:48:47.850Z',
+    updatedAt: '2026-09-22T06:51:32.980Z',
     url: 'https://licanrong0227.github.io/camel-captain/instant-consultation/',
   },
   {
@@ -372,7 +500,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '商品表格展示循环刊登次数与剩余次数标签，发布失败行显示失败原因',
       '底部分页与悬浮客服、快速滚动入口',
     ],
-    firstPublished: '2026-10-10T09:12:42.585Z',
+    createdAt: '2026-10-10T09:12:42.585Z',
+    updatedAt: '2026-10-13T08:58:11.794Z',
     url: 'https://licanrong0227.github.io/camel-captain/my-products-bi/',
   },
   {
@@ -385,7 +514,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '完整分页交互：每页条数切换、页码跳转、前往 N 页',
       '「算力定价」弹窗列出各 AI 功能消耗点，支持 Esc/遮罩关闭',
     ],
-    firstPublished: '2026-09-28T11:32:59.417Z',
+    createdAt: '2026-09-28T11:32:59.417Z',
+    updatedAt: '2026-09-29T03:41:23.774Z',
     url: 'https://licanrong0227.github.io/camel-captain/operation-log/',
   },
   {
@@ -398,7 +528,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       'AI 算力按数量档位购买，店铺数量按期限档位购买（长期限带折扣角标），价格联动',
       '底部「提交订单」完成下单演示',
     ],
-    firstPublished: '2026-09-30T02:29:45.824Z',
+    createdAt: '2026-09-30T02:29:45.824Z',
+    updatedAt: '2026-09-30T02:29:45.824Z',
     url: 'https://licanrong0227.github.io/camel-captain/personal-center-bi/',
   },
   {
@@ -411,7 +542,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '「算力明细」弹窗：统计概览 + 筛选 + 变动记录表格 + 分页',
       '弹窗内可再开「算力定价」二级弹窗，Esc 分层关闭',
     ],
-    firstPublished: '2026-09-30T08:51:07.486Z',
+    createdAt: '2026-09-30T08:51:07.486Z',
+    updatedAt: '2026-09-30T08:55:33.419Z',
     url: 'https://licanrong0227.github.io/camel-captain/personal-center-page/',
   },
   {
@@ -425,7 +557,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '主图策略：随机打乱或备选首图（上传/删除、显示分辨率，含上传图片子弹窗）',
       '当日刊登数量上限：直接终止或次日继续（可选时间点）',
     ],
-    firstPublished: '2026-10-15T08:53:01.479Z',
+    createdAt: '2026-10-15T08:53:01.479Z',
+    updatedAt: '2026-11-20T09:35:50.126Z',
     url: 'https://licanrong0227.github.io/camel-captain/update-publish-dialog/',
   },
   {
@@ -440,7 +573,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       'SKU 信息含销售状态、商品规格与规格值、编码、重量、库存；服务含商品分级、服务模板、尺码模板；属性含识别类目、添加指定类目与品牌名称',
       '确定时校验水印内容完整性；其余模块提示「该栏目内容沿用线上已有配置」',
     ],
-    firstPublished: '2026-10-19T07:34:45.253Z',
+    createdAt: '2026-10-19T07:34:45.253Z',
+    updatedAt: '2026-11-23T02:51:01.779Z',
     url: 'https://licanrong0227.github.io/camel-captain/auto-edit-dialog-copy2/',
   },
   {
@@ -454,7 +588,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '「导入Pid码」弹窗可下载 xlsx 模板：商品标题、SKU、sku_id（请勿修改）、nsPid、sPid、mPid，仅导出至少有一个 Pid 值的行；上传 xlsx/csv 后按 sku_id 匹配订单行并回填，无匹配或解析失败在弹窗内提示',
       '表格横向、纵向均可滚动，表头吸顶，列总宽超出弹窗宽度；除导入Pid码外按钮与输入框保持静态，商品图为占位块',
     ],
-    firstPublished: '2026-10-19T10:27:40.425Z',
+    createdAt: '2026-10-19T10:27:40.425Z',
+    updatedAt: '2026-11-03T09:49:04.945Z',
     url: 'https://licanrong0227.github.io/camel-captain/my-order-batch-declare/',
   },
   {
@@ -468,7 +603,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '「添加水印」弹窗三栏布局：工具条（添加文字/添加图片）｜650×650 空白画布｜属性面板空态，底部取消/预览/确认',
       '文字与图片禁止拖出画布，画布尺寸按适用图片尺寸等比调整；缩略图左下角显示图片尺寸、画布显示画布尺寸',
     ],
-    firstPublished: '2026-10-21T10:55:35.662Z',
+    createdAt: '2026-10-21T10:55:35.662Z',
+    updatedAt: '2026-10-21T10:55:35.662Z',
     url: 'https://licanrong0227.github.io/camel-captain/image-workbench-watermark/',
   },
   {
@@ -482,7 +618,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '店铺模板：运费模版与售后服务模版行内下拉选择即更新该行，并把操作人、操作时间置为当前',
       '「批量修改实际收入」弹窗独立成页：替换/加/减/乘/除/清空/价格模板单选，选「价格模板」时数值输入框换成渠道定价模版下拉',
     ],
-    firstPublished: '2026-10-22T06:48:06.367Z',
+    createdAt: '2026-10-22T06:48:06.367Z',
+    updatedAt: '2026-11-03T02:19:13.283Z',
     url: 'https://licanrong0227.github.io/camel-captain/basic-config-pages/',
   },
   {
@@ -496,7 +633,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '去水印先选 Pro / 普通版本，翻译先选全量 / 识别后翻译，裁剪缩放可选 1000×1000 / 800×800 / 自定义；加水印可配置模板、类型、文字或图片、位置与角度',
       '有已处理未保存图片时显示气泡提示，关闭或取消弹出「退出 / 保存并退出」确认；关闭后可在遮罩上重新打开并恢复初始状态',
     ],
-    firstPublished: '2026-10-23T02:39:47.448Z',
+    createdAt: '2026-10-23T02:39:47.448Z',
+    updatedAt: '2026-11-20T08:16:32.103Z',
     url: 'https://licanrong0227.github.io/camel-captain/batch-image-white-bg-copy/',
   },
   {
@@ -510,7 +648,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '「认领商品」弹窗左侧选商品、右侧选平台与店铺，店铺清单未选时底部提示「请至少选择 1 个店铺」',
       '我的订单：行操作条展开「线路审核 / 查看订单 / 标记 / 作废 / 删除」，「线路审核」下拉含「直接发货」、「申请运单号」下拉只含「指定运单号」；「订单详情」弹窗含基础信息等 9 个页签',
     ],
-    firstPublished: '2026-10-23T07:13:08.232Z',
+    createdAt: '2026-10-23T07:13:08.232Z',
+    updatedAt: '2026-11-21T10:19:10.919Z',
     url: 'https://licanrong0227.github.io/camel-captain/shopify-integration/',
   },
   {
@@ -524,7 +663,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '敏感词列表 21 条演示数据：关键词搜索、状态筛选，分页可改每页条数并跳页',
       '新增按行批量录入并自动去重、行内编辑、删除二次确认、开关即时启停',
     ],
-    firstPublished: '2026-10-23T09:02:23.522Z',
+    createdAt: '2026-10-23T09:02:23.522Z',
+    updatedAt: '2026-10-23T09:02:23.522Z',
     url: 'https://licanrong0227.github.io/camel-captain/help-center-admin-copy-copy/',
   },
   {
@@ -538,7 +678,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '文本框 Ctrl+回车（⌘+回车）换行；内容为空时确认提示「请输入规格值」',
       '确认后按行拆分为规格值（去首尾空白、忽略空行）并提示「已添加 N 个规格值」',
     ],
-    firstPublished: '2026-10-24T02:43:24.430Z',
+    createdAt: '2026-10-24T02:43:24.430Z',
+    updatedAt: '2026-10-26T06:30:15.991Z',
     url: 'https://licanrong0227.github.io/camel-captain/spec-value-template/',
   },
   {
@@ -552,7 +693,8 @@ const PUBLISHED_PROTOTYPES: PublishedPrototype[] = [
       '整品禁售 / 限售自查风险按「商品整体」位置展示；重新检测分「就地重检」与「重新采集并检测」，检测中可查看进度',
       '标注面板可切换全部通过 / 多处违规 / 采集失败等整页演示场景（集中在箱包模板记录）；规则说明页保留默认占位',
     ],
-    firstPublished: '2026-10-27T08:10:15.092Z',
+    createdAt: '2026-10-27T08:10:15.092Z',
+    updatedAt: '2026-11-04T06:05:02.972Z',
     url: 'https://licanrong0227.github.io/camel-captain/dhgate-compliance-check-copy/',
   },
 ];
@@ -605,29 +747,90 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-const SORTED_PROTOTYPES = [...PUBLISHED_PROTOTYPES].sort(
-  (a, b) => new Date(b.firstPublished).getTime() - new Date(a.firstPublished).getTime(),
-);
+function SortableTimeHeader({
+  label,
+  sortKey,
+  activeKey,
+  dir,
+  onSort,
+}: {
+  label: string;
+  sortKey: SortKey;
+  activeKey: SortKey;
+  dir: SortDir;
+  onSort: (key: SortKey) => void;
+}) {
+  const active = sortKey === activeKey;
+  return (
+    <th
+      className="pp-table__col-time"
+      aria-sort={active ? (dir === 'desc' ? 'descending' : 'ascending') : 'none'}
+    >
+      <button
+        type="button"
+        className={`pp-sort${active ? ' is-active' : ''}`}
+        onClick={() => onSort(sortKey)}
+      >
+        {label}
+        <span className="pp-sort__arrow">{active ? (dir === 'desc' ? '↓' : '↑') : '⇅'}</span>
+      </button>
+    </th>
+  );
+}
 
 export default function PublishedPrototypesPage() {
+  const [sortKey, setSortKey] = useState<SortKey>('updatedAt');
+  const [sortDir, setSortDir] = useState<SortDir>('desc');
+
+  const sortedPrototypes = useMemo(() => {
+    const list = [...PUBLISHED_PROTOTYPES];
+    list.sort((a, b) => {
+      const diff = new Date(a[sortKey]).getTime() - new Date(b[sortKey]).getTime();
+      return sortDir === 'desc' ? -diff : diff;
+    });
+    return list;
+  }, [sortKey, sortDir]);
+
+  const handleSort = (key: SortKey) => {
+    if (key === sortKey) {
+      setSortDir((prev) => (prev === 'desc' ? 'asc' : 'desc'));
+      return;
+    }
+    setSortKey(key);
+    setSortDir('desc');
+  };
+
   return (
     <div className="pp-page">
       <div className="pp-card">
         <div className="pp-card__header">
           <h1 className="pp-title">原型发布地址</h1>
-          <span className="pp-count">已发布 {SORTED_PROTOTYPES.length} 个原型</span>
+          <span className="pp-count">已发布 {sortedPrototypes.length} 个原型</span>
         </div>
         <table className="pp-table">
           <thead>
             <tr>
               <th className="pp-table__col-name">原型名称</th>
               <th>需求概述</th>
-              <th className="pp-table__col-time">发布时间</th>
+              <SortableTimeHeader
+                label="创建时间"
+                sortKey="createdAt"
+                activeKey={sortKey}
+                dir={sortDir}
+                onSort={handleSort}
+              />
+              <SortableTimeHeader
+                label="更新时间"
+                sortKey="updatedAt"
+                activeKey={sortKey}
+                dir={sortDir}
+                onSort={handleSort}
+              />
               <th className="pp-table__col-url">发布地址</th>
             </tr>
           </thead>
           <tbody>
-            {SORTED_PROTOTYPES.map((item) => (
+            {sortedPrototypes.map((item) => (
               <tr key={item.id}>
                 <td className="pp-table__name">{item.name}</td>
                 <td className="pp-table__summary">
@@ -637,7 +840,8 @@ export default function PublishedPrototypesPage() {
                     ))}
                   </ol>
                 </td>
-                <td className="pp-table__time">{formatTime(item.firstPublished)}</td>
+                <td className="pp-table__time">{formatTime(item.createdAt)}</td>
+                <td className="pp-table__time">{formatTime(item.updatedAt)}</td>
                 <td className="pp-table__url-cell">
                   <a className="pp-table__link" href={item.url} target="_blank" rel="noreferrer">
                     {item.url}

@@ -146,6 +146,12 @@
                   },
                   {
                     "type": "route",
+                    "id": "route-home-ranking-cate",
+                    "title": "经营类目",
+                    "route": "home:ranking-cate"
+                  },
+                  {
+                    "type": "route",
                     "id": "route-home-sku",
                     "title": "SKU 明细",
                     "route": "home:sku"

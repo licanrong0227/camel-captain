@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import { levelRank, productRank, storeSalesRank, storeTrafficRank, type ProductRankMetric, type RankRow } from '../data/aggregate';
 import { LEVEL_COLORS } from '../data/catalog';
-import { fmtInt, fmtMoney } from '../data/format';
+import { fmtCateList, fmtInt, fmtMoney } from '../data/format';
 import type { ExclusionConfig, StorePeriodKey } from '../data/types';
 import { Segmented } from './Segmented';
 import { Sheet } from './Sheet';
@@ -30,9 +30,29 @@ const PRODUCT_OPTIONS = [
   { key: 'orders', label: '订单量' },
 ];
 
+function CateLine({ names, onOpen }: { names?: string[]; onOpen?: () => void }) {
+  const list = (names ?? []).filter(Boolean);
+  if (!list.length) return <>-</>;
+  if (list.length === 1) return <>{list[0]}</>;
+  return (
+    <button
+      type="button"
+      className="cc-cate-btn"
+      onClick={(event) => {
+        event.stopPropagation();
+        onOpen?.();
+      }}
+    >
+      {fmtCateList(list)}
+      <ChevronDown size={9} className="cc-cate-chevron" />
+    </button>
+  );
+}
+
 export function RankingSheet({
   open,
   kind,
+  initialCate,
   onClose,
   exclusionEnabled,
   configs,
@@ -40,6 +60,7 @@ export function RankingSheet({
 }: {
   open: boolean;
   kind: RankKind;
+  initialCate?: boolean;
   onClose: () => void;
   exclusionEnabled: boolean;
   configs: ExclusionConfig[];
@@ -48,14 +69,22 @@ export function RankingSheet({
   const [tab, setTab] = useState<RankKind>(kind);
   const [period, setPeriod] = useState<StorePeriodKey>('week');
   const [metric, setMetric] = useState<ProductRankMetric>('qty');
+  const [cateRow, setCateRow] = useState<RankRow | null>(null);
 
   useEffect(() => {
-    if (open) {
-      setTab(kind);
-      setPeriod('week');
-      setMetric('qty');
+    setCateRow(null);
+    if (!open) return;
+    setTab(kind);
+    setPeriod('week');
+    setMetric('qty');
+    if (initialCate) {
+      const target = levelRank().find((row) => (row.catePubNames ?? []).filter(Boolean).length > 1);
+      if (target) {
+        setTab('level');
+        setCateRow(target);
+      }
     }
-  }, [open, kind]);
+  }, [open, kind, initialCate]);
 
   const rows = useMemo(() => {
     if (tab === 'sales') return storeSalesRank(period, exclusionEnabled, configs).slice(0, 100);
@@ -72,9 +101,10 @@ export function RankingSheet({
   };
 
   return (
-    <Sheet
-      open={open}
-      title={tab === 'product' ? '商品 Top100 榜单' : '完整榜单'}
+    <>
+      <Sheet
+        open={open}
+        title={tab === 'product' ? '商品 Top100 榜单' : '完整榜单'}
       variant="full"
       onClose={onClose}
       subhead={
@@ -109,7 +139,7 @@ export function RankingSheet({
               <div className="cc-rank-sub">
                 {tab === 'sales' ? `${fmtInt(row.qty ?? 0)} 件 · ${fmtInt(row.orders ?? 0)} 单` : null}
                 {tab === 'traffic' ? `${fmtInt(row.uv ?? 0)} 访客 · UV价值 ${fmtMoney(row.uvValue ?? null)}` : null}
-                {tab === 'level' ? row.catePubName ?? '-' : null}
+                {tab === 'level' ? <CateLine names={row.catePubNames} onOpen={() => setCateRow(row)} /> : null}
                 {tab === 'product' ? `${row.itemcode} · ${row.storeName ?? '-'}` : null}
               </div>
             </div>
@@ -131,7 +161,20 @@ export function RankingSheet({
           </div>
         ))}
       </div>
-      {rows.length > 0 ? <div className="cc-list-end">已经到底了</div> : null}
-    </Sheet>
+        {rows.length > 0 ? <div className="cc-list-end">已经到底了</div> : null}
+      </Sheet>
+      <Sheet open={cateRow !== null} title="经营类目" onClose={() => setCateRow(null)}>
+        {cateRow ? (
+          <div className="cc-cate-sheet">
+            <div className="cc-cate-sheet-store">{cateRow.storeName ?? cateRow.name ?? cateRow.itemcode}</div>
+            <div className="cc-cate-sheet-tags">
+              {(cateRow.catePubNames ?? []).filter(Boolean).map((name) => (
+                <span className="cc-cate-sheet-tag" key={name}>{name}</span>
+              ))}
+            </div>
+          </div>
+        ) : null}
+      </Sheet>
+    </>
   );
 }

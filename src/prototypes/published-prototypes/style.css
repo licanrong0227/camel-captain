@@ -123,6 +123,37 @@
   white-space: nowrap;
 }
 
+.pp-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #4e5969;
+  font: inherit;
+  line-height: 22px;
+  cursor: pointer;
+}
+
+.pp-sort:hover {
+  color: #ff7d29;
+}
+
+.pp-sort__arrow {
+  color: #c9cdd4;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.pp-sort.is-active {
+  color: #1d2129;
+}
+
+.pp-sort.is-active .pp-sort__arrow {
+  color: #ff7d29;
+}
+
 .pp-table__time {
   color: #4e5969;
   line-height: 22px;

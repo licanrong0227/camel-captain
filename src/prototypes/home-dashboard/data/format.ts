@@ -55,3 +55,10 @@ export function fmtMetric(kind: 'money' | 'count' | 'rate', value: number | null
   if (kind === 'count') return fmtInt(value);
   return fmtPct(value);
 }
+
+export function fmtCateList(names?: string[]): string {
+  const list = (names ?? []).filter(Boolean);
+  if (!list.length) return '-';
+  if (list.length === 1) return list[0];
+  return `${list[0]} 等${list.length}类`;
+}

@@ -155,6 +155,84 @@ const CloseIcon = () => (
   </Svg>
 );
 
+/* ===== 基础资料页图标 ===== */
+const UserIcon = ({ size = 15 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="1.8">
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4.5 21a7.5 7.5 0 0 1 15 0" />
+  </Svg>
+);
+
+const PencilIcon = ({ size = 15 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="1.8">
+    <path d="M4 20h4.2L20 8.2a2.1 2.1 0 0 0-3-3L5.2 17 4 20Z" />
+    <path d="m15.2 7 3 3" />
+  </Svg>
+);
+
+const PhoneIcon = ({ size = 15 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="1.8">
+    <path d="M6.2 3h-2A1.2 1.2 0 0 0 3 4.3C3 13 11 21 19.7 21a1.2 1.2 0 0 0 1.3-1.2v-2l-4.2-1.6-2 2a15 15 0 0 1-5.9-5.9l2-2L6.2 3Z" />
+  </Svg>
+);
+
+const MailIcon = ({ size = 15 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="1.8">
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <path d="m3.5 6.5 8.5 6 8.5-6" />
+  </Svg>
+);
+
+const DeptIcon = ({ size = 15 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="1.8">
+    <rect x="9" y="3" width="6" height="5" rx="1" />
+    <rect x="3" y="16" width="6" height="5" rx="1" />
+    <rect x="15" y="16" width="6" height="5" rx="1" />
+    <path d="M12 8v4M6 16v-2h12v2" />
+  </Svg>
+);
+
+const RoleIcon = ({ size = 15 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="1.8">
+    <circle cx="10" cy="8" r="3.6" />
+    <path d="M3.5 20a6.5 6.5 0 0 1 13 0" />
+    <path d="M17 5.2a3.6 3.6 0 0 1 0 5.6M18.5 14.4A6.5 6.5 0 0 1 21 20" />
+  </Svg>
+);
+
+const YuanIcon = ({ size = 15 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="1.8">
+    <path d="M7 4.5 12 12l5-7.5M12 12v7.5M7.8 13.5h8.4M7.8 17h8.4" />
+  </Svg>
+);
+
+const LinkIcon = ({ size = 13 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="1.8">
+    <path d="M10 13.8a4.2 4.2 0 0 0 6 0l3-3a4.2 4.2 0 0 0-6-6l-1.7 1.7" />
+    <path d="M14 10.2a4.2 4.2 0 0 0-6 0l-3 3a4.2 4.2 0 0 0 6 6l1.7-1.7" />
+  </Svg>
+);
+
+const LockIcon = ({ size = 15 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="1.8">
+    <rect x="4.5" y="10" width="15" height="10.5" rx="2" />
+    <path d="M8 10V7.5a4 4 0 0 1 8 0V10" />
+  </Svg>
+);
+
+const CameraIcon = ({ size = 24 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="1.7">
+    <path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z" />
+    <circle cx="12" cy="13" r="3.6" />
+  </Svg>
+);
+
+const CheckSmallIcon = ({ size = 13 }: { size?: number }) => (
+  <Svg size={size} strokeWidth="2">
+    <path d="m4.5 12.5 5 5L20 6.5" />
+  </Svg>
+);
+
 /* ===== 数据 ===== */
 type RightsItem =
   | {
@@ -953,6 +1031,39 @@ const TABS: Array<{ key: TabKey; label: string }> = [
   { key: 'coupon', label: '优惠券' },
 ];
 
+/* ===== 基础资料 ===== */
+const PROFILE_INVITE_CODE = 'L0TS0C';
+
+const PROFILE_INFO_CELLS: Array<{
+  key: string;
+  label: string;
+  value: string;
+  tone: string;
+  icon: React.ReactNode;
+}> = [
+  { key: 'account', label: '用户名称', value: 'licanrong@ygq123456', tone: 'blue', icon: <UserIcon size={16} /> },
+  { key: 'nickname', label: '用户昵称', value: '李灿荣', tone: 'green', icon: <UserIcon size={16} /> },
+  { key: 'phone', label: '手机号码', value: '18575595171', tone: 'orange', icon: <PhoneIcon size={16} /> },
+  { key: 'email', label: '用户邮箱', value: '906069595@qq.com', tone: 'red', icon: <MailIcon size={16} /> },
+  { key: 'dept', label: '所属部门', value: '暂无', tone: 'gray', icon: <DeptIcon size={16} /> },
+  { key: 'role', label: '所属角色', value: '暂无', tone: 'purple', icon: <RoleIcon size={16} /> },
+  { key: 'created', label: '创建日期', value: '2026-09-28 15:32:29', tone: 'teal', icon: <CalendarIcon size={16} /> },
+  { key: 'credit', label: '算力余额', value: '584.5', tone: 'amber', icon: <YuanIcon size={16} /> },
+  { key: 'point', label: '积分', value: '19', tone: 'red', icon: <YuanIcon size={16} /> },
+];
+
+type ProfileBasicField = 'nickname' | 'phone' | 'email';
+type ProfilePasswordField = 'oldPwd' | 'newPwd' | 'confirmPwd';
+
+const EMPTY_PROFILE_ERRORS: Record<ProfileBasicField | ProfilePasswordField, string> = {
+  nickname: '',
+  phone: '',
+  email: '',
+  oldPwd: '',
+  newPwd: '',
+  confirmPwd: '',
+};
+
 export default function MemberCenter() {
   const [tab, setTab] = useState<TabKey>('rights');
   const [myCoupons, setMyCoupons] = useState<Coupon[]>(INITIAL_MY_COUPONS);
@@ -961,7 +1072,29 @@ export default function MemberCenter() {
   const [toast, setToast] = useState('');
   const [confirmCoupon, setConfirmCoupon] = useState<Coupon | null>(null);
   const [expireDetail, setExpireDetail] = useState<{ name: string; batches: Array<{ date: string; time?: string; amount: number }> } | null>(null);
-  const [page, setPage] = useState<'member' | 'distribution'>('member');
+  const [page, setPage] = useState<'profile' | 'member' | 'distribution'>('profile');
+  const [profileTab, setProfileTab] = useState<'basic' | 'password'>('basic');
+  const [profileNickname, setProfileNickname] = useState('李灿荣');
+  const [profileForm, setProfileForm] = useState<Record<ProfileBasicField, string>>({
+    nickname: '李灿荣',
+    phone: '18575595171',
+    email: '906069595@qq.com',
+  });
+  const [profileErrors, setProfileErrors] = useState({ ...EMPTY_PROFILE_ERRORS });
+  const [passwordForm, setPasswordForm] = useState<Record<ProfilePasswordField, string>>({
+    oldPwd: '',
+    newPwd: '',
+    confirmPwd: '',
+  });
+  const [avatarSrc, setAvatarSrc] = useState('');
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+  const [cancelStep, setCancelStep] = useState<0 | 1 | 2 | 3 | 4>(0);
+  const [cancelAck, setCancelAck] = useState(false);
+  const [cancelCountdown, setCancelCountdown] = useState(10);
+  const [cancelCode, setCancelCode] = useState('');
+  const [cancelPassword, setCancelPassword] = useState('');
+  const [cancelErrors, setCancelErrors] = useState({ code: '', password: '' });
+  const [codeCountdown, setCodeCountdown] = useState(0);
   const [distTab, setDistTab] = useState<'dashboard' | 'customers' | 'coupons'>('dashboard');
   const [distRefreshing, setDistRefreshing] = useState(false);
   const [distCoupons, setDistCoupons] = useState(DIST_COUPONS);
@@ -1016,6 +1149,36 @@ export default function MemberCenter() {
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [expireDetail]);
+
+  useEffect(() => {
+    if (cancelStep !== 2) return undefined;
+    setCancelCountdown(10);
+    const timer = window.setInterval(() => {
+      setCancelCountdown((prev) => {
+        if (prev <= 1) {
+          window.clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [cancelStep]);
+
+  useEffect(() => {
+    if (codeCountdown <= 0) return undefined;
+    const timer = window.setTimeout(() => setCodeCountdown((prev) => prev - 1), 1000);
+    return () => window.clearTimeout(timer);
+  }, [codeCountdown]);
+
+  useEffect(() => {
+    if (cancelStep === 0) return undefined;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeCancelAccount();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [cancelStep]);
 
   const filteredCustomers = useMemo(() => {
     const digits = (value: string) => value.replace(/\D/g, '');
@@ -1177,7 +1340,7 @@ export default function MemberCenter() {
     setRecipientType('self');
   };
 
-  const switchPage = (next: 'member' | 'distribution') => {
+  const switchPage = (next: 'profile' | 'member' | 'distribution') => {
     setPage(next);
     setExpireDetail(null);
     setConfirmCoupon(null);
@@ -1185,9 +1348,161 @@ export default function MemberCenter() {
     setSizeOpen(false);
     if (next === 'member') {
       if (cardRef.current) cardRef.current.scrollTop = 0;
-    } else if (distCardRef.current) {
+    } else if (next === 'distribution' && distCardRef.current) {
       distCardRef.current.scrollTop = 0;
     }
+  };
+
+  const switchProfileTab = (next: 'basic' | 'password') => {
+    setProfileTab(next);
+    setProfileErrors({ ...EMPTY_PROFILE_ERRORS });
+  };
+
+  const updateProfileForm = (key: ProfileBasicField, value: string) => {
+    setProfileForm((prev) => ({ ...prev, [key]: value }));
+    if (profileErrors[key]) setProfileErrors((prev) => ({ ...prev, [key]: '' }));
+  };
+
+  const updatePasswordForm = (key: ProfilePasswordField, value: string) => {
+    setPasswordForm((prev) => ({ ...prev, [key]: value }));
+    if (profileErrors[key]) setProfileErrors((prev) => ({ ...prev, [key]: '' }));
+  };
+
+  const saveProfileBasic = () => {
+    const next = { ...EMPTY_PROFILE_ERRORS };
+    if (!profileForm.nickname.trim()) next.nickname = '请输入用户昵称';
+    if (!profileForm.phone.trim()) next.phone = '请输入手机号码';
+    else if (!/^1[3-9]\d{9}$/.test(profileForm.phone.trim())) next.phone = '请输入正确的手机号码';
+    if (!profileForm.email.trim()) next.email = '请输入邮箱地址';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profileForm.email.trim())) next.email = '请输入正确的邮箱地址';
+    if (next.nickname || next.phone || next.email) {
+      setProfileErrors(next);
+      return;
+    }
+    setProfileErrors({ ...EMPTY_PROFILE_ERRORS });
+    setProfileNickname(profileForm.nickname.trim());
+    showToast('保存成功');
+  };
+
+  const resetProfileBasic = () => {
+    setProfileForm({ nickname: profileNickname, phone: '18575595171', email: '906069595@qq.com' });
+    setProfileErrors({ ...EMPTY_PROFILE_ERRORS });
+  };
+
+  const savePassword = () => {
+    const next = { ...EMPTY_PROFILE_ERRORS };
+    if (!passwordForm.oldPwd) next.oldPwd = '请输入旧密码';
+    if (!passwordForm.newPwd) next.newPwd = '请输入新密码';
+    else if (passwordForm.newPwd.length < 6 || passwordForm.newPwd.length > 20) next.newPwd = '密码长度需为 6-20 位';
+    if (!passwordForm.confirmPwd) next.confirmPwd = '请再次输入新密码';
+    else if (passwordForm.confirmPwd !== passwordForm.newPwd) next.confirmPwd = '两次输入的密码不一致';
+    if (next.oldPwd || next.newPwd || next.confirmPwd) {
+      setProfileErrors(next);
+      return;
+    }
+    setPasswordForm({ oldPwd: '', newPwd: '', confirmPwd: '' });
+    setProfileErrors({ ...EMPTY_PROFILE_ERRORS });
+    showToast('密码修改成功');
+  };
+
+  const resetPassword = () => {
+    setPasswordForm({ oldPwd: '', newPwd: '', confirmPwd: '' });
+    setProfileErrors({ ...EMPTY_PROFILE_ERRORS });
+  };
+
+  const generateInviteLink = () => {
+    const link = `https://test.kuachengjing.com/register?inviteCode=${PROFILE_INVITE_CODE}`;
+    const fallback = () => {
+      const area = document.createElement('textarea');
+      area.value = link;
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      document.body.removeChild(area);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link).catch(fallback);
+    } else {
+      fallback();
+    }
+    showToast('推广链接已复制');
+  };
+
+  const openComputeDetail = () => {
+    window.open('/prototypes/personal-center-page', '_blank');
+  };
+
+  const pickAvatar = () => {
+    if (avatarInputRef.current) avatarInputRef.current.click();
+  };
+
+  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setAvatarSrc(String(reader.result || ''));
+      showToast('头像已更新');
+    };
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  };
+
+  /* ===== 注销账号 ===== */
+  const openCancelAccount = () => {
+    setCancelStep(1);
+    setCancelAck(false);
+    setCancelCountdown(10);
+    setCancelCode('');
+    setCancelPassword('');
+    setCancelErrors({ code: '', password: '' });
+    setCodeCountdown(0);
+  };
+
+  const closeCancelAccount = () => {
+    setCancelStep(0);
+    setCancelAck(false);
+    setCancelCode('');
+    setCancelPassword('');
+    setCancelErrors({ code: '', password: '' });
+    setCodeCountdown(0);
+  };
+
+  const goCancelVerify = () => {
+    if (!cancelAck) return;
+    setCancelStep(2);
+  };
+
+  const sendCancelCode = () => {
+    if (codeCountdown > 0) return;
+    setCodeCountdown(60);
+    showToast('验证码已发送至 185****5171');
+  };
+
+  const updateCancelCode = (value: string) => {
+    setCancelCode(value.replace(/\D/g, '').slice(0, 6));
+    if (cancelErrors.code) setCancelErrors((prev) => ({ ...prev, code: '' }));
+  };
+
+  const updateCancelPassword = (value: string) => {
+    setCancelPassword(value);
+    if (cancelErrors.password) setCancelErrors((prev) => ({ ...prev, password: '' }));
+  };
+
+  const submitCancelAccount = () => {
+    const next = { code: '', password: '' };
+    if (!cancelCode.trim()) next.code = '请输入验证码';
+    else if (!/^\d{6}$/.test(cancelCode.trim())) next.code = '请输入 6 位验证码';
+    if (!cancelPassword) next.password = '请输入登录密码';
+    else if (cancelPassword.length < 6) next.password = '密码长度不能少于 6 位';
+    if (next.code || next.password) {
+      setCancelErrors(next);
+      return;
+    }
+    setCancelErrors({ code: '', password: '' });
+    setCancelStep(4);
   };
 
   const switchDistTab = (next: 'dashboard' | 'customers' | 'coupons') => {
@@ -1331,7 +1646,13 @@ export default function MemberCenter() {
             <ul className="mcx-menu">
               {['基础资料', '会员中心', '订单中心', '发票管理', '分销中心'].map((item) => {
                 const target =
-                  item === '会员中心' ? 'member' : item === '分销中心' ? 'distribution' : null;
+                  item === '基础资料'
+                    ? 'profile'
+                    : item === '会员中心'
+                      ? 'member'
+                      : item === '分销中心'
+                        ? 'distribution'
+                        : null;
                 return (
                   <li
                     key={item}
@@ -1346,6 +1667,218 @@ export default function MemberCenter() {
           </aside>
 
           <div className="mcx-profile-content">
+            <section
+              className="mcx-profile-page"
+              style={{ display: page === 'profile' ? 'flex' : 'none' }}
+            >
+              <div className="mcx-pcard mcx-pcard--info">
+                <div className="mcx-phero">
+                  <div className="mcx-phero-bg" />
+                  <div className="mcx-phero-content">
+                    <div className="mcx-pavatar" onClick={pickAvatar} title="修改头像">
+                      {avatarSrc ? <img src={avatarSrc} alt="头像" /> : <span className="mcx-pavatar-letter">L</span>}
+                      <div className="mcx-pavatar-mask">
+                        <CameraIcon size={24} />
+                        <span>修改头像</span>
+                      </div>
+                    </div>
+                    <div className="mcx-pname">{profileNickname}</div>
+                    <div className="mcx-pmember">
+                      <span className="mcx-pmember-name">至尊会员</span>
+                      <span className="mcx-pmember-expire">到期日：2027-10-22 23:59:59</span>
+                      <span className="mcx-pmember-id">ID: LT10035</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mcx-pinvite">
+                  <div className="mcx-pinvite-left">
+                    <span className="mcx-pinvite-icon">
+                      <LinkIcon size={18} />
+                    </span>
+                    <div className="mcx-pinvite-text">
+                      <div className="mcx-pinvite-label">我的邀请码</div>
+                      <div className="mcx-pinvite-code">{PROFILE_INVITE_CODE}</div>
+                    </div>
+                  </div>
+                  <button type="button" className="mcx-pbtn mcx-pbtn--primary mcx-pbtn--sm" onClick={generateInviteLink}>
+                    <LinkIcon size={12} />
+                    生成推广链接
+                  </button>
+                </div>
+
+                <div className="mcx-pinfo-grid">
+                  {PROFILE_INFO_CELLS.map((cell) => {
+                    const value =
+                      cell.key === 'nickname'
+                        ? profileNickname
+                        : cell.key === 'phone'
+                          ? profileForm.phone
+                          : cell.key === 'email'
+                            ? profileForm.email
+                            : cell.value;
+                    return (
+                      <div className="mcx-pinfo-item" key={cell.key}>
+                        <span className={`mcx-pinfo-icon is-${cell.tone}`}>{cell.icon}</span>
+                        <div className="mcx-pinfo-content">
+                          <div className="mcx-pinfo-label">{cell.label}</div>
+                          <div className="mcx-pinfo-value" title={value}>
+                            {value}
+                          </div>
+                        </div>
+                        {cell.key === 'credit' ? (
+                          <button type="button" className="mcx-pbtn mcx-pbtn--primary mcx-pbtn--mini" onClick={openComputeDetail}>
+                            算力明细
+                          </button>
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="mcx-pcard mcx-pcard--form">
+                <div className="mcx-ptabs" role="tablist">
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={profileTab === 'basic'}
+                    className={`mcx-ptab ${profileTab === 'basic' ? 'is-active' : ''}`}
+                    onClick={() => switchProfileTab('basic')}
+                  >
+                    基本资料
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={profileTab === 'password'}
+                    className={`mcx-ptab ${profileTab === 'password' ? 'is-active' : ''}`}
+                    onClick={() => switchProfileTab('password')}
+                  >
+                    修改密码
+                  </button>
+                </div>
+
+                {profileTab === 'basic' ? (
+                  <div className="mcx-pform">
+                    <div className="mcx-pform-item">
+                      <label className="mcx-pform-label is-required">用户名称</label>
+                      <div className="mcx-pinput is-disabled">
+                        <span className="mcx-pinput-icon">
+                          <UserIcon size={14} />
+                        </span>
+                        <input className="mcx-pinput-el" value="licanrong@ygq123456" disabled />
+                      </div>
+                    </div>
+                    <div className="mcx-pform-item">
+                      <label className="mcx-pform-label">用户昵称</label>
+                      <div className={`mcx-pinput ${profileErrors.nickname ? 'is-error' : ''}`}>
+                        <span className="mcx-pinput-icon">
+                          <PencilIcon size={14} />
+                        </span>
+                        <input
+                          className="mcx-pinput-el"
+                          value={profileForm.nickname}
+                          placeholder="请输入用户昵称"
+                          onChange={(event) => updateProfileForm('nickname', event.target.value)}
+                        />
+                      </div>
+                      {profileErrors.nickname ? <div className="mcx-pform-error">{profileErrors.nickname}</div> : null}
+                    </div>
+                    <div className="mcx-pform-item">
+                      <label className="mcx-pform-label is-required">手机号码</label>
+                      <div className={`mcx-pinput ${profileErrors.phone ? 'is-error' : ''}`}>
+                        <span className="mcx-pinput-icon">
+                          <PhoneIcon size={14} />
+                        </span>
+                        <input
+                          className="mcx-pinput-el"
+                          value={profileForm.phone}
+                          placeholder="请输入手机号码"
+                          onChange={(event) => updateProfileForm('phone', event.target.value)}
+                        />
+                      </div>
+                      {profileErrors.phone ? <div className="mcx-pform-error">{profileErrors.phone}</div> : null}
+                    </div>
+                    <div className="mcx-pform-item">
+                      <label className="mcx-pform-label is-required">邮箱</label>
+                      <div className={`mcx-pinput ${profileErrors.email ? 'is-error' : ''}`}>
+                        <span className="mcx-pinput-icon">
+                          <MailIcon size={14} />
+                        </span>
+                        <input
+                          className="mcx-pinput-el"
+                          value={profileForm.email}
+                          placeholder="请输入邮箱地址"
+                          onChange={(event) => updateProfileForm('email', event.target.value)}
+                        />
+                      </div>
+                      {profileErrors.email ? <div className="mcx-pform-error">{profileErrors.email}</div> : null}
+                    </div>
+                    <div className="mcx-pform-divider" />
+                    <div className="mcx-pform-actions">
+                      <button type="button" className="mcx-pbtn mcx-pbtn--primary mcx-pbtn--sm" onClick={saveProfileBasic}>
+                        <CheckSmallIcon size={13} />
+                        保存
+                      </button>
+                      <button type="button" className="mcx-pbtn mcx-pbtn--sm" onClick={resetProfileBasic}>
+                        <CloseIcon />
+                        关闭
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="mcx-pform">
+                    {(
+                      [
+                        { key: 'oldPwd', label: '旧密码', placeholder: '请输入旧密码' },
+                        { key: 'newPwd', label: '新密码', placeholder: '请输入新密码' },
+                        { key: 'confirmPwd', label: '确认密码', placeholder: '请确认密码' },
+                      ] as Array<{ key: ProfilePasswordField; label: string; placeholder: string }>
+                    ).map((field) => (
+                      <div className="mcx-pform-item" key={field.key}>
+                        <label className="mcx-pform-label is-required">{field.label}</label>
+                        <div className={`mcx-pinput ${profileErrors[field.key] ? 'is-error' : ''}`}>
+                          <span className="mcx-pinput-icon">
+                            <LockIcon size={14} />
+                          </span>
+                          <input
+                            type="password"
+                            className="mcx-pinput-el"
+                            value={passwordForm[field.key]}
+                            placeholder={field.placeholder}
+                            onChange={(event) => updatePasswordForm(field.key, event.target.value)}
+                          />
+                        </div>
+                        {profileErrors[field.key] ? <div className="mcx-pform-error">{profileErrors[field.key]}</div> : null}
+                      </div>
+                    ))}
+                    <div className="mcx-pform-divider" />
+                    <div className="mcx-pform-actions">
+                      <button type="button" className="mcx-pbtn mcx-pbtn--primary mcx-pbtn--sm" onClick={savePassword}>
+                        <CheckSmallIcon size={13} />
+                        保存
+                      </button>
+                      <button type="button" className="mcx-pbtn mcx-pbtn--sm" onClick={resetPassword}>
+                        <CloseIcon />
+                        关闭
+                      </button>
+                    </div>
+                  </div>
+                )}
+                <input
+                  ref={avatarInputRef}
+                  type="file"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  onChange={handleAvatarChange}
+                />
+                <button type="button" className="mcx-paccount-cancel" onClick={openCancelAccount}>
+                  注销账号
+                </button>
+              </div>
+            </section>
+
             <div
               className="mcx-card"
               ref={cardRef}
@@ -1991,6 +2524,181 @@ export default function MemberCenter() {
         <HeadsetIcon />
         <span>联系我们</span>
       </div>
+
+      {cancelStep > 0 ? (
+        <div
+          className="mcx-dialog-mask"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) closeCancelAccount();
+          }}
+        >
+          <div
+            className="mcx-dialog mcx-cancel-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-label={cancelStep === 4 ? '账号已注销' : '注销账号'}
+          >
+            <div className="mcx-dialog-head">
+              {cancelStep === 1
+                ? '注销账号'
+                : cancelStep === 2
+                  ? '再次确认注销'
+                  : cancelStep === 3
+                    ? '身份验证'
+                    : '账号已注销'}
+              {cancelStep !== 4 ? (
+                <button type="button" className="mcx-dialog-close" aria-label="关闭" onClick={closeCancelAccount}>
+                  <CloseIcon />
+                </button>
+              ) : null}
+            </div>
+
+            <div className="mcx-dialog-body">
+              {cancelStep === 1 ? (
+                <>
+                  <div className="mcx-cancel-warn">
+                    <strong>账号注销后，以下数据将被永久删除且无法找回：</strong>
+                    <ul>
+                      <li>店铺授权、商品与订单数据</li>
+                      <li>会员权益、优惠券及算力余额</li>
+                      <li>分销关系与推广记录</li>
+                    </ul>
+                  </div>
+                  <label className="mcx-cancel-ack">
+                    <input type="checkbox" checked={cancelAck} onChange={(event) => setCancelAck(event.target.checked)} />
+                    <span>我已了解注销后所有数据将被删除，且无法恢复</span>
+                  </label>
+                </>
+              ) : null}
+
+              {cancelStep === 2 ? (
+                <>
+                  <p className="mcx-confirm-text">
+                    这是最后一次确认。注销后该账号将无法登录，账号下的所有数据将被永久删除，且无法找回。
+                  </p>
+                  <p className="mcx-cancel-count">
+                    请阅读并等待 <strong>{cancelCountdown}</strong> 秒后再确认
+                  </p>
+                </>
+              ) : null}
+
+              {cancelStep === 3 ? (
+                <>
+                  <p className="mcx-confirm-text">
+                    为确认是本人操作，请完成以下验证。验证通过后账号将立即注销，所有数据将被删除且无法找回。
+                  </p>
+                  <div className="mcx-cancel-form">
+                    <div className="mcx-cancel-row">
+                      <label className="mcx-cancel-label">手机号码</label>
+                      <div className="mcx-cancel-phone">
+                        <PhoneIcon size={14} />
+                        <span>185****5171</span>
+                      </div>
+                    </div>
+                    <div className={`mcx-cancel-row ${cancelErrors.code ? 'is-error' : ''}`}>
+                      <label className="mcx-cancel-label is-required">验证码</label>
+                      <div className="mcx-cancel-code">
+                        <div className="mcx-pinput">
+                          <input
+                            className="mcx-pinput-el"
+                            value={cancelCode}
+                            placeholder="请输入验证码"
+                            maxLength={6}
+                            onChange={(event) => updateCancelCode(event.target.value)}
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          className="mcx-cancel-code-btn"
+                          disabled={codeCountdown > 0}
+                          onClick={sendCancelCode}
+                        >
+                          {codeCountdown > 0 ? `${codeCountdown}s 后重新获取` : '获取验证码'}
+                        </button>
+                      </div>
+                      {cancelErrors.code ? <div className="mcx-cancel-error">{cancelErrors.code}</div> : null}
+                    </div>
+                    <div className={`mcx-cancel-row ${cancelErrors.password ? 'is-error' : ''}`}>
+                      <label className="mcx-cancel-label is-required">登录密码</label>
+                      <div className="mcx-pinput">
+                        <span className="mcx-pinput-icon">
+                          <LockIcon size={14} />
+                        </span>
+                        <input
+                          type="password"
+                          className="mcx-pinput-el"
+                          value={cancelPassword}
+                          placeholder="请输入登录密码"
+                          onChange={(event) => updateCancelPassword(event.target.value)}
+                        />
+                      </div>
+                      {cancelErrors.password ? <div className="mcx-cancel-error">{cancelErrors.password}</div> : null}
+                    </div>
+                  </div>
+                </>
+              ) : null}
+
+              {cancelStep === 4 ? (
+                <div className="mcx-cancel-success">
+                  <span className="mcx-cancel-success-icon">
+                    <CheckSmallIcon size={26} />
+                  </span>
+                  <div className="mcx-cancel-success-title">账号已注销</div>
+                  <p>该账号下的所有数据已删除。</p>
+                </div>
+              ) : null}
+            </div>
+
+            <div className="mcx-dialog-footer">
+              {cancelStep === 1 ? (
+                <>
+                  <button type="button" className="mcx-dialog-btn" onClick={closeCancelAccount}>
+                    取消
+                  </button>
+                  <button
+                    type="button"
+                    className="mcx-dialog-btn is-danger-ghost"
+                    disabled={!cancelAck}
+                    onClick={goCancelVerify}
+                  >
+                    继续注销
+                  </button>
+                </>
+              ) : null}
+              {cancelStep === 2 ? (
+                <>
+                  <button type="button" className="mcx-dialog-btn" onClick={closeCancelAccount}>
+                    取消
+                  </button>
+                  <button
+                    type="button"
+                    className="mcx-dialog-btn is-danger"
+                    disabled={cancelCountdown > 0}
+                    onClick={() => setCancelStep(3)}
+                  >
+                    {cancelCountdown > 0 ? `确认注销（${cancelCountdown}s）` : '确认注销'}
+                  </button>
+                </>
+              ) : null}
+              {cancelStep === 3 ? (
+                <>
+                  <button type="button" className="mcx-dialog-btn" onClick={closeCancelAccount}>
+                    取消
+                  </button>
+                  <button type="button" className="mcx-dialog-btn is-danger" onClick={submitCancelAccount}>
+                    确认注销
+                  </button>
+                </>
+              ) : null}
+              {cancelStep === 4 ? (
+                <button type="button" className="mcx-dialog-btn" onClick={closeCancelAccount}>
+                  完成
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {confirmCoupon ? (
         <div
